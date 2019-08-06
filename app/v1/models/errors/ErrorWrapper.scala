@@ -16,8 +16,7 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{ JsValue, Json, Writes }
-import v1.models.audit.AuditError
+import play.api.libs.json.{JsValue, Json, Writes}
 
 case class ErrorWrapper(correlationId: Option[String], error: MtdError, errors: Option[Seq[MtdError]] = None) {
 
@@ -25,9 +24,6 @@ case class ErrorWrapper(correlationId: Option[String], error: MtdError, errors: 
     case Some(seq) => seq
     case None      => Seq(error)
   }
-
-  def auditErrors: Seq[AuditError] =
-    allErrors.map(error => AuditError(error.code))
 }
 
 object ErrorWrapper {

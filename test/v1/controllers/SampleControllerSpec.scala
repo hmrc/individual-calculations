@@ -21,8 +21,7 @@ import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.mocks.requestParsers.MockSampleRequestDataParser
-import v1.mocks.services.{MockAuditService, MockEnrolmentsAuthService, MockMtdIdLookupService, MockSampleService}
-import v1.models.audit.{AuditError, AuditEvent, SampleAuditDetail, SampleAuditResponse}
+import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockSampleService}
 import v1.models.domain.{SampleRequestBody, SampleResponse}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
@@ -36,8 +35,7 @@ class SampleControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockSampleRequestDataParser
-    with MockSampleService
-    with MockAuditService {
+    with MockSampleService {
 
   trait Test {
     val hc = HeaderCarrier()
@@ -47,7 +45,6 @@ class SampleControllerSpec
       lookupService = mockMtdIdLookupService,
       requestDataParser = mockRequestDataParser,
       sampleService = mockSampleService,
-      auditService = mockAuditService,
       cc = cc
     )
 
@@ -91,11 +88,6 @@ class SampleControllerSpec
         status(result) shouldBe CREATED
         contentAsJson(result) shouldBe responseBody
         header("X-CorrelationId", result) shouldBe Some(correlationId)
-
-        val detail = SampleAuditDetail("Individual", None, nino, taxYear, correlationId, SampleAuditResponse(CREATED, None))
-        val event: AuditEvent[SampleAuditDetail] =
-          AuditEvent[SampleAuditDetail]("sampleAuditType", "sample-transaction-type", detail)
-        MockedAuditService.verifyAuditEvent(event).once
       }
     }
 
@@ -113,18 +105,6 @@ class SampleControllerSpec
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(error)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
-
-            val detail = SampleAuditDetail(
-              "Individual",
-              None,
-              nino,
-              taxYear,
-              header("X-CorrelationId", result).get,
-              SampleAuditResponse(expectedStatus, Some(Seq(AuditError(error.code))))
-            )
-            val event: AuditEvent[SampleAuditDetail] =
-              AuditEvent[SampleAuditDetail]("sampleAuditType", "sample-transaction-type", detail)
-            MockedAuditService.verifyAuditEvent(event).once
           }
         }
 
@@ -158,18 +138,6 @@ class SampleControllerSpec
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(mtdError)
             header("X-CorrelationId", result) shouldBe Some(correlationId)
-
-            val detail = SampleAuditDetail(
-              "Individual",
-              None,
-              nino,
-              taxYear,
-              header("X-CorrelationId", result).get,
-              SampleAuditResponse(expectedStatus, Some(Seq(AuditError(mtdError.code))))
-            )
-            val event: AuditEvent[SampleAuditDetail] =
-              AuditEvent[SampleAuditDetail]("sampleAuditType", "sample-transaction-type", detail)
-            MockedAuditService.verifyAuditEvent(event).once
           }
         }
 

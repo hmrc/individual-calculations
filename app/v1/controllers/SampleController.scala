@@ -19,16 +19,11 @@ package v1.controllers
 import cats.data.EitherT
 import cats.implicits._
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
 import play.api.http.MimeTypes
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, ControllerComponents}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.audit.http.connector.AuditResult
 import utils.Logging
 import v1.controllers.requestParsers.SampleRequestDataParser
-import v1.models.audit.{AuditEvent, SampleAuditDetail, SampleAuditResponse}
-import v1.models.auth.UserDetails
 import v1.models.errors._
 import v1.models.requestData.SampleRawData
 import v1.services.{SampleService, _}
@@ -40,7 +35,6 @@ class SampleController @Inject()(val authService: EnrolmentsAuthService,
                                  val lookupService: MtdIdLookupService,
                                  requestDataParser: SampleRequestDataParser,
                                  sampleService: SampleService,
-                                 auditService: AuditService,
                                  cc: ControllerComponents)(implicit ec: ExecutionContext)
   extends AuthorisedController(cc) with BaseController with Logging {
 
@@ -58,7 +52,6 @@ class SampleController @Inject()(val authService: EnrolmentsAuthService,
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
               s"Success response received with CorrelationId: ${vendorResponse.correlationId}")
-          auditSubmission(createAuditDetails(rawData, CREATED, vendorResponse.correlationId, request.userDetails))
 
           Created(Json.toJson(vendorResponse.responseData))
             .withApiHeaders(vendorResponse.correlationId)
@@ -67,9 +60,7 @@ class SampleController @Inject()(val authService: EnrolmentsAuthService,
 
       result.leftMap { errorWrapper =>
         val correlationId = getCorrelationId(errorWrapper)
-        val result = errorResult(errorWrapper).withApiHeaders(correlationId)
-        auditSubmission(createAuditDetails(rawData, result.header.status, correlationId, request.userDetails, Some(errorWrapper)))
-        result
+        errorResult(errorWrapper).withApiHeaders(correlationId)
       }.merge
     }
 
@@ -81,24 +72,5 @@ class SampleController @Inject()(val authService: EnrolmentsAuthService,
       case NotFoundError => NotFound(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
     }
-  }
-
-  private def createAuditDetails(rawData: SampleRawData,
-                                 statusCode: Int,
-                                 correlationId: String,
-                                 userDetails: UserDetails,
-                                 errorWrapper: Option[ErrorWrapper] = None): SampleAuditDetail = {
-    val response = errorWrapper
-      .map { wrapper =>
-        SampleAuditResponse(statusCode, Some(wrapper.auditErrors))
-      }
-      .getOrElse(SampleAuditResponse(statusCode, None))
-
-    SampleAuditDetail(userDetails.userType, userDetails.agentReferenceNumber, rawData.nino, rawData.taxYear, correlationId, response)
-  }
-
-  private def auditSubmission(details: SampleAuditDetail)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[AuditResult] = {
-    val event = AuditEvent("sampleAuditType", "sample-transaction-type", details)
-    auditService.auditEvent(event)
   }
 }
