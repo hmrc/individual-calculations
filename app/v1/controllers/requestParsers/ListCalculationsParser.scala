@@ -14,18 +14,15 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers.validators.validations
+package v1.controllers.requestParsers
 
-import v1.models.errors.{MtdError, RuleTaxYearNotSupportedError}
+import uk.gov.hmrc.domain.Nino
+import v1.controllers.requestParsers.validators.ListCalculationsValidator
 import v1.models.requestData.DesTaxYear
+import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 
-object MtdTaxYearValidation {
+class ListCalculationsParser(val validator: ListCalculationsValidator) extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
 
-  // @param taxYear In format YYYY-YY
-  def validate(taxYear: String, minTaxYear: Int): List[MtdError] = {
-
-    val desTaxYear = Integer.parseInt(DesTaxYear.fromMtd(taxYear).value)
-
-    if (desTaxYear >= minTaxYear || TaxYearValidation.validate(taxYear) != Nil) NoValidationErrors else List(RuleTaxYearNotSupportedError)
-  }
+  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
+    ListCalculationsRequest(Nino(data.nino), data.taxYear.map(DesTaxYear.fromMtd))
 }
