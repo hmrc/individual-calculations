@@ -38,6 +38,14 @@ trait MockHttpClient extends MockFactory {
         })
     }
 
+    def parameterGet[T](url: String, parameters: Seq[(String, String)], requiredHeaders: (String, String)*): CallHandler[Future[T]] = {
+      (mockHttpClient
+        .GET(_: String, _: Seq[(String, String)])(_: HttpReads[T], _: HeaderCarrier, _: ExecutionContext))
+        .expects(where { (actualUrl, params,  _, hc, _) =>
+          url == actualUrl && requiredHeaders.forall(h => hc.headers.contains(h)) && params == parameters
+        })
+    }
+
     def post[I, T](url: String, body: I, requiredHeaders: (String, String)*): CallHandler[Future[T]] = {
       (mockHttpClient
         .POST[I, T](_: String, _: I, _: Seq[(String, String)])(_: Writes[I], _: HttpReads[T], _: HeaderCarrier, _: ExecutionContext))
