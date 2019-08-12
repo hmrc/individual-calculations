@@ -34,15 +34,14 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ListCalculationsService @Inject()(connector: TaxCalcConnector) extends DesResponseMappingSupport with Logging {
 
-  private val calculationType = List(CalculationType.crystallisation, CalculationType.inYear)
-
+  private val surfacedCalculationTypes = List(CalculationType.crystallisation, CalculationType.inYear)
 
   def listCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext, logContext: EndpointLogContext):
   Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]] = {
 
     val result = for {
       desResponseWrapper <- EitherT(connector.listCalculations(request)).leftMap(mapDesErrors(desErrorMap))
-    } yield desResponseWrapper.map(des => ListCalculationsResponse(des.calculations.filter(a => calculationType.contains(a.`type`))))
+    } yield desResponseWrapper.map(des => ListCalculationsResponse(des.calculations.filter(calcItem => surfacedCalculationTypes.contains(calcItem.`type`))))
 
     result.value
   }

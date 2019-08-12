@@ -84,8 +84,6 @@ class ListCalculationsServiceSpec extends UnitSpec {
       )
     ))
 
-  val calculationType = ("inYear", "crystallisation")
-
   "list calculations service" when {
     "the service call is successful" must {
       "return mapped result" in new Test {
