@@ -19,19 +19,22 @@ package v1.endpoints
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
+import play.api.http.Status._
 import play.api.libs.json.Json
-import play.api.libs.ws.{WSRequest, WSResponse}
+import play.api.libs.ws.{ WSRequest, WSResponse }
 import support.IntegrationBaseSpec
 import v1.models.requestData.DesTaxYear
-import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
+import v1.stubs.{ AuditStub, AuthStub, DesStub, MtdIdLookupStub }
 
 class AuthISpec extends IntegrationBaseSpec {
 
   private trait Test {
     val nino          = "AA123456A"
     val taxYear       = "2017-18"
-    val data        = "someData"
+    val data          = "someData"
     val correlationId = "X-123"
+
+    val backendUrl = s"/income-tax/nino/$nino/taxYear/${DesTaxYear.fromMtd(taxYear)}/someService"
 
     val requestJson: String =
       s"""
@@ -39,6 +42,12 @@ class AuthISpec extends IntegrationBaseSpec {
          |"data": "$data"
          |}
     """.stripMargin
+
+    val responseBody = Json.parse("""
+        | {
+        | "responseData" : "someResponse"
+        | }
+      """.stripMargin)
 
     def setupStubs(): StubMapping
 
@@ -73,7 +82,7 @@ class AuthISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.serviceSuccess(nino, DesTaxYear.fromMtd(taxYear).toString)
+          DesStub.onSuccess(DesStub.POST, backendUrl, OK, responseBody)
         }
 
         val response: WSResponse = await(request().post(Json.parse(requestJson)))
