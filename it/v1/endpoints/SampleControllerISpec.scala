@@ -17,15 +17,15 @@
 package v1.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
+import play.api.http.Status.OK
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
 import v1.models.requestData.DesTaxYear
 import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
-
-import play.api.http.HeaderNames.ACCEPT
 
 class SampleControllerISpec extends IntegrationBaseSpec {
 
@@ -43,9 +43,18 @@ class SampleControllerISpec extends IntegrationBaseSpec {
          |}
     """.stripMargin)
 
+    val responseBody = Json.parse(
+      """
+        | {
+        | "responseData" : "someResponse"
+        | }
+      """.stripMargin)
+
     def setupStubs(): StubMapping
 
     def uri: String
+
+    lazy val backendUrl = s"/income-tax/nino/$nino/taxYear/${DesTaxYear.fromMtd(taxYear)}/someService"
 
     def request(): WSRequest = {
       setupStubs()
@@ -57,7 +66,7 @@ class SampleControllerISpec extends IntegrationBaseSpec {
       s"""
          |      {
          |        "code": "$code",
-         |        "reason": "des message"
+         |        "reason": "backend message"
          |      }
       """.stripMargin
   }
@@ -76,7 +85,8 @@ class SampleControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.serviceSuccess(nino, DesTaxYear.fromMtd(taxYear).toString)
+
+          DesStub.onSuccess(DesStub.POST, backendUrl, OK, responseBody)
         }
 
         val response: WSResponse = await(request().post(requestJson))
@@ -98,7 +108,7 @@ class SampleControllerISpec extends IntegrationBaseSpec {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.serviceSuccess(nino, DesTaxYear.fromMtd(taxYear).toString)
+          DesStub.onSuccess(DesStub.POST, backendUrl, OK, responseBody)
         }
 
         val response: WSResponse = await(request().addHttpHeaders(("Content-Type", "application/json")).post(json))
@@ -137,15 +147,15 @@ class SampleControllerISpec extends IntegrationBaseSpec {
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
 
-      "des service error" when {
-        def serviceErrorTest(desStatus: Int, desCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"des returns an $desCode error and status $desStatus" in new SampleTest {
+      "backend service error" when {
+        def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"backend returns an $backendCode error and status $backendStatus" in new SampleTest {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DesStub.serviceError(nino, DesTaxYear.fromMtd(taxYear).toString, desStatus, errorBody(desCode))
+              DesStub.onError(DesStub.POST, backendUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request().post(requestJson))

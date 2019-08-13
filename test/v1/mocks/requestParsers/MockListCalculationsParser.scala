@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package v1.controllers.requestParsers
+package v1.mocks.requestParsers
 
-import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
-import v1.controllers.requestParsers.validators.ListCalculationsValidator
-import v1.models.requestData.DesTaxYear
+import org.scalamock.handlers.CallHandler
+import org.scalamock.scalatest.MockFactory
+import v1.controllers.requestParsers.ListCalculationsParser
+import v1.models.errors.ErrorWrapper
 import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator) extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+trait MockListCalculationsParser extends MockFactory {
 
-  override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
-    ListCalculationsRequest(Nino(data.nino), data.taxYear.map(DesTaxYear.fromMtd))
+  val mockListCalculationsParser = mock[ListCalculationsParser]
+
+  object MockListCalculationsParser {
+    def parse(data: ListCalculationsRawData): CallHandler[Either[ErrorWrapper, ListCalculationsRequest]] = {
+      (mockListCalculationsParser.parseRequest(_: ListCalculationsRawData)).expects(data)
+    }
+  }
+
 }
