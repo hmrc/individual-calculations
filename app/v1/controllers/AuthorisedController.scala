@@ -23,7 +23,7 @@ import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.BackendController
 import v1.models.auth.UserDetails
-import v1.models.errors._
+import v1.models.errors.{ InvalidBearerTokenError, _ }
 import v1.services.{ EnrolmentsAuthService, MtdIdLookupService }
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -60,10 +60,11 @@ abstract class AuthorisedController(cc: ControllerComponents)(implicit ec: Execu
       implicit val headerCarrier: HeaderCarrier = hc(request)
 
       lookupService.lookup(nino).flatMap[Result] {
-        case Right(mtdId)            => invokeBlockWithAuthCheck(mtdId, request, block)
-        case Left(NinoFormatError)   => Future.successful(BadRequest(Json.toJson(NinoFormatError)))
-        case Left(UnauthorisedError) => Future.successful(Forbidden(Json.toJson(UnauthorisedError)))
-        case Left(_)                 => Future.successful(InternalServerError(Json.toJson(DownstreamError)))
+        case Right(mtdId)                  => invokeBlockWithAuthCheck(mtdId, request, block)
+        case Left(NinoFormatError)         => Future.successful(BadRequest(Json.toJson(NinoFormatError)))
+        case Left(UnauthorisedError)       => Future.successful(Forbidden(Json.toJson(UnauthorisedError)))
+        case Left(InvalidBearerTokenError) => Future.successful(Unauthorized(Json.toJson(InvalidBearerTokenError)))
+        case Left(_)                       => Future.successful(InternalServerError(Json.toJson(DownstreamError)))
       }
     }
   }
