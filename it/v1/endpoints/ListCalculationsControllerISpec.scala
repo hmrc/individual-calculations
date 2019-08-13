@@ -34,7 +34,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
     val calcId                  = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
     val correlationId           = "X-123"
 
-    def uri: String = s"/individual/calculations/$nino/self-assessment"
+    def uri: String = s"/$nino/self-assessment"
 
     def desUrl: String = s"/income-tax/list-of-calculation-results/$nino"
 
