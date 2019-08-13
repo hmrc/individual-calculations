@@ -80,6 +80,19 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
                                         |		"intentToCrystallise": true,
                                         |		"crystallised": true,
                                         |		"crystallisationTimestamp": "2019-07-13T07:51:43Z"
+                                        |	},
+                                        | {
+                                        |		"calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1d",
+                                        |		"calculationTimestamp": "2019-03-17T09:22:59Z",
+                                        |		"calculationType": "biss",
+                                        |		"requestedBy": "hmrc",
+                                        |		"year": 2016,
+                                        |		"fromDate": "2018-01-01",
+                                        |		"toDate": "2019-01-01",
+                                        |		"totalIncomeTaxAndNicsDue": 99999999999.99,
+                                        |		"intentToCrystallise": true,
+                                        |		"crystallised": true,
+                                        |		"crystallisationTimestamp": "2019-07-13T07:51:43Z"
                                         |	}
                                         |  ]""".stripMargin)
 

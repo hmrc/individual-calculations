@@ -96,7 +96,7 @@ class ListCalculationsControllerSpec
           .listCalculations(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
 
-        val result: Future[Result] = controller.handleRequest(nino, taxYear)(fakeGetRequest)
+        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe responseBody
@@ -114,7 +114,7 @@ class ListCalculationsControllerSpec
           .listCalculations(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, ListCalculationsResponse(Nil)))))
 
-        val result: Future[Result] = controller.handleRequest(nino, taxYear)(fakeGetRequest)
+        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
 
         status(result) shouldBe NOT_FOUND
         contentAsJson(result) shouldBe Json.toJson(NotFoundError)
@@ -131,7 +131,7 @@ class ListCalculationsControllerSpec
               .parse(rawData)
               .returns(Left(ErrorWrapper(Some(correlationId), error, None)))
 
-            val result: Future[Result] = controller.handleRequest(nino, taxYear)(fakeGetRequest)
+            val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
 
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(error)
@@ -163,7 +163,7 @@ class ListCalculationsControllerSpec
               .listCalculations(requestData)
               .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError))))
 
-            val result: Future[Result] = controller.handleRequest(nino, taxYear)(fakeGetRequest)
+            val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
 
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(mtdError)
