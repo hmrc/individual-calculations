@@ -44,9 +44,9 @@ class AuthISpec extends IntegrationBaseSpec {
     """.stripMargin
 
     val responseBody = Json.parse("""
-                                    | {
-                                    | "responseData" : "someResponse"
-                                    | }
+      | {
+      | "responseData" : "someResponse"
+      | }
       """.stripMargin)
 
     def setupStubs(): StubMapping

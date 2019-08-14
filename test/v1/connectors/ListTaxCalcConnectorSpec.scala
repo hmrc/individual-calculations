@@ -41,7 +41,7 @@ class ListTaxCalcConnectorSpec extends ConnectorSpec {
         `type` = CalculationType.inYear,
         requestedBy = Some(CalculationRequestor.hmrc)
       ),
-      selfAssessment.CalculationListItem(
+      CalculationListItem(
         id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
         calculationTimestamp = "2019-06-17T18:45:59Z",
         `type` = CalculationType.crystallisation,
