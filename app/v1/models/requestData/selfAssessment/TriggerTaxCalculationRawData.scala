@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-package v1
+package v1.models.requestData.selfAssessment
 
-import v1.models.des.selfAssessment.ListCalculationsResponse
-import v1.models.errors.{DesError, MtdError}
-import v1.models.outcomes.ResponseWrapper
+import play.api.mvc.AnyContentAsJson
+import v1.models.requestData.RawData
 
-package object connectors {
-
-  type MtdIdLookupOutcome = Either[MtdError, String]
-
-  type DesOutcome[A] = Either[ResponseWrapper[DesError], ResponseWrapper[A]]
-
-  type ListCalculationsConnectorOutcome = DesOutcome[ListCalculationsResponse]
-
-}
+case class TriggerTaxCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData

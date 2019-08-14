@@ -17,11 +17,10 @@
 package v1.connectors
 
 import uk.gov.hmrc.domain.Nino
-import uk.gov.hmrc.http
-import v1.connectors.httpparsers.StandardDesHttpParser
 import v1.mocks.{MockAppConfig, MockHttpClient}
-import v1.models.domain.selfAssessment.{CalculationListItem, CalculationRequestor, CalculationType, ListCalculationsResponse}
-import v1.models.errors.{NinoFormatError, TaxYearFormatError}
+import v1.models.des.selfAssessment
+import v1.models.des.selfAssessment.{CalculationListItem, ListCalculationsResponse}
+import v1.models.domain.selfAssessment.{CalculationRequestor, CalculationType}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.DesTaxYear
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
@@ -42,7 +41,7 @@ class ListTaxCalcConnectorSpec extends ConnectorSpec {
         `type` = CalculationType.inYear,
         requestedBy = Some(CalculationRequestor.hmrc)
       ),
-      CalculationListItem(
+      selfAssessment.CalculationListItem(
         id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
         calculationTimestamp = "2019-06-17T18:45:59Z",
         `type` = CalculationType.crystallisation,

@@ -21,9 +21,9 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.mocks.connectors.MockTaxCalcConnector
-import v1.models.des.DesSampleResponse
-import v1.models.domain.SampleResponse
-import v1.models.domain.selfAssessment.{CalculationListItem, CalculationRequestor, CalculationType, ListCalculationsResponse}
+import v1.models.des.selfAssessment
+import v1.models.des.selfAssessment.{CalculationListItem, ListCalculationsResponse}
+import v1.models.domain.selfAssessment.{CalculationRequestor, CalculationType}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.DesTaxYear
@@ -55,7 +55,7 @@ class ListCalculationsServiceSpec extends UnitSpec {
         `type` = CalculationType.inYear,
         requestedBy = Some(CalculationRequestor.hmrc)
       ),
-      CalculationListItem(
+      selfAssessment.CalculationListItem(
         id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
         calculationTimestamp = "2019-06-17T18:45:59Z",
         `type` = CalculationType.crystallisation,
@@ -64,19 +64,19 @@ class ListCalculationsServiceSpec extends UnitSpec {
     ))
   val listCalcResponseBiss = ListCalculationsResponse(
     Seq(
-      CalculationListItem(
+      selfAssessment.CalculationListItem(
         id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
         calculationTimestamp = "2019-03-17T09:22:59Z",
         `type` = CalculationType.inYear,
         requestedBy = Some(CalculationRequestor.hmrc)
       ),
-      CalculationListItem(
+      selfAssessment.CalculationListItem(
         id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
         calculationTimestamp = "2019-06-17T18:45:59Z",
         `type` = CalculationType.crystallisation,
         requestedBy = None
       ),
-      CalculationListItem(
+      selfAssessment.CalculationListItem(
         id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
         calculationTimestamp = "2019-06-17T18:45:59Z",
         `type` = CalculationType.biss,

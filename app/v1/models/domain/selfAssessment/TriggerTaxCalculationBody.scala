@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package v1
+package v1.models.domain.selfAssessment
 
-import v1.models.des.selfAssessment.ListCalculationsResponse
-import v1.models.errors.{DesError, MtdError}
-import v1.models.outcomes.ResponseWrapper
+import play.api.libs.json._
+import v1.models.requestData.DesTaxYear
 
-package object connectors {
+case class TriggerTaxCalculationBody(taxYear: String)
 
-  type MtdIdLookupOutcome = Either[MtdError, String]
 
-  type DesOutcome[A] = Either[ResponseWrapper[DesError], ResponseWrapper[A]]
+object TriggerTaxCalculationBody {
+  implicit val reads: Reads[TriggerTaxCalculationBody] = Json.reads[TriggerTaxCalculationBody]
 
-  type ListCalculationsConnectorOutcome = DesOutcome[ListCalculationsResponse]
-
+  implicit val writes: Writes[TriggerTaxCalculationBody] = new Writes[TriggerTaxCalculationBody] {
+    override def writes(triggerTaxCalc: TriggerTaxCalculationBody): JsValue = Json.obj(
+      "taxYear" -> DesTaxYear.fromMtd(triggerTaxCalc.taxYear).toString
+    )
+  }
 }

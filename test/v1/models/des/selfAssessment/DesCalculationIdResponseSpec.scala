@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package v1
+package v1.models.des.selfAssessment
 
-import v1.models.des.selfAssessment.ListCalculationsResponse
-import v1.models.errors.{DesError, MtdError}
-import v1.models.outcomes.ResponseWrapper
+import play.api.libs.json.Json
+import support.UnitSpec
 
-package object connectors {
+class DesCalculationIdResponseSpec extends UnitSpec {
+  "Json reads" should {
+    "use specified format" in {
+      val json = Json.parse(
+        """
+          |{
+          |  "id": "00000000-0000-1000-8000-000000000000"
+          |}""".stripMargin)
 
-  type MtdIdLookupOutcome = Either[MtdError, String]
-
-  type DesOutcome[A] = Either[ResponseWrapper[DesError], ResponseWrapper[A]]
-
-  type ListCalculationsConnectorOutcome = DesOutcome[ListCalculationsResponse]
-
+      json.as[DesCalculationIdResponse] shouldBe DesCalculationIdResponse("00000000-0000-1000-8000-000000000000")
+    }
+  }
 }
