@@ -16,7 +16,8 @@
 
 package v1.models.requestData.selfAssessment
 
+import uk.gov.hmrc.domain.Nino
 import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.requestData.RawData
 
-case class TriggerTaxCalculationRequest(nino: String, triggerTaxCalc: TriggerTaxCalculationBody) extends RawData
+case class TriggerTaxCalculationRequest(nino: Nino, triggerTaxCalc: TriggerTaxCalculationBody) extends RawData
