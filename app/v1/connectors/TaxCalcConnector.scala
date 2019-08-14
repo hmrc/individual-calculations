@@ -44,4 +44,11 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
       DesUri[ListCalculationsResponse](s"income-tax/list-of-calculation-results/${request.nino.nino}"), pathParameter.toSeq
     )
   }
+
+  def triggerTaxCalculation: Unit = {
+      ???
+
+  }
+
+
 }
