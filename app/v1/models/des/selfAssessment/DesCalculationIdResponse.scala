@@ -15,7 +15,7 @@
  */
 
 package v1.models.des.selfAssessment
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.{Json, Reads, Writes}
 
 /**
   * Calculation Id returned from DES as part of Trigger a Tax Calculation
@@ -25,6 +25,8 @@ case class DesCalculationIdResponse(id: String)
 
 object DesCalculationIdResponse {
   implicit val reads: Reads[DesCalculationIdResponse] = Json.reads[DesCalculationIdResponse]
+  implicit val writes: Writes[DesCalculationIdResponse] = Json.writes[DesCalculationIdResponse]
+
 }
 
 

@@ -32,7 +32,7 @@ trait MockTriggerTaxCalculationService extends MockFactory {
 
   val mockTriggerTaxCalculationService: TriggerTaxCalculationService = mock[TriggerTaxCalculationService]
 
-  object MockListCalculationsService {
+  object MockTriggerTaxCalculationService {
 
     def triggerTaxCalculation(requestData: TriggerTaxCalculationRequest):
     CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[DesCalculationIdResponse]]]] = {

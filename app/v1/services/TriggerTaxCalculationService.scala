@@ -49,7 +49,8 @@ class TriggerTaxCalculationService @Inject()(connector: TaxCalcConnector) extend
     Map(
       "FORMAT_NINO" -> NinoFormatError,
       "FORMAT_TAX_YEAR" -> TaxYearFormatError,
-      "RULE_NO_INCOME_SUBMISSION_EXISTS" -> RuleNoIncomeSubmissionExists,
+      "RULE_NO_INCOME_SUBMISSION_EXISTS" -> RuleNoIncomeSubmissionExistsError,
+      "INVALID_REQUEST" -> DownstreamError,
       "SERVER_ERROR" -> DownstreamError,
       "SERVICE_UNAVAILABLE" -> DownstreamError
     )

@@ -16,16 +16,20 @@
 
 package v1.controllers.selfAssessment
 
+import cats.data.EitherT
+import cats.implicits._
 import javax.inject.{Inject, Singleton}
-import play.api.libs.json.Json
-import play.api.mvc.ControllerComponents
+import play.api.http.MimeTypes
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import utils.Logging
 import v1.controllers.requestParsers.TriggerTaxCalculationParser
 import v1.controllers.{AuthorisedController, BaseController, EndpointLogContext}
 import v1.models.errors._
-import v1.services._
+import v1.models.requestData.selfAssessment.TriggerTaxCalculationRawData
+import v1.services.{EnrolmentsAuthService, MtdIdLookupService, _}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class TriggerTaxCalculationController @Inject()(val authService: EnrolmentsAuthService,
@@ -35,22 +39,25 @@ class TriggerTaxCalculationController @Inject()(val authService: EnrolmentsAuthS
                                                 cc: ControllerComponents)(implicit ec: ExecutionContext)
   extends AuthorisedController(cc) with BaseController with Logging {
 
+
+
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(controllerName = "TriggerTaxCalculationController", endpointName = "triggerTaxCalculation")
 
-  def triggerTaxCalculation = ???/*(nino: String, taxYear: String): Action[JsValue] =
+  def triggerTaxCalculation(nino: String): Action[JsValue] =
     authorisedAction(nino).async(parse.json) { implicit request =>
-      val rawData = SampleRawData(nino, taxYear, request.body)
+
+      val rawData = TriggerTaxCalculationRawData(nino, AnyContentAsJson(request.body))
       val result =
         for {
           parsedRequest <- EitherT.fromEither[Future](requestDataParser.parseRequest(rawData))
-          vendorResponse <- EitherT(sampleService.doServiceThing(parsedRequest))
+          vendorResponse <- EitherT(triggerTaxCalcService.triggerTaxCalculation(parsedRequest))
         } yield {
           logger.info(
             s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
               s"Success response received with CorrelationId: ${vendorResponse.correlationId}")
 
-          Created(Json.toJson(vendorResponse.responseData))
+          Accepted(Json.toJson(vendorResponse.responseData))
             .withApiHeaders(vendorResponse.correlationId)
             .as(MimeTypes.JSON)
         }
@@ -59,14 +66,18 @@ class TriggerTaxCalculationController @Inject()(val authService: EnrolmentsAuthS
         val correlationId = getCorrelationId(errorWrapper)
         errorResult(errorWrapper).withApiHeaders(correlationId)
       }.merge
-    }*/
+    }
 
   private def errorResult(errorWrapper: ErrorWrapper) = {
     errorWrapper.error match {
-      case RuleIncorrectOrEmptyBodyError | BadRequestError | NinoFormatError | TaxYearFormatError | RuleTaxYearNotSupportedError |
-           RuleTaxYearRangeExceededError =>
+      case BadRequestError
+           | NinoFormatError
+           | TaxYearFormatError
+           | RuleTaxYearNotSupportedError
+           | RuleTaxYearRangeExceededError
+           | RuleIncorrectOrEmptyBodyError =>
         BadRequest(Json.toJson(errorWrapper))
-      case NotFoundError => NotFound(Json.toJson(errorWrapper))
+      case RuleNoIncomeSubmissionExistsError => Forbidden(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
     }
   }

@@ -36,7 +36,7 @@ object RuleIncorrectOrEmptyBodyError extends MtdError("RULE_INCORRECT_OR_EMPTY_B
 object RuleTaxYearRangeExceededError
     extends MtdError("RULE_TAX_YEAR_RANGE_EXCEEDED", "Tax year range exceeded. A tax year range of one year is required")
 
-object RuleNoIncomeSubmissionExists
+object RuleNoIncomeSubmissionExistsError
   extends MtdError("RULE_NO_INCOME_SUBMISSION_EXISTS", "No income submission exists for the tax year")
 
 //Standard Errors
