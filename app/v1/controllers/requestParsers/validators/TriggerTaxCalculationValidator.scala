@@ -24,7 +24,7 @@ import v1.models.requestData.selfAssessment.TriggerTaxCalculationRawData
 
 class TriggerTaxCalculationValidator extends Validator[TriggerTaxCalculationRawData] with FixedConfig {
 
-  private val validationSet = List(parameterFormatValidation, bodyFieldValidator, bodyFieldValidator2)
+  private val validationSet = List(parameterFormatValidation, taxYearValidation, mtdTaxYearValidation)
 
   private def parameterFormatValidation: TriggerTaxCalculationRawData => List[List[MtdError]] = { data =>
     List(
@@ -34,14 +34,14 @@ class TriggerTaxCalculationValidator extends Validator[TriggerTaxCalculationRawD
     )
   }
 
-  private def bodyFieldValidator: TriggerTaxCalculationRawData => List[List[MtdError]] = { data =>
+  private def taxYearValidation: TriggerTaxCalculationRawData => List[List[MtdError]] = { data =>
     val req = data.body.json.as[TriggerTaxCalculationBody]
     List(
       TaxYearValidation.validate(req.taxYear)
     )
   }
 
-  private def bodyFieldValidator2: TriggerTaxCalculationRawData => List[List[MtdError]] = { data =>
+  private def mtdTaxYearValidation: TriggerTaxCalculationRawData => List[List[MtdError]] = { data =>
     val req = data.body.json.as[TriggerTaxCalculationBody]
     List(
       MtdTaxYearValidation.validate(req.taxYear, 2018)
