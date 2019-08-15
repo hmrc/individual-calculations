@@ -20,7 +20,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status.OK
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
@@ -35,6 +35,13 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
     val taxYear = "2017-18"
     val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
     val correlationId = "X-123"
+
+
+    def createTriggerTaxCalcBody(taxYear: String): JsValue = Json.parse(
+      s"""{
+         |  "taxYear": "$taxYear"
+         |}
+    """.stripMargin)
 
     val requestJson = Json.parse(
       s"""
@@ -140,12 +147,15 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
         val input = Seq(
           ("AA1123A", "2017-18", Status.BAD_REQUEST, NinoFormatError),
           ("AA123456A", "20177", Status.BAD_REQUEST, TaxYearFormatError),
-          ("AA123456A", "2015-16", Status.BAD_REQUEST, RuleTaxYearNotSupportedError))
+          ("AA123456A", "2015-16", Status.BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("AA123456A", "2018-20", Status.BAD_REQUEST, RuleTaxYearRangeExceededError)
+          ("AA123456A", "2018-20", Status.BAD_REQUEST, RuleTaxYearRangeExceededError)
+        )
 
 
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
-/*
+      /*
       "backend service error" when {
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"backend returns an $backendCode error and status $backendStatus" in new SampleTest {
@@ -172,5 +182,6 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
         input.foreach(args => (serviceErrorTest _).tupled(args))
       }
     }*/
+    }
   }
 }
