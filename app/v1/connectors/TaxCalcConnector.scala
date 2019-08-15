@@ -21,8 +21,9 @@ import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.connectors.httpparsers.StandardDesHttpParser._
-import v1.models.des.selfAssessment.ListCalculationsResponse
-import v1.models.requestData.selfAssessment.ListCalculationsRequest
+import v1.models.des.selfAssessment.{CalculationIdResponse, ListCalculationsResponse}
+import v1.models.domain.EmptyJsonBody
+import v1.models.requestData.selfAssessment.{ListCalculationsRequest, TriggerTaxCalculationRequest}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -35,13 +36,31 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
     implicit hc: HeaderCarrier,
     ec: ExecutionContext): Future[DesOutcome[ListCalculationsResponse]] = {
 
+    val nino = request.nino.nino
+
     val pathParameter =
       Map("taxYear"          -> request.taxYear.map(_.value)).collect {
         case (key, Some(value)) => key -> value
       }
 
     get(
-      DesUri[ListCalculationsResponse](s"income-tax/list-of-calculation-results/${request.nino.nino}"), pathParameter.toSeq
+      DesUri[ListCalculationsResponse](s"income-tax/list-of-calculation-results/${nino}"), pathParameter.toSeq
     )
   }
+
+  def triggerTaxCalculation(request: TriggerTaxCalculationRequest)(
+    implicit hc: HeaderCarrier,
+    ec: ExecutionContext): Future[DesOutcome[CalculationIdResponse]] = {
+
+    val nino = request.nino.nino
+    val taxYear = request.triggerTaxCalc.taxYear
+
+    post(
+      body = EmptyJsonBody,
+      DesUri[CalculationIdResponse](s"income-tax/nino/${nino}/taxYear/$taxYear/tax-calculation")
+    )
+
+  }
+
+
 }

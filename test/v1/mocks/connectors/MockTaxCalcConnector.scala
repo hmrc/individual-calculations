@@ -20,8 +20,8 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.{DesOutcome, TaxCalcConnector}
-import v1.models.des.selfAssessment.ListCalculationsResponse
-import v1.models.requestData.selfAssessment.ListCalculationsRequest
+import v1.models.des.selfAssessment.{CalculationIdResponse, ListCalculationsResponse}
+import v1.models.requestData.selfAssessment.{ListCalculationsRequest, TriggerTaxCalculationRequest}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -34,6 +34,12 @@ trait MockTaxCalcConnector extends MockFactory {
     def listCalculations(requestData: ListCalculationsRequest): CallHandler[Future[DesOutcome[ListCalculationsResponse]]] = {
       (mockTaxCalcConnector
         .listCalculations(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext))
+        .expects(requestData, *, *)
+    }
+
+    def triggerTaxCalculation(requestData: TriggerTaxCalculationRequest): CallHandler[Future[DesOutcome[CalculationIdResponse]]] = {
+      (mockTaxCalcConnector
+        .triggerTaxCalculation(_: TriggerTaxCalculationRequest)(_: HeaderCarrier, _: ExecutionContext))
         .expects(requestData, *, *)
     }
   }
