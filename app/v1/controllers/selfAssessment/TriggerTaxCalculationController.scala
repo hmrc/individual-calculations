@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext
 class TriggerTaxCalculationController @Inject()(val authService: EnrolmentsAuthService,
                                                 val lookupService: MtdIdLookupService,
                                                 requestDataParser: TriggerTaxCalculationParser,
-                                                service: TriggerTaxCalculationService,
+                                                triggerTaxCalcService: TriggerTaxCalculationService,
                                                 cc: ControllerComponents)(implicit ec: ExecutionContext)
   extends AuthorisedController(cc) with BaseController with Logging {
 
