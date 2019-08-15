@@ -18,7 +18,7 @@ package v1.connectors
 
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.{MockAppConfig, MockHttpClient}
-import v1.models.des.selfAssessment.DesCalculationIdResponse
+import v1.models.des.selfAssessment.CalculationIdResponse
 import v1.models.domain.EmptyJsonBody
 import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.outcomes.ResponseWrapper
@@ -48,7 +48,7 @@ class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
     "a valid request is supplied" should {
       "return a successful response with the correct correlationId" in new Test {
 
-        val expected = Right(ResponseWrapper(correlationId, DesCalculationIdResponse(calcId)))
+        val expected = Right(ResponseWrapper(correlationId, CalculationIdResponse(calcId)))
 
         MockedHttpClient
           .post(s"$baseUrl/income-tax/nino/$nino/taxYear/$taxYear/tax-calculation", EmptyJsonBody, desRequestHeaders: _*)

@@ -21,12 +21,11 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.mocks.connectors.MockTaxCalcConnector
-import v1.models.des.selfAssessment.{CalculationListItem, DesCalculationIdResponse, ListCalculationsResponse}
-import v1.models.domain.selfAssessment.{CalculationRequestor, CalculationType, TriggerTaxCalculationBody}
+import v1.models.des.selfAssessment.CalculationIdResponse
+import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.DesTaxYear
-import v1.models.requestData.selfAssessment.{ListCalculationsRequest, TriggerTaxCalculationRequest}
+import v1.models.requestData.selfAssessment.TriggerTaxCalculationRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -47,15 +46,15 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
     val service = new TriggerTaxCalculationService(mockTaxCalcConnector)
   }
 
-  val desCalculationIdResponse = DesCalculationIdResponse(calcId)
+  val calculationIdResponse = CalculationIdResponse(calcId)
 
   "list calculations service" when {
     "the service call is successful" must {
       "return mapped result" in new Test {
         MockTaxCalcConnector.triggerTaxCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, desCalculationIdResponse))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, calculationIdResponse))))
 
-        await(service.triggerTaxCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId, desCalculationIdResponse))
+        await(service.triggerTaxCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId, calculationIdResponse))
       }
     }
 
