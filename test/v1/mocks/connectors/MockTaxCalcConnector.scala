@@ -19,10 +19,8 @@ package v1.mocks.connectors
 import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.connectors.{DesOutcome, SampleConnector, TaxCalcConnector}
-import v1.models.des.DesSampleResponse
-import v1.models.domain.selfAssessment.ListCalculationsResponse
-import v1.models.requestData.SampleRequestData
+import v1.connectors.{DesOutcome, TaxCalcConnector}
+import v1.models.des.selfAssessment.ListCalculationsResponse
 import v1.models.requestData.selfAssessment.ListCalculationsRequest
 
 import scala.concurrent.{ExecutionContext, Future}

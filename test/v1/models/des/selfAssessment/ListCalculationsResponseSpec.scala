@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.des.selfAssessment
 
 import play.api.libs.json.Json
 import support.UnitSpec
+import v1.models.domain.selfAssessment.{CalculationRequestor, CalculationType}
 
 class ListCalculationsResponseSpec extends UnitSpec {
 

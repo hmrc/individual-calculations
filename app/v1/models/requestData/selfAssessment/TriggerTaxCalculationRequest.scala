@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-package v1
+package v1.models.requestData.selfAssessment
 
-import v1.models.des.selfAssessment.ListCalculationsResponse
-import v1.models.errors.{DesError, MtdError}
-import v1.models.outcomes.ResponseWrapper
+import uk.gov.hmrc.domain.Nino
+import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 
-package object connectors {
-
-  type MtdIdLookupOutcome = Either[MtdError, String]
-
-  type DesOutcome[A] = Either[ResponseWrapper[DesError], ResponseWrapper[A]]
-
-  type ListCalculationsConnectorOutcome = DesOutcome[ListCalculationsResponse]
-
-}
+case class TriggerTaxCalculationRequest(nino: Nino, triggerTaxCalc: TriggerTaxCalculationBody)

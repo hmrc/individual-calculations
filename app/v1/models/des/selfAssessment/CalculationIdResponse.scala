@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package v1
+package v1.models.des.selfAssessment
+import play.api.libs.json.{Json, Reads}
 
-import v1.models.des.selfAssessment.ListCalculationsResponse
-import v1.models.errors.{DesError, MtdError}
-import v1.models.outcomes.ResponseWrapper
+/**
+  * Calculation Id returned from DES as part of Trigger a Tax Calculation
+  */
 
-package object connectors {
+case class CalculationIdResponse(id: String)
 
-  type MtdIdLookupOutcome = Either[MtdError, String]
-
-  type DesOutcome[A] = Either[ResponseWrapper[DesError], ResponseWrapper[A]]
-
-  type ListCalculationsConnectorOutcome = DesOutcome[ListCalculationsResponse]
-
+object CalculationIdResponse {
+  implicit val reads: Reads[CalculationIdResponse] = Json.reads[CalculationIdResponse]
 }
+
+

@@ -20,7 +20,7 @@ import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
-import v1.mocks.connectors.{MockSampleConnector, MockTaxCalcConnector}
+import v1.mocks.connectors.MockSampleConnector
 import v1.models.des.DesSampleResponse
 import v1.models.domain.{SampleRequestBody, SampleResponse}
 import v1.models.errors._
