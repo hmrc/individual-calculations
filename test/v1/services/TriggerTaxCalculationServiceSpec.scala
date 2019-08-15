@@ -75,6 +75,7 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
           ("FORMAT_NINO" -> NinoFormatError),
           ("FORMAT_TAX_YEAR" -> TaxYearFormatError),
           ("RULE_NO_INCOME_SUBMISSION_EXISTS" -> RuleNoIncomeSubmissionExists),
+          ("INVALID_REQUEST" -> DownstreamError),
           ("SERVER_ERROR" -> DownstreamError),
           ("SERVICE_UNAVAILABLE" -> DownstreamError)
         )
