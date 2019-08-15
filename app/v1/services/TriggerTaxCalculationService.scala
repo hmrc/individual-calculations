@@ -47,9 +47,9 @@ class TriggerTaxCalculationService @Inject()(connector: TaxCalcConnector) extend
 
   private def desErrorMap =
     Map(
-      "FORMAT_NINO" -> NinoFormatError,
-      "FORMAT_TAX_YEAR" -> TaxYearFormatError,
-      "RULE_NO_INCOME_SUBMISSION_EXISTS" -> RuleNoIncomeSubmissionExists,
+      "INVALID_NINO" -> NinoFormatError,
+      "INVALID_TAX_YEAR" -> TaxYearFormatError,
+      "NO_SUBMISSIONS_EXIST" -> RuleNoIncomeSubmissionExists,
       "SERVER_ERROR" -> DownstreamError,
       "SERVICE_UNAVAILABLE" -> DownstreamError
     )
