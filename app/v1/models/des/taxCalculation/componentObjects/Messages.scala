@@ -15,7 +15,7 @@
  */
 package v1.models.des.taxCalculation.componentObjects
 
-case class Inputs() extends ComponentObject{
+case class Messages() extends ComponentObject{
   override val description: String = ""
   override val required: Boolean = false
 }

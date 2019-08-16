@@ -15,4 +15,13 @@
  */
 package v1.models.des.taxCalculation
 
-case class TaxCalculationResponse()
+import v1.models.des.taxCalculation.componentObjects.{Calculation, Inputs, InternalSnapShotInformation, Messages, Metadata}
+
+case class TaxCalculationResponse(
+                                   metadata: Metadata,
+                                   inputs: Inputs,
+                                   calculation: Calculation,
+                                   messages: Messages,
+                                   internalSnapShotInformation: InternalSnapShotInformation
+                                 )
+

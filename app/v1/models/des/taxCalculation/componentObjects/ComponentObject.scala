@@ -16,5 +16,6 @@
 package v1.models.des.taxCalculation.componentObjects
 
 trait ComponentObject {
-
+  val description: String
+  val required: Boolean
 }

@@ -15,4 +15,20 @@
  */
 package v1.models.des.taxCalculation.componentObjects
 
-case class Metadata() extends ComponentObject
+case class Metadata(
+                     calculationId: String,
+                     taxYear: String,
+                     requestedBy: String,
+                     requestedTimestamp: Option[String],
+                     calculationReason: String,
+                     calculationTimestamp: String,
+                     calculationType: String,
+                     intentToCrystallise: Option[Boolean],
+                     crystallised: Option[Boolean],
+                     crystallisationTimestamp: Option[String],
+                     periodFrom: String,
+                     periodTo: String
+                   ) extends ComponentObject {
+  override val description: String = "An object representing the metadata for the calculation."
+  override val required: Boolean = true
+}

@@ -15,4 +15,7 @@
  */
 package v1.models.des.taxCalculation.componentObjects
 
-case class InternalSnapShotInformation() extends ComponentObject
+case class InternalSnapShotInformation() extends ComponentObject{
+  override val description: String = ""
+  override val required: Boolean = false
+}
