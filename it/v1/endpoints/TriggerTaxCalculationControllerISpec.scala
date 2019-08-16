@@ -20,12 +20,10 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status
 import play.api.http.Status.OK
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
-import play.api.mvc.AnyContentAsJson
 import support.IntegrationBaseSpec
 import v1.models.errors._
-import v1.models.requestData.DesTaxYear
 import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
 
 class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
@@ -116,23 +114,6 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
       }
     }
 
-
-    "return bad request error" when {
-      "badly formed json body" in new Test {
-
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-          DesStub.onSuccess(DesStub.POST, backendUrl, OK, responseBody)
-        }
-
-        val response: WSResponse = await(request().addHttpHeaders(("Content-Type", "application/json")).post(json))
-        response.status shouldBe Status.BAD_REQUEST
-        response.json shouldBe Json.toJson(MtdError("INVALID_REQUEST", "Invalid Json"))
-      }
-    }
-
     "return error according to spec" when {
 
       "validation error" when {
@@ -147,7 +128,9 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request().post(requestJson))
+            val response: WSResponse = await(request().post(body))
+
+            print(response)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
           }
@@ -163,10 +146,10 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
 
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
-      /*
+
       "backend service error" when {
         def serviceErrorTest(backendStatus: Int, backendCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
-          s"backend returns an $backendCode error and status $backendStatus" in new SampleTest {
+          s"backend returns an $backendCode error and status $backendStatus" in new Test {
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -182,14 +165,16 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
         }
 
         val input = Seq(
+          (Status.BAD_REQUEST, "INVALID_NINO", Status.BAD_REQUEST, NinoFormatError),
+          (Status.BAD_REQUEST, "INVALID_TAX_YEAR", Status.BAD_REQUEST, TaxYearFormatError),
+          (Status.BAD_REQUEST, "NO_SUBMISSIONS_EXIST", Status.FORBIDDEN, RuleNoIncomeSubmissionExistsError),
           (Status.BAD_REQUEST, "INVALID_REQUEST", Status.INTERNAL_SERVER_ERROR, DownstreamError),
-          (Status.SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", Status.INTERNAL_SERVER_ERROR, DownstreamError),
+          (Status.BAD_REQUEST, "CONFLICT", Status.INTERNAL_SERVER_ERROR, DownstreamError),
           (Status.INTERNAL_SERVER_ERROR, "SERVER_ERROR", Status.INTERNAL_SERVER_ERROR, DownstreamError),
-          (Status.BAD_REQUEST, "NOT_FOUND", Status.NOT_FOUND, NotFoundError))
+          (Status.SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", Status.INTERNAL_SERVER_ERROR, DownstreamError))
 
         input.foreach(args => (serviceErrorTest _).tupled(args))
       }
-    }*/
     }
   }
 }
