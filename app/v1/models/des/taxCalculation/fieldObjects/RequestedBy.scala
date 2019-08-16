@@ -17,14 +17,16 @@ package v1.models.des.taxCalculation.fieldObjects
 
 import play.api.libs.json.{Json, Reads, Writes}
 
+sealed trait RequestedBy
+
 object RequestedBy extends FieldObject {
 
-  type RequestedBy = Value
+  type Enum = Value
 
   val customer = Value("customer")
   val hmrc = Value("hmrc")
   val agent = Value("agent")
 
-  implicit val reads: Reads[RequestedBy] = Json.reads[RequestedBy]
-  implicit val writes: Writes[RequestedBy] = Json.writes[RequestedBy]
+  override implicit val reads: Reads[Enum] = Json.reads[Enum]
+  override implicit val writes: Writes[Enum] = Json.writes[Enum]
 }

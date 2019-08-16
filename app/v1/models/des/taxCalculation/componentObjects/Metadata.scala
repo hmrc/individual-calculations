@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 package v1.models.des.taxCalculation.componentObjects
-import v1.models.des.taxCalculation.fieldObjects.CalculationReason.CalculationReason
-import v1.models.des.taxCalculation.fieldObjects.CalculationType.CalculationType
-import v1.models.des.taxCalculation.fieldObjects.RequestedBy.RequestedBy
+
+import play.api.libs.json.{Json, Reads}
+import v1.models.des.taxCalculation.fieldObjects.{CalculationReason, CalculationType, RequestedBy}
 
 case class Metadata(
                      calculationId: String,
@@ -34,4 +34,9 @@ case class Metadata(
                    ) extends ComponentObject {
   override val description: String = "An object representing the metadata for the calculation."
   override val required: Boolean = true
+}
+
+object Metadata {
+  implicit val reads: Reads[Metadata] = Json.reads[Metadata]
+  implicit val writes: Reads[Metadata] = Json.reads[Metadata]
 }

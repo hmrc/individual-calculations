@@ -15,6 +15,12 @@
  */
 package v1.models.des.taxCalculation.fieldObjects
 
+import play.api.libs.json.{Json, Reads, Writes}
+
 trait FieldObject extends Enumeration {
 
+  type Enum <: FieldObject
+
+  implicit val reads: Reads[Enum] = Json.reads[Enum]
+  implicit val writes: Writes[Enum] = Json.writes[Enum]
 }

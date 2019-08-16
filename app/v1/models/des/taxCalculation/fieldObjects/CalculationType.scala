@@ -17,9 +17,11 @@ package v1.models.des.taxCalculation.fieldObjects
 
 import play.api.libs.json.{Json, Reads, Writes}
 
+sealed trait CalculationType
+
 object CalculationType extends FieldObject {
 
-  type CalculationType = Value
+  type Enum = Value
 
   val inYear = Value("inYear")
   val crystallisation = Value("crystallisation")
@@ -27,6 +29,6 @@ object CalculationType extends FieldObject {
   val biss = Value("biss")
   val POA = Value("POA")
 
-  implicit val reads: Reads[CalculationType] = Json.reads[CalculationType]
-  implicit val writes: Writes[CalculationType] = Json.writes[CalculationType]
+  override implicit val reads: Reads[Enum] = Json.reads[Enum]
+  override implicit val writes: Writes[Enum] = Json.writes[Enum]
 }
