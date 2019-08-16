@@ -18,11 +18,11 @@ package v1.models.des.taxCalculation.componentObjects
 case class Metadata(
                      calculationId: String,
                      taxYear: String,
-                     requestedBy: String,
+                     requestedBy: String, //
                      requestedTimestamp: Option[String],
-                     calculationReason: String,
+                     calculationReason: String, //
                      calculationTimestamp: String,
-                     calculationType: String,
+                     calculationType: String, //
                      intentToCrystallise: Option[Boolean],
                      crystallised: Option[Boolean],
                      crystallisationTimestamp: Option[String],
