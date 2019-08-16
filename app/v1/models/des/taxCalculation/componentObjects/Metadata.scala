@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 package v1.models.des.taxCalculation.componentObjects
+import v1.models.des.taxCalculation.fieldObjects.CalculationReason.CalculationReason
+import v1.models.des.taxCalculation.fieldObjects.CalculationType.CalculationType
+import v1.models.des.taxCalculation.fieldObjects.RequestedBy.RequestedBy
 
 case class Metadata(
                      calculationId: String,
                      taxYear: String,
-                     requestedBy: String, //
+                     requestedBy: RequestedBy,
                      requestedTimestamp: Option[String],
-                     calculationReason: String, //
+                     calculationReason: CalculationReason,
                      calculationTimestamp: String,
-                     calculationType: String, //
+                     calculationType: CalculationType,
                      intentToCrystallise: Option[Boolean],
                      crystallised: Option[Boolean],
                      crystallisationTimestamp: Option[String],

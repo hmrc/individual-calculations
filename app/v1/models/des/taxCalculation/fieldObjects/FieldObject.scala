@@ -15,6 +15,6 @@
  */
 package v1.models.des.taxCalculation.fieldObjects
 
-trait FieldObject {
+trait FieldObject extends Enumeration {
 
 }
