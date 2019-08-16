@@ -70,7 +70,7 @@ class TriggerTaxCalculationParserSpec extends UnitSpec {
 
       "multiple validation errors occur" in new Test {
 
-        val badInputData =(TriggerTaxCalculationRawData("A12344A", AnyContentAsJson(Json.obj())))
+        val badInputData = TriggerTaxCalculationRawData("A12344A", AnyContentAsJson(Json.obj()))
 
         MockValidator.validate(badInputData)
           .returns(List(NinoFormatError, RuleIncorrectOrEmptyBodyError))

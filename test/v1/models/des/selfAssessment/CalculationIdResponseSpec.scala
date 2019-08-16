@@ -15,18 +15,20 @@
  */
 
 package v1.models.des.selfAssessment
-import play.api.libs.json.{Json, Reads, Writes}
 
-/**
-  * Calculation Id returned from DES as part of Trigger a Tax Calculation
-  */
+import play.api.libs.json.Json
+import support.UnitSpec
 
-case class DesCalculationIdResponse(id: String)
+class CalculationIdResponseSpec extends UnitSpec {
+  "Json reads" should {
+    "use specified format" in {
+      val json = Json.parse(
+        """
+          |{
+          |  "id": "00000000-0000-1000-8000-000000000000"
+          |}""".stripMargin)
 
-object DesCalculationIdResponse {
-  implicit val reads: Reads[DesCalculationIdResponse] = Json.reads[DesCalculationIdResponse]
-  implicit val writes: Writes[DesCalculationIdResponse] = Json.writes[DesCalculationIdResponse]
-
+      json.as[CalculationIdResponse] shouldBe CalculationIdResponse("00000000-0000-1000-8000-000000000000")
+    }
+  }
 }
-
-

@@ -20,7 +20,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
-import v1.models.des.selfAssessment.DesCalculationIdResponse
+import v1.models.des.selfAssessment.CalculationIdResponse
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.TriggerTaxCalculationRequest
@@ -35,7 +35,7 @@ trait MockTriggerTaxCalculationService extends MockFactory {
   object MockTriggerTaxCalculationService {
 
     def triggerTaxCalculation(requestData: TriggerTaxCalculationRequest):
-    CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[DesCalculationIdResponse]]]] = {
+    CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[CalculationIdResponse]]]] = {
       (mockTriggerTaxCalculationService
         .triggerTaxCalculation(_: TriggerTaxCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext))
         .expects(requestData, *, *, *)

@@ -22,6 +22,7 @@ import play.api.http.Status
 import play.api.http.Status.OK
 import play.api.libs.json.{JsObject, JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
+import play.api.mvc.AnyContentAsJson
 import support.IntegrationBaseSpec
 import v1.models.errors._
 import v1.models.requestData.DesTaxYear
@@ -37,11 +38,6 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
     val correlationId = "X-123"
 
 
-    def createTriggerTaxCalcBody(taxYear: String): JsValue = Json.parse(
-      s"""{
-         |  "taxYear": "$taxYear"
-         |}
-    """.stripMargin)
 
     val requestJson = Json.parse(
       s"""
@@ -71,14 +67,34 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
-    def errorBody(code: String): String =
+    val json =
       s"""
-         |      {
-         |        "code": "$code",
-         |        "reason": "backend message"
-         |      }
-      """.stripMargin
+         |{
+         |  badJson
+         |}
+    """.stripMargin
   }
+
+
+  val emptyBody: JsValue = Json.parse(
+    s"""
+       | {
+       | }
+      """.stripMargin)
+
+  def createTriggerTaxCalcBody(taxYear: String): JsValue = Json.parse(
+    s"""{
+       |  "taxYear": "$taxYear"
+       |}
+    """.stripMargin)
+
+  def errorBody(code: String): String =
+    s"""
+       |      {
+       |        "code": "$code",
+       |        "reason": "backend message"
+       |      }
+      """.stripMargin
 
   "Calling the trigger a self assessment tax calculation endpoint" should {
 
@@ -103,12 +119,6 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
 
     "return bad request error" when {
       "badly formed json body" in new Test {
-        val json =
-          s"""
-             |{
-             |  badJson
-             |}
-    """.stripMargin
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -126,11 +136,10 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
     "return error according to spec" when {
 
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String, body: JsValue, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
             override val nino: String = requestNino
-            override val taxYear: String = requestTaxYear
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -145,13 +154,12 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
         }
 
         val input = Seq(
-          ("AA1123A", "2017-18", Status.BAD_REQUEST, NinoFormatError),
-          ("AA123456A", "20177", Status.BAD_REQUEST, TaxYearFormatError),
-          ("AA123456A", "2015-16", Status.BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("AA123456A", "2018-20", Status.BAD_REQUEST, RuleTaxYearRangeExceededError)
-          ("AA123456A", "2018-20", Status.BAD_REQUEST, RuleTaxYearRangeExceededError)
+          ("AA1123A", createTriggerTaxCalcBody("2018-19"), Status.BAD_REQUEST, NinoFormatError),
+          ("AA123456A", createTriggerTaxCalcBody("badTaxYear"), Status.BAD_REQUEST, TaxYearFormatError),
+          ("AA123456A", createTriggerTaxCalcBody("2016-17"), Status.BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("AA123456A", createTriggerTaxCalcBody("2018-20"), Status.BAD_REQUEST, RuleTaxYearRangeExceededError),
+          ("AA123456A", emptyBody, Status.BAD_REQUEST, RuleIncorrectOrEmptyBodyError)
         )
-
 
         input.foreach(args => (validationErrorTest _).tupled(args))
       }

@@ -23,7 +23,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.ControllerBaseSpec
 import v1.mocks.requestParsers.MockTriggerTaxCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockTriggerTaxCalculationService}
-import v1.models.des.selfAssessment.DesCalculationIdResponse
+import v1.models.des.selfAssessment.CalculationIdResponse
 import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
@@ -84,7 +84,7 @@ class TriggerTaxCalculationControllerSpec
 
         MockTriggerTaxCalculationService
           .triggerTaxCalculation(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, DesCalculationIdResponse(calcId)))))
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, CalculationIdResponse(calcId)))))
 
         val result: Future[Result] = controller.triggerTaxCalculation(nino)(fakePostRequest(requestBodyJson))
 
