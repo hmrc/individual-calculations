@@ -35,13 +35,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ListCalculationsController @Inject()(
-    val authService: EnrolmentsAuthService,
-    val lookupService: MtdIdLookupService,
-    listCalculationsParser: ListCalculationsParser,
-    listCalculationsService: ListCalculationsService,
-    cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends AuthorisedController(cc)
+                                            val authService: EnrolmentsAuthService,
+                                            val lookupService: MtdIdLookupService,
+                                            listCalculationsParser: ListCalculationsParser,
+                                            listCalculationsService: ListCalculationsService,
+                                            cc: ControllerComponents
+                                          )(implicit ec: ExecutionContext)
+  extends AuthorisedController(cc)
     with BaseController
     with Logging {
 

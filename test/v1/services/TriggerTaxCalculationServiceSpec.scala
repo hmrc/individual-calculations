@@ -73,7 +73,7 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
         val input = Seq(
           ("INVALID_NINO" -> NinoFormatError),
           ("INVALID_TAX_YEAR" -> TaxYearFormatError),
-          ("NO_SUBMISSIONS_EXIST" -> RuleNoIncomeSubmissionExists),
+          ("NO_SUBMISSIONS_EXIST" -> RuleNoIncomeSubmissionExistsError),
           ("SERVER_ERROR" -> DownstreamError),
           ("SERVICE_UNAVAILABLE" -> DownstreamError)
         )
