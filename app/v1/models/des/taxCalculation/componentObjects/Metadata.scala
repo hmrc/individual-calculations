@@ -15,21 +15,18 @@
  */
 package v1.models.des.taxCalculation.componentObjects
 
-import v1.models.des.taxCalculation.fieldObjects.{ CalculationReason, CalculationType, RequestedBy }
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import v1.models.des.taxCalculation.componentObjects.fieldObjects.{CalculationReason, CalculationType, RequestedBy}
 
 case class Metadata(
     calculationId: String,
     taxYear: String,
-    //requestedBy: RequestedBy,
-    requestedBy: String,
+    requestedBy: RequestedBy.Value,
     requestedTimestamp: Option[String],
-    calculationReason: String,
-    //calculationReason: CalculationReason,
+    calculationReason: CalculationReason.Value,
     calculationTimestamp: String,
-    calculationType: String,
-    //calculationType: CalculationType,
+    calculationType: CalculationType.Value,
     intentToCrystallise: Option[Boolean],
     crystallised: Option[Boolean],
     crystallisationTimestamp: Option[String],
@@ -45,11 +42,11 @@ object Metadata {
   implicit val reads: Reads[Metadata] =
     ((JsPath \ "calculationId").read[String] and
       (JsPath \ "taxYear").read[String] and
-      (JsPath \ "requestedBy").read[String] and
+      (JsPath \ "requestedBy").read[RequestedBy.Value] and
       (JsPath \ "requestedTimestamp").readNullable[String] and
-      (JsPath \ "calculationReason").read[String] and
+      (JsPath \ "calculationReason").read[CalculationReason.Value] and
       (JsPath \ "calculationTimestamp").read[String] and
-      (JsPath \ "calculationType").read[String] and
+      (JsPath \ "calculationType").read[CalculationType.Value] and
       (JsPath \ "intentToCrystallise" ).readNullable[Boolean] and
       (JsPath \ "crystallised" ).readNullable[Boolean] and
       (JsPath \ "crystallisationTimestamp").readNullable[String] and
