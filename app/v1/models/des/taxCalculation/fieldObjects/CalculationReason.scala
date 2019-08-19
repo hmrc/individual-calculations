@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation.componentObjects.fieldObjects
+package v1.models.des.taxCalculation.fieldObjects
 
-import play.api.libs.json.{Reads, Writes, Format}
+import play.api.libs.json.{ Format, Reads, Writes }
 
-sealed trait RequestedBy
+sealed trait CalculationReason extends FieldObject
 
-object RequestedBy extends Enumeration {
-  type RequestedBy = Value
-  val customer, hmrc, agent = Value
+object CalculationReason extends Enumeration {
+  type CalculationReason = Value
+  val customerRequest, class2NICEvent, newLossEvent, updatedLossEvent, newClaimEvent, updatedClaimEvent = Value
 
-  implicit val reads: Reads[RequestedBy] = Reads.enumNameReads(RequestedBy)
-  implicit val writes: Writes[RequestedBy] = Writes.enumNameWrites
-  implicit val format: Format[RequestedBy] = Format(reads,writes)
+  implicit val reads: Reads[CalculationReason]   = Reads.enumNameReads(CalculationReason)
+  implicit val writes: Writes[CalculationReason] = Writes.enumNameWrites
+  implicit val format: Format[CalculationReason] = Format(reads, writes)
 }

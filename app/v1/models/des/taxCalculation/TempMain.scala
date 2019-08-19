@@ -20,7 +20,7 @@ import v1.models.des.taxCalculation.componentObjects.Metadata
 
 object TempMain {
   def main(args: Array[String]): Unit = {
-    val json = Json.parse(
+    val metaJson = Json.parse(
       """
         |{
         |            "calculationId": "test1",
@@ -36,6 +36,6 @@ object TempMain {
         |            "periodFrom": "test1",
         |            "periodTo": "test1"
         |}""".stripMargin)
-    println(json.validate[Metadata])
+    println(metaJson.validate[Metadata])
   }
 }

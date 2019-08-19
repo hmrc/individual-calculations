@@ -17,21 +17,18 @@ package v1.models.des.taxCalculation.fieldObjects
 
 import play.api.libs.json.Json
 import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
 
-class RequestedBySpec extends UnitSpec {
-  /*
-  "Json reads" should {
-    "use specified format" in {
-      val json = Json.parse(
-        """
-          |{
-          |  "requestedBy": "customer"
-          |}""".stripMargin)
+class RequestedBySpec extends UnitSpec with EnumJsonSpecSupport {
 
-      json.as[RequestedBy] shouldBe RequestedBy.customer
+  val requestByJson = Json.parse(
+    """|{"customer"}""".stripMargin)
+
+  "" should {
+    "" in {
+      Json.toJson(RequestedBy.customer) shouldBe requestByJson
     }
   }
-   */
 }
 
 

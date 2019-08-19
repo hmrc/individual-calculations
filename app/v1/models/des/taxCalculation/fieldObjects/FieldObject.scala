@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation.componentObjects
+package v1.models.des.taxCalculation.fieldObjects
 
-case class Inputs() extends ComponentObject{
-  override val description: String = ""
-  override val required: Boolean = true
+import play.api.libs.json.{Reads, Writes, Format}
+
+trait FieldObject extends Enumeration {
+  val reads: Reads[Value]
+  val writes: Writes[Value]
+  val formats: Format[Value]
 }
