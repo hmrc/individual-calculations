@@ -53,9 +53,7 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
 
     def uri: String = s"/$nino/self-assessment"
 
-    lazy val backendUrl = s"/income-tax/nino/$nino/taxYear/$taxYear/tax-calculation"
-
-    def desUrl: String = s"/income-tax/list-of-calculation-results/$nino"
+    lazy val desUrl = s"/income-tax/nino/$nino/taxYear/$taxYear/tax-calculation"
 
     def setupStubs(): StubMapping
 
@@ -105,7 +103,7 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
 
-          DesStub.onSuccess(DesStub.POST, backendUrl, OK, responseBody)
+          DesStub.onSuccess(DesStub.POST, desUrl, OK, responseBody)
         }
 
         val response: WSResponse = await(request().post(requestJson))
@@ -155,7 +153,7 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
               AuditStub.audit()
               AuthStub.authorised()
               MtdIdLookupStub.ninoFound(nino)
-              DesStub.onError(DesStub.POST, backendUrl, backendStatus, errorBody(backendCode))
+              DesStub.onError(DesStub.POST, desUrl, backendStatus, errorBody(backendCode))
             }
 
             val response: WSResponse = await(request().post(requestJson))
