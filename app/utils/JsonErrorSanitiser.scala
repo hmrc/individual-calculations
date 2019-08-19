@@ -27,7 +27,7 @@ object JsonErrorSanitiser {
     } else {
       val index = str.toLowerCase().indexOf(searchString)
       if (index > 0) {
-        str.substring(0, index).trim + " invalid json"
+        str.substring(0, index + searchString.length).trim
       } else {
         str.trim
       }
