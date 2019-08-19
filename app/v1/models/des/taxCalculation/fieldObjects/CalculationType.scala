@@ -29,6 +29,6 @@ object CalculationType extends FieldObject {
   val biss = Value("biss")
   val POA = Value("POA")
 
-  override implicit val reads: Reads[Enum] = Json.reads[Enum]
-  override implicit val writes: Writes[Enum] = Json.writes[Enum]
+  //override implicit val reads: Reads[Enum] = Json.reads[Enum]
+  //override implicit val writes: Writes[Enum] = Json.writes[Enum]
 }

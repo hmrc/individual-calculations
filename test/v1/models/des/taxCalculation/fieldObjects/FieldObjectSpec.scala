@@ -15,21 +15,8 @@
  */
 package v1.models.des.taxCalculation.fieldObjects
 
-import play.api.libs.json.{Json, Reads, Writes}
+import support.UnitSpec
 
-sealed trait CalculationReason
+class FieldObjectSpec extends UnitSpec {
 
-object CalculationReason extends FieldObject {
-
-  type Enum = Value
-
-  val customerRequest = Value("customerRequest")
-  val classToNICEvent = Value("classToNICEvent")
-  val newLossEvent = Value("newLossEvent")
-  val updatedLossEvent = Value("updatedLossEvent")
-  val newClaimEvent = Value("newClaimEvent")
-  val updatedClaimEvent = Value("updatedClaimEvent")
-
-  //override implicit val reads: Reads[Enum] = Json.reads[Enum]
-  //override implicit val writes: Writes[Enum] = Json.writes[Enum]
 }
