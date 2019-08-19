@@ -37,7 +37,7 @@ object RuleTaxYearRangeExceededError
     extends MtdError("RULE_TAX_YEAR_RANGE_EXCEEDED", "Tax year range exceeded. A tax year range of one year is required")
 
 object RuleNoIncomeSubmissionExistsError
-  extends MtdError("RULE_NO_INCOME_SUBMISSION_EXISTS", "No income submission exists for the tax year")
+  extends MtdError("RULE_NO_INCOME_SUBMISSIONS_EXIST", "No income submissions exist for the tax year")
 
 //Standard Errors
 object NotFoundError extends MtdError("MATCHING_RESOURCE_NOT_FOUND", "Matching resource not found")
