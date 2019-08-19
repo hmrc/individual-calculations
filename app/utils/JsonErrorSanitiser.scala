@@ -20,14 +20,14 @@ object JsonErrorSanitiser {
 
   def sanitise(str: String): String = {
 
-    val searchString = "Invalid Json"
+    val searchString = "invalid json"
 
-    if (str.startsWith(searchString)) {
+    if (str.toLowerCase.startsWith(searchString)) {
       "Invalid Json"
     } else {
-      val index = str.indexOf(searchString)
+      val index = str.toLowerCase().indexOf(searchString)
       if (index > 0) {
-        str.substring(0, index).trim
+        str.substring(0, index + searchString.length).trim
       } else {
         str.trim
       }

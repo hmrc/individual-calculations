@@ -34,10 +34,14 @@ class JsonErrorSanitiserSpec extends UnitSpec {
       JsonErrorSanitiser.sanitise("Invalid Json: sensitive information  ") shouldBe "Invalid Json"
     }
 
-    "return a non-sentitive prefix" in {
+    "return a case-sensitive prefix" in {
       JsonErrorSanitiser.sanitise("Some not sensitive message. Invalid Json: sensitive information") shouldBe
-        "Some not sensitive message."
+        "Some not sensitive message. Invalid Json"
     }
 
+    "return a non-sensitive prefix" in {
+      JsonErrorSanitiser.sanitise("Some not sensitive message due to invalid json: sensitive information") shouldBe
+        "Some not sensitive message due to invalid json"
+    }
   }
 }
