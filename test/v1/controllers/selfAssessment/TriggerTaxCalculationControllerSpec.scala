@@ -146,7 +146,7 @@ class TriggerTaxCalculationControllerSpec
         val input = Seq(
           (NinoFormatError, BAD_REQUEST),
           (TaxYearFormatError, BAD_REQUEST),
-          (RuleNoIncomeSubmissionExistsError, FORBIDDEN),
+          (RuleNoIncomeSubmissionsExistError, FORBIDDEN),
           (DownstreamError, INTERNAL_SERVER_ERROR)
         )
 

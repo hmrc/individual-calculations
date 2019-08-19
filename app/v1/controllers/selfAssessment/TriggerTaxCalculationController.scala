@@ -77,7 +77,7 @@ class TriggerTaxCalculationController @Inject()(val authService: EnrolmentsAuthS
            | RuleTaxYearRangeExceededError
            | RuleIncorrectOrEmptyBodyError =>
         BadRequest(Json.toJson(errorWrapper))
-      case RuleNoIncomeSubmissionExistsError => Forbidden(Json.toJson(errorWrapper))
+      case RuleNoIncomeSubmissionsExistError => Forbidden(Json.toJson(errorWrapper))
       case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
     }
   }
