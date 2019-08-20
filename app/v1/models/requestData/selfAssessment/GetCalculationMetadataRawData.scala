@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation.fieldObjects
+package v1.models.requestData.selfAssessment
 
-import support.UnitSpec
+import v1.models.requestData.RawData
 
-class CalculationTypeSpec extends UnitSpec
-
+case class GetCalculationMetadataRawData (nino: String, calculationId: String) extends RawData
 

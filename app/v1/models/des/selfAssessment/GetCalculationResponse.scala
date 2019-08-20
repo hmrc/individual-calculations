@@ -13,15 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation
+package v1.models.des.selfAssessment
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import v1.models.des.selfAssessment.componentObjects._
 
-import v1.models.des.taxCalculation.componentObjects.{Calculation, Inputs, InternalSnapShotInformation, Messages, Metadata}
-
-case class TaxCalculationResponse(
+case class GetCalculationResponse(
                                    metadata: Metadata,
                                    inputs: Inputs,
                                    calculation: Calculation,
                                    messages: Messages,
                                    internalSnapShotInformation: InternalSnapShotInformation
                                  )
+object GetCalculationResponse {
+  //implicit val writes: Writes[GetCalculationResponse] = Json.writes[GetCalculationResponse]
+  //implicit val reads: Reads[GetCalculationResponse] = Json.reads[GetCalculationResponse]
+}
 
+case class GetCalculationMetadataResponse(metadata: Metadata)
+object GetCalculationMetadataResponse {
+  implicit val writes: Writes[GetCalculationMetadataResponse] = Json.writes[GetCalculationMetadataResponse]
+  implicit val reads: Reads[GetCalculationMetadataResponse] = Json.reads[GetCalculationMetadataResponse]
+}

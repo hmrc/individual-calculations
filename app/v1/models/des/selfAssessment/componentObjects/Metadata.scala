@@ -13,28 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation.componentObjects
+package v1.models.des.selfAssessment.componentObjects
 
 import play.api.libs.json.{Json, Reads, Writes}
-import v1.models.des.taxCalculation.fieldObjects.{CalculationReason, CalculationType, RequestedBy}
+import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 
 case class Metadata(
-    calculationId: String,
-    taxYear: String,
-    requestedBy: RequestedBy.Value,
-    requestedTimestamp: Option[String],
-    calculationReason: CalculationReason.Value,
-    calculationTimestamp: String,
-    calculationType: CalculationType.Value,
-    intentToCrystallise: Option[Boolean],
-    crystallised: Option[Boolean],
-    crystallisationTimestamp: Option[String],
-    periodFrom: String,
-    periodTo: String
-) extends ComponentObject {
-  override val description: String = "An object representing the metadata for the calculation."
-  override val required: Boolean   = true
-}
+                     calculationId: String,
+                     taxYear: String,
+                     requestedBy: CalculationRequestor,
+                     requestedTimestamp: Option[String],
+                     calculationReason: CalculationReason,
+                     calculationTimestamp: String,
+                     calculationType: CalculationType,
+                     intentToCrystallise: Option[Boolean],
+                     crystallised: Option[Boolean],
+                     crystallisationTimestamp: Option[String],
+                     periodFrom: String,
+                     periodTo: String)
 
 object Metadata {
   implicit val writes: Writes[Metadata] = Json.writes[Metadata]

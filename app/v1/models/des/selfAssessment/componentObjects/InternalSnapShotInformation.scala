@@ -13,16 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation.fieldObjects
+package v1.models.des.selfAssessment.componentObjects
 
-import play.api.libs.json.{Reads, Writes, Format}
-
-sealed trait RequestedBy extends FieldObject
-
-object RequestedBy extends Enumeration {
-  type RequestedBy = Value
-  val customer, hmrc, agent = Value
-  implicit val reads: Reads[RequestedBy] = Reads.enumNameReads(RequestedBy)
-  implicit val writes: Writes[RequestedBy] = Writes.enumNameWrites
-  implicit val format: Format[RequestedBy] = Format(reads,writes)
-}
+case class InternalSnapShotInformation()

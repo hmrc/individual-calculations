@@ -13,6 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation.componentObjects
+package v1.models.des.selfAssessment.componentObjects
 
-case class InternalSnapShotInformationSpec()
+case class InputsSpec()

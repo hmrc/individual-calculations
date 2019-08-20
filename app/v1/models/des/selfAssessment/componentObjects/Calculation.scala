@@ -13,17 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation.fieldObjects
+package v1.models.des.selfAssessment.componentObjects
 
-import play.api.libs.json.{ Format, Reads, Writes }
-
-sealed trait CalculationReason extends FieldObject
-
-object CalculationReason extends Enumeration {
-  type CalculationReason = Value
-  val customerRequest, class2NICEvent, newLossEvent, updatedLossEvent, newClaimEvent, updatedClaimEvent = Value
-
-  implicit val reads: Reads[CalculationReason]   = Reads.enumNameReads(CalculationReason)
-  implicit val writes: Writes[CalculationReason] = Writes.enumNameWrites
-  implicit val format: Format[CalculationReason] = Format(reads, writes)
-}
+case class Calculation()

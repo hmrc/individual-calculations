@@ -13,10 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.des.taxCalculation.fieldObjects
+package v1.models.des.selfAssessment.componentObjects
 
-import support.UnitSpec
-
-class FieldObjectSpec extends UnitSpec {
-
-}
+case class Inputs()
