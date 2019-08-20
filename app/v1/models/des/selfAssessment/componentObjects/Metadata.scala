@@ -21,7 +21,7 @@ import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor,
 import play.api.libs.functional.syntax._
 
 case class Metadata(
-                     calculationId: String,
+                     id: String,
                      taxYear: String,
                      requestedBy: CalculationRequestor,
                      requestedTimestamp: Option[String],
@@ -29,10 +29,7 @@ case class Metadata(
                      calculationTimestamp: String,
                      calculationType: CalculationType,
                      intentToCrystallise: Boolean,
-                     crystallised: Boolean,
-                     crystallisationTimestamp: Option[String],
-                     periodFrom: String,
-                     periodTo: String)
+                     crystallised: Boolean)
 
 object Metadata {
   implicit val writes: Writes[Metadata] = Json.writes[Metadata]
@@ -45,9 +42,6 @@ object Metadata {
       (JsPath \ "calculationTimestamp").read[String] and
       (JsPath \ "calculationType").read[CalculationType] and
       (JsPath \ "intentToCrystallise").readWithDefault[Boolean](false) and
-      (JsPath \ "crystallised").readWithDefault[Boolean](false) and
-      (JsPath \ "crystallisationTimestamp").readNullable[String] and
-      (JsPath \ "periodFrom").read[String] and
-      (JsPath \ "periodTo").read[String]
+      (JsPath \ "crystallised").readWithDefault[Boolean](false)
   )(Metadata.apply _)
 }
