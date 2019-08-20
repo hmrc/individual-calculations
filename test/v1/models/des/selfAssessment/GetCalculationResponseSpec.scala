@@ -60,8 +60,8 @@ class GetCalculationResponseSpec extends UnitSpec {
     calculationReason = CalculationReason.customerRequest,
     calculationTimestamp = "2019-11-15T09:35:15.094Z",
     calculationType = CalculationType.inYear,
-    intentToCrystallise = Some(false),
-    crystallised = Some(false),
+    intentToCrystallise = false,
+    crystallised = false,
     crystallisationTimestamp= None,
     periodFrom = "1-2018",
     periodTo = "1-2019"

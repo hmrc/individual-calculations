@@ -28,8 +28,8 @@ case class Metadata(
                      calculationReason: CalculationReason,
                      calculationTimestamp: String,
                      calculationType: CalculationType,
-                     intentToCrystallise: Option[Boolean],
-                     crystallised: Option[Boolean],
+                     intentToCrystallise: Boolean,
+                     crystallised: Boolean,
                      crystallisationTimestamp: Option[String],
                      periodFrom: String,
                      periodTo: String)
@@ -44,8 +44,8 @@ object Metadata {
       (JsPath \ "calculationReason").read[CalculationReason] and
       (JsPath \ "calculationTimestamp").read[String] and
       (JsPath \ "calculationType").read[CalculationType] and
-      (JsPath \ "intentToCrystallise").readNullableWithDefault[Boolean](Some(false)) and
-      (JsPath \ "crystallised").readNullableWithDefault[Boolean](Some(false)) and
+      (JsPath \ "intentToCrystallise").readWithDefault[Boolean](false) and
+      (JsPath \ "crystallised").readWithDefault[Boolean](false) and
       (JsPath \ "crystallisationTimestamp").readNullable[String] and
       (JsPath \ "periodFrom").read[String] and
       (JsPath \ "periodTo").read[String]
