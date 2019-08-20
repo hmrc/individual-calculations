@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.models.des.selfAssessment.componentObjects
 
 import play.api.libs.json.{JsSuccess, JsValue, Json}
@@ -23,6 +24,18 @@ import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor,
 class MetadataSpec extends UnitSpec{
 
   val desJson: JsValue = Json.parse(
+      """{     "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+        |      "taxYear": "2018-19",
+        |      "requestedBy": "customer",
+        |      "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+        |      "calculationReason": "customerRequest",
+        |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+        |      "calculationType": "inYear",
+        |      "periodFrom": "1-2018",
+        |      "periodTo": "1-2019"
+        |}""".stripMargin)
+
+  val desJsonWithOptionals: JsValue = Json.parse(
     """{     "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |      "taxYear": "2018-19",
       |      "requestedBy": "customer",
@@ -36,7 +49,7 @@ class MetadataSpec extends UnitSpec{
       |      "periodTo": "1-2019"
       |}""".stripMargin)
 
-  val metadata = new Metadata(
+  val metadata = Metadata(
     calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
     taxYear = "2018-19",
     requestedBy = CalculationRequestor.customer,
@@ -62,7 +75,7 @@ class MetadataSpec extends UnitSpec{
     }
     "written to JSON" should {
       "return a JsObject" in {
-        Json.toJson(metadata) shouldBe desJson
+        Json.toJson(metadata) shouldBe desJsonWithOptionals
       }
     }
   }

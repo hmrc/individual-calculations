@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.models.des.selfAssessment.componentObjects
 
-import play.api.libs.json.{Json, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
+import play.api.libs.functional.syntax._
 
 case class Metadata(
                      calculationId: String,
@@ -34,5 +36,18 @@ case class Metadata(
 
 object Metadata {
   implicit val writes: Writes[Metadata] = Json.writes[Metadata]
-  implicit val reads: Reads[Metadata] = Json.reads[Metadata]
+  implicit val reads: Reads[Metadata] = (
+    (JsPath \ "calculationId").read[String] and
+      (JsPath \ "taxYear").read[String] and
+      (JsPath \ "requestedBy").read[CalculationRequestor] and
+      (JsPath \ "requestedTimestamp").readNullable[String] and
+      (JsPath \ "calculationReason").read[CalculationReason] and
+      (JsPath \ "calculationTimestamp").read[String] and
+      (JsPath \ "calculationType").read[CalculationType] and
+      (JsPath \ "intentToCrystallise").readNullableWithDefault[Boolean](Some(false)) and
+      (JsPath \ "crystallised").readNullableWithDefault[Boolean](Some(false)) and
+      (JsPath \ "crystallisationTimestamp").readNullable[String] and
+      (JsPath \ "periodFrom").read[String] and
+      (JsPath \ "periodTo").read[String]
+  )(Metadata.apply _)
 }
