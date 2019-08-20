@@ -16,6 +16,8 @@
 
 package v1.models.requestData
 
+import play.api.libs.json.{JsPath, Json, Reads}
+
 /**
   * Represents a tax year for DES
   *
@@ -32,4 +34,10 @@ object DesTaxYear {
     */
   def fromMtd(taxYear: String): DesTaxYear =
     DesTaxYear(taxYear.take(2) + taxYear.drop(5))
+
+  def toMtd(taxYear: String): String ={
+    val prefix = taxYear.take(2)
+    val suffix = taxYear.takeRight(2).toInt
+    f"$prefix${suffix-1}-$suffix"
+  }
 }

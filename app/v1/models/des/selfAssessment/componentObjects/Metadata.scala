@@ -19,6 +19,7 @@ package v1.models.des.selfAssessment.componentObjects
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 import play.api.libs.functional.syntax._
+import v1.models.requestData.DesTaxYear
 
 case class Metadata(
                      id: String,
@@ -35,7 +36,7 @@ object Metadata {
   implicit val writes: Writes[Metadata] = Json.writes[Metadata]
   implicit val reads: Reads[Metadata] = (
     (JsPath \ "calculationId").read[String] and
-      (JsPath \ "taxYear").read[String] and
+      (JsPath \ "taxYear").read[String].map(desTaxYear => DesTaxYear.toMtd(desTaxYear)) and
       (JsPath \ "requestedBy").read[CalculationRequestor] and
       (JsPath \ "requestedTimestamp").readNullable[String] and
       (JsPath \ "calculationReason").read[CalculationReason] and
