@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment.componentObjects
+package v1.models.des.selfAssessment
 
-case class Inputs()
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import v1.models.des.selfAssessment.componentObjects._
+
+case class GetCalculationMetadataResponse(metadata: Metadata)
+
+object GetCalculationMetadataResponse {
+  implicit val writes: Writes[GetCalculationMetadataResponse] = Json.writes[GetCalculationMetadataResponse]
+  implicit val reads: Reads[GetCalculationMetadataResponse]   = Json.reads[GetCalculationMetadataResponse]
+}

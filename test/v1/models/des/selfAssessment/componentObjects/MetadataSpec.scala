@@ -56,7 +56,8 @@ class MetadataSpec extends UnitSpec{
     calculationTimestamp = "2019-11-15T09:35:15.094Z",
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
-    crystallised = false
+    crystallised = false,
+    calculationErrorCount = None
   )
 
   "Metadata" when {

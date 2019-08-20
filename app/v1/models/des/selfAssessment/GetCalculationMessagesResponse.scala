@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment.componentObjects
+package v1.models.des.selfAssessment
 
-case class InternalSnapShotInformationSpec()
+import play.api.libs.json.{Json, Reads, Writes}
+import v1.models.des.selfAssessment.componentObjects._
+
+case class GetCalculationMessagesResponse(messages: Messages)
+
+object GetCalculationMessagesResponse {
+  implicit val writes: Writes[GetCalculationMessagesResponse] = Json.writes[GetCalculationMessagesResponse]
+  implicit val reads: Reads[GetCalculationMessagesResponse]   = Json.reads[GetCalculationMessagesResponse]
+}

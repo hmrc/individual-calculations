@@ -16,21 +16,21 @@
 
 package v1.models.des.selfAssessment.componentObjects
 
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
+import v1.models.domain.selfAssessment.{ CalculationReason, CalculationRequestor, CalculationType }
 import play.api.libs.functional.syntax._
 import v1.models.requestData.DesTaxYear
 
-case class Metadata(
-                     id: String,
-                     taxYear: String,
-                     requestedBy: CalculationRequestor,
-                     requestedTimestamp: Option[String],
-                     calculationReason: CalculationReason,
-                     calculationTimestamp: String,
-                     calculationType: CalculationType,
-                     intentToCrystallise: Boolean,
-                     crystallised: Boolean)
+case class Metadata(id: String,
+                    taxYear: String,
+                    requestedBy: CalculationRequestor,
+                    requestedTimestamp: Option[String],
+                    calculationReason: CalculationReason,
+                    calculationTimestamp: String,
+                    calculationType: CalculationType,
+                    intentToCrystallise: Boolean,
+                    crystallised: Boolean,
+                    calculationErrorCount: Option[Int])
 
 object Metadata {
   implicit val writes: Writes[Metadata] = Json.writes[Metadata]
@@ -43,6 +43,7 @@ object Metadata {
       (JsPath \ "calculationTimestamp").read[String] and
       (JsPath \ "calculationType").read[CalculationType] and
       (JsPath \ "intentToCrystallise").readWithDefault[Boolean](false) and
-      (JsPath \ "crystallised").readWithDefault[Boolean](false)
+      (JsPath \ "crystallised").readWithDefault[Boolean](false) and
+      (JsPath \ "calculationErrorCount").readNullable[Int]
   )(Metadata.apply _)
 }

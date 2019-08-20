@@ -15,23 +15,24 @@
  */
 
 package v1.models.des.selfAssessment
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 import v1.models.des.selfAssessment.componentObjects._
+import play.api.libs.functional.syntax._
 
 case class GetCalculationResponse(
-                                   metadata: Metadata,
-                                   inputs: Inputs,
-                                   calculation: Calculation,
-                                   messages: Messages,
-                                   internalSnapShotInformation: InternalSnapShotInformation
-                                 )
-object GetCalculationResponse {
-  //implicit val writes: Writes[GetCalculationResponse] = Json.writes[GetCalculationResponse]
-  //implicit val reads: Reads[GetCalculationResponse] = Json.reads[GetCalculationResponse]
-}
+    metadata: Metadata,
+    messages: Messages
+)
 
-case class GetCalculationMetadataResponse(metadata: Metadata)
-object GetCalculationMetadataResponse {
-  implicit val writes: Writes[GetCalculationMetadataResponse] = Json.writes[GetCalculationMetadataResponse]
-  implicit val reads: Reads[GetCalculationMetadataResponse] = Json.reads[GetCalculationMetadataResponse]
+object GetCalculationResponse {
+
+  def setErrorCount(metadata: Metadata, messages: Messages): GetCalculationResponse ={
+    val errorCount = messages.errors.getOrElse(Array.empty).length
+    val temp = metadata.copy(calculationErrorCount = Some(errorCount))
+    new GetCalculationResponse(temp,messages)
+  }
+
+  implicit val writes: Writes[GetCalculationResponse] = Json.writes[GetCalculationResponse]
+  implicit val reads: Reads[GetCalculationResponse] = ((JsPath \ "metadata").read[Metadata] and
+    (JsPath \ "messages").read[Messages])(GetCalculationResponse.setErrorCount _)
 }

@@ -16,4 +16,42 @@
 
 package v1.models.des.selfAssessment.componentObjects
 
-case class MessagesSpec()
+import play.api.libs.json.{JsSuccess, JsValue, Json}
+import support.UnitSpec
+
+class MessagesSpec extends UnitSpec {
+
+  val desJson: JsValue = Json.parse("""{
+      |    "info" : [{"id" : "1","text" : "text"}],
+      |    "warnings" :[{"id" : "1","text" : "text"}],
+      |    "errors" :[{"id" : "1","text" : "text"}]
+      |}""".stripMargin)
+
+  val infoObj: Info = new Info("1", "text")
+  val warningsObj: Warnings = new Warnings("1", "text")
+  val errorObj: Errors = new Errors("1", "text")
+  val messagesObj: Messages = new Messages(Some(Array(infoObj)),Some(Array(warningsObj)),Some(Array(errorObj)))
+
+  "Messages" when {
+    "read from JSON" should {
+      "return a JsSuccess" in {
+        desJson.validate[Messages] shouldBe a[JsSuccess[Messages]]
+      }
+      "containing an info message" in {
+        desJson.as[Messages].info.get.head shouldBe messagesObj.info.get.head
+      }
+      "containing a warnings message" in {
+        desJson.as[Messages].warnings.get.head shouldBe messagesObj.warnings.get.head
+      }
+      "containing an errors message" in {
+        desJson.as[Messages].errors.get.head shouldBe messagesObj.errors.get.head
+      }
+    }
+
+    "written to JSON" should {
+      "return a JsObject" in {
+        Json.toJson(messagesObj) shouldBe desJson
+      }
+    }
+  }
+}

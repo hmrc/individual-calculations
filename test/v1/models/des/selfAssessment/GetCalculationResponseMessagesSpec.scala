@@ -16,24 +16,13 @@
 
 package v1.models.des.selfAssessment
 
-import play.api.libs.json.{ JsObject, JsSuccess, JsValue, Json }
+import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
 import v1.models.des.selfAssessment.componentObjects.Metadata
-import v1.models.domain.selfAssessment.{ CalculationReason, CalculationRequestor, CalculationType }
+import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 
-class GetCalculationResponseSpec extends UnitSpec {
+class GetCalculationResponseMessagesSpec extends UnitSpec {
   val desJson: JsValue = Json.parse("""{
-      |    "metadata":{
-      |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |       "taxYear": "2019",
-      |       "requestedBy": "customer",
-      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |       "calculationReason": "customerRequest",
-      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |       "calculationType": "inYear",
-      |       "periodFrom": "1-2018",
-      |       "periodTo": "1-2019"
-      |     },
       |   "messages":{
       |       "info" : [{"id" : "1","text" : "text"}],
       |       "warnings" :[{"id" : "1","text" : "text"}],
@@ -41,20 +30,7 @@ class GetCalculationResponseSpec extends UnitSpec {
       |     }
       |}""".stripMargin)
 
-
-
   val desJsonWithOptionals: JsValue = Json.parse("""{
-      |   "metadata":{
-      |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |       "taxYear": "2018-19",
-      |       "requestedBy": "customer",
-      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |       "calculationReason": "customerRequest",
-      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |       "calculationType": "inYear",
-      |       "intentToCrystallise": false,
-      |       "crystallised": false
-      |     },
       |   "messages":{
       |       "info" : [{"id" : "1","text" : "text"}],
       |       "warnings" :[{"id" : "1","text" : "text"}],

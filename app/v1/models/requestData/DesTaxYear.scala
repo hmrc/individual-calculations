@@ -16,8 +16,6 @@
 
 package v1.models.requestData
 
-import play.api.libs.json.{JsPath, Json, Reads}
-
 /**
   * Represents a tax year for DES
   *
