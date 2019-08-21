@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.controllers.requestParsers.validators.validations
 
-import uk.gov.hmrc.domain.Nino
+import v1.models.errors.MtdError
 
-case class GetCalculationMetadataRequest (nino: Nino, calculationId: String)
+trait RegexValidation {
+  protected val regexFormat: String
 
+  protected val error: MtdError
+
+  def validate(value: String): List[MtdError] =
+    RegexValidation.validate(error, value, regexFormat)
+}
+
+object RegexValidation {
+
+  def validate(error: MtdError, value: String, regexFormat: String): List[MtdError] = {
+    if (value.matches(regexFormat)) NoValidationErrors else List(error)
+  }
+}

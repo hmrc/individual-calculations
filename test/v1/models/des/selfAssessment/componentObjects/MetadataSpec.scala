@@ -163,7 +163,7 @@ class MetadataSpec extends UnitSpec {
   "Metadata" when {
     "read from a valid JSON" should {
       "return a JsSuccess" in {
-        desJson.validate[Metadata] shouldBe a[JsSuccess[Metadata]]
+        desJson.validate[Metadata] shouldBe a[JsSuccess[_]]
       }
       "with the expected Metadata object" in {
         desJson.as[Metadata] shouldBe metadataResponse
@@ -207,7 +207,7 @@ class MetadataSpec extends UnitSpec {
   "Error" when {
     "read from valid JSON" should{
       "return a JsSuccess" in{
-        validErrorJson.validate[Error] shouldBe a[JsSuccess[Error]]
+        validErrorJson.validate[Error] shouldBe a[JsSuccess[_]]
       }
       "with the expected Error object" in{
         validErrorJson.as[Error] shouldBe error
