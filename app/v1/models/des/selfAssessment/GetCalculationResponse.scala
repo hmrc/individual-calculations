@@ -26,13 +26,17 @@ case class GetCalculationResponse(
 
 object GetCalculationResponse {
 
-  def setErrorCount(metadata: Metadata, messages: Messages): GetCalculationResponse ={
+  def withErrorCount(metadata: Metadata, messages: Messages): GetCalculationResponse ={
     val errorCount = messages.errors.getOrElse(Array.empty).length
-    val temp = metadata.copy(calculationErrorCount = Some(errorCount))
-    new GetCalculationResponse(temp,messages)
+    if (errorCount > 0){
+      val metadataWithErrorCount= metadata.copy(calculationErrorCount = Some(errorCount))
+      new GetCalculationResponse(metadataWithErrorCount,messages)
+    } else {
+      new GetCalculationResponse(metadata,messages)
+    }
   }
 
   implicit val writes: Writes[GetCalculationResponse] = Json.writes[GetCalculationResponse]
   implicit val reads: Reads[GetCalculationResponse] = ((JsPath \ "metadata").read[Metadata] and
-    (JsPath \ "messages").read[Messages])(GetCalculationResponse.setErrorCount _)
+    (JsPath \ "messages").read[Messages])(GetCalculationResponse.withErrorCount _)
 }

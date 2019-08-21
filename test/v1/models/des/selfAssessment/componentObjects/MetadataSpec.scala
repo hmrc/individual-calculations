@@ -35,7 +35,7 @@ class MetadataSpec extends UnitSpec{
         |      "periodTo": "1-2019"
         |}""".stripMargin)
 
-  val desJsonWithOptionals: JsValue = Json.parse(
+  val writtenJson: JsValue = Json.parse(
     """{     "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |      "taxYear": "2018-19",
       |      "requestedBy": "customer",
@@ -61,17 +61,17 @@ class MetadataSpec extends UnitSpec{
   )
 
   "Metadata" when {
-    "read from JSON" should{
-      "return a JsSuccess" in{
+    "read from JSON" should {
+      "return a JsSuccess" in {
         desJson.validate[Metadata] shouldBe a[JsSuccess[Metadata]]
       }
-      "with a valid Metadata object" in {
+      "containing the expected Metadata object" in {
         desJson.as[Metadata] shouldBe metadata
       }
     }
     "written to JSON" should {
-      "return a JsObject" in {
-        Json.toJson(metadata) shouldBe desJsonWithOptionals
+      "return the expected JsObject" in {
+        Json.toJson(metadata) shouldBe writtenJson
       }
     }
   }

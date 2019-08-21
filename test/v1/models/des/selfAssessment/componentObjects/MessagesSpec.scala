@@ -16,40 +16,49 @@
 
 package v1.models.des.selfAssessment.componentObjects
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{ JsSuccess, JsValue, Json }
 import support.UnitSpec
+import v1.models.des.selfAssessment.GetCalculationMessagesResponse
 
 class MessagesSpec extends UnitSpec {
 
   val desJson: JsValue = Json.parse("""{
-      |    "info" : [{"id" : "1","text" : "text"}],
+      |    "info" : [
+      |               {"id" : "1","text" : "text"},
+      |               {"id" : "2","text" : "text2"}
+      |               ],
       |    "warnings" :[{"id" : "1","text" : "text"}],
       |    "errors" :[{"id" : "1","text" : "text"}]
       |}""".stripMargin)
 
-  val infoObj: Info = new Info("1", "text")
-  val warningsObj: Warnings = new Warnings("1", "text")
-  val errorObj: Errors = new Errors("1", "text")
-  val messagesObj: Messages = new Messages(Some(Array(infoObj)),Some(Array(warningsObj)),Some(Array(errorObj)))
+  val infoObj     = new Info("1", "text")
+  val infoObj2    = new Info("2", "text2")
+  val warningsObj = new Warnings("1", "text")
+  val errorsObj   = new Errors("1", "text")
+  val messagesObj = new Messages(Some(Array(infoObj, infoObj2)), Some(Array(warningsObj)), Some(Array(errorsObj)))
 
   "Messages" when {
     "read from JSON" should {
       "return a JsSuccess" in {
         desJson.validate[Messages] shouldBe a[JsSuccess[Messages]]
       }
-      "containing an info message" in {
-        desJson.as[Messages].info.get.head shouldBe messagesObj.info.get.head
+
+      val readMessages = desJson.as[Messages]
+
+      "containing the expected info messages" in {
+        readMessages.info.getOrElse(Array.empty).headOption shouldBe Some(messagesObj.info.get.head)
+        readMessages.info.getOrElse(Array.empty).tail shouldBe messagesObj.info.get.tail
       }
-      "containing a warnings message" in {
-        desJson.as[Messages].warnings.get.head shouldBe messagesObj.warnings.get.head
+      "containing the expected warnings message" in {
+        readMessages.warnings.getOrElse(Array.empty).headOption shouldBe Some(messagesObj.warnings.get.head)
       }
-      "containing an errors message" in {
-        desJson.as[Messages].errors.get.head shouldBe messagesObj.errors.get.head
+      "containing the expected errors message" in {
+        readMessages.errors.getOrElse(Array.empty).headOption shouldBe messagesObj.errors.get.headOption
       }
     }
 
     "written to JSON" should {
-      "return a JsObject" in {
+      "return the expected JsObject" in {
         Json.toJson(messagesObj) shouldBe desJson
       }
     }

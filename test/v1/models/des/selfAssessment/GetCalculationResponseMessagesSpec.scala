@@ -16,58 +16,51 @@
 
 package v1.models.des.selfAssessment
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{ JsSuccess, JsValue, Json }
 import support.UnitSpec
-import v1.models.des.selfAssessment.componentObjects.Metadata
-import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.des.selfAssessment.componentObjects.{ Errors, Info, Messages, Metadata, Warnings }
 
 class GetCalculationResponseMessagesSpec extends UnitSpec {
+
   val desJson: JsValue = Json.parse("""{
       |   "messages":{
-      |       "info" : [{"id" : "1","text" : "text"}],
+      |       "info" : [{"id" : "1","text" : "text"},
+      |       {"id" : "2","text" : "text2"}],
       |       "warnings" :[{"id" : "1","text" : "text"}],
       |       "errors" :[{"id" : "1","text" : "text"}]
       |     }
       |}""".stripMargin)
 
-  val desJsonWithOptionals: JsValue = Json.parse("""{
-      |   "messages":{
-      |       "info" : [{"id" : "1","text" : "text"}],
-      |       "warnings" :[{"id" : "1","text" : "text"}],
-      |       "errors" :[{"id" : "1","text" : "text"}]
-      |    }
-      |}""".stripMargin)
+  val infoObj1          = new Info("1", "text")
+  val infoObj2         = new Info("2", "text2")
+  val warningsObj      = new Warnings("1", "text")
+  val errorObj            = new Errors("1", "text")
+  val messagesObj         = new Messages(Some(Array(infoObj1, infoObj2)), Some(Array(warningsObj)), Some(Array(errorObj)))
+  val messagesWrapper = GetCalculationMessagesResponse(messagesObj)
 
-  val metadata = new Metadata(
-    id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    taxYear = "2018-19",
-    requestedBy = CalculationRequestor.customer,
-    requestedTimestamp = Some("2019-11-15T09:25:15.094Z"),
-    calculationReason = CalculationReason.customerRequest,
-    calculationTimestamp = "2019-11-15T09:35:15.094Z",
-    calculationType = CalculationType.inYear,
-    intentToCrystallise = false,
-    crystallised = false,
-    calculationErrorCount = None
-  )
-
-  val metadataWrapper = new GetCalculationMetadataResponse(metadata)
-
-  "GetCalculationMetadata" when {
+  "Messages" when {
     "read from JSON" should {
       "return a JsSuccess" in {
-        desJson.validate[GetCalculationMetadataResponse] shouldBe a[JsSuccess[GetCalculationMetadataResponse]]
+        desJson.validate[GetCalculationMessagesResponse] shouldBe a[JsSuccess[GetCalculationMessagesResponse]]
       }
-      "with a valid GetCalculationMetadataResponse" in {
-        desJson.as[GetCalculationMetadataResponse] shouldBe metadataWrapper
+
+      val readMessages = desJson.as[GetCalculationMessagesResponse].messages
+
+      "containing the expected info messages" in {
+        readMessages.info.getOrElse(Array.empty).headOption shouldBe Some(messagesObj.info.get.head)
+        readMessages.info.getOrElse(Array.empty).tail shouldBe messagesObj.info.get.tail
       }
-      "containing a Metadata object" in {
-        desJson.as[GetCalculationMetadataResponse].metadata shouldBe metadata
+      "containing the expected warnings message" in {
+        readMessages.warnings.getOrElse(Array.empty).headOption shouldBe Some(messagesObj.warnings.get.head)
+      }
+      "containing the expected errors message" in {
+        readMessages.errors.getOrElse(Array.empty).headOption shouldBe Some(messagesObj.errors.get.head)
       }
     }
+
     "written to JSON" should {
       "return a JsObject" in {
-        Json.toJson(metadataWrapper) shouldBe desJsonWithOptionals
+        Json.toJson(messagesWrapper) shouldBe desJson
       }
     }
   }

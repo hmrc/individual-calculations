@@ -22,6 +22,7 @@ import v1.models.des.selfAssessment.componentObjects.Metadata
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 
 class GetCalculationResponseMetadataSpec extends UnitSpec {
+
   val desJson: JsValue = Json.parse("""{
       |    "metadata":{
       |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -36,7 +37,7 @@ class GetCalculationResponseMetadataSpec extends UnitSpec {
       |     }
       |}""".stripMargin)
 
-  val desJsonWithOptionals: JsValue = Json.parse("""{
+  val writtenJson: JsValue = Json.parse("""{
       |   "metadata":{
       |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |       "taxYear": "2018-19",
@@ -79,7 +80,7 @@ class GetCalculationResponseMetadataSpec extends UnitSpec {
     }
     "written to JSON" should {
       "return a JsObject" in {
-        Json.toJson(metadataWrapper) shouldBe desJsonWithOptionals
+        Json.toJson(metadataWrapper) shouldBe writtenJson
       }
     }
   }

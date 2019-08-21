@@ -16,12 +16,13 @@
 
 package v1.models.des.selfAssessment
 
-import play.api.libs.json.{ JsObject, JsSuccess, JsValue, Json }
+import play.api.libs.json.{ JsSuccess, JsValue, Json }
 import support.UnitSpec
-import v1.models.des.selfAssessment.componentObjects.Metadata
+import v1.models.des.selfAssessment.componentObjects.{ Errors, Info, Messages, Metadata, Warnings }
 import v1.models.domain.selfAssessment.{ CalculationReason, CalculationRequestor, CalculationType }
 
 class GetCalculationResponseSpec extends UnitSpec {
+
   val desJson: JsValue = Json.parse("""{
       |    "metadata":{
       |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -35,15 +36,14 @@ class GetCalculationResponseSpec extends UnitSpec {
       |       "periodTo": "1-2019"
       |     },
       |   "messages":{
-      |       "info" : [{"id" : "1","text" : "text"}],
+      |       "info" : [{"id" : "1","text" : "text"},
+      |       {"id" : "2","text" : "text2"}],
       |       "warnings" :[{"id" : "1","text" : "text"}],
       |       "errors" :[{"id" : "1","text" : "text"}]
       |     }
       |}""".stripMargin)
 
-
-
-  val desJsonWithOptionals: JsValue = Json.parse("""{
+  val writtenJson: JsValue = Json.parse("""{
       |   "metadata":{
       |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |       "taxYear": "2018-19",
@@ -53,14 +53,35 @@ class GetCalculationResponseSpec extends UnitSpec {
       |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
       |       "calculationType": "inYear",
       |       "intentToCrystallise": false,
-      |       "crystallised": false
+      |       "crystallised": false,
+      |       "calculationErrorCount": 1
       |     },
       |   "messages":{
-      |       "info" : [{"id" : "1","text" : "text"}],
+      |       "info" : [{"id" : "1","text" : "text"},
+      |       {"id" : "2","text" : "text2"}],
       |       "warnings" :[{"id" : "1","text" : "text"}],
       |       "errors" :[{"id" : "1","text" : "text"}]
       |    }
       |}""".stripMargin)
+
+  val writtenJsonWithoutErrors: JsValue = Json.parse("""{
+       |   "metadata":{
+       |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+       |       "taxYear": "2018-19",
+       |       "requestedBy": "customer",
+       |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+       |       "calculationReason": "customerRequest",
+       |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+       |       "calculationType": "inYear",
+       |       "intentToCrystallise": false,
+       |       "crystallised": false
+       |     },
+       |   "messages":{
+       |       "info" : [{"id" : "1","text" : "text"},
+       |       {"id" : "2","text" : "text2"}],
+       |       "warnings" :[{"id" : "1","text" : "text"}]
+       |    }
+       |}""".stripMargin)
 
   val metadata = new Metadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -72,26 +93,60 @@ class GetCalculationResponseSpec extends UnitSpec {
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,
-    calculationErrorCount = None
+    calculationErrorCount = Some(1)
   )
 
-  val metadataWrapper = new GetCalculationMetadataResponse(metadata)
+  val infoObj     = new Info("1", "text")
+  val infoObj2    = new Info("2", "text2")
+  val warningsObj = new Warnings("1", "text")
+  val errorsObj   = new Errors("1", "text")
+  val messagesObj = new Messages(Some(Array(infoObj, infoObj2)), Some(Array(warningsObj)), Some(Array(errorsObj)))
+
+  val calculationResponseWrapper = GetCalculationResponse(metadata, messagesObj)
 
   "GetCalculationMetadata" when {
     "read from JSON" should {
+
       "return a JsSuccess" in {
-        desJson.validate[GetCalculationMetadataResponse] shouldBe a[JsSuccess[GetCalculationMetadataResponse]]
+        desJson.validate[GetCalculationResponse] shouldBe a[JsSuccess[GetCalculationResponse]]
       }
-      "with a valid GetCalculationMetadataResponse" in {
-        desJson.as[GetCalculationMetadataResponse] shouldBe metadataWrapper
+      "with a valid GetCalculationResponse" in {
+        desJson.as[GetCalculationResponse] shouldBe a[GetCalculationResponse]
       }
+
+      val readMetadata = desJson.as[GetCalculationResponse].metadata
       "containing a Metadata object" in {
-        desJson.as[GetCalculationMetadataResponse].metadata shouldBe metadata
+        readMetadata shouldBe a[Metadata]
+      }
+      "which matches the expected metadata result" in {
+        readMetadata shouldBe metadata
+      }
+
+      val readMessages = desJson.as[GetCalculationResponse].messages
+      "containing a messages object" in {
+        readMessages shouldBe a[Messages]
+      }
+      "which matches the expected messages result" in {
+        readMessages.info.getOrElse(Array.empty).headOption shouldBe Some(messagesObj.info.get.head)
+        readMessages.info.getOrElse(Array.empty).tail shouldBe messagesObj.info.get.tail
+        readMessages.warnings.getOrElse(Array.empty).headOption shouldBe Some(messagesObj.warnings.get.head)
+        readMessages.errors.getOrElse(Array.empty).headOption shouldBe Some(messagesObj.errors.get.head)
       }
     }
+
     "written to JSON" should {
       "return a JsObject" in {
-        Json.toJson(metadataWrapper) shouldBe desJsonWithOptionals
+        Json.toJson(calculationResponseWrapper) shouldBe writtenJson
+      }
+    }
+
+    val metadataWithoutErrors                   = metadata.copy(calculationErrorCount = None)
+    val messagesWithoutErrors                   = messagesObj.copy(errors = None)
+    val calculationResponseWrapperWithoutErrors = GetCalculationResponse(metadataWithoutErrors, messagesWithoutErrors)
+
+    "writing a response with no errors to JSON" should {
+      "not return the calculationErrorCount field" in {
+        Json.toJson(calculationResponseWrapperWithoutErrors) shouldBe writtenJsonWithoutErrors
       }
     }
   }
