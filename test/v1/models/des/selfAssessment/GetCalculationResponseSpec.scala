@@ -43,6 +43,25 @@ class GetCalculationResponseSpec extends UnitSpec {
       |     }
       |}""".stripMargin)
 
+  val desJsonWithoutErrors: JsValue = Json.parse("""{
+      |    "metadata":{
+      |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2019",
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "periodFrom": "1-2018",
+      |       "periodTo": "1-2019"
+      |     },
+      |   "messages":{
+      |       "info" : [{"id" : "1","text" : "text"},
+      |       {"id" : "2","text" : "text2"}],
+      |       "warnings" :[{"id" : "1","text" : "text"}]
+      |     }
+      |}""".stripMargin)
+
   val writtenJson: JsValue = Json.parse("""{
       |   "metadata":{
       |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -147,6 +166,12 @@ class GetCalculationResponseSpec extends UnitSpec {
     "writing a response with no errors to JSON" should {
       "not return the calculationErrorCount field" in {
         Json.toJson(calculationResponseWrapperWithoutErrors) shouldBe writtenJsonWithoutErrors
+      }
+    }
+
+    "reading a response with no errors from Json" should {
+      "return None in the calculationErrorCountField" in {
+        desJsonWithoutErrors.as[GetCalculationResponse].metadata.calculationErrorCount shouldBe None
       }
     }
   }
