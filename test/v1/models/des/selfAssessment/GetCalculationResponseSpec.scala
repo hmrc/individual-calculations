@@ -16,50 +16,12 @@
 
 package v1.models.des.selfAssessment
 
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json.{ JsError, JsSuccess, JsValue, Json }
 import support.UnitSpec
-import v1.models.des.selfAssessment.componentObjects.{Error, Metadata}
-import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.des.selfAssessment.componentObjects.{ Error, Metadata }
+import v1.models.domain.selfAssessment.{ CalculationReason, CalculationRequestor, CalculationType }
 
-class GetCalculationResponseSpec extends UnitSpec{
-  val desJson: JsValue = Json.parse("""{
-      |    "metadata":{
-      |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |       "taxYear": "2019",
-      |       "requestedBy": "customer",
-      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |       "calculationReason": "customerRequest",
-      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |       "calculationType": "inYear",
-      |       "periodFrom": "1-2018",
-      |       "periodTo": "1-2019"
-      |     },
-      |     "messages" :{
-      |        "errors":[
-      |        {"id":"id1", "text":"text1"}
-      |        ]
-      |     }
-      |}""".stripMargin)
-
-  val invalidDesJson: JsValue = Json.parse("""{
-      |    "metadata":{
-      |       "calcId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |       "taxYear": "2019",
-      |       "requestedBy": "me",
-      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |       "calculationReason": "I wanted to",
-      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |       "calculationType": "inYear",
-      |       "periodFrom": "Now",
-      |       "periodTo": "Later"
-      |     },
-      |     "messages" :{
-      |        "errors":[
-      |        {"id":"id1"}
-      |        ]
-      |     }
-      |}""".stripMargin)
-
+class GetCalculationResponseSpec extends UnitSpec {
   val writtenJson: JsValue = Json.parse("""{
       |    "metadata":{
       |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -87,29 +49,9 @@ class GetCalculationResponseSpec extends UnitSpec{
     crystallised = false,
     calculationErrorCount = Some(1)
   )
-
-  private val metadataWithoutErrors = metadata.copy(calculationErrorCount = None)
-
   val calculationResponse = GetCalculationResponse(metadata)
-  val calculationResponseWithoutErrors = GetCalculationResponse(metadataWithoutErrors)
-
 
   "GetCalculationResponse" when {
-    "read from a valid desJSON" should {
-      "return a JsSuccess" in {
-        //desJson.validate[GetCalculationResponse] shouldBe a[JsSuccess[GetCalculationResponse]]
-      }
-      "with the expected Metadata object" in {
-        //desJson.as[GetCalculationResponse] shouldBe calculationResponse
-      }
-    }
-
-    "read from an invalid JSON" should {
-      "return a JsError" in {
-        //invalidDesJson.validate[GetCalculationResponse] shouldBe a[JsError]
-      }
-    }
-
     "written to JSON" should {
       "return the expected JsObject" in {
         Json.toJson(calculationResponse) shouldBe writtenJson
