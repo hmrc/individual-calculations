@@ -24,6 +24,7 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
+import v1.models.requestData.DesTaxYear
 import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
 
 class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
@@ -53,7 +54,9 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
 
     def uri: String = s"/$nino/self-assessment"
 
-    lazy val desUrl = s"/income-tax/nino/$nino/taxYear/$taxYear/tax-calculation"
+    val desTaxYear = DesTaxYear.fromMtd(taxYear)
+
+    lazy val desUrl = s"/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation"
 
     def setupStubs(): StubMapping
 
@@ -62,13 +65,6 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
       buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
-
-    val json =
-      s"""
-         |{
-         |  badJson
-         |}
-    """.stripMargin
   }
 
 

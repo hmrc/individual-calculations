@@ -24,10 +24,4 @@ case class TriggerTaxCalculationBody(taxYear: String)
 
 object TriggerTaxCalculationBody {
   implicit val reads: Reads[TriggerTaxCalculationBody] = Json.reads[TriggerTaxCalculationBody]
-
-  implicit val writes: Writes[TriggerTaxCalculationBody] = new Writes[TriggerTaxCalculationBody] {
-    override def writes(triggerTaxCalc: TriggerTaxCalculationBody): JsValue = Json.obj(
-      "taxYear" -> DesTaxYear.fromMtd(triggerTaxCalc.taxYear).toString
-    )
-  }
 }

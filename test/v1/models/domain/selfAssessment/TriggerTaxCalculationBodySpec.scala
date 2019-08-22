@@ -44,15 +44,4 @@ class TriggerTaxCalculationBodySpec extends UnitSpec with JsonErrorValidators {
       )
     }
   }
-
-  "writes" must {
-    "write expected JSON format" in {
-      Json.toJson(TriggerTaxCalculationBody("2017-18")) shouldBe Json.parse(
-        """
-          |{
-          |  "taxYear" : "2018"
-          |}
-        """.stripMargin)
-    }
-  }
 }

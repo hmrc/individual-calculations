@@ -23,6 +23,7 @@ import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.connectors.httpparsers.StandardDesHttpParser._
 import v1.models.des.selfAssessment.{CalculationIdResponse, GetCalculationResponse, ListCalculationsResponse}
 import v1.models.domain.EmptyJsonBody
+import v1.models.requestData.DesTaxYear
 import v1.models.requestData.selfAssessment.{GetCalculationRequest, ListCalculationsRequest, TriggerTaxCalculationRequest}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,7 +40,7 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
     val nino = request.nino.nino
 
     val pathParameter =
-      Map("taxYear"          -> request.taxYear.map(_.value)).collect {
+      Map("taxYear" -> request.taxYear.map(_.value)).collect {
         case (key, Some(value)) => key -> value
       }
 
@@ -53,7 +54,7 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
     ec: ExecutionContext): Future[DesOutcome[CalculationIdResponse]] = {
 
     val nino = request.nino.nino
-    val taxYear = request.triggerTaxCalc.taxYear
+    val taxYear = DesTaxYear.fromMtd(request.triggerTaxCalc.taxYear)
 
     post(
       body = EmptyJsonBody,
