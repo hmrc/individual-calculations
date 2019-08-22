@@ -16,7 +16,7 @@
 
 package v1
 
-import v1.models.des.selfAssessment.ListCalculationsResponse
+import v1.models.des.selfAssessment.{GetCalculationResponse, ListCalculationsResponse}
 import v1.models.errors.{DesError, MtdError}
 import v1.models.outcomes.ResponseWrapper
 
@@ -27,5 +27,7 @@ package object connectors {
   type DesOutcome[A] = Either[ResponseWrapper[DesError], ResponseWrapper[A]]
 
   type ListCalculationsConnectorOutcome = DesOutcome[ListCalculationsResponse]
+
+  type GetCalculationConnectorOutcome = DesOutcome[GetCalculationResponse]
 
 }
