@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package v1
+package v1.connectors
 
-import v1.models.des.selfAssessment.{GetCalculationResponse, ListCalculationsResponse}
-import v1.models.errors.{DesError, MtdError}
-import v1.models.outcomes.ResponseWrapper
-
-package object connectors {
-
-  type MtdIdLookupOutcome = Either[MtdError, String]
-
-  type DesOutcome[A] = Either[ResponseWrapper[DesError], ResponseWrapper[A]]
-
-  type ListCalculationsConnectorOutcome = DesOutcome[ListCalculationsResponse]
-
-  type GetCalculationConnectorOutcome = DesOutcome[GetCalculationResponse]
+class GetCalculationConnectorSpec extends ConnectorSpec {
 
 }
