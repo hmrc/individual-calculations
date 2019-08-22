@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.services
 
 import cats.data.EitherT
@@ -40,7 +41,7 @@ class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesRe
 
     val result = for {
       desResponseWrapper <- EitherT(connector.getCalculation(request)).leftMap(mapDesErrors(desErrorMap))
-    } yield desResponseWrapper.map(des => GetCalculationResponse(des.metadata))
+    } yield desResponseWrapper
 
     result.value
   }
