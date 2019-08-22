@@ -16,9 +16,9 @@
 
 package v1.models.des.selfAssessment.componentObjects
 
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
-import v1.models.domain.selfAssessment.{ CalculationReason, CalculationRequestor, CalculationType }
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.requestData.DesTaxYear
 
 case class Metadata(id: String,
@@ -32,18 +32,26 @@ case class Metadata(id: String,
                     crystallised: Boolean,
                     calculationErrorCount: Option[Int])
 
+case class Error(id: String, text:String)
+object Error{
+  implicit val format: OFormat[Error] = Json.format[Error]
+}
+
 object Metadata {
   implicit val writes: Writes[Metadata] = Json.writes[Metadata]
-  implicit val reads: Reads[Metadata] = (
-    (JsPath \ "calculationId").read[String] and
-      (JsPath \ "taxYear").read[String].map(desTaxYear => DesTaxYear.toMtd(desTaxYear)) and
-      (JsPath \ "requestedBy").read[CalculationRequestor] and
-      (JsPath \ "requestedTimestamp").readNullable[String] and
-      (JsPath \ "calculationReason").read[CalculationReason] and
-      (JsPath \ "calculationTimestamp").read[String] and
-      (JsPath \ "calculationType").read[CalculationType] and
-      (JsPath \ "intentToCrystallise").readWithDefault[Boolean](false) and
-      (JsPath \ "crystallised").readWithDefault[Boolean](false) and
-      (JsPath \ "calculationErrorCount").readNullable[Int]
+  implicit val reads: Reads[Metadata]=(
+  (JsPath \"metadata" \ "calculationId").read[String] and
+    (JsPath \"metadata" \ "taxYear").read[String].map(desTaxYear => DesTaxYear.toMtd(desTaxYear)) and
+    (JsPath \"metadata" \ "requestedBy").read[CalculationRequestor] and
+    (JsPath \"metadata" \ "requestedTimestamp").readNullable[String] and
+    (JsPath \"metadata" \ "calculationReason").read[CalculationReason] and
+    (JsPath \"metadata" \ "calculationTimestamp").read[String] and
+    (JsPath \"metadata" \ "calculationType").read[CalculationType] and
+    (JsPath \"metadata" \ "intentToCrystallise").readWithDefault[Boolean](false) and
+    (JsPath \"metadata" \ "crystallised").readWithDefault[Boolean](false) and
+    (__ \"messages" \ "errors").readNestedNullable[Seq[Error]].map {
+      case Some(errs) => Some(errs.length)
+      case None => None
+    }
   )(Metadata.apply _)
 }

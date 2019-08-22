@@ -16,38 +16,116 @@
 
 package v1.models.des.selfAssessment.componentObjects
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
-import v1.models.des.selfAssessment.GetCalculationMetadataResponse
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 
-class MetadataSpec extends UnitSpec{
+class MetadataSpec extends UnitSpec {
 
-  val desJson: JsValue = Json.parse(
-      """{     "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |      "taxYear": "2019",
-        |      "requestedBy": "customer",
-        |      "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-        |      "calculationReason": "customerRequest",
-        |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-        |      "calculationType": "inYear",
-        |      "periodFrom": "1-2018",
-        |      "periodTo": "1-2019"
-        |}""".stripMargin)
-
-  val writtenJson: JsValue = Json.parse(
-    """{     "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |      "taxYear": "2018-19",
-      |      "requestedBy": "customer",
-      |      "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |      "calculationReason": "customerRequest",
-      |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |      "calculationType": "inYear",
-      |      "intentToCrystallise": false,
-      |      "crystallised": false
+  val desJson: JsValue = Json.parse("""{
+      |    "metadata":{
+      |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2019",
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "periodFrom": "1-2018",
+      |       "periodTo": "1-2019"
+      |     },
+      |     "messages" :{
+      |        "errors":[
+      |        {"id":"id1", "text":"text1"}
+      |        ]
+      |     }
       |}""".stripMargin)
 
-  val metadata = Metadata(
+  val invalidDesJson: JsValue = Json.parse("""{
+      |    "metadata":{
+      |       "calcId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2019",
+      |       "requestedBy": "me",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "I wanted to",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "periodFrom": "Now",
+      |       "periodTo": "Later"
+      |     },
+      |     "messages" :{
+      |        "errors":[
+      |        {"id":"id1"}
+      |        ]
+      |     }
+      |}""".stripMargin)
+
+  val desJsonWithoutErrors: JsValue = Json.parse("""{
+      |    "metadata":{
+      |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2019",
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "periodFrom": "1-2018",
+      |       "periodTo": "1-2019"
+      |     },
+      |          "messages" :{
+      |     }
+      |}""".stripMargin)
+
+  val desJsonWithoutMessages: JsValue = Json.parse("""{
+      |    "metadata":{
+      |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2019",
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "periodFrom": "1-2018",
+      |       "periodTo": "1-2019"
+      |     }
+      |}""".stripMargin)
+
+  val writtenJson: JsValue = Json.parse("""{
+      |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2018-19",
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "intentToCrystallise": false,
+      |       "crystallised": false,
+      |       "calculationErrorCount": 1
+      |}""".stripMargin)
+
+  val writtenJsonWithoutErrors: JsValue = Json.parse("""{
+      |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2018-19",
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "intentToCrystallise": false,
+      |       "crystallised": false
+      |}""".stripMargin)
+
+  val validErrorJson: JsValue = Json.parse("""{
+      |        "id":"id1",
+      |        "text": "exampleText"
+      |}""".stripMargin)
+
+  val invalidErrorJson: JsValue = Json.parse("""{
+      |        "id":1,
+      |        "text": "exampleText"
+      |}""".stripMargin)
+
+  val metadataResponse = Metadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
     taxYear = "2018-19",
     requestedBy = CalculationRequestor.customer,
@@ -57,21 +135,68 @@ class MetadataSpec extends UnitSpec{
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,
-    calculationErrorCount = None
+    calculationErrorCount = Some(1)
   )
 
+  private val metadataResponseWithoutErrors = metadataResponse.copy(calculationErrorCount = None)
+
+  val error = Error("id1", "exampleText")
+
   "Metadata" when {
-    "read from JSON" should {
+    "read from a valid JSON" should {
       "return a JsSuccess" in {
         desJson.validate[Metadata] shouldBe a[JsSuccess[Metadata]]
       }
-      "containing the expected Metadata object" in {
-        desJson.as[Metadata] shouldBe metadata
+      "with the expected Metadata object" in {
+        desJson.as[Metadata] shouldBe metadataResponse
       }
     }
+
+    "read from an invalid JSON" should {
+      "return a JsError" in {
+        invalidDesJson.validate[Metadata] shouldBe a[JsError]
+      }
+    }
+
     "written to JSON" should {
       "return the expected JsObject" in {
-        Json.toJson(metadata) shouldBe writtenJson
+        Json.toJson(metadataResponse) shouldBe writtenJson
+      }
+    }
+
+    "errors are not present" should {
+      "not write the calculationErrorCountField" in {
+        Json.toJson(metadataResponseWithoutErrors) shouldBe writtenJsonWithoutErrors
+      }
+      "read the calculationErrorCount as None" in {
+        desJsonWithoutErrors.as[Metadata] shouldBe metadataResponseWithoutErrors
+      }
+    }
+
+    "messages are not present" should {
+      "read the calculationErrorCount as None" in {
+        desJsonWithoutMessages.as[Metadata] shouldBe metadataResponseWithoutErrors
+      }
+    }
+  }
+
+  "Error" when {
+    "read from valid JSON" should{
+      "return a JsSuccess" in{
+        validErrorJson.validate[Error] shouldBe a[JsSuccess[Error]]
+      }
+      "with the expected Error object" in{
+        validErrorJson.as[Error] shouldBe error
+      }
+    }
+    "read from invalid JSON" should{
+      "return a JsError" in{
+        invalidErrorJson.validate[Error] shouldBe a[JsError]
+      }
+    }
+    "written to JSON" should{
+      "return the expected JsObject" in{
+        Json.toJson(error) shouldBe validErrorJson
       }
     }
   }

@@ -15,28 +15,12 @@
  */
 
 package v1.models.des.selfAssessment
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
-import v1.models.des.selfAssessment.componentObjects._
-import play.api.libs.functional.syntax._
 
-case class GetCalculationResponse(
-    metadata: Metadata,
-    messages: Messages
-)
+import play.api.libs.json.{Json, OFormat}
+import v1.models.des.selfAssessment.componentObjects.Metadata
 
-object GetCalculationResponse {
+case class GetCalculationResponse (metadata: Metadata)
 
-  def withErrorCount(metadata: Metadata, messages: Messages): GetCalculationResponse ={
-    val errorCount = messages.errors.getOrElse(Array.empty).length
-    if (errorCount > 0){
-      val metadataWithErrorCount= metadata.copy(calculationErrorCount = Some(errorCount))
-      new GetCalculationResponse(metadataWithErrorCount,messages)
-    } else {
-      new GetCalculationResponse(metadata,messages)
-    }
-  }
-
-  implicit val writes: Writes[GetCalculationResponse] = Json.writes[GetCalculationResponse]
-  implicit val reads: Reads[GetCalculationResponse] = ((JsPath \ "metadata").read[Metadata] and
-    (JsPath \ "messages").read[Messages])(GetCalculationResponse.withErrorCount _)
+object GetCalculationResponse{
+  implicit val format: OFormat[GetCalculationResponse] = Json.format[GetCalculationResponse]
 }
