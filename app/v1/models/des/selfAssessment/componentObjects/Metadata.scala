@@ -50,8 +50,8 @@ object Metadata {
     (JsPath \"metadata" \ "intentToCrystallise").readWithDefault[Boolean](false) and
     (JsPath \"metadata" \ "crystallised").readWithDefault[Boolean](false) and
     (__ \"messages" \ "errors").readNestedNullable[Seq[Error]].map {
-      case Some(errs) => Some(errs.length)
-      case None => None
+      case Some(errs) if errs.nonEmpty => Some(errs.length)
+      case _ => None
     }
   )(Metadata.apply _)
 }
