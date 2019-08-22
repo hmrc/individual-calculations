@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.requestData
+package v1.models.domain.selfAssessment
 
-/**
-  * Represents a tax year for DES
-  *
-  * @param value the tax year string (where 2018 represents 2017-18)
-  */
-case class DesTaxYear(value: String) extends AnyVal {
-  override def toString: String = value
-}
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-object DesTaxYear {
+sealed trait CalculationReason
 
-  /**
-    * @param taxYear tax year in MTD format (e.g. 2017-18)
-    */
-  def fromMtd(taxYear: String): DesTaxYear =
-    DesTaxYear(taxYear.take(2) + taxYear.drop(5))
+object CalculationReason {
+  case object customerRequest extends CalculationReason
+  case object class2NICEvent extends CalculationReason
+  case object newLossEvent extends CalculationReason
+  case object updatedLossEvent extends CalculationReason
+  case object newClaimEvent extends CalculationReason
+  case object updatedClaimEvent extends CalculationReason
 
-  def toMtd(taxYear: String): String ={
-    val prefix = taxYear.take(2)
-    val suffix = taxYear.takeRight(2).toInt
-    f"$prefix${suffix-1}-$suffix"
-  }
+  implicit val format: Format[CalculationReason] = Enums.format[CalculationReason]
 }

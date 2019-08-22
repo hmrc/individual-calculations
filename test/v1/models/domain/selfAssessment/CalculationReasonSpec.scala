@@ -19,23 +19,25 @@ package v1.models.domain.selfAssessment
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v1.models.domain.selfAssessment.CalculationType._
+import v1.models.domain.selfAssessment.CalculationReason._
 
-class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+class CalculationReasonSpec extends UnitSpec with EnumJsonSpecSupport {
 
   val desJson: JsValue = Json.toJson("")
 
-  testRoundTrip[CalculationType](
-    ("inYear", inYear),
-    ("crystallisation", crystallisation),
-    ("bissAdjustment", bissAdjustment),
-    ("biss", biss),
-    ("POA", POA))
+  testRoundTrip[CalculationReason](
+    ("customerRequest", customerRequest),
+    ("class2NICEvent", class2NICEvent),
+    ("newLossEvent", newLossEvent),
+    ("updatedLossEvent",updatedLossEvent),
+    ("newClaimEvent",newClaimEvent),
+    ("updatedClaimEvent",updatedClaimEvent)
+  )
 
-  "CalculationRequestor" when {
+  "CalculationReason" when {
     "given an invalid field" should {
       "return a JsError" in {
-        desJson.validate[CalculationType] shouldBe a[JsError]
+        desJson.validate[CalculationReason] shouldBe a[JsError]
       }
     }
   }

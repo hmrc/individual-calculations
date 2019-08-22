@@ -14,28 +14,9 @@
  * limitations under the License.
  */
 
-package v1.models.requestData
+package v1.models.requestData.selfAssessment
 
-/**
-  * Represents a tax year for DES
-  *
-  * @param value the tax year string (where 2018 represents 2017-18)
-  */
-case class DesTaxYear(value: String) extends AnyVal {
-  override def toString: String = value
-}
+import uk.gov.hmrc.domain.Nino
 
-object DesTaxYear {
+case class GetCalculationMetadataRequest (nino: Nino, calculationId: String)
 
-  /**
-    * @param taxYear tax year in MTD format (e.g. 2017-18)
-    */
-  def fromMtd(taxYear: String): DesTaxYear =
-    DesTaxYear(taxYear.take(2) + taxYear.drop(5))
-
-  def toMtd(taxYear: String): String ={
-    val prefix = taxYear.take(2)
-    val suffix = taxYear.takeRight(2).toInt
-    f"$prefix${suffix-1}-$suffix"
-  }
-}

@@ -16,15 +16,26 @@
 
 package v1.models.domain.selfAssessment
 
+import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import v1.models.domain.selfAssessment.CalculationRequestor._
 
 class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
 
+  val desJson: JsValue = Json.toJson("")
+
   testRoundTrip[CalculationRequestor](
     ("customer", customer),
     ("hmrc", hmrc),
     ("agent", agent)
   )
+
+  "CalculationRequestor" when {
+    "given an invalid field" should {
+      "return a JsError" in {
+        desJson.validate[CalculationRequestor] shouldBe a[JsError]
+      }
+    }
+  }
 }
