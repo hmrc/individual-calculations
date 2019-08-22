@@ -16,6 +16,60 @@
 
 package v1.connectors
 
+import uk.gov.hmrc.domain.Nino
+import v1.mocks.{MockAppConfig, MockHttpClient}
+import v1.models.des.selfAssessment.GetCalculationResponse
+import v1.models.des.selfAssessment.componentObjects.Metadata
+import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.outcomes.ResponseWrapper
+import v1.models.requestData.selfAssessment.GetCalculationRequest
+
+import scala.concurrent.Future
+
 class GetCalculationConnectorSpec extends ConnectorSpec {
 
+  val nino = Nino("AA123456A")
+  val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+
+  val metadataResponse = Metadata(
+    id = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2",
+    taxYear = "2018-19",
+    requestedBy = CalculationRequestor.customer,
+    requestedTimestamp = Some("2019-11-15T09:25:15.094Z"),
+    calculationReason = CalculationReason.customerRequest,
+    calculationTimestamp = "2019-11-15T09:35:15.094Z",
+    calculationType = CalculationType.inYear,
+    intentToCrystallise = false,
+    crystallised = false,
+    calculationErrorCount = Some(1)
+  )
+
+  val getCalculationResponse = GetCalculationResponse(metadataResponse)
+
+  class Test extends MockHttpClient with MockAppConfig {
+    val connector: TaxCalcConnector = new TaxCalcConnector(http = mockHttpClient, appConfig = mockAppConfig)
+
+    val desRequestHeaders: Seq[(String, String)] = Seq("Environment" -> "des-environment", "Authorization" -> s"Bearer des-token")
+    MockedAppConfig.desToken returns "des-token"
+    MockedAppConfig.desEnvironment returns "des-environment"
+    MockedAppConfig.desBaseUrl returns baseUrl
+  }
+
+  "get calculation" when {
+    val request = GetCalculationRequest(nino, calcId)
+
+    "a valid request is supplied" should {
+      "return a successful response with the correct correlationId" in new Test {
+
+        val expected = Right(ResponseWrapper(correlationId, getCalculationResponse))
+
+        MockedHttpClient
+          .get(s"$baseUrl/income-tax/03.00.00/calculation-data/$nino/calcId/$calcId", desRequestHeaders: _*)
+          .returns(Future.successful(expected))
+
+        await(connector.getCalculation(request)) shouldBe expected
+
+      }
+    }
+  }
 }

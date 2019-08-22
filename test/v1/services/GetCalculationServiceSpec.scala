@@ -24,7 +24,7 @@ import v1.mocks.connectors.MockTaxCalcConnector
 import v1.models.des.selfAssessment.GetCalculationResponse
 import v1.models.des.selfAssessment.componentObjects.Metadata
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.errors.{CalculationIdFormatError, DesErrorCode, DesErrors, DownstreamError, ErrorWrapper, MtdError, NinoFormatError, NotFoundError, TaxYearFormatError}
+import v1.models.errors.{CalculationIdFormatError, DesErrorCode, DesErrors, DownstreamError, ErrorWrapper, MtdError, NinoFormatError, NotFoundError}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.GetCalculationRequest
 
@@ -46,6 +46,7 @@ class GetCalculationServiceSpec extends UnitSpec {
     calculationErrorCount = Some(1)
   )
   val getCalculationResponse = GetCalculationResponse(metadataResponse)
+
   private val nino          = "AA111111A"
   private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
   private val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
