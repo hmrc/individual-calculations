@@ -17,7 +17,6 @@
 package v1.models.domain.selfAssessment
 
 import play.api.libs.json._
-import v1.models.requestData.DesTaxYear
 
 case class TriggerTaxCalculationBody(taxYear: String)
 

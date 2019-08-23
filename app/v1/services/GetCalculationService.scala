@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesResponseMappingSupport with Logging {
 
-  def getCalculationService(request: GetCalculationRequest)(
+  def getCalculation(request: GetCalculationRequest)(
       implicit hc: HeaderCarrier,
       ec: ExecutionContext,
       logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[GetCalculationResponse]]] = {

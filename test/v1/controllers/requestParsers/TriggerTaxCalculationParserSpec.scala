@@ -20,12 +20,10 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
-import v1.mocks.validators.{MockSampleValidator, MockTriggerTaxCalculationValidator}
-import v1.models.domain.SampleRequestBody
+import v1.mocks.validators.MockTriggerTaxCalculationValidator
 import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.errors._
 import v1.models.requestData.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
-import v1.models.requestData.{DesTaxYear, SampleRawData, SampleRequestData}
 
 class TriggerTaxCalculationParserSpec extends UnitSpec {
   val nino = "AA123456B"

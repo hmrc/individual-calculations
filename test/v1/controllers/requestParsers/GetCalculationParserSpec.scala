@@ -19,8 +19,8 @@ package v1.controllers.requestParsers
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockGetCalculationValidator
-import v1.models.errors.{ BadRequestError, CalculationIdFormatError, ErrorWrapper, NinoFormatError }
-import v1.models.requestData.selfAssessment.{ GetCalculationRawData, GetCalculationRequest }
+import v1.models.errors.{BadRequestError, CalculationIdFormatError, ErrorWrapper, NinoFormatError}
+import v1.models.requestData.selfAssessment.{GetCalculationRawData, GetCalculationRequest}
 
 class GetCalculationParserSpec extends UnitSpec {
   val nino   = "AA123456B"

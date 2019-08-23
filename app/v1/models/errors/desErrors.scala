@@ -16,7 +16,7 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{ Json, Reads }
+import play.api.libs.json.{Json, Reads}
 
 case class DesErrorCode(code: String) {
   def toMtd: MtdError = MtdError(code = code, message = "")
