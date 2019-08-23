@@ -22,6 +22,7 @@ import v1.models.des.selfAssessment.CalculationIdResponse
 import v1.models.domain.EmptyJsonBody
 import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.outcomes.ResponseWrapper
+import v1.models.requestData.DesTaxYear
 import v1.models.requestData.selfAssessment.TriggerTaxCalculationRequest
 
 import scala.concurrent.Future
@@ -29,6 +30,7 @@ import scala.concurrent.Future
 class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
 
   val taxYear = "2017-18"
+  val desTaxYear = DesTaxYear.fromMtd(taxYear).toString
   val nino = "AA123456A"
   val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
@@ -51,7 +53,7 @@ class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
         val expected = Right(ResponseWrapper(correlationId, CalculationIdResponse(calcId)))
 
         MockedHttpClient
-          .post(s"$baseUrl/income-tax/nino/$nino/taxYear/$taxYear/tax-calculation", EmptyJsonBody, desRequestHeaders: _*)
+          .post(s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation", EmptyJsonBody, desRequestHeaders: _*)
           .returns(Future.successful(expected))
 
         await(connector.triggerTaxCalculation(request)) shouldBe expected
