@@ -97,7 +97,13 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
         response.json shouldBe readJson
       }
     }
-    "return a 404 "
+
+    "return a 404 not found" when {
+      "the response contains an unwanted calc type" in {
+
+      }
+    }
+
     "return error according to spec" when {
 
       "validation error" when {

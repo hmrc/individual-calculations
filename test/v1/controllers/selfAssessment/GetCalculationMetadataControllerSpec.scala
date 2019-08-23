@@ -112,6 +112,24 @@ class GetCalculationMetadataControllerSpec
       }
     }
 
+    "return notFound" when{
+      "response contains an unwanted calculation type" in new Test{
+        MockGetCalculationParser
+          .parse(rawData)
+          .returns(Right(requestData))
+
+        MockGetCalculationService
+          .getCalculation(requestData)
+          .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), NotFoundError))))
+
+        val result: Future[Result] = controller.getCalculationMetadata(nino, calcId)(fakeGetRequest)
+
+        status(result) shouldBe NOT_FOUND
+        contentAsJson(result) shouldBe Json.toJson(NotFoundError)
+        header("X-CorrelationId", result) shouldBe Some(correlationId)
+      }
+    }
+
     "return the error as per spec" when {
       "parser errors occur" must {
         def errorsFromParserTester(error: MtdError, expectedStatus: Int): Unit = {
