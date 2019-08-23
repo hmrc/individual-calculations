@@ -23,10 +23,10 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.ControllerBaseSpec
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockGetCalculationService, MockMtdIdLookupService}
-import v1.models.des.selfAssessment.{GetCalculationResponse, ListCalculationsResponse}
+import v1.models.des.selfAssessment.GetCalculationResponse
 import v1.models.des.selfAssessment.componentObjects.Metadata
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.errors.{BadRequestError, CalculationIdFormatError, DownstreamError, ErrorWrapper, MtdError, NinoFormatError, NotFoundError, RuleTaxYearNotSupportedError, RuleTaxYearRangeExceededError, TaxYearFormatError}
+import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.{GetCalculationRawData, GetCalculationRequest}
 
@@ -93,7 +93,7 @@ class GetCalculationMetadataControllerSpec
   val requestData            = GetCalculationRequest(Nino(nino), calcId)
 
   "handleRequest" should {
-    "return OK with list of calculations" when {
+    "return OK with metadata information" when {
       "happy path" in new Test {
 
         MockGetCalculationParser

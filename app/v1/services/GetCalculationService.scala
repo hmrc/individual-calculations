@@ -18,21 +18,24 @@ package v1.services
 
 import cats.data.EitherT
 import cats.implicits._
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.connectors.TaxCalcConnector
 import v1.controllers.EndpointLogContext
 import v1.models.des.selfAssessment.GetCalculationResponse
+import v1.models.domain.selfAssessment.CalculationType
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.GetCalculationRequest
 import v1.support.DesResponseMappingSupport
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
 class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesResponseMappingSupport with Logging {
+
+  private val surfacedCalculationTypes = List(CalculationType.crystallisation, CalculationType.inYear)
 
   def getCalculation(request: GetCalculationRequest)(
       implicit hc: HeaderCarrier,
@@ -42,8 +45,14 @@ class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesRe
     val result = for {
       desResponseWrapper <- EitherT(connector.getCalculation(request)).leftMap(mapDesErrors(desErrorMap))
     } yield desResponseWrapper
+    result.flatMap(_.toErrorWhen(nonMatchingCalcFilter).toEitherT).value
+  }
 
-    result.value
+  private def nonMatchingCalcFilter: PartialFunction[GetCalculationResponse, MtdError] = {
+    new PartialFunction[GetCalculationResponse, MtdError] {
+      def isDefinedAt(x: GetCalculationResponse): Boolean = !(surfacedCalculationTypes contains x.metadata.calculationType)
+      def apply(v1: GetCalculationResponse): MtdError     = NotFoundError
+    }
   }
 
   private def desErrorMap =

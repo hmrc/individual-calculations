@@ -16,10 +16,10 @@
 
 package v1.models.des.selfAssessment
 
-import play.api.libs.json.{ JsError, JsSuccess, JsValue, Json }
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
 import v1.models.des.selfAssessment.componentObjects.Metadata
-import v1.models.domain.selfAssessment.{ CalculationReason, CalculationRequestor, CalculationType }
+import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 
 class GetCalculationResponseSpec extends UnitSpec {
 
