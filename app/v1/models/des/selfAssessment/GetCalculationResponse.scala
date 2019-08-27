@@ -16,11 +16,15 @@
 
 package v1.models.des.selfAssessment
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import v1.models.des.selfAssessment.componentObjects.Metadata
 
-case class GetCalculationResponse (metadata: Metadata)
+case class GetCalculationResponse(metadata: Metadata)
 
-object GetCalculationResponse{
-  implicit val format: OFormat[GetCalculationResponse] = Json.format[GetCalculationResponse]
+object GetCalculationResponse {
+  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
+
+  implicit val reads: Reads[GetCalculationResponse] =
+    JsPath.read[Metadata].map(GetCalculationResponse.apply)
+
 }

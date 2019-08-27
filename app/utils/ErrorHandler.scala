@@ -17,14 +17,12 @@
 package utils
 
 import definition.Versions
-import javax.inject.{Inject, Singleton, _}
-import play.api.http.DefaultHttpErrorHandler
+import javax.inject.{Inject, Singleton}
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.mvc.Results._
 import play.api.mvc.{RequestHeader, Result}
-import play.api.routing.Router
-import play.api.{Configuration, Logger, _}
+import play.api.{Configuration, Logger}
 import uk.gov.hmrc.auth.core.AuthorisationException
 import uk.gov.hmrc.http._
 import uk.gov.hmrc.play.HeaderCarrierConverter

@@ -24,7 +24,7 @@ import v1.mocks.connectors.MockTaxCalcConnector
 import v1.models.des.selfAssessment.GetCalculationResponse
 import v1.models.des.selfAssessment.componentObjects.Metadata
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.errors.{CalculationIdFormatError, DesErrorCode, DesErrors, DownstreamError, ErrorWrapper, MtdError, NinoFormatError, NotFoundError}
+import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.selfAssessment.GetCalculationRequest
 
@@ -46,6 +46,7 @@ class GetCalculationServiceSpec extends UnitSpec {
     calculationErrorCount = Some(1)
   )
   val getCalculationResponse = GetCalculationResponse(metadataResponse)
+  val wrongCalcTypeResponse = GetCalculationResponse(metadataResponse.copy(calculationType = CalculationType.biss))
 
   private val nino          = "AA111111A"
   private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
@@ -66,7 +67,14 @@ class GetCalculationServiceSpec extends UnitSpec {
           .getCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, getCalculationResponse))))
 
-        await(service.getCalculationService(requestData)) shouldBe Right(ResponseWrapper(correlationId, getCalculationResponse))
+        await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId, getCalculationResponse))
+      }
+      "not surface unwanted calculation types" in new Test {
+        MockTaxCalcConnector
+          .getCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, wrongCalcTypeResponse))))
+
+        await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), NotFoundError))
       }
     }
 
@@ -79,7 +87,7 @@ class GetCalculationServiceSpec extends UnitSpec {
             MockTaxCalcConnector.getCalculation(requestData)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(desErrorCode))))))
 
-            await(service.getCalculationService(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), error))
+            await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), error))
           }
 
         val input = Seq(

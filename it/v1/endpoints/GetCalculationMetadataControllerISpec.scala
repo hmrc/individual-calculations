@@ -13,130 +13,121 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package v1.endpoints
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.HeaderNames.ACCEPT
 import play.api.http.Status._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
 
-class ListCalculationsControllerISpec extends IntegrationBaseSpec {
-
+class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
   private trait Test {
 
-    val nino                    = "AA123456A"
-    val taxYear: Option[String] = None
-    val calcId                  = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
-    val correlationId           = "X-123"
+    val nino          = "AA123456A"
+    val calcId        = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+    val correlationId = "X-123"
 
-    def uri: String = s"/$nino/self-assessment"
-
-    def desUrl: String = s"/income-tax/list-of-calculation-results/$nino"
+    def desUrl: String = s"/income-tax/03.00.00/calculation-data/$nino/calcId/$calcId"
 
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
-      val queryParams: Seq[(String, String)] =
-        Seq("taxYear" -> taxYear)
-          .collect { case (k, Some(v)) => (k, v) }
-
       setupStubs()
       buildRequest(uri)
-        .addQueryStringParameters(queryParams: _*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
+
+    def uri: String = s"/$nino/self-assessment/$calcId"
   }
+
+  def errorBody(code: String): String =
+    s"""{
+       |  "code": "$code",
+       |  "reason": "des message"
+       |}""".stripMargin
 
   "Calling the sample endpoint" should {
 
     "return a 200 status code" when {
 
-      val successBody = Json.parse("""{
-      |  "calculations": [
-      |    {
-      |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |      "calculationTimestamp": "2019-03-17T09:22:59Z",
-      |      "type": "inYear",
-      |      "requestedBy": "hmrc"
-      |    }
-      |  ]
+      val desResponse: JsValue = Json.parse("""{
+      |    "metadata":{
+      |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": 2019,
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "periodFrom": "1-2018",
+      |       "periodTo": "1-2019"
+      |     },
+      |     "messages" :{
+      |        "errors":[
+      |        {"id":"id1", "text":"text1"}
+      |        ]
+      |     }
       |}""".stripMargin)
 
-      val desSuccessBody = Json.parse("""[
-      |    {
-      |		"calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |		"calculationTimestamp": "2019-03-17T09:22:59Z",
-      |		"calculationType": "inYear",
-      |		"requestedBy": "hmrc",
-      |		"year": 2016,
-      |		"fromDate": "2018-01-01",
-      |		"toDate": "2019-01-01",
-      |		"totalIncomeTaxAndNicsDue": 99999999999.99,
-      |		"intentToCrystallise": true,
-      |		"crystallised": true,
-      |		"crystallisationTimestamp": "2019-07-13T07:51:43Z"
-      |	},
-      | {
-      |		"calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1d",
-      |		"calculationTimestamp": "2019-03-17T09:22:59Z",
-      |		"calculationType": "biss",
-      |		"requestedBy": "hmrc",
-      |		"year": 2016,
-      |		"fromDate": "2018-01-01",
-      |		"toDate": "2019-01-01",
-      |		"totalIncomeTaxAndNicsDue": 99999999999.99,
-      |		"intentToCrystallise": true,
-      |		"crystallised": true,
-      |		"crystallisationTimestamp": "2019-07-13T07:51:43Z"
-      |	}
-      |  ]""".stripMargin)
+      val readJson: JsValue = Json.parse("""{
+      |    "metadata":{
+      |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2018-19",
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "intentToCrystallise": false,
+      |       "crystallised": false,
+      |       "calculationErrorCount": 1
+      |       }
+      |}""".stripMargin)
 
-      "valid request is made with a tax year" in new Test {
-        override val taxYear = Some("2018-19")
 
+      "valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.onSuccess(DesStub.GET, desUrl, Map("taxYear" -> "2019"), OK, desSuccessBody)
+          DesStub.onSuccess(DesStub.GET, desUrl, OK, desResponse)
         }
 
         val response: WSResponse = await(request.get)
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successBody
+        response.json shouldBe readJson
       }
+    }
 
-      "valid request is made without a tax year" in new Test {
-
+    "return a 404 not found" when {
+      "the response contains an unwanted calc type" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.onSuccess(DesStub.GET, desUrl, OK, desSuccessBody)
+          DesStub.onError(DesStub.GET, desUrl, BAD_REQUEST, errorBody("NOT_FOUND"))
         }
-
         val response: WSResponse = await(request.get)
-        response.status shouldBe OK
-        response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successBody
+        response.status shouldBe  NOT_FOUND
+        response.json shouldBe Json.toJson(NotFoundError)
+
       }
     }
 
     "return error according to spec" when {
 
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestTaxYear: Option[String], expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String, requestCalcId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
-            override val nino: String            = requestNino
-            override val taxYear: Option[String] = requestTaxYear
+            override val nino: String   = requestNino
+            override val calcId: String = requestCalcId
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -151,22 +142,14 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
         }
 
         val input = Seq(
-          ("AA1123A", None, BAD_REQUEST, NinoFormatError),
-          ("AA123456A", Some("20177"), BAD_REQUEST, TaxYearFormatError),
-          ("AA123456A", Some("2015-16"), BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("AA123456A", Some("2020-22"), BAD_REQUEST, RuleTaxYearRangeExceededError)
+          ("AA1123A", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "asd", BAD_REQUEST, CalculationIdFormatError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))
       }
 
       "des service error" when {
-
-        def errorBody(code: String): String =
-          s"""{
-             |  "code": "$code",
-             |  "reason": "des message"
-             |}""".stripMargin
 
         def serviceErrorTest(desStatus: Int, desCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"des returns an $desCode error and status $desStatus" in new Test {
@@ -186,7 +169,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
 
         val input = Seq(
           (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
-          (BAD_REQUEST, "INVALID_TAXYEAR", BAD_REQUEST, TaxYearFormatError),
+          (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
           (BAD_REQUEST, "NOT_FOUND", NOT_FOUND, NotFoundError),
           (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
           (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
@@ -197,4 +180,5 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
       }
     }
   }
+
 }
