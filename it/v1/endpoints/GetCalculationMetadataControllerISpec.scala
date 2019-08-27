@@ -44,6 +44,12 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
     def uri: String = s"/$nino/self-assessment/$calcId"
   }
 
+  def errorBody(code: String): String =
+    s"""{
+       |  "code": "$code",
+       |  "reason": "des message"
+       |}""".stripMargin
+
   "Calling the sample endpoint" should {
 
     "return a 200 status code" when {
@@ -82,6 +88,7 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
       |       }
       |}""".stripMargin)
 
+
       "valid request is made" in new Test {
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -99,7 +106,16 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
     }
 
     "return a 404 not found" when {
-      "the response contains an unwanted calc type" in {
+      "the response contains an unwanted calc type" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          DesStub.onError(DesStub.GET, desUrl, BAD_REQUEST, errorBody("NOT_FOUND"))
+        }
+        val response: WSResponse = await(request.get)
+        response.status shouldBe  NOT_FOUND
+        response.json shouldBe Json.toJson(NotFoundError)
 
       }
     }
@@ -134,12 +150,6 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
       }
 
       "des service error" when {
-
-        def errorBody(code: String): String =
-          s"""{
-             |  "code": "$code",
-             |  "reason": "des message"
-             |}""".stripMargin
 
         def serviceErrorTest(desStatus: Int, desCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"des returns an $desCode error and status $desStatus" in new Test {
