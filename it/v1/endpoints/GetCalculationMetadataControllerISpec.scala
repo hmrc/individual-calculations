@@ -57,7 +57,7 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
       val desResponse: JsValue = Json.parse("""{
       |    "metadata":{
       |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |       "taxYear": "2019",
+      |       "taxYear": 2019,
       |       "requestedBy": "customer",
       |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
       |       "calculationReason": "customerRequest",
