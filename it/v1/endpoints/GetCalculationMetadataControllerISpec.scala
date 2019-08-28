@@ -107,16 +107,30 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
 
     "return a 404 not found" when {
       "the response contains an unwanted calc type" in new Test {
+        val desResponse: JsValue = Json.parse("""{
+          |    "metadata":{
+          |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          |       "taxYear": 2019,
+          |       "requestedBy": "customer",
+          |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+          |       "calculationReason": "customerRequest",
+          |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+          |       "calculationType": "biss",
+          |       "periodFrom": "1-2018",
+          |       "periodTo": "1-2019"
+          |     }
+          |}""".stripMargin)
+
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.onError(DesStub.GET, desUrl, BAD_REQUEST, errorBody("NOT_FOUND"))
+          DesStub.onSuccess(DesStub.GET, desUrl, OK, desResponse)
         }
+
         val response: WSResponse = await(request.get)
         response.status shouldBe  NOT_FOUND
         response.json shouldBe Json.toJson(NotFoundError)
-
       }
     }
 
