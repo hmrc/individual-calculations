@@ -16,7 +16,11 @@
 
 package v1.models.requestData.selfAssessment
 
+import uk.gov.hmrc.domain.Nino
 import v1.models.requestData.RawData
 
 case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+
+case class GetCalculationRequest(nino: Nino, calculationId: String)
+
 

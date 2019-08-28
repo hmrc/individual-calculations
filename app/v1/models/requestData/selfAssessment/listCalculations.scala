@@ -16,6 +16,9 @@
 
 package v1.models.requestData.selfAssessment
 
-import v1.models.requestData.RawData
+import uk.gov.hmrc.domain.Nino
+import v1.models.requestData.{DesTaxYear, RawData}
 
 case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+
+case class ListCalculationsRequest(nino: Nino, taxYear: Option[DesTaxYear])

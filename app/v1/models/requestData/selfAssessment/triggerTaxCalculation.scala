@@ -17,6 +17,11 @@
 package v1.models.requestData.selfAssessment
 
 import play.api.mvc.AnyContentAsJson
+import uk.gov.hmrc.domain.Nino
+import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.requestData.RawData
 
 case class TriggerTaxCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
+
+case class TriggerTaxCalculationRequest(nino: Nino, triggerTaxCalc: TriggerTaxCalculationBody)
+
