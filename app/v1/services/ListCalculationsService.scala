@@ -23,7 +23,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.connectors.TaxCalcConnector
 import v1.controllers.EndpointLogContext
-import v1.models.des.selfAssessment.ListCalculationsResponse
+import v1.models.response.selfAssessment.ListCalculationsResponse
 import v1.models.domain.selfAssessment.CalculationType
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper

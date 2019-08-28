@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.response.selfAssessment
 
-import play.api.libs.json._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import v1.models.response.selfAssessment.componentObjects.Metadata
 
-case class TriggerTaxCalculationBody(taxYear: String)
+case class GetCalculationResponse(metadata: Metadata)
 
+object GetCalculationResponse {
+  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
-object TriggerTaxCalculationBody {
-  implicit val reads: Reads[TriggerTaxCalculationBody] = Json.reads[TriggerTaxCalculationBody]
+  implicit val reads: Reads[GetCalculationResponse] =
+    JsPath.read[Metadata].map(GetCalculationResponse.apply)
+
 }

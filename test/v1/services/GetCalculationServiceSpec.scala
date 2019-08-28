@@ -21,8 +21,8 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.mocks.connectors.MockTaxCalcConnector
-import v1.models.des.selfAssessment.GetCalculationResponse
-import v1.models.des.selfAssessment.componentObjects.Metadata
+import v1.models.response.selfAssessment.GetCalculationResponse
+import v1.models.response.selfAssessment.componentObjects.Metadata
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper

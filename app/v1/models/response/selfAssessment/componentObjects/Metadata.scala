@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment.componentObjects
+package v1.models.response.selfAssessment.componentObjects
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._

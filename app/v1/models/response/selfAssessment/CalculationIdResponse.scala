@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment
+package v1.models.response.selfAssessment
+import play.api.libs.json.{Json, Reads, Writes}
 
-import play.api.libs.json.Json
-import support.UnitSpec
+/**
+  * Calculation Id returned from DES as part of Trigger a Tax Calculation
+  */
 
-class CalculationIdResponseSpec extends UnitSpec {
-  "Json reads" should {
-    "use specified format" in {
-      val json = Json.parse(
-        """
-          |{
-          |  "id": "00000000-0000-1000-8000-000000000000"
-          |}""".stripMargin)
+case class CalculationIdResponse(id: String)
 
-      json.as[CalculationIdResponse] shouldBe CalculationIdResponse("00000000-0000-1000-8000-000000000000")
-    }
-  }
+object CalculationIdResponse {
+  implicit val reads: Reads[CalculationIdResponse] = Json.reads[CalculationIdResponse]
+  implicit val writes: Writes[CalculationIdResponse] = Json.writes[CalculationIdResponse]
+
 }
+
+

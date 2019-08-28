@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment
+package v1.models.response.selfAssessment
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import v1.models.des.selfAssessment.componentObjects.Metadata
+import play.api.libs.json.Json
+import support.UnitSpec
 
-case class GetCalculationResponse(metadata: Metadata)
+class CalculationIdResponseSpec extends UnitSpec {
+  "Json reads" should {
+    "use specified format" in {
+      val json = Json.parse(
+        """
+          |{
+          |  "id": "00000000-0000-1000-8000-000000000000"
+          |}""".stripMargin)
 
-object GetCalculationResponse {
-  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
-
-  implicit val reads: Reads[GetCalculationResponse] =
-    JsPath.read[Metadata].map(GetCalculationResponse.apply)
-
+      json.as[CalculationIdResponse] shouldBe CalculationIdResponse("00000000-0000-1000-8000-000000000000")
+    }
+  }
 }

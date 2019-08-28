@@ -18,8 +18,8 @@ package v1.controllers.requestParsers.validators
 
 import config.FixedConfig
 import v1.controllers.requestParsers.validators.validations.{JsonFormatValidation, MinTaxYearValidation, NinoValidation, TaxYearValidation}
-import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
+import v1.models.request.TriggerTaxCalculationBody
 import v1.models.requestData.selfAssessment.TriggerTaxCalculationRawData
 
 class TriggerTaxCalculationValidator extends Validator[TriggerTaxCalculationRawData] with FixedConfig {

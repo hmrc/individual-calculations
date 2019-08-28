@@ -23,10 +23,10 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.ControllerBaseSpec
 import v1.mocks.requestParsers.MockTriggerTaxCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockTriggerTaxCalculationService}
-import v1.models.des.selfAssessment.CalculationIdResponse
-import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
+import v1.models.response.selfAssessment.CalculationIdResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
+import v1.models.request.TriggerTaxCalculationBody
 import v1.models.requestData.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
 
 import scala.concurrent.ExecutionContext.Implicits.global

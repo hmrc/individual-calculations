@@ -18,6 +18,7 @@ package v1.models.domain.selfAssessment
 
 import play.api.libs.json._
 import support.UnitSpec
+import v1.models.request.TriggerTaxCalculationBody
 import v1.models.utils.JsonErrorValidators
 
 class TriggerTaxCalculationBodySpec extends UnitSpec with JsonErrorValidators {

@@ -16,7 +16,7 @@
 
 package v1
 
-import v1.models.des.selfAssessment.{GetCalculationResponse, ListCalculationsResponse}
+import v1.models.response.selfAssessment.{GetCalculationResponse, ListCalculationsResponse}
 import v1.models.errors.{DesError, MtdError}
 import v1.models.outcomes.ResponseWrapper
 

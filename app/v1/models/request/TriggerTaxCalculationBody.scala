@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment
-import play.api.libs.json.{Json, Reads, Writes}
+package v1.models.request
 
-/**
-  * Calculation Id returned from DES as part of Trigger a Tax Calculation
-  */
+import play.api.libs.json._
 
-case class CalculationIdResponse(id: String)
+case class TriggerTaxCalculationBody(taxYear: String)
 
-object CalculationIdResponse {
-  implicit val reads: Reads[CalculationIdResponse] = Json.reads[CalculationIdResponse]
-  implicit val writes: Writes[CalculationIdResponse] = Json.writes[CalculationIdResponse]
 
+object TriggerTaxCalculationBody {
+  implicit val reads: Reads[TriggerTaxCalculationBody] = Json.reads[TriggerTaxCalculationBody]
 }
-
-

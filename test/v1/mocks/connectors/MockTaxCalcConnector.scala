@@ -20,7 +20,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.connectors.{DesOutcome, TaxCalcConnector}
-import v1.models.des.selfAssessment.{CalculationIdResponse, GetCalculationResponse, ListCalculationsResponse}
+import v1.models.response.selfAssessment.{CalculationIdResponse, GetCalculationResponse, ListCalculationsResponse}
 import v1.models.requestData.selfAssessment.{GetCalculationRequest, ListCalculationsRequest, TriggerTaxCalculationRequest}
 
 import scala.concurrent.{ExecutionContext, Future}

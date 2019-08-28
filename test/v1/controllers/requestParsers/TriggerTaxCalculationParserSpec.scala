@@ -21,8 +21,8 @@ import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockTriggerTaxCalculationValidator
-import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.errors._
+import v1.models.request.TriggerTaxCalculationBody
 import v1.models.requestData.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
 
 class TriggerTaxCalculationParserSpec extends UnitSpec {

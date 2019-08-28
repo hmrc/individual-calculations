@@ -23,8 +23,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.ControllerBaseSpec
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockGetCalculationService, MockMtdIdLookupService}
-import v1.models.des.selfAssessment.GetCalculationResponse
-import v1.models.des.selfAssessment.componentObjects.Metadata
+import v1.models.response.selfAssessment.GetCalculationResponse
+import v1.models.response.selfAssessment.componentObjects.Metadata
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper

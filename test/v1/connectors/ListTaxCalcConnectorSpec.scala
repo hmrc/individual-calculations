@@ -18,7 +18,7 @@ package v1.connectors
 
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.{MockAppConfig, MockHttpClient}
-import v1.models.des.selfAssessment.{CalculationListItem, ListCalculationsResponse}
+import v1.models.response.selfAssessment.{CalculationListItem, ListCalculationsResponse}
 import v1.models.domain.selfAssessment.{CalculationRequestor, CalculationType}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.requestData.DesTaxYear
