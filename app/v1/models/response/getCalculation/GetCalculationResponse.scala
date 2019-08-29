@@ -16,15 +16,28 @@
 
 package v1.models.response.getCalculation
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json.{Json, OWrites, Reads, _}
+import v1.models.des.selfAssessment.componentObjects.IncomeTax
 import v1.models.response.common.Metadata
 
-case class GetCalculationResponse(metadata: Metadata)
+case class GetCalculationResponse(metadata: Metadata, incomeTax: Option[IncomeTax] = None)
 
 object GetCalculationResponse {
   implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
-  implicit val reads: Reads[GetCalculationResponse] =
-    JsPath.read[Metadata].map(GetCalculationResponse.apply)
+  implicit val reads: Reads[GetCalculationResponse] = new Reads[GetCalculationResponse] {
+    override def reads(json: JsValue): JsResult[GetCalculationResponse] = {
+      def failureToNone[A](jsResult: JsResult[A]) = {
+        jsResult match {
+          case JsSuccess(value, path) => JsSuccess(Some(value), path)
+          case JsError(errors) => JsSuccess(None, errors.head._1)
+        }
+      }
 
+      for {
+        metadata <- json.validate[Metadata]
+        incomeTax <- failureToNone(json.validate[IncomeTax])
+      } yield GetCalculationResponse(metadata, incomeTax)
+    }
+  }
 }
