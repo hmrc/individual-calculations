@@ -101,7 +101,7 @@ class GetCalculationResponseSpec extends UnitSpec {
   val calculationSummary = CalculationSummary("test")
   val calculationDetail = CalculationDetail("test")
   val incomeTax = IncomeTax(calculationSummary, calculationDetail)
-  val calculationResponse = GetCalculationResponse(metadata)
+  val calculationResponse = GetCalculationResponse(metadata, messages = Some(messages))
   val calculationResponseFull = GetCalculationResponse(metadata, Some(incomeTax), Some(messages))
   
     val desJsonWithIncomeTax: JsValue = desJson.as[JsObject] ++ Json.parse(

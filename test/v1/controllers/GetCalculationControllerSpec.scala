@@ -86,7 +86,7 @@ class GetCalculationControllerSpec
     calculationErrorCount = Some(1)
   )
 
-  val getCalculationResponse = GetCalculationResponse(metadata, None)
+  val getCalculationResponse = GetCalculationResponse(metadata)
 
   val rawData                = GetCalculationRawData(nino, calcId)
   val requestData            = GetCalculationRequest(Nino(nino), calcId)

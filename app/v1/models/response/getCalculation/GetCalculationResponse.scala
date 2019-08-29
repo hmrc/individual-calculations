@@ -16,11 +16,15 @@
 
 package v1.models.response.getCalculation
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads, _}
-import v1.models.response.common.{IncomeTax, Metadata, Messages}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
+import v1.models.response.common.{ IncomeTax, Messages, Metadata }
 
-case class GetCalculationResponse(metadata: Metadata, incomeTax: Option[IncomeTax], messages: Option[Messages],)
+case class GetCalculationResponse(
+                                   metadata: Metadata,
+                                   incomeTax: Option[IncomeTax] = None,
+                                   messages: Option[Messages] = None
+                                 )
 
 object GetCalculationResponse {
   implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
@@ -28,9 +32,9 @@ object GetCalculationResponse {
   implicit val reads: Reads[GetCalculationResponse] = (
     JsPath.read[Metadata] and
       JsPath.readNullable[IncomeTax].orElse(Reads.pure(None)) and
-      JsPath.readNullable[Messages].map{
+      JsPath.readNullable[Messages].map {
         case Some(messages) if messages.hasMessages => Some(messages)
-        case _ => None
+        case _                                      => None
       }
-    )(GetCalculationResponse.apply _)
+  )(GetCalculationResponse.apply _)
 }

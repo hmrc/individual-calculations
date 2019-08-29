@@ -52,7 +52,7 @@ class GetCalculationConnectorSpec extends ConnectorSpec {
   val warn2 = Message("warn2", "text2")
   val messagesResponse = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
 
-  val getCalculationResponse = GetCalculationResponse(metadataResponse, Some(messagesResponse))
+  val getCalculationResponse = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse))
 
   class Test extends MockHttpClient with MockAppConfig {
     val connector: TaxCalcConnector = new TaxCalcConnector(http = mockHttpClient, appConfig = mockAppConfig)
