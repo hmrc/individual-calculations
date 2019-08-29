@@ -23,10 +23,10 @@ import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.connectors.TaxCalcConnector
 import v1.controllers.EndpointLogContext
-import v1.models.des.selfAssessment.CalculationIdResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.TriggerTaxCalculationRequest
+import v1.models.request.triggerCalculation.TriggerTaxCalculationRequest
+import v1.models.response.triggerCalculation.TriggerCalculationResponse
 import v1.support.DesResponseMappingSupport
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,11 +36,11 @@ class TriggerTaxCalculationService @Inject()(connector: TaxCalcConnector) extend
 
 
   def triggerTaxCalculation(request: TriggerTaxCalculationRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext, logContext: EndpointLogContext):
-  Future[Either[ErrorWrapper, ResponseWrapper[CalculationIdResponse]]] = {
+  Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]] = {
 
     val result = for {
       desResponseWrapper <- EitherT(connector.triggerTaxCalculation(request)).leftMap(mapDesErrors(desErrorMap))
-    } yield desResponseWrapper.map(des => CalculationIdResponse(des.id))
+    } yield desResponseWrapper.map(des => TriggerCalculationResponse(des.id))
 
     result.value
   }

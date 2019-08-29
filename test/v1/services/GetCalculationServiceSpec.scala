@@ -21,12 +21,12 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.mocks.connectors.MockTaxCalcConnector
-import v1.models.des.selfAssessment.GetCalculationResponse
-import v1.models.des.selfAssessment.componentObjects.Metadata
-import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.GetCalculationRequest
+import v1.models.request.getCalculation.GetCalculationRequest
+import v1.models.response.common.Metadata
+import v1.models.response.getCalculation.GetCalculationResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

@@ -21,11 +21,10 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.mocks.connectors.MockTaxCalcConnector
-import v1.models.des.selfAssessment.CalculationIdResponse
-import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.TriggerTaxCalculationRequest
+import v1.models.request.triggerCalculation.{TriggerTaxCalculation, TriggerTaxCalculationRequest}
+import v1.models.response.triggerCalculation.TriggerCalculationResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -37,7 +36,7 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
   private val calcId  = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
   private val correlationId = "X-123"
 
-  private val requestData = TriggerTaxCalculationRequest(Nino(nino), TriggerTaxCalculationBody(taxYear))
+  private val requestData = TriggerTaxCalculationRequest(Nino(nino), TriggerTaxCalculation(taxYear))
 
   trait Test extends MockTaxCalcConnector {
     implicit val hc: HeaderCarrier = HeaderCarrier()
@@ -46,7 +45,7 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
     val service = new TriggerTaxCalculationService(mockTaxCalcConnector)
   }
 
-  val calculationIdResponse = CalculationIdResponse(calcId)
+  val calculationIdResponse = TriggerCalculationResponse(calcId)
 
   "list calculations service" when {
     "the service call is successful" must {

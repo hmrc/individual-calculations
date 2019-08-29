@@ -19,13 +19,12 @@ package v1.controllers.requestParsers
 import javax.inject.Inject
 import uk.gov.hmrc.domain.Nino
 import v1.controllers.requestParsers.validators.TriggerTaxCalculationValidator
-import v1.models.domain.selfAssessment.TriggerTaxCalculationBody
-import v1.models.requestData.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
+import v1.models.request.triggerCalculation.{TriggerTaxCalculation, TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
 
 class TriggerTaxCalculationParser @Inject()(val validator: TriggerTaxCalculationValidator)
   extends RequestParser[TriggerTaxCalculationRawData, TriggerTaxCalculationRequest] {
 
   override protected def requestFor(data: TriggerTaxCalculationRawData): TriggerTaxCalculationRequest =
-    TriggerTaxCalculationRequest(Nino(data.nino), data.body.json.as[TriggerTaxCalculationBody])
+    TriggerTaxCalculationRequest(Nino(data.nino), data.body.json.as[TriggerTaxCalculation])
 
 }

@@ -23,42 +23,36 @@ import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.models.requestData.DesTaxYear
 import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
 
 class AuthISpec extends IntegrationBaseSpec {
 
   private trait Test {
-    val nino          = "AA123456A"
-    val taxYear       = "2017-18"
-    val data          = "someData"
-    val correlationId = "X-123"
 
-    val backendUrl = s"/income-tax/nino/$nino/taxYear/${DesTaxYear.fromMtd(taxYear)}/someService"
+    val nino                    = "AA123456A"
+    val taxYear: Option[String] = None
+    val calcId                  = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+    val correlationId           = "X-123"
 
-    val requestJson: String =
-      s"""
-         |{
-         |"data": "$data"
-         |}
-    """.stripMargin
+    def uri: String = s"/$nino/self-assessment"
 
-    val responseBody = Json.parse("""
-      | {
-      | "responseData" : "someResponse"
-      | }
-      """.stripMargin)
+    def desUrl: String = s"/income-tax/list-of-calculation-results/$nino"
 
     def setupStubs(): StubMapping
 
-    def request(): WSRequest = {
+    def request: WSRequest = {
+      val queryParams: Seq[(String, String)] =
+        Seq("taxYear" -> taxYear)
+          .collect { case (k, Some(v)) => (k, v) }
+
       setupStubs()
-      buildRequest(s"/ni/$nino/$taxYear/sampleEndpoint")
+      buildRequest(uri)
+        .addQueryStringParameters(queryParams: _*)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
   }
 
-  "Calling the sample endpoint" when {
+  "Calling the List Calculations endpoint" when {
 
     "the NINO cannot be converted to a MTD ID" should {
 
@@ -70,23 +64,71 @@ class AuthISpec extends IntegrationBaseSpec {
           MtdIdLookupStub.internalServerError(nino)
         }
 
-        val response: WSResponse = await(request().post(Json.parse(requestJson)))
+        val response: WSResponse = await(request.get)
         response.status shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
 
     "an MTD ID is successfully retrieve from the NINO and the user is authorised" should {
 
-      "return 201" in new Test {
+      val successBody = Json.parse(
+        """{
+          |  "calculations": [
+          |    {
+          |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          |      "calculationTimestamp": "2019-03-17T09:22:59Z",
+          |      "type": "inYear",
+          |      "requestedBy": "hmrc"
+          |    }
+          |  ]
+          |}""".stripMargin)
+
+      val desSuccessBody = Json.parse(
+        """[
+          |    {
+          |		"calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+          |		"calculationTimestamp": "2019-03-17T09:22:59Z",
+          |		"calculationType": "inYear",
+          |		"requestedBy": "hmrc",
+          |		"year": 2016,
+          |		"fromDate": "2018-01-01",
+          |		"toDate": "2019-01-01",
+          |		"totalIncomeTaxAndNicsDue": 99999999999.99,
+          |		"intentToCrystallise": true,
+          |		"crystallised": true,
+          |		"crystallisationTimestamp": "2019-07-13T07:51:43Z"
+          |	},
+          | {
+          |		"calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1d",
+          |		"calculationTimestamp": "2019-03-17T09:22:59Z",
+          |		"calculationType": "biss",
+          |		"requestedBy": "hmrc",
+          |		"year": 2016,
+          |		"fromDate": "2018-01-01",
+          |		"toDate": "2019-01-01",
+          |		"totalIncomeTaxAndNicsDue": 99999999999.99,
+          |		"intentToCrystallise": true,
+          |		"crystallised": true,
+          |		"crystallisationTimestamp": "2019-07-13T07:51:43Z"
+          |	}
+          |  ]""".stripMargin)
+
+      "return 200 " in new Test {
+
+        override val taxYear = Some("2018-19")
+
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
           AuthStub.authorised()
           MtdIdLookupStub.ninoFound(nino)
-          DesStub.onSuccess(DesStub.POST, backendUrl, OK, responseBody)
+          DesStub.onSuccess(DesStub.GET, desUrl, Map("taxYear" -> "2019"), OK, desSuccessBody)
         }
 
-        val response: WSResponse = await(request().post(Json.parse(requestJson)))
-        response.status shouldBe Status.CREATED
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe successBody
       }
     }
 
@@ -101,7 +143,7 @@ class AuthISpec extends IntegrationBaseSpec {
           AuthStub.unauthorisedNotLoggedIn()
         }
 
-        val response: WSResponse = await(request().post(Json.parse(requestJson)))
+        val response: WSResponse = await(request.get)
         response.status shouldBe Status.FORBIDDEN
       }
     }
@@ -117,7 +159,7 @@ class AuthISpec extends IntegrationBaseSpec {
           AuthStub.unauthorisedOther()
         }
 
-        val response: WSResponse = await(request().post(Json.parse(requestJson)))
+        val response: WSResponse = await(request.get)
         response.status shouldBe Status.FORBIDDEN
       }
     }

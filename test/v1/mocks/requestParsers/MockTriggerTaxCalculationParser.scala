@@ -20,7 +20,7 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import v1.controllers.requestParsers.TriggerTaxCalculationParser
 import v1.models.errors.ErrorWrapper
-import v1.models.requestData.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
+import v1.models.request.triggerCalculation.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
 
 trait MockTriggerTaxCalculationParser extends MockFactory {
 

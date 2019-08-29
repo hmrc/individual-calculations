@@ -18,19 +18,19 @@ package v1.services
 
 import cats.data.EitherT
 import cats.implicits._
-import javax.inject.{ Inject, Singleton }
+import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
 import v1.connectors.TaxCalcConnector
 import v1.controllers.EndpointLogContext
-import v1.models.des.selfAssessment.GetCalculationResponse
-import v1.models.domain.selfAssessment.CalculationType
+import v1.models.domain.CalculationType
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.GetCalculationRequest
+import v1.models.request.getCalculation.GetCalculationRequest
+import v1.models.response.getCalculation.GetCalculationResponse
 import v1.support.DesResponseMappingSupport
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesResponseMappingSupport with Logging {

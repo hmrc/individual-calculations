@@ -18,7 +18,7 @@ package v1.controllers.requestParsers.validators
 
 import v1.controllers.requestParsers.validators.validations.{CalculationIdValidation, NinoValidation}
 import v1.models.errors.MtdError
-import v1.models.requestData.selfAssessment.GetCalculationRawData
+import v1.models.request.getCalculation.GetCalculationRawData
 
 class GetCalculationValidator extends Validator[GetCalculationRawData] {
 
