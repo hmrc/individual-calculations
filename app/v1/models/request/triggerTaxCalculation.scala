@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.request
 
-import play.api.libs.json.Format
-import utils.enums.Enums
+import play.api.libs.json._
+import play.api.mvc.AnyContentAsJson
+import uk.gov.hmrc.domain.Nino
 
-sealed trait CalculationRequestor
+case class TriggerTaxCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
 
-object CalculationRequestor{
-  case object customer extends CalculationRequestor
-  case object hmrc extends CalculationRequestor
-  case object agent extends CalculationRequestor
+case class TriggerTaxCalculationRequest(nino: Nino, triggerTaxCalc: TriggerTaxCalculation)
 
-  implicit val format: Format[CalculationRequestor] = Enums.format[CalculationRequestor]
+case class TriggerTaxCalculation(taxYear: String)
+
+object TriggerTaxCalculation {
+  implicit val reads: Reads[TriggerTaxCalculation] = Json.reads[TriggerTaxCalculation]
 }
+

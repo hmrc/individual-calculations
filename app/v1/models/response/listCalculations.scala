@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.response
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import v1.models.domain.selfAssessment.{CalculationRequestor, CalculationType}
+import v1.models.domain.{CalculationRequestor, CalculationType}
 
 case class CalculationListItem(
                                 id: String,

@@ -14,21 +14,29 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.domain
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import CalculationType._
 
-class CalculationIdResponseSpec extends UnitSpec {
-  "Json reads" should {
-    "use specified format" in {
-      val json = Json.parse(
-        """
-          |{
-          |  "id": "00000000-0000-1000-8000-000000000000"
-          |}""".stripMargin)
+class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
 
-      json.as[CalculationIdResponse] shouldBe CalculationIdResponse("00000000-0000-1000-8000-000000000000")
+  val desJson: JsValue = Json.toJson("")
+
+  testRoundTrip[CalculationType](
+    ("inYear", inYear),
+    ("crystallisation", crystallisation),
+    ("bissAdjustment", bissAdjustment),
+    ("biss", biss),
+    ("POA", POA))
+
+  "CalculationRequestor" when {
+    "given an invalid field" should {
+      "return a JsError" in {
+        desJson.validate[CalculationType] shouldBe a[JsError]
+      }
     }
   }
 }

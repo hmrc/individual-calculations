@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.domain
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-case class GetCalculationResponse(metadata: Metadata)
+sealed trait CalculationType
 
-object GetCalculationResponse {
-  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
-  implicit val reads: Reads[GetCalculationResponse] =
-    JsPath.read[Metadata].map(GetCalculationResponse.apply)
+object CalculationType{
+  case object inYear extends CalculationType
+  case object crystallisation extends CalculationType
+  case object bissAdjustment extends CalculationType
+  case object biss extends CalculationType
+  case object POA extends CalculationType
 
+  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
 }

@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package v1.controllers.selfAssessment
+package v1.controllers
 
 import cats.data.EitherT
 import cats.implicits._
-import javax.inject.{ Inject, Singleton }
+import javax.inject.{Inject, Singleton}
 import play.api.http.MimeTypes
 import play.api.libs.json.Json
-import play.api.mvc.{ Action, AnyContent, ControllerComponents }
+import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.Logging
 import v1.controllers.requestParsers.GetCalculationParser
-import v1.controllers.{ AuthorisedController, BaseController, EndpointLogContext }
 import v1.models.errors._
-import v1.models.request.selfAssessment.GetCalculationRawData
-import v1.services.{ EnrolmentsAuthService, GetCalculationService, MtdIdLookupService }
+import v1.models.request.GetCalculationRawData
+import v1.services.{EnrolmentsAuthService, GetCalculationService, MtdIdLookupService}
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class GetCalculationMetadataController @Inject()(val authService: EnrolmentsAuthService,

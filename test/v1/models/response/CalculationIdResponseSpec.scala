@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.request.selfAssessment
+package v1.models.response
 
-import uk.gov.hmrc.domain.Nino
-import v1.models.request.{DesTaxYear, RawData}
+import play.api.libs.json.Json
+import support.UnitSpec
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+class CalculationIdResponseSpec extends UnitSpec {
+  "Json reads" should {
+    "use specified format" in {
+      val json = Json.parse(
+        """
+          |{
+          |  "id": "00000000-0000-1000-8000-000000000000"
+          |}""".stripMargin)
 
-case class ListCalculationsRequest(nino: Nino, taxYear: Option[DesTaxYear])
+      json.as[CalculationIdResponse] shouldBe CalculationIdResponse("00000000-0000-1000-8000-000000000000")
+    }
+  }
+}

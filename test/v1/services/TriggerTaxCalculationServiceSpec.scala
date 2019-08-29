@@ -21,11 +21,11 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.mocks.connectors.MockTaxCalcConnector
-import v1.models.response.selfAssessment.CalculationIdResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.TriggerTaxCalculation
-import v1.models.request.selfAssessment.TriggerTaxCalculationRequest
+import v1.models.request.TriggerTaxCalculationRequest
+import v1.models.response.CalculationIdResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

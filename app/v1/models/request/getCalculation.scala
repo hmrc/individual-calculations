@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.request.selfAssessment
+package v1.models.request
 
-import play.api.mvc.AnyContentAsJson
 import uk.gov.hmrc.domain.Nino
-import v1.models.request.{RawData, TriggerTaxCalculation}
 
-case class TriggerTaxCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
+case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
 
-case class TriggerTaxCalculationRequest(nino: Nino, triggerTaxCalc: TriggerTaxCalculation)
-
+case class GetCalculationRequest(nino: Nino, calculationId: String)

@@ -20,7 +20,7 @@ import javax.inject.Inject
 import uk.gov.hmrc.domain.Nino
 import v1.controllers.requestParsers.validators.TriggerTaxCalculationValidator
 import v1.models.request.TriggerTaxCalculation
-import v1.models.request.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
+import v1.models.request.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
 
 class TriggerTaxCalculationParser @Inject()(val validator: TriggerTaxCalculationValidator)
   extends RequestParser[TriggerTaxCalculationRawData, TriggerTaxCalculationRequest] {

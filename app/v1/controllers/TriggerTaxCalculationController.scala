@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.controllers.selfAssessment
+package v1.controllers
 
 import cats.data.EitherT
 import cats.implicits._
@@ -24,9 +24,8 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContentAsJson, ControllerComponents}
 import utils.Logging
 import v1.controllers.requestParsers.TriggerTaxCalculationParser
-import v1.controllers.{AuthorisedController, BaseController, EndpointLogContext}
 import v1.models.errors._
-import v1.models.request.selfAssessment.TriggerTaxCalculationRawData
+import v1.models.request.TriggerTaxCalculationRawData
 import v1.services.{EnrolmentsAuthService, MtdIdLookupService, _}
 
 import scala.concurrent.{ExecutionContext, Future}

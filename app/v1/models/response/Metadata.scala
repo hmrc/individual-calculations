@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.response
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.request.DesTaxYear
 
 case class Metadata(id: String,

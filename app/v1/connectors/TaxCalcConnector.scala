@@ -21,9 +21,8 @@ import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.connectors.httpparsers.StandardDesHttpParser._
-import v1.models.response.selfAssessment.{CalculationIdResponse, GetCalculationResponse, ListCalculationsResponse}
-import v1.models.request.{DesTaxYear, EmptyJsonBody}
-import v1.models.request.selfAssessment.{GetCalculationRequest, ListCalculationsRequest, TriggerTaxCalculationRequest}
+import v1.models.request._
+import v1.models.response.{CalculationIdResponse, GetCalculationResponse, ListCalculationsResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
 

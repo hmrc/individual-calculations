@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package v1.models.response
 
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
-import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.domain.{CalculationRequestor, CalculationType}
 
 class GetCalculationResponseSpec extends UnitSpec {
 

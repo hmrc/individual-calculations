@@ -23,7 +23,7 @@ import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockTriggerTaxCalculationValidator
 import v1.models.errors._
 import v1.models.request.TriggerTaxCalculation
-import v1.models.request.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
+import v1.models.request.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
 
 class TriggerTaxCalculationParserSpec extends UnitSpec {
   val nino = "AA123456B"

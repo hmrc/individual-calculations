@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.domain
 
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v1.models.domain.selfAssessment.CalculationType._
+import v1.models.domain.CalculationRequestor.{agent, customer, hmrc}
+import v1.models.domain.CalculationRequestor._
 
-class CalculationTypeSpec extends UnitSpec with EnumJsonSpecSupport {
+class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
 
   val desJson: JsValue = Json.toJson("")
 
-  testRoundTrip[CalculationType](
-    ("inYear", inYear),
-    ("crystallisation", crystallisation),
-    ("bissAdjustment", bissAdjustment),
-    ("biss", biss),
-    ("POA", POA))
+  testRoundTrip[CalculationRequestor](
+    ("customer", customer),
+    ("hmrc", hmrc),
+    ("agent", agent)
+  )
 
   "CalculationRequestor" when {
     "given an invalid field" should {
       "return a JsError" in {
-        desJson.validate[CalculationType] shouldBe a[JsError]
+        desJson.validate[CalculationRequestor] shouldBe a[JsError]
       }
     }
   }

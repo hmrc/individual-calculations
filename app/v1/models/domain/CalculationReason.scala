@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.models.domain
 
-import play.api.libs.json._
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-case class TriggerTaxCalculation(taxYear: String)
+sealed trait CalculationReason
 
+object CalculationReason {
+  case object customerRequest extends CalculationReason
+  case object class2NICEvent extends CalculationReason
+  case object newLossEvent extends CalculationReason
+  case object updatedLossEvent extends CalculationReason
+  case object newClaimEvent extends CalculationReason
+  case object updatedClaimEvent extends CalculationReason
 
-object TriggerTaxCalculation {
-  implicit val reads: Reads[TriggerTaxCalculation] = Json.reads[TriggerTaxCalculation]
+  implicit val format: Format[CalculationReason] = Enums.format[CalculationReason]
 }

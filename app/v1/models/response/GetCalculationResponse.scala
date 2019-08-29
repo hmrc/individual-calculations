@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.request.selfAssessment
+package v1.models.response
 
-import uk.gov.hmrc.domain.Nino
-import v1.models.request.RawData
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
-case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+case class GetCalculationResponse(metadata: Metadata)
 
-case class GetCalculationRequest(nino: Nino, calculationId: String)
+object GetCalculationResponse {
+  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
+  implicit val reads: Reads[GetCalculationResponse] =
+    JsPath.read[Metadata].map(GetCalculationResponse.apply)
 
+}

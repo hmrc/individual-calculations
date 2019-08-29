@@ -18,10 +18,10 @@ package v1.connectors
 
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.{MockAppConfig, MockHttpClient}
-import v1.models.response.selfAssessment.CalculationIdResponse
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.{DesTaxYear, EmptyJsonBody, TriggerTaxCalculation}
-import v1.models.request.selfAssessment.TriggerTaxCalculationRequest
+import v1.models.request.TriggerTaxCalculationRequest
+import v1.models.response.CalculationIdResponse
 
 import scala.concurrent.Future
 

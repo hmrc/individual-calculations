@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.domain
 
 import play.api.libs.json._
 import support.UnitSpec

@@ -20,10 +20,10 @@ import org.scalamock.handlers.CallHandler
 import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
-import v1.models.response.selfAssessment.CalculationIdResponse
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.selfAssessment.TriggerTaxCalculationRequest
+import v1.models.request.TriggerTaxCalculationRequest
+import v1.models.response.CalculationIdResponse
 import v1.services.TriggerTaxCalculationService
 
 import scala.concurrent.{ExecutionContext, Future}

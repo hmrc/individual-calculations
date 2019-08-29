@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package v1.controllers.selfAssessment
+package v1.controllers
 
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.controllers.ControllerBaseSpec
+import v1.controllers.{ControllerBaseSpec, TriggerTaxCalculationController}
 import v1.mocks.requestParsers.MockTriggerTaxCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockTriggerTaxCalculationService}
-import v1.models.response.selfAssessment.CalculationIdResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.TriggerTaxCalculation
-import v1.models.request.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
+import v1.models.request.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
+import v1.models.response.CalculationIdResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

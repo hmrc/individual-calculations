@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.domain.selfAssessment
+package v1.models.request
 
-import play.api.libs.json.Format
-import utils.enums.Enums
+import uk.gov.hmrc.domain.Nino
 
-sealed trait CalculationType
+case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
 
-
-object CalculationType{
-  case object inYear extends CalculationType
-  case object crystallisation extends CalculationType
-  case object bissAdjustment extends CalculationType
-  case object biss extends CalculationType
-  case object POA extends CalculationType
-
-  implicit val format: Format[CalculationType] = Enums.format[CalculationType]
-}
+case class ListCalculationsRequest(nino: Nino, taxYear: Option[DesTaxYear])
