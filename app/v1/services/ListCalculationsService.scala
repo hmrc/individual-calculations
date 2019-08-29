@@ -27,7 +27,7 @@ import v1.models.response.selfAssessment.ListCalculationsResponse
 import v1.models.domain.selfAssessment.CalculationType
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.ListCalculationsRequest
+import v1.models.request.selfAssessment.ListCalculationsRequest
 import v1.support.DesResponseMappingSupport
 
 import scala.concurrent.{ExecutionContext, Future}

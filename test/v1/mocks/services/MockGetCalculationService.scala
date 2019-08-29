@@ -23,7 +23,7 @@ import v1.controllers.EndpointLogContext
 import v1.models.response.selfAssessment.GetCalculationResponse
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.GetCalculationRequest
+import v1.models.request.selfAssessment.GetCalculationRequest
 import v1.services.GetCalculationService
 
 import scala.concurrent.{ExecutionContext, Future}

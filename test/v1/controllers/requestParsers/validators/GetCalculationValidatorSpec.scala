@@ -18,7 +18,7 @@ package v1.controllers.requestParsers.validators
 
 import support.UnitSpec
 import v1.models.errors.{CalculationIdFormatError, NinoFormatError}
-import v1.models.requestData.selfAssessment.GetCalculationRawData
+import v1.models.request.selfAssessment.GetCalculationRawData
 
 class GetCalculationValidatorSpec extends UnitSpec {
 

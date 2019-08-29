@@ -24,8 +24,8 @@ import v1.mocks.connectors.MockTaxCalcConnector
 import v1.models.response.selfAssessment.CalculationIdResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.TriggerTaxCalculationBody
-import v1.models.requestData.selfAssessment.TriggerTaxCalculationRequest
+import v1.models.request.TriggerTaxCalculation
+import v1.models.request.selfAssessment.TriggerTaxCalculationRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -37,7 +37,7 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
   private val calcId  = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
   private val correlationId = "X-123"
 
-  private val requestData = TriggerTaxCalculationRequest(Nino(nino), TriggerTaxCalculationBody(taxYear))
+  private val requestData = TriggerTaxCalculationRequest(Nino(nino), TriggerTaxCalculation(taxYear))
 
   trait Test extends MockTaxCalcConnector {
     implicit val hc: HeaderCarrier = HeaderCarrier()

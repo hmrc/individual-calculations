@@ -28,7 +28,7 @@ import v1.controllers.{AuthorisedController, BaseController, EndpointLogContext}
 import v1.models.response.selfAssessment.ListCalculationsResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.ListCalculationsRawData
+import v1.models.request.selfAssessment.ListCalculationsRawData
 import v1.services.{EnrolmentsAuthService, ListCalculationsService, MtdIdLookupService}
 
 import scala.concurrent.{ExecutionContext, Future}

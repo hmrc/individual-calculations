@@ -25,8 +25,8 @@ import v1.models.response.selfAssessment.{CalculationListItem, ListCalculationsR
 import v1.models.domain.selfAssessment.{CalculationRequestor, CalculationType}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.DesTaxYear
-import v1.models.requestData.selfAssessment.ListCalculationsRequest
+import v1.models.request.DesTaxYear
+import v1.models.request.selfAssessment.ListCalculationsRequest
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

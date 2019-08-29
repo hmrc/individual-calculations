@@ -19,8 +19,8 @@ package v1.controllers.requestParsers.validators
 import config.FixedConfig
 import v1.controllers.requestParsers.validators.validations.{JsonFormatValidation, MinTaxYearValidation, NinoValidation, TaxYearValidation}
 import v1.models.errors.{MtdError, RuleIncorrectOrEmptyBodyError}
-import v1.models.request.TriggerTaxCalculationBody
-import v1.models.requestData.selfAssessment.TriggerTaxCalculationRawData
+import v1.models.request.TriggerTaxCalculation
+import v1.models.request.selfAssessment.TriggerTaxCalculationRawData
 
 class TriggerTaxCalculationValidator extends Validator[TriggerTaxCalculationRawData] with FixedConfig {
 
@@ -29,20 +29,20 @@ class TriggerTaxCalculationValidator extends Validator[TriggerTaxCalculationRawD
   private def parameterFormatValidation: TriggerTaxCalculationRawData => List[List[MtdError]] = { data =>
     List(
       NinoValidation.validate(data.nino),
-      JsonFormatValidation.validate[TriggerTaxCalculationBody](data.body.json, RuleIncorrectOrEmptyBodyError)
+      JsonFormatValidation.validate[TriggerTaxCalculation](data.body.json, RuleIncorrectOrEmptyBodyError)
 
     )
   }
 
   private def taxYearValidation: TriggerTaxCalculationRawData => List[List[MtdError]] = { data =>
-    val req = data.body.json.as[TriggerTaxCalculationBody]
+    val req = data.body.json.as[TriggerTaxCalculation]
     List(
       TaxYearValidation.validate(req.taxYear)
     )
   }
 
   private def mtdTaxYearValidation: TriggerTaxCalculationRawData => List[List[MtdError]] = { data =>
-    val req = data.body.json.as[TriggerTaxCalculationBody]
+    val req = data.body.json.as[TriggerTaxCalculation]
     List(
       MinTaxYearValidation.validate(req.taxYear, 2018)
     )

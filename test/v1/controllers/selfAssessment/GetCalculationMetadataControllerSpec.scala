@@ -23,12 +23,11 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.ControllerBaseSpec
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockGetCalculationService, MockMtdIdLookupService}
-import v1.models.response.selfAssessment.GetCalculationResponse
-import v1.models.response.selfAssessment.componentObjects.Metadata
+import v1.models.response.selfAssessment.{GetCalculationResponse, Metadata}
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.{GetCalculationRawData, GetCalculationRequest}
+import v1.models.request.selfAssessment.{GetCalculationRawData, GetCalculationRequest}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

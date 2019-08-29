@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.requestData
+package v1.models.request.selfAssessment
 
-trait RawData
+import uk.gov.hmrc.domain.Nino
+import v1.models.request.RawData
+
+case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+
+case class GetCalculationRequest(nino: Nino, calculationId: String)
+
+

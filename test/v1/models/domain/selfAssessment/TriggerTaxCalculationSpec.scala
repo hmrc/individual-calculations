@@ -18,10 +18,10 @@ package v1.models.domain.selfAssessment
 
 import play.api.libs.json._
 import support.UnitSpec
-import v1.models.request.TriggerTaxCalculationBody
+import v1.models.request.TriggerTaxCalculation
 import v1.models.utils.JsonErrorValidators
 
-class TriggerTaxCalculationBodySpec extends UnitSpec with JsonErrorValidators {
+class TriggerTaxCalculationSpec extends UnitSpec with JsonErrorValidators {
   "reads" when {
     "passed valid JSON" should {
       val inputJson = Json.parse(
@@ -33,12 +33,12 @@ class TriggerTaxCalculationBodySpec extends UnitSpec with JsonErrorValidators {
       )
 
       "return a valid model" in {
-        TriggerTaxCalculationBody("2017-18") shouldBe inputJson.as[TriggerTaxCalculationBody]
+        TriggerTaxCalculation("2017-18") shouldBe inputJson.as[TriggerTaxCalculation]
       }
 
-      testMandatoryProperty[TriggerTaxCalculationBody](inputJson)("/taxYear")
+      testMandatoryProperty[TriggerTaxCalculation](inputJson)("/taxYear")
 
-      testPropertyType[TriggerTaxCalculationBody](inputJson)(
+      testPropertyType[TriggerTaxCalculation](inputJson)(
         path = "/taxYear",
         replacement = 12344.toJson,
         expectedError = JsonError.STRING_FORMAT_EXCEPTION

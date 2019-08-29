@@ -18,11 +18,10 @@ package v1.connectors
 
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.{MockAppConfig, MockHttpClient}
-import v1.models.response.selfAssessment.GetCalculationResponse
-import v1.models.response.selfAssessment.componentObjects.Metadata
+import v1.models.response.selfAssessment.{GetCalculationResponse, Metadata}
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.requestData.selfAssessment.GetCalculationRequest
+import v1.models.request.selfAssessment.GetCalculationRequest
 
 import scala.concurrent.Future
 

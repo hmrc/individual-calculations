@@ -26,8 +26,8 @@ import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, Moc
 import v1.models.response.selfAssessment.CalculationIdResponse
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.TriggerTaxCalculationBody
-import v1.models.requestData.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
+import v1.models.request.TriggerTaxCalculation
+import v1.models.request.selfAssessment.{TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -69,7 +69,7 @@ class TriggerTaxCalculationControllerSpec
                                           |}
     """.stripMargin)
 
-  private val requestBody = TriggerTaxCalculationBody("2017-18")
+  private val requestBody = TriggerTaxCalculation("2017-18")
 
   private val rawData     = TriggerTaxCalculationRawData(nino, AnyContentAsJson(requestBodyJson))
   private val requestData = TriggerTaxCalculationRequest(Nino(nino), requestBody)

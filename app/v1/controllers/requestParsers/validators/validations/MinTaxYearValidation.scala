@@ -17,7 +17,7 @@
 package v1.controllers.requestParsers.validators.validations
 
 import v1.models.errors.{MtdError, RuleTaxYearNotSupportedError}
-import v1.models.requestData.DesTaxYear
+import v1.models.request.DesTaxYear
 
 object MinTaxYearValidation {
 

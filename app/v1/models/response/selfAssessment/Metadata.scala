@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment.componentObjects
+package v1.models.response.selfAssessment
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import utils.NestedJsonReads
 import v1.models.domain.selfAssessment.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.requestData.DesTaxYear
+import v1.models.request.DesTaxYear
 
 case class Metadata(id: String,
                     taxYear: String,
@@ -37,7 +38,7 @@ object Error{
   implicit val format: OFormat[Error] = Json.format[Error]
 }
 
-object Metadata {
+object Metadata extends NestedJsonReads {
   implicit val writes: Writes[Metadata] = Json.writes[Metadata]
   implicit val reads: Reads[Metadata]=(
   (JsPath \"metadata" \ "calculationId").read[String] and

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment
+package utils
 
 import play.api.libs.json._
 
 import scala.annotation.tailrec
 import scala.concurrent.Future
 
-package object componentObjects {
+trait NestedJsonReads {
 
   type ServiceResponse[T, E] = Future[Either[T, E]]
 
@@ -61,3 +61,5 @@ package object componentObjects {
   }
 
 }
+
+object NestedJsonReads extends NestedJsonReads

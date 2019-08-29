@@ -23,7 +23,7 @@ import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import support.IntegrationBaseSpec
-import v1.models.requestData.DesTaxYear
+import v1.models.request.DesTaxYear
 import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
 
 class AuthISpec extends IntegrationBaseSpec {

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.models.request
 
-import uk.gov.hmrc.domain.Nino
-import v1.models.requestData.RawData
+import play.api.libs.json._
 
-case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
-
-case class GetCalculationRequest(nino: Nino, calculationId: String)
+case class TriggerTaxCalculation(taxYear: String)
 
 
+object TriggerTaxCalculation {
+  implicit val reads: Reads[TriggerTaxCalculation] = Json.reads[TriggerTaxCalculation]
+}

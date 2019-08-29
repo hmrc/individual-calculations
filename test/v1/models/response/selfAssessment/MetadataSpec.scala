@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.selfAssessment.componentObjects
+package v1.models.response.selfAssessment
 
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec

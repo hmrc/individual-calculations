@@ -17,7 +17,6 @@
 package v1.models.response.selfAssessment
 
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import v1.models.response.selfAssessment.componentObjects.Metadata
 
 case class GetCalculationResponse(metadata: Metadata)
 

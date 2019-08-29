@@ -20,8 +20,8 @@ import support.UnitSpec
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.validators.MockListCalculationsValidator
 import v1.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
-import v1.models.requestData.DesTaxYear
-import v1.models.requestData.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.request.DesTaxYear
+import v1.models.request.selfAssessment.{ListCalculationsRawData, ListCalculationsRequest}
 
 class ListCalculationsParserSpec extends UnitSpec {
   val nino = "AA123456B"

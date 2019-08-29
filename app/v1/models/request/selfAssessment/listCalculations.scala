@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.requestData.selfAssessment
+package v1.models.request.selfAssessment
 
 import uk.gov.hmrc.domain.Nino
-import v1.models.requestData.{DesTaxYear, RawData}
+import v1.models.request.{DesTaxYear, RawData}
 
 case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
 
