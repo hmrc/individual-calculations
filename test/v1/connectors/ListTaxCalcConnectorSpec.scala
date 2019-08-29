@@ -19,12 +19,10 @@ package v1.connectors
 import uk.gov.hmrc.domain.Nino
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.domain.{CalculationRequestor, CalculationType}
-import v1.models.response.ListCalculationsResponse
-import v1.models.domain.CalculationRequestor
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.DesTaxYear
-import v1.models.request.ListCalculationsRequest
-import v1.models.response.{CalculationListItem, ListCalculationsResponse}
+import v1.models.request.listCalculations.ListCalculationsRequest
+import v1.models.response.listCalculations.{CalculationListItem, ListCalculationsResponse}
 
 import scala.concurrent.Future
 

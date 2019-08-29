@@ -26,8 +26,8 @@ import utils.Logging
 import v1.controllers.requestParsers.ListCalculationsParser
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.ListCalculationsRawData
-import v1.models.response.ListCalculationsResponse
+import v1.models.request.listCalculations.ListCalculationsRawData
+import v1.models.response.listCalculations.ListCalculationsResponse
 import v1.services.{EnrolmentsAuthService, ListCalculationsService, MtdIdLookupService}
 
 import scala.concurrent.{ExecutionContext, Future}

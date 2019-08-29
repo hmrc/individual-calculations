@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.models.request.triggerCalculation
 
+import play.api.libs.json._
+import play.api.mvc.AnyContentAsJson
 import uk.gov.hmrc.domain.Nino
+import v1.models.request.RawData
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+case class TriggerTaxCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData
 
-case class ListCalculationsRequest(nino: Nino, taxYear: Option[DesTaxYear])
+case class TriggerTaxCalculationRequest(nino: Nino, triggerTaxCalc: TriggerTaxCalculation)
+
+case class TriggerTaxCalculation(taxYear: String)
+
+object TriggerTaxCalculation {
+  implicit val reads: Reads[TriggerTaxCalculation] = Json.reads[TriggerTaxCalculation]
+}
+

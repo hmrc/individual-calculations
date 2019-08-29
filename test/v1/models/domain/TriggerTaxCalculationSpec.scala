@@ -18,7 +18,7 @@ package v1.models.domain
 
 import play.api.libs.json._
 import support.UnitSpec
-import v1.models.request.TriggerTaxCalculation
+import v1.models.request.triggerCalculation.TriggerTaxCalculation
 import v1.models.utils.JsonErrorValidators
 
 class TriggerTaxCalculationSpec extends UnitSpec with JsonErrorValidators {

@@ -22,8 +22,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.models.errors.ErrorWrapper
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.TriggerTaxCalculationRequest
-import v1.models.response.CalculationIdResponse
+import v1.models.request.triggerCalculation.TriggerTaxCalculationRequest
+import v1.models.response.triggerCalculation.TriggerCalculationResponse
 import v1.services.TriggerTaxCalculationService
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,7 +35,7 @@ trait MockTriggerTaxCalculationService extends MockFactory {
   object MockTriggerTaxCalculationService {
 
     def triggerTaxCalculation(requestData: TriggerTaxCalculationRequest):
-    CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[CalculationIdResponse]]]] = {
+    CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]]] = {
       (mockTriggerTaxCalculationService
         .triggerTaxCalculation(_: TriggerTaxCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext))
         .expects(requestData, *, *, *)

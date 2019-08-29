@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.triggerCalculation
 
-import play.api.libs.json.Json
-import support.UnitSpec
+import play.api.libs.json.{Json, Reads, Writes}
 
-class CalculationIdResponseSpec extends UnitSpec {
-  "Json reads" should {
-    "use specified format" in {
-      val json = Json.parse(
-        """
-          |{
-          |  "id": "00000000-0000-1000-8000-000000000000"
-          |}""".stripMargin)
+/**
+  * Calculation Id returned from DES as part of Trigger a Tax Calculation
+  */
 
-      json.as[CalculationIdResponse] shouldBe CalculationIdResponse("00000000-0000-1000-8000-000000000000")
-    }
-  }
+case class TriggerCalculationResponse(id: String)
+
+object TriggerCalculationResponse {
+  implicit val reads: Reads[TriggerCalculationResponse] = Json.reads[TriggerCalculationResponse]
+  implicit val writes: Writes[TriggerCalculationResponse] = Json.writes[TriggerCalculationResponse]
+
 }
+
+

@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.request
+package v1.models.response.triggerCalculation
 
-import uk.gov.hmrc.domain.Nino
+import play.api.libs.json.Json
+import support.UnitSpec
 
-case class GetCalculationRawData(nino: String, calculationId: String) extends RawData
+class TriggerCalculationResponseSpec extends UnitSpec {
+  "Json reads" should {
+    "use specified format" in {
+      val json = Json.parse(
+        """
+          |{
+          |  "id": "00000000-0000-1000-8000-000000000000"
+          |}""".stripMargin)
 
-case class GetCalculationRequest(nino: Nino, calculationId: String)
+      json.as[TriggerCalculationResponse] shouldBe TriggerCalculationResponse("00000000-0000-1000-8000-000000000000")
+    }
+  }
+}

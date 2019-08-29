@@ -26,8 +26,8 @@ import v1.controllers.EndpointLogContext
 import v1.models.domain.CalculationType
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.GetCalculationRequest
-import v1.models.response.GetCalculationResponse
+import v1.models.request.getCalculation.GetCalculationRequest
+import v1.models.response.getCalculation.GetCalculationResponse
 import v1.support.DesResponseMappingSupport
 
 import scala.concurrent.{ExecutionContext, Future}

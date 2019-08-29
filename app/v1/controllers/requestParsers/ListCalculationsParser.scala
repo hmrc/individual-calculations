@@ -20,9 +20,10 @@ import javax.inject.Inject
 import uk.gov.hmrc.domain.Nino
 import v1.controllers.requestParsers.validators.ListCalculationsValidator
 import v1.models.request.DesTaxYear
-import v1.models.request.{ListCalculationsRawData, ListCalculationsRequest}
+import v1.models.request.listCalculations.{ListCalculationsRawData, ListCalculationsRequest}
 
-class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator) extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
+class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
+  extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
 
   override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
     ListCalculationsRequest(Nino(data.nino), data.taxYear.map(DesTaxYear.fromMtd))

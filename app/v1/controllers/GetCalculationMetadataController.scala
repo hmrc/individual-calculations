@@ -25,7 +25,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import utils.Logging
 import v1.controllers.requestParsers.GetCalculationParser
 import v1.models.errors._
-import v1.models.request.GetCalculationRawData
+import v1.models.request.getCalculation.GetCalculationRawData
 import v1.services.{EnrolmentsAuthService, GetCalculationService, MtdIdLookupService}
 
 import scala.concurrent.{ExecutionContext, Future}

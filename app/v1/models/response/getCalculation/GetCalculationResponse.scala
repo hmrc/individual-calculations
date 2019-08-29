@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.getCalculation
 
-import play.api.libs.json.{Json, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import v1.models.response.common.Metadata
 
-/**
-  * Calculation Id returned from DES as part of Trigger a Tax Calculation
-  */
+case class GetCalculationResponse(metadata: Metadata)
 
-case class CalculationIdResponse(id: String)
+object GetCalculationResponse {
+  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
-object CalculationIdResponse {
-  implicit val reads: Reads[CalculationIdResponse] = Json.reads[CalculationIdResponse]
-  implicit val writes: Writes[CalculationIdResponse] = Json.writes[CalculationIdResponse]
+  implicit val reads: Reads[GetCalculationResponse] =
+    JsPath.read[Metadata].map(GetCalculationResponse.apply)
 
 }
-
-

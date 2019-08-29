@@ -22,7 +22,12 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import v1.connectors.httpparsers.StandardDesHttpParser._
 import v1.models.request._
-import v1.models.response.{CalculationIdResponse, GetCalculationResponse, ListCalculationsResponse}
+import v1.models.request.getCalculation.GetCalculationRequest
+import v1.models.request.listCalculations.ListCalculationsRequest
+import v1.models.request.triggerCalculation.TriggerTaxCalculationRequest
+import v1.models.response.getCalculation.GetCalculationResponse
+import v1.models.response.listCalculations.ListCalculationsResponse
+import v1.models.response.triggerCalculation.TriggerCalculationResponse
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -49,14 +54,14 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
 
   def triggerTaxCalculation(request: TriggerTaxCalculationRequest)(
     implicit hc: HeaderCarrier,
-    ec: ExecutionContext): Future[DesOutcome[CalculationIdResponse]] = {
+    ec: ExecutionContext): Future[DesOutcome[TriggerCalculationResponse]] = {
 
     val nino = request.nino.nino
     val taxYear = DesTaxYear.fromMtd(request.triggerTaxCalc.taxYear)
 
     post(
       body = EmptyJsonBody,
-      DesUri[CalculationIdResponse](s"income-tax/nino/$nino/taxYear/$taxYear/tax-calculation")
+      DesUri[TriggerCalculationResponse](s"income-tax/nino/$nino/taxYear/$taxYear/tax-calculation")
     )
 
   }

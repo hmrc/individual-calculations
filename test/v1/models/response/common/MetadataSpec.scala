@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response
+package v1.models.response.common
 
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.domain.{CalculationRequestor, CalculationType}
 
 class MetadataSpec extends UnitSpec {
 

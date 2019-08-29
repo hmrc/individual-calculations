@@ -17,35 +17,34 @@
 package v1.controllers
 
 import play.api.libs.json.Json
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.mocks.requestParsers.MockListCalculationsParser
-import v1.mocks.services.{MockEnrolmentsAuthService, MockListCalculationsService, MockMtdIdLookupService}
-import v1.models.domain.{CalculationRequestor, CalculationType}
+import v1.mocks.requestParsers.MockTriggerTaxCalculationParser
+import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockTriggerTaxCalculationService}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.{DesTaxYear, ListCalculationsRawData, ListCalculationsRequest}
-import v1.models.response.{CalculationListItem, ListCalculationsResponse}
+import v1.models.request.triggerCalculation.{TriggerTaxCalculation, TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
+import v1.models.response.triggerCalculation.TriggerCalculationResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ListCalculationsControllerSpec
-    extends ControllerBaseSpec
+class TriggerTaxCalculationControllerSpec
+  extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
-    with MockListCalculationsParser
-    with MockListCalculationsService {
+    with MockTriggerTaxCalculationParser
+    with MockTriggerTaxCalculationService {
 
   trait Test {
     val hc = HeaderCarrier()
 
-    val controller = new ListCalculationsController(
+    val controller = new TriggerTaxCalculationController(
       authService = mockEnrolmentsAuthService,
-      listCalculationsParser = mockListCalculationsParser,
+      requestDataParser = mockTriggerTaxCalculationParser,
       lookupService = mockMtdIdLookupService,
-      listCalculationsService = mockListCalculationsService,
+      triggerTaxCalcService = mockTriggerTaxCalculationService,
       cc = cc
     )
 
@@ -54,70 +53,40 @@ class ListCalculationsControllerSpec
   }
 
   private val nino          = "AA123456A"
-  private val taxYear       =  Some("2017-18")
   private val correlationId = "X-123"
+  private val calcId        = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
+  private val requestBodyJson = Json.parse("""{
+                                             |  "taxYear" : "2017-18"
+                                             |}
+    """.stripMargin)
 
-  val responseBody = Json.parse(
-    """{
-      |  "calculations": [
-      |    {
-      |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |      "calculationTimestamp": "2019-03-17T09:22:59Z",
-      |      "type": "inYear",
-      |      "requestedBy": "hmrc"
-      |    }
-      |  ]
-      |}""".stripMargin)
+  private val responseBody = Json.parse("""{
+                                          |  "id" : "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+                                          |}
+    """.stripMargin)
 
-  val response = ListCalculationsResponse(
-    Seq(
-      CalculationListItem(
-        id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        calculationTimestamp = "2019-03-17T09:22:59Z",
-        `type` = CalculationType.inYear,
-        requestedBy = Some(CalculationRequestor.hmrc)
-      )
-    ))
+  private val requestBody = TriggerTaxCalculation("2017-18")
 
-
-  private val rawData     = ListCalculationsRawData(nino, taxYear)
-  private val requestData = ListCalculationsRequest(Nino(nino), Some(DesTaxYear("2018")))
+  private val rawData     = TriggerTaxCalculationRawData(nino, AnyContentAsJson(requestBodyJson))
+  private val requestData = TriggerTaxCalculationRequest(Nino(nino), requestBody)
 
   "handleRequest" should {
-    "return OK with list of calculations" when {
+    "return Accepted" when {
       "happy path" in new Test {
 
-        MockListCalculationsParser
+        MockTriggerTaxCalculationParser
           .parse(rawData)
           .returns(Right(requestData))
 
-        MockListCalculationsService
-          .listCalculations(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, response))))
+        MockTriggerTaxCalculationService
+          .triggerTaxCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, TriggerCalculationResponse(calcId)))))
 
-        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
+        val result: Future[Result] = controller.triggerTaxCalculation(nino)(fakePostRequest(requestBodyJson))
 
-        status(result) shouldBe OK
+        status(result) shouldBe ACCEPTED
         contentAsJson(result) shouldBe responseBody
-        header("X-CorrelationId", result) shouldBe Some(correlationId)
-      }
-    }
-
-    "return 404 NotFoundError" when {
-      "an empty is is returned from the back end" in new Test{
-        MockListCalculationsParser
-          .parse(rawData)
-          .returns(Right(requestData))
-
-        MockListCalculationsService
-          .listCalculations(requestData)
-          .returns(Future.successful(Right(ResponseWrapper(correlationId, ListCalculationsResponse(Nil)))))
-
-        val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
-
-        status(result) shouldBe NOT_FOUND
-        contentAsJson(result) shouldBe Json.toJson(NotFoundError)
         header("X-CorrelationId", result) shouldBe Some(correlationId)
       }
     }
@@ -127,11 +96,11 @@ class ListCalculationsControllerSpec
         def errorsFromParserTester(error: MtdError, expectedStatus: Int): Unit = {
           s"a ${error.code} error is returned from the parser" in new Test {
 
-            MockListCalculationsParser
+            MockTriggerTaxCalculationParser
               .parse(rawData)
               .returns(Left(ErrorWrapper(Some(correlationId), error, None)))
 
-            val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
+            val result: Future[Result] = controller.triggerTaxCalculation(nino)(fakePostRequest(requestBodyJson))
 
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(error)
@@ -140,11 +109,11 @@ class ListCalculationsControllerSpec
         }
 
         val input = Seq(
-          (BadRequestError, BAD_REQUEST),
           (NinoFormatError, BAD_REQUEST),
           (TaxYearFormatError, BAD_REQUEST),
           (RuleTaxYearNotSupportedError, BAD_REQUEST),
           (RuleTaxYearRangeExceededError, BAD_REQUEST),
+          (RuleIncorrectOrEmptyBodyError, BAD_REQUEST),
           (DownstreamError, INTERNAL_SERVER_ERROR)
         )
 
@@ -155,15 +124,15 @@ class ListCalculationsControllerSpec
         def serviceErrors(mtdError: MtdError, expectedStatus: Int): Unit = {
           s"a $mtdError error is returned from the service" in new Test {
 
-            MockListCalculationsParser
+            MockTriggerTaxCalculationParser
               .parse(rawData)
               .returns(Right(requestData))
 
-            MockListCalculationsService
-              .listCalculations(requestData)
+            MockTriggerTaxCalculationService
+              .triggerTaxCalculation(requestData)
               .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError))))
 
-            val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
+            val result: Future[Result] = controller.triggerTaxCalculation(nino)(fakePostRequest(requestBodyJson))
 
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(mtdError)
@@ -174,7 +143,7 @@ class ListCalculationsControllerSpec
         val input = Seq(
           (NinoFormatError, BAD_REQUEST),
           (TaxYearFormatError, BAD_REQUEST),
-          (NotFoundError, NOT_FOUND),
+          (RuleNoIncomeSubmissionsExistError, FORBIDDEN),
           (DownstreamError, INTERNAL_SERVER_ERROR)
         )
 

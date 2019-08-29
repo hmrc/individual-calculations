@@ -23,9 +23,8 @@ import v1.controllers.EndpointLogContext
 import v1.mocks.connectors.MockTaxCalcConnector
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.TriggerTaxCalculation
-import v1.models.request.TriggerTaxCalculationRequest
-import v1.models.response.CalculationIdResponse
+import v1.models.request.triggerCalculation.{TriggerTaxCalculation, TriggerTaxCalculationRequest}
+import v1.models.response.triggerCalculation.TriggerCalculationResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -46,7 +45,7 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
     val service = new TriggerTaxCalculationService(mockTaxCalcConnector)
   }
 
-  val calculationIdResponse = CalculationIdResponse(calcId)
+  val calculationIdResponse = TriggerCalculationResponse(calcId)
 
   "list calculations service" when {
     "the service call is successful" must {

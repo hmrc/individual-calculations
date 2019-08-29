@@ -16,10 +16,10 @@
 
 package v1
 
-import v1.models.response.GetCalculationResponse
 import v1.models.errors.{DesError, MtdError}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.response.{GetCalculationResponse, ListCalculationsResponse}
+import v1.models.response.getCalculation.GetCalculationResponse
+import v1.models.response.listCalculations.ListCalculationsResponse
 
 package object connectors {
 
