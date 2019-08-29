@@ -16,14 +16,15 @@
 
 package v1.models.response.getCalculation
 
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json._
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.common.{Message, Messages, Metadata}
+import v1.models.response.common.{Message, Messages,CalculationDetail, CalculationSummary, IncomeTax, Metadata}
 
 class GetCalculationResponseSpec extends UnitSpec {
 
-  val desJson: JsValue = Json.parse("""{
+  val desJson: JsValue = Json.parse(
+    """{
       |    "metadata":{
       |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |       "taxYear": 2019,
@@ -42,7 +43,8 @@ class GetCalculationResponseSpec extends UnitSpec {
       |     }
       |}""".stripMargin)
 
-  val invalidDesJson: JsValue = Json.parse("""{
+  val invalidDesJson: JsValue = Json.parse(
+    """{
       |    "metadata":{
       |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |       "taxYear": 2019,
@@ -61,7 +63,8 @@ class GetCalculationResponseSpec extends UnitSpec {
       |     }
       |}""".stripMargin)
 
-  val writtenJson: JsValue = Json.parse("""{
+  val writtenJson: JsValue = Json.parse(
+    """{
       |    "metadata":{
       |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |       "taxYear": "2018-19",
@@ -93,27 +96,49 @@ class GetCalculationResponseSpec extends UnitSpec {
     crystallised = false,
     calculationErrorCount = Some(1)
   )
+  
   val messages = Messages(None, None, Some(Seq(Message("id1", "text1"))))
-  val calculationResponse = GetCalculationResponse(metadata, Some(messages))
+  val calculationSummary = CalculationSummary("test")
+  val calculationDetail = CalculationDetail("test")
+  val incomeTax = IncomeTax(calculationSummary, calculationDetail)
+  val calculationResponse = GetCalculationResponse(metadata)
+  val calculationResponseFull = GetCalculationResponse(metadata, Some(incomeTax), Some(messages))
+  
+    val desJsonWithIncomeTax: JsValue = desJson.as[JsObject] ++ Json.parse(
+    s"""
+       |{
+       | "summary" : ${Json.toJson(calculationSummary).toString()},
+       | "detail" : ${Json.toJson(calculationDetail).toString()}
+       |}
+    """.stripMargin).as[JsObject]
 
-  "GetCalculationResponse" when {
-    "read from valid JSON" should {
-      "return a JsSuccess" in {
+
+  "GetCalculationResponse" should {
+
+    "successfully read from json" when {
+
+      "provided with valid json with only metadata" in {
         desJson.validate[GetCalculationResponse] shouldBe a[JsSuccess[_]]
-      }
-      "return the expected GetCalculationResponse object" in {
         desJson.as[GetCalculationResponse] shouldBe calculationResponse
+      }
+
+      "provided with valid json with income tax and messages" in {
+        desJsonWithIncomeTax.validate[GetCalculationResponse] shouldBe a[JsSuccess[_]]
+        desJsonWithIncomeTax.as[GetCalculationResponse] shouldBe calculationResponseFull
       }
     }
 
-    "read from invalid JSON" should {
-      "return a JsError" in {
+    "fail to read from json" when {
+
+      "read from invalid JSON" in {
         invalidDesJson.validate[GetCalculationResponse] shouldBe a[JsError]
       }
     }
 
-    "written to JSON" should {
-      "return the expected JsObject" in {
+    "write correctly to json" when {
+
+      "using a model with only metadata" in {
+
         Json.toJson(calculationResponse) shouldBe writtenJson
       }
     }
