@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation
+package v1.models.response.common
 
-import play.api.libs.json.{Json, OWrites, Reads, _}
-import v1.models.response.common.{IncomeTax, Metadata}
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{Json, OFormat}
 
-case class GetCalculationResponse(metadata: Metadata, incomeTax: Option[IncomeTax] = None)
+case class IncomeTax(summary: CalculationSummary, detail: CalculationDetail)
 
-object GetCalculationResponse {
-  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
-
-  implicit val reads: Reads[GetCalculationResponse] = (
-    JsPath.read[Metadata] and
-      JsPath.readNullable[IncomeTax].orElse(Reads.pure(None))
-    )(GetCalculationResponse.apply _)
+object IncomeTax {
+  implicit val format: OFormat[IncomeTax] = Json.format[IncomeTax]
 }

@@ -14,19 +14,30 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation
+package v1.models.response.common
 
-import play.api.libs.json.{Json, OWrites, Reads, _}
-import v1.models.response.common.{IncomeTax, Metadata}
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsSuccess, JsValue, Json}
+import support.UnitSpec
 
-case class GetCalculationResponse(metadata: Metadata, incomeTax: Option[IncomeTax] = None)
+class CalculationSummarySpec extends UnitSpec {
 
-object GetCalculationResponse {
-  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "incomeTax" : ""
+      |}
+    """.stripMargin)
 
-  implicit val reads: Reads[GetCalculationResponse] = (
-    JsPath.read[Metadata] and
-      JsPath.readNullable[IncomeTax].orElse(Reads.pure(None))
-    )(GetCalculationResponse.apply _)
+  val model = CalculationSummary("")
+
+  "CalculationDetail" should {
+
+    "write to json correctly" in {
+      Json.toJson(model) shouldBe json
+    }
+
+    "read from json correctly" in {
+      json.validate[CalculationSummary] shouldBe JsSuccess(model)
+    }
+  }
 }
