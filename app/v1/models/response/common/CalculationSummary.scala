@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment.componentObjects
+package v1.models.response.common
 
 import play.api.libs.json.{Json, OFormat}
 
-case class IncomeTax(summary: CalculationSummary, detail: CalculationDetail)
+case class CalculationSummary(incomeTax: String)
 
-object IncomeTax {
-  implicit val format: OFormat[IncomeTax] = Json.format[IncomeTax]
+object CalculationSummary {
+  implicit val format: OFormat[CalculationSummary] = Json.format[CalculationSummary]
 }

@@ -18,9 +18,8 @@ package v1.models.response.getCalculation
 
 import play.api.libs.json._
 import support.UnitSpec
-import v1.models.des.selfAssessment.componentObjects.{CalculationDetail, CalculationSummary, IncomeTax}
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.common.Metadata
+import v1.models.response.common.{CalculationDetail, CalculationSummary, IncomeTax, Metadata}
 
 class GetCalculationResponseSpec extends UnitSpec {
 

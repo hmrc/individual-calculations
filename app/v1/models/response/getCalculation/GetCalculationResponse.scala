@@ -17,27 +17,16 @@
 package v1.models.response.getCalculation
 
 import play.api.libs.json.{Json, OWrites, Reads, _}
-import v1.models.des.selfAssessment.componentObjects.IncomeTax
-import v1.models.response.common.Metadata
+import v1.models.response.common.{IncomeTax, Metadata}
+import play.api.libs.functional.syntax._
 
 case class GetCalculationResponse(metadata: Metadata, incomeTax: Option[IncomeTax] = None)
 
 object GetCalculationResponse {
   implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
-  implicit val reads: Reads[GetCalculationResponse] = new Reads[GetCalculationResponse] {
-    override def reads(json: JsValue): JsResult[GetCalculationResponse] = {
-      def failureToNone[A](jsResult: JsResult[A]) = {
-        jsResult match {
-          case JsSuccess(value, path) => JsSuccess(Some(value), path)
-          case JsError(errors) => JsSuccess(None, errors.head._1)
-        }
-      }
-
-      for {
-        metadata <- json.validate[Metadata]
-        incomeTax <- failureToNone(json.validate[IncomeTax])
-      } yield GetCalculationResponse(metadata, incomeTax)
-    }
-  }
+  implicit val reads: Reads[GetCalculationResponse] = (
+    JsPath.read[Metadata] and
+      JsPath.readNullable[IncomeTax].orElse(Reads.pure(None))
+    )(GetCalculationResponse.apply _)
 }

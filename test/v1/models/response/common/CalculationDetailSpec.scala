@@ -14,12 +14,30 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment.componentObjects
+package v1.models.response.common
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsSuccess, JsValue, Json}
+import support.UnitSpec
 
-case class CalculationSummary(incomeTax: String)
+class CalculationDetailSpec extends UnitSpec {
 
-object CalculationSummary {
-  implicit val format: OFormat[CalculationSummary] = Json.format[CalculationSummary]
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "incomeTax" : ""
+      |}
+    """.stripMargin)
+
+  val model = CalculationDetail("")
+
+  "CalculationDetail" should {
+
+    "write to json correctly" in {
+      Json.toJson(model) shouldBe json
+    }
+
+    "read from json correctly" in {
+      json.validate[CalculationDetail] shouldBe JsSuccess(model)
+    }
+  }
 }

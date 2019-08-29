@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.des.selfAssessment.componentObjects
+package v1.models.response.common
 
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
 
-class IncomeTaxSpec extends UnitSpec {
-
-  val summaryModel = CalculationSummary("")
-  val detailModel = CalculationDetail("")
-  val model = IncomeTax(summaryModel, detailModel)
+class CalculationSummarySpec extends UnitSpec {
 
   val json: JsValue = Json.parse(
-    s"""
-       |{
-       | "summary" : ${Json.toJson(summaryModel).toString()},
-       | "detail" : ${Json.toJson(detailModel).toString()}
-       |}
+    """
+      |{
+      | "incomeTax" : ""
+      |}
     """.stripMargin)
+
+  val model = CalculationSummary("")
 
   "CalculationDetail" should {
 
@@ -40,7 +37,7 @@ class IncomeTaxSpec extends UnitSpec {
     }
 
     "read from json correctly" in {
-      json.validate[IncomeTax] shouldBe JsSuccess(model)
+      json.validate[CalculationSummary] shouldBe JsSuccess(model)
     }
   }
 }
