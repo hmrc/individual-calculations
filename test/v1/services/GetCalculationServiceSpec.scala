@@ -25,7 +25,7 @@ import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationTyp
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRequest
-import v1.models.response.common.Metadata
+import v1.models.response.common.{Message, Messages, Metadata}
 import v1.models.response.getCalculation.GetCalculationResponse
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -45,8 +45,18 @@ class GetCalculationServiceSpec extends UnitSpec {
     crystallised = false,
     calculationErrorCount = Some(1)
   )
-  val getCalculationResponse = GetCalculationResponse(metadataResponse)
-  val wrongCalcTypeResponse = GetCalculationResponse(metadataResponse.copy(calculationType = CalculationType.biss))
+
+  val err1 = Message("err1", "text1")
+  val err2 = Message("err2", "text2")
+  val info1 = Message("info1", "text1")
+  val info2 = Message("info2", "text2")
+  val warn1 = Message("warn1", "text1")
+  val warn2 = Message("warn2", "text2")
+  val messagesResponse = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
+
+  val getCalculationResponse = GetCalculationResponse(metadataResponse, Some(messagesResponse))
+  val wrongCalcTypeResponse = GetCalculationResponse(metadataResponse.copy(calculationType = CalculationType.biss), None)
+
 
   private val nino          = "AA111111A"
   private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"

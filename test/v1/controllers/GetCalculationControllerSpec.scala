@@ -32,7 +32,7 @@ import v1.models.response.getCalculation.GetCalculationResponse
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class GetCalculationMetadataControllerSpec
+class GetCalculationControllerSpec
     extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
@@ -42,7 +42,7 @@ class GetCalculationMetadataControllerSpec
   trait Test {
     val hc = HeaderCarrier()
 
-    val controller = new GetCalculationMetadataController(
+    val controller = new GetCalculationController(
       authService = mockEnrolmentsAuthService,
       lookupService = mockMtdIdLookupService,
       getCalculationParser = mockGetCalculationParser,
@@ -86,7 +86,7 @@ class GetCalculationMetadataControllerSpec
     calculationErrorCount = Some(1)
   )
 
-  val getCalculationResponse = GetCalculationResponse(metadata)
+  val getCalculationResponse = GetCalculationResponse(metadata, None)
 
   val rawData                = GetCalculationRawData(nino, calcId)
   val requestData            = GetCalculationRequest(Nino(nino), calcId)

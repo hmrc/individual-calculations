@@ -158,7 +158,7 @@ class MetadataSpec extends UnitSpec {
 
   private val metadataResponseWithoutErrors = metadataResponse.copy(calculationErrorCount = None)
 
-  val error = Error("id1", "exampleText")
+  val error = Message("id1", "exampleText")
 
   "Metadata" when {
     "read from a valid JSON" should {
@@ -207,15 +207,15 @@ class MetadataSpec extends UnitSpec {
   "Error" when {
     "read from valid JSON" should{
       "return a JsSuccess" in{
-        validErrorJson.validate[Error] shouldBe a[JsSuccess[_]]
+        validErrorJson.validate[Message] shouldBe a[JsSuccess[_]]
       }
       "with the expected Error object" in{
-        validErrorJson.as[Error] shouldBe error
+        validErrorJson.as[Message] shouldBe error
       }
     }
     "read from invalid JSON" should{
       "return a JsError" in{
-        invalidErrorJson.validate[Error] shouldBe a[JsError]
+        invalidErrorJson.validate[Message] shouldBe a[JsError]
       }
     }
     "written to JSON" should{

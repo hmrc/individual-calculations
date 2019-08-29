@@ -17,14 +17,20 @@
 package v1.models.response.getCalculation
 
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import v1.models.response.common.Metadata
+import v1.models.response.common.{Messages, Metadata}
+import play.api.libs.functional.syntax._
 
-case class GetCalculationResponse(metadata: Metadata)
+case class GetCalculationResponse(metadata: Metadata, messages: Option[Messages])
 
 object GetCalculationResponse {
   implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
-  implicit val reads: Reads[GetCalculationResponse] =
-    JsPath.read[Metadata].map(GetCalculationResponse.apply)
+  implicit val reads: Reads[GetCalculationResponse]= (
+    JsPath.read[Metadata] and
+      JsPath.readNullable[Messages].map{
+        case Some(messages) if messages.hasMessages => Some(messages)
+        case _ => None
+      }
+    )(GetCalculationResponse.apply _)
 
 }

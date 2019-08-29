@@ -24,7 +24,7 @@ import support.IntegrationBaseSpec
 import v1.models.errors._
 import v1.stubs.{AuditStub, AuthStub, DesStub, MtdIdLookupStub}
 
-class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
+class GetCalculationControllerISpec extends IntegrationBaseSpec {
   private trait Test {
 
     val nino          = "AA123456A"
@@ -85,7 +85,12 @@ class GetCalculationMetadataControllerISpec extends IntegrationBaseSpec {
       |       "intentToCrystallise": false,
       |       "crystallised": false,
       |       "calculationErrorCount": 1
-      |       }
+      |       },
+      |     "messages" :{
+      |        "error":[
+      |        {"id":"id1", "text":"text1"}
+      |        ]
+      |     }
       |}""".stripMargin)
 
 

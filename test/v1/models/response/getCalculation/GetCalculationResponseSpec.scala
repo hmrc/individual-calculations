@@ -19,7 +19,7 @@ package v1.models.response.getCalculation
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.common.Metadata
+import v1.models.response.common.{Message, Messages, Metadata}
 
 class GetCalculationResponseSpec extends UnitSpec {
 
@@ -73,7 +73,12 @@ class GetCalculationResponseSpec extends UnitSpec {
       |       "intentToCrystallise": false,
       |       "crystallised": false,
       |       "calculationErrorCount": 1
-      |       }
+      |       },
+      |    "messages" :{
+      |        "error":[
+      |        {"id":"id1", "text":"text1"}
+      |        ]
+      |     }
       |}""".stripMargin)
 
   val metadata = Metadata(
@@ -88,12 +93,13 @@ class GetCalculationResponseSpec extends UnitSpec {
     crystallised = false,
     calculationErrorCount = Some(1)
   )
-  val calculationResponse = GetCalculationResponse(metadata)
+  val messages = Messages(None, None, Some(Seq(Message("id1", "text1"))))
+  val calculationResponse = GetCalculationResponse(metadata, Some(messages))
 
   "GetCalculationResponse" when {
     "read from valid JSON" should {
       "return a JsSuccess" in {
-        desJson.validate[GetCalculationResponse] shouldBe a[JsSuccess[GetCalculationResponse]]
+        desJson.validate[GetCalculationResponse] shouldBe a[JsSuccess[_]]
       }
       "return the expected GetCalculationResponse object" in {
         desJson.as[GetCalculationResponse] shouldBe calculationResponse
