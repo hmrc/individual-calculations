@@ -113,12 +113,12 @@ class GetCalculationResponseSpec extends UnitSpec {
     "successfully read from json" when {
 
       "provided with valid json with only metadata" in {
-        desJson.validate[GetCalculationResponse] shouldBe a[JsSuccess[GetCalculationResponse]]
+        desJson.validate[GetCalculationResponse] shouldBe a[JsSuccess[_]]
         desJson.as[GetCalculationResponse] shouldBe calculationResponse
       }
 
       "provided with valid json with income tax" in {
-        desJsonWithIncomeTax.validate[GetCalculationResponse] shouldBe a[JsSuccess[GetCalculationResponse]]
+        desJsonWithIncomeTax.validate[GetCalculationResponse] shouldBe a[JsSuccess[_]]
         desJsonWithIncomeTax.as[GetCalculationResponse] shouldBe calculationResponseWithIncome
       }
     }
