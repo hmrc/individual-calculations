@@ -27,7 +27,7 @@ object Message {
 }
 
 
-case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], error: Option[Seq[Message]]){
+case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]]){
   def hasMessages: Boolean = this match{
     case Messages(None,None,None) => false
     case _ => true
