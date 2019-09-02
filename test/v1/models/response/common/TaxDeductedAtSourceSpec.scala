@@ -16,18 +16,29 @@
 
 package v1.models.response.common
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsSuccess, JsValue, Json}
+import support.UnitSpec
 
-case class IncomeTax(summary: CalculationSummary, detail: Option[CalculationDetail])
+class TaxDeductedAtSourceSpec extends UnitSpec {
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.readNullable[CalculationDetail].map {
-      case Some(CalculationDetail(None, None, None, None)) => None
-      case other => other
+  val json: JsValue = Json.parse(
+    """
+      |{
+      | "ukLandAndProperty" : 100.25,
+      | "bbsi" : 200.25
+      |}
+    """.stripMargin)
+
+  val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
+
+  "TaxDeductedAtSource" should {
+
+    "read correctly from json" in {
+      json.validate[TaxDeductedAtSource] shouldBe JsSuccess(model)
     }
-  )(IncomeTax.apply _)
+
+    "write correctly to json" in {
+      Json.toJson(model) shouldBe json
+    }
+  }
 }

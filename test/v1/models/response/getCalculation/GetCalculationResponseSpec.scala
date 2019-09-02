@@ -19,7 +19,7 @@ package v1.models.response.getCalculation
 import play.api.libs.json._
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.common.{Message, Messages,CalculationDetail, CalculationSummary, IncomeTax, Metadata}
+import v1.models.response.common.{CalculationDetail, CalculationSummary, IncomeTax, Message, Messages, Metadata, _}
 
 class GetCalculationResponseSpec extends UnitSpec {
 
@@ -96,22 +96,28 @@ class GetCalculationResponseSpec extends UnitSpec {
     crystallised = false,
     calculationErrorCount = Some(1)
   )
-  
+
   val messages = Messages(None, None, Some(Seq(Message("id1", "text1"))))
-  val calculationSummary = CalculationSummary("test")
-  val calculationDetail = CalculationDetail("test")
-  val incomeTax = IncomeTax(calculationSummary, calculationDetail)
+  val calculationSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25)
+  val calculationDetail = CalculationDetail(None, None, None, None)
+  val incomeTax = IncomeTax(calculationSummary, None)
   val calculationResponse = GetCalculationResponse(metadata, messages = Some(messages))
   val calculationResponseFull = GetCalculationResponse(metadata, Some(incomeTax), Some(messages))
-  
-    val desJsonWithIncomeTax: JsValue = desJson.as[JsObject] ++ Json.parse(
-    s"""
-       |{
-       | "summary" : ${Json.toJson(calculationSummary).toString()},
-       | "detail" : ${Json.toJson(calculationDetail).toString()}
-       |}
-    """.stripMargin).as[JsObject]
 
+  val desJsonWithIncomeTax: JsValue = desJson.as[JsObject] ++
+    Json.parse(
+      """
+        |{
+        | "calculation" : {
+        |   "taxCalculation" : {
+        |     "incomeTax" : {
+        |       "incomeTaxCharged" : 100.25
+        |     },
+        |     "totalIncomeTaxAndNicsDue" : 200.25
+        |   }
+        | }
+        |}
+      """.stripMargin).as[JsObject]
 
   "GetCalculationResponse" should {
 

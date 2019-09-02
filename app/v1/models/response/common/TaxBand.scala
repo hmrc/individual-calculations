@@ -16,18 +16,17 @@
 
 package v1.models.response.common
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{Json, OFormat}
 
-case class IncomeTax(summary: CalculationSummary, detail: Option[CalculationDetail])
+case class TaxBand(name: String,
+              rate: BigDecimal,
+              threshold: Option[BigDecimal],
+              apportionedThreshold: Option[BigDecimal],
+              bandLimit: Option[BigDecimal],
+              apportionedBandLimit: Option[BigDecimal],
+              income: BigDecimal,
+              amount: BigDecimal)
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.readNullable[CalculationDetail].map {
-      case Some(CalculationDetail(None, None, None, None)) => None
-      case other => other
-    }
-  )(IncomeTax.apply _)
+object TaxBand {
+  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
 }

@@ -15,19 +15,12 @@
  */
 
 package v1.models.response.common
-
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
 
-case class IncomeTax(summary: CalculationSummary, detail: Option[CalculationDetail])
+case class IncomeTaxDetail(payPensionsProfit: Option[IncomeTypeBreakdown],
+                           savingsAndGains: Option[IncomeTypeBreakdown],
+                           dividends: Option[IncomeTypeBreakdown])
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.readNullable[CalculationDetail].map {
-      case Some(CalculationDetail(None, None, None, None)) => None
-      case other => other
-    }
-  )(IncomeTax.apply _)
+object IncomeTaxDetail {
+  implicit val format: OFormat[IncomeTaxDetail] = Json.format[IncomeTaxDetail]
 }

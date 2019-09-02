@@ -16,18 +16,36 @@
 
 package v1.models.response.common
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
 
-case class IncomeTax(summary: CalculationSummary, detail: Option[CalculationDetail])
+class GiftAidSpec extends UnitSpec {
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.readNullable[CalculationDetail].map {
-      case Some(CalculationDetail(None, None, None, None)) => None
-      case other => other
+  val json: JsValue = Json.parse(
+    s"""
+       |{
+       | "grossGiftAidPayments": 100.25,
+       | "rate": 200.25,
+       | "giftAidTax": 300.25
+       |}
+           """.stripMargin)
+
+  val model = GiftAid(100.25, 200.25, 300.25)
+
+  "NicBand" should {
+
+    "read from json correctly" when {
+
+      "provided with valid json" in {
+        json.as[GiftAid] shouldBe model
+      }
     }
-  )(IncomeTax.apply _)
+
+    "write to json correctly" when {
+
+      "a valid model is provided" in {
+        Json.toJson(model) shouldBe json
+      }
+    }
+  }
 }

@@ -16,18 +16,17 @@
 
 package v1.models.response.common
 
-import play.api.libs.json._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import play.api.libs.functional.syntax._
+import utils.NestedJsonReads
 
-case class IncomeTax(summary: CalculationSummary, detail: Option[CalculationDetail])
+case class NicDetail(class2Nics: Option[Class2NicDetail], class4NicBands: Option[Seq[NicBand]])
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.readNullable[CalculationDetail].map {
-      case Some(CalculationDetail(None, None, None, None)) => None
-      case other => other
-    }
-  )(IncomeTax.apply _)
+object NicDetail extends NestedJsonReads{
+  implicit val writes: OWrites[NicDetail] = Json.writes[NicDetail]
+
+  implicit val reads: Reads[NicDetail] = (
+    (JsPath \ "class2Nics").readNullable[Class2NicDetail] and
+      (JsPath \ "class4Nics" \ "nic4Bands").readNestedNullable[Seq[NicBand]]
+  )(NicDetail.apply _)
 }

@@ -21,26 +21,115 @@ import support.UnitSpec
 
 class IncomeTaxSpec extends UnitSpec {
 
-  val summaryModel = CalculationSummary("")
-  val detailModel = CalculationDetail("")
-  val model = IncomeTax(summaryModel, detailModel)
+  val minJson: JsValue = Json.parse(
+    """
+      |{
+      | "calculation" : {
+      |   "taxCalculation" : {
+      |     "incomeTax" : {
+      |       "incomeTaxCharged" : 100.25
+      |     },
+      |     "totalIncomeTaxAndNicsDue" : 200.25
+      |   }
+      | }
+      |}
+    """.stripMargin)
 
-  val json: JsValue = Json.parse(
-    s"""
+  val emptyModelJson: JsValue = Json.parse(
+    """
+      |{
+      | "calculation" : {
+      |   "taxCalculation" : {
+      |     "incomeTax" : {
+      |       "incomeTaxCharged" : 100.25
+      |     },
+      |     "totalIncomeTaxAndNicsDue" : 200.25
+      |   },
+      |   "taxDeductedAtSource" : {
+      |   }
+      | }
+      |}
+    """.stripMargin)
+
+  val filledTopLevelJson: JsValue = Json.parse(
+    """
        |{
-       | "summary" : ${Json.toJson(summaryModel).toString()},
-       | "detail" : ${Json.toJson(detailModel).toString()}
+       |  "calculation" : {
+       |   "taxCalculation" : {
+       |     "incomeTax" : {
+       |       "incomeTaxCharged" : 100.25
+       |     },
+       |     "totalIncomeTaxAndNicsDue" : 200.25
+       |   },
+       |   "taxDeductedAtSource" : {
+       |    "ukLandAndProperty" : 300.25,
+       |    "bbsi" : 400.25
+       |   }
+       | }
        |}
     """.stripMargin)
 
-  "CalculationDetail" should {
+  val outputEmptyModelJson: JsValue = Json.parse(
+    """
+      |{
+      | "summary" : {
+      |   "incomeTax" : {
+      |     "incomeTaxCharged" : 100.25
+      |   },
+      |   "totalIncomeTaxAndNicsDue" : 200.25
+      | }
+      |}
+    """.stripMargin)
 
-    "write to json correctly" in {
-      Json.toJson(model) shouldBe json
+  val outputTopLevelFilledJson: JsValue = Json.parse(
+    """
+      |{
+      | "summary" : {
+      |   "incomeTax" : {
+      |     "incomeTaxCharged" : 100.25
+      |   },
+      |   "totalIncomeTaxAndNicsDue" : 200.25
+      | },
+      | "detail" : {
+      |   "taxDeductedAtSource" : {
+      |     "ukLandAndProperty" : 300.25,
+      |     "bbsi" : 400.25
+      |   }
+      | }
+      |}
+    """.stripMargin)
+
+  val calcSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25)
+  val calcDetail = CalculationDetail(None, None, Some(TaxDeductedAtSource(Some(300.25), Some(400.25))), None)
+  val minModel = IncomeTax(calcSummary, None)
+  val topLevelModel = IncomeTax(calcSummary, Some(calcDetail))
+
+  "IncomeTax" should {
+
+    "read from json correctly" when {
+
+      "provided with the minimum data" in {
+        minJson.validate[IncomeTax] shouldBe JsSuccess(minModel)
+      }
+
+      "provided with json producing empty models" in {
+        emptyModelJson.validate[IncomeTax] shouldBe JsSuccess(minModel)
+      }
+
+      "provided with the maximum data" in {
+        filledTopLevelJson.validate[IncomeTax] shouldBe JsSuccess(topLevelModel)
+      }
     }
 
-    "read from json correctly" in {
-      json.validate[IncomeTax] shouldBe JsSuccess(model)
+    "write to json correctly" when {
+
+      "provided with the minimum model" in {
+        Json.toJson(minModel) shouldBe outputEmptyModelJson
+      }
+
+      "provided with a model with the top layer filled" in {
+        Json.toJson(topLevelModel) shouldBe outputTopLevelFilledJson
+      }
     }
   }
 }

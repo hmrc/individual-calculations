@@ -16,18 +16,13 @@
 
 package v1.models.response.common
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{Json, OFormat}
 
-case class IncomeTax(summary: CalculationSummary, detail: Option[CalculationDetail])
+case class GiftAid(grossGiftAidPayments: BigDecimal,
+                   rate: BigDecimal,
+                   giftAidTax: BigDecimal)
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.readNullable[CalculationDetail].map {
-      case Some(CalculationDetail(None, None, None, None)) => None
-      case other => other
-    }
-  )(IncomeTax.apply _)
+object GiftAid {
+  implicit val format: OFormat[GiftAid] = Json.format[GiftAid]
 }
+
