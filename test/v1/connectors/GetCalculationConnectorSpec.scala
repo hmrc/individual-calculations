@@ -21,8 +21,9 @@ import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRequest
-import v1.models.response.common.Metadata
+import v1.models.response.common.{Message, Messages, Metadata}
 import v1.models.response.getCalculation.GetCalculationResponse
+import v1.fixtures.Fixtures._
 
 import scala.concurrent.Future
 
@@ -44,7 +45,9 @@ class GetCalculationConnectorSpec extends ConnectorSpec {
     calculationErrorCount = Some(1)
   )
 
-  val getCalculationResponse = GetCalculationResponse(metadataResponse)
+  val messagesResponse = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
+
+  val getCalculationResponse = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse))
 
   class Test extends MockHttpClient with MockAppConfig {
     val connector: TaxCalcConnector = new TaxCalcConnector(http = mockHttpClient, appConfig = mockAppConfig)

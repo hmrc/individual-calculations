@@ -19,7 +19,7 @@ package v1.models.response.getCalculation
 import play.api.libs.json._
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.common.{CalculationDetail, CalculationSummary, IncomeTax, Metadata}
+import v1.models.response.common.{Message, Messages,CalculationDetail, CalculationSummary, IncomeTax, Metadata}
 
 class GetCalculationResponseSpec extends UnitSpec {
 
@@ -76,7 +76,12 @@ class GetCalculationResponseSpec extends UnitSpec {
       |       "intentToCrystallise": false,
       |       "crystallised": false,
       |       "calculationErrorCount": 1
-      |       }
+      |       },
+      |    "messages" :{
+      |        "error":[
+      |        {"id":"id1", "text":"text1"}
+      |        ]
+      |     }
       |}""".stripMargin)
 
   val metadata = Metadata(
@@ -91,12 +96,15 @@ class GetCalculationResponseSpec extends UnitSpec {
     crystallised = false,
     calculationErrorCount = Some(1)
   )
-
+  
+  val messages = Messages(None, None, Some(Seq(Message("id1", "text1"))))
   val calculationSummary = CalculationSummary("test")
   val calculationDetail = CalculationDetail("test")
   val incomeTax = IncomeTax(calculationSummary, calculationDetail)
-
-  val desJsonWithIncomeTax: JsValue = desJson.as[JsObject] ++ Json.parse(
+  val calculationResponse = GetCalculationResponse(metadata, messages = Some(messages))
+  val calculationResponseFull = GetCalculationResponse(metadata, Some(incomeTax), Some(messages))
+  
+    val desJsonWithIncomeTax: JsValue = desJson.as[JsObject] ++ Json.parse(
     s"""
        |{
        | "summary" : ${Json.toJson(calculationSummary).toString()},
@@ -104,8 +112,6 @@ class GetCalculationResponseSpec extends UnitSpec {
        |}
     """.stripMargin).as[JsObject]
 
-  val calculationResponse = GetCalculationResponse(metadata)
-  val calculationResponseWithIncome = GetCalculationResponse(metadata, Some(incomeTax))
 
   "GetCalculationResponse" should {
 
@@ -116,9 +122,9 @@ class GetCalculationResponseSpec extends UnitSpec {
         desJson.as[GetCalculationResponse] shouldBe calculationResponse
       }
 
-      "provided with valid json with income tax" in {
+      "provided with valid json with income tax and messages" in {
         desJsonWithIncomeTax.validate[GetCalculationResponse] shouldBe a[JsSuccess[_]]
-        desJsonWithIncomeTax.as[GetCalculationResponse] shouldBe calculationResponseWithIncome
+        desJsonWithIncomeTax.as[GetCalculationResponse] shouldBe calculationResponseFull
       }
     }
 

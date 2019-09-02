@@ -33,10 +33,6 @@ case class Metadata(id: String,
                     crystallised: Boolean,
                     calculationErrorCount: Option[Int])
 
-case class Error(id: String, text:String)
-object Error{
-  implicit val format: OFormat[Error] = Json.format[Error]
-}
 
 object Metadata extends NestedJsonReads {
   implicit val writes: Writes[Metadata] = Json.writes[Metadata]
@@ -50,7 +46,7 @@ object Metadata extends NestedJsonReads {
     (JsPath \"metadata" \ "calculationType").read[CalculationType] and
     (JsPath \"metadata" \ "intentToCrystallise").readWithDefault[Boolean](false) and
     (JsPath \"metadata" \ "crystallised").readWithDefault[Boolean](false) and
-    (__ \"messages" \ "errors").readNestedNullable[Seq[Error]].map {
+    (__ \"messages" \ "errors").readNestedNullable[Seq[Message]].map {
       case Some(errs) if errs.nonEmpty => Some(errs.length)
       case _ => None
     }

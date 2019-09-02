@@ -31,11 +31,11 @@ import v1.services.{EnrolmentsAuthService, GetCalculationService, MtdIdLookupSer
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class GetCalculationMetadataController @Inject()(val authService: EnrolmentsAuthService,
-                                                 val lookupService: MtdIdLookupService,
-                                                 getCalculationParser: GetCalculationParser,
-                                                 getCalculationService: GetCalculationService,
-                                                 cc: ControllerComponents)(implicit ec: ExecutionContext)
+class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
+                                         val lookupService: MtdIdLookupService,
+                                         getCalculationParser: GetCalculationParser,
+                                         getCalculationService: GetCalculationService,
+                                         cc: ControllerComponents)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
