@@ -18,6 +18,7 @@ package v1.models.response.common
 
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
+import v1.fixtures.Fixtures._
 
 class MessagesSpec extends UnitSpec {
 
@@ -118,12 +119,7 @@ class MessagesSpec extends UnitSpec {
 	      |        "text": "text1"
 	      |}""".stripMargin)
 
-  val err1 = Message("err1", "text1")
-  val err2 = Message("err2", "text2")
-  val info1 = Message("info1", "text1")
-  val info2 = Message("info2", "text2")
-  val warn1 = Message("warn1", "text1")
-  val warn2 = Message("warn2", "text2")
+
   val messagesResponse = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
   val messagesResponseWithoutErrors = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), None)
   val emptyMessageResponse = Messages(None, None, None)

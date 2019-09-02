@@ -38,11 +38,11 @@ object Messages {
   implicit val writes: Writes[Messages] = Json.writes[Messages]
   implicit val reads: Reads[Messages] = (
     (__ \ "messages" \ "info").readNestedNullable[Seq[Message]].map {
-      case Some(info) if errs.nonEmpty => Some(info)
+      case Some(info) if info.nonEmpty => Some(info)
       case _ => None}
       and
       (__ \ "messages" \ "warnings").readNestedNullable[Seq[Message]].map {
-        case Some(warns) if errs.nonEmpty => Some(warns)
+        case Some(warns) if warns.nonEmpty => Some(warns)
         case _ => None}
       and
       (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]].map {
