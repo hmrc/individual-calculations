@@ -29,10 +29,7 @@ class CalculationDetailSpec extends UnitSpec {
       |     "incomeTax" : {
       |       "payPensionsProfit" : {
       |           "allowancesAllocated" : 200.25,
-      |           "incomeTaxAmount": 200.50,
-      |           "taxBands" : [
-      |
-      |           ]
+      |           "incomeTaxAmount": 200.50
       |        }
       |     }
       |   }
@@ -48,10 +45,7 @@ class CalculationDetailSpec extends UnitSpec {
       |     "incomeTax" : {
       |       "payPensionsProfit" : {
       |           "allowancesAllocated" : 200.25,
-      |           "incomeTaxAmount": 200.50,
-      |           "taxBands" : [
-      |
-      |           ]
+      |           "incomeTaxAmount": 200.50
       |        }
       |     },
       |     "nics" : {
@@ -73,10 +67,7 @@ class CalculationDetailSpec extends UnitSpec {
       |     "incomeTax" : {
       |        "payPensionsProfit" : {
       |           "allowancesAllocated" : 200.25,
-      |           "incomeTaxAmount": 200.50,
-      |           "taxBands" : [
-      |
-      |           ]
+      |           "incomeTaxAmount": 200.50
       |        }
       |     },
       |     "nics" : {
@@ -104,8 +95,7 @@ class CalculationDetailSpec extends UnitSpec {
       | "incomeTax" : {
       |   "payPensionsProfit" : {
       |     "allowancesAllocated" : 200.25,
-      |     "incomeTaxAmount" : 200.50,
-      |     "taxBands" : []
+      |     "incomeTaxAmount" : 200.50
       |   }
       | }
       |}
@@ -117,8 +107,7 @@ class CalculationDetailSpec extends UnitSpec {
       | "incomeTax" : {
       |   "payPensionsProfit" : {
       |     "allowancesAllocated" : 200.25,
-      |     "incomeTaxAmount" : 200.50,
-      |     "taxBands" : []
+      |     "incomeTaxAmount" : 200.50
       |   },
       |   "giftAid" : {
       |     "grossGiftAidPayments" : 400.25,
@@ -138,9 +127,9 @@ class CalculationDetailSpec extends UnitSpec {
       |}
     """.stripMargin)
 
-  val minModel = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, Seq())), None, None, None), None, None)
+  val minModel = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, None)), None, None, None), None, None)
   val filledModel = CalculationDetail(
-    IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, Seq())), None, None, Some(GiftAid(400.25, 400.50, 400.75))),
+    IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, None)), None, None, Some(GiftAid(400.25, 400.50, 400.75))),
     Some(NicDetail(Some(Class2NicDetail(None, None, None, None, true, None)), None)),
     Some(TaxDeductedAtSource(Some(300.25), Some(300.50)))
   )

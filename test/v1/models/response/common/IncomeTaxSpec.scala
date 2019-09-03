@@ -30,12 +30,16 @@ class IncomeTaxSpec extends UnitSpec {
        |       "incomeTaxCharged" : 100.25,
        |       "payPensionsProfit" : {
        |        "allowancesAllocated" : 300.25,
-       |        "incomeTaxAmount" : 400.25,
-       |        "taxBands" : []
+       |        "incomeTaxAmount" : 400.25
        |       }
        |     },
        |     "totalIncomeTaxAndNicsDue" : 200.25
        |   }
+       | },
+       | "inputs" : {
+       |  "personalInformation" : {
+       |    "taxRegime" : "UK"
+       |  }
        | }
        |}
     """.stripMargin)
@@ -47,22 +51,22 @@ class IncomeTaxSpec extends UnitSpec {
       |   "incomeTax" : {
       |     "incomeTaxCharged" : 100.25
       |   },
-      |   "totalIncomeTaxAndNicsDue" : 200.25
+      |   "totalIncomeTaxAndNicsDue" : 200.25,
+      |   "taxRegime" : "UK"
       | },
       | "detail" : {
       |   "incomeTax" : {
       |     "payPensionsProfit" : {
       |        "allowancesAllocated" : 300.25,
-      |        "incomeTaxAmount" : 400.25,
-      |        "taxBands" : []
+      |        "incomeTaxAmount" : 400.25
       |     }
       |   }
       | }
       |}
     """.stripMargin)
 
-  val calcSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25, None)
-  val calcDetail = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300.25, 400.25, Seq())), None, None, None), None, None)
+  val calcSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25, "UK")
+  val calcDetail = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300.25, 400.25, None)), None, None, None), None, None)
   val model = IncomeTax(calcSummary, calcDetail)
 
   "IncomeTax" should {
