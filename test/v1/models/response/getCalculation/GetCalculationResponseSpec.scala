@@ -99,8 +99,8 @@ class GetCalculationResponseSpec extends UnitSpec {
 
   val messages = Messages(None, None, Some(Seq(Message("id1", "text1"))))
   val calculationSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25, None)
-  val calculationDetail = CalculationDetail(None, None, None)
-  val incomeTax = IncomeTax(calculationSummary, None)
+  val calculationDetail = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300.25, 400.25, Seq())), None, None, None), None, None)
+  val incomeTax = IncomeTax(calculationSummary, calculationDetail)
   val calculationResponse = GetCalculationResponse(metadata, messages = Some(messages))
   val calculationResponseFull = GetCalculationResponse(metadata, Some(incomeTax), Some(messages))
 
@@ -111,7 +111,14 @@ class GetCalculationResponseSpec extends UnitSpec {
         | "calculation" : {
         |   "taxCalculation" : {
         |     "incomeTax" : {
-        |       "incomeTaxCharged" : 100.25
+        |       "incomeTaxCharged" : 100.25,
+        |       "payPensionsProfit" : {
+        |           "allowancesAllocated" : 300.25,
+        |           "incomeTaxAmount": 400.25,
+        |           "taxBands" : [
+        |
+        |           ]
+        |        }
         |     },
         |     "totalIncomeTaxAndNicsDue" : 200.25
         |   }

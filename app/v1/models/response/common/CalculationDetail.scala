@@ -20,18 +20,13 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import utils.NestedJsonReads
 
-case class CalculationDetail(incomeTax: Option[IncomeTaxDetail], nics: Option[NicDetail], taxDeductedAtSource: Option[TaxDeductedAtSource])
+case class CalculationDetail(incomeTax: IncomeTaxDetail, nics: Option[NicDetail], taxDeductedAtSource: Option[TaxDeductedAtSource])
 
 object CalculationDetail extends NestedJsonReads {
   implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
 
   implicit val reads: Reads[CalculationDetail] = (
-    (JsPath \ "calculation").readNestedNullable[IncomeTaxDetail].map {
-      _.flatMap {
-        case IncomeTaxDetail(None, None, None, None) => None
-        case other => Some(other)
-      }
-    } and
+    (JsPath \ "calculation").read[IncomeTaxDetail] and
       (JsPath \ "calculation" \ "taxCalculation" \ "nics").readNestedNullable[NicDetail].map {
         _.flatMap {
           case NicDetail(None, None) => None

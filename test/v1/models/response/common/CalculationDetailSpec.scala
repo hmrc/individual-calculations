@@ -21,7 +21,24 @@ import support.UnitSpec
 
 class CalculationDetailSpec extends UnitSpec {
 
-  val emptyJson: JsValue = Json.obj()
+  val minJson: JsValue = Json.parse(
+    """
+      |{
+      | "calculation" : {
+      |   "taxCalculation" : {
+      |     "incomeTax" : {
+      |       "payPensionsProfit" : {
+      |           "allowancesAllocated" : 200.25,
+      |           "incomeTaxAmount": 200.50,
+      |           "taxBands" : [
+      |
+      |           ]
+      |        }
+      |     }
+      |   }
+      | }
+      |}
+    """.stripMargin)
 
   val inputJsonWithEmptyModels: JsValue = Json.parse(
     """
@@ -29,7 +46,13 @@ class CalculationDetailSpec extends UnitSpec {
       | "calculation" : {
       |   "taxCalculation" : {
       |     "incomeTax" : {
+      |       "payPensionsProfit" : {
+      |           "allowancesAllocated" : 200.25,
+      |           "incomeTaxAmount": 200.50,
+      |           "taxBands" : [
       |
+      |           ]
+      |        }
       |     },
       |     "nics" : {
       |
@@ -42,7 +65,7 @@ class CalculationDetailSpec extends UnitSpec {
       |}
     """.stripMargin)
 
-  val inputJson: JsValue = Json.parse(
+  val filledJson: JsValue = Json.parse(
     """
       |{
       | "calculation" : {
@@ -75,6 +98,19 @@ class CalculationDetailSpec extends UnitSpec {
       |}
     """.stripMargin)
 
+  val minOutputJson: JsValue = Json.parse(
+    """
+      |{
+      | "incomeTax" : {
+      |   "payPensionsProfit" : {
+      |     "allowancesAllocated" : 200.25,
+      |     "incomeTaxAmount" : 200.50,
+      |     "taxBands" : []
+      |   }
+      | }
+      |}
+    """.stripMargin)
+
   val outputJson: JsValue = Json.parse(
     """
       |{
@@ -102,9 +138,9 @@ class CalculationDetailSpec extends UnitSpec {
       |}
     """.stripMargin)
 
-  val minModel = CalculationDetail(None, None, None)
+  val minModel = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, Seq())), None, None, None), None, None)
   val filledModel = CalculationDetail(
-    Some(IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, Seq())), None, None, Some(GiftAid(400.25, 400.50, 400.75)))),
+    IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, Seq())), None, None, Some(GiftAid(400.25, 400.50, 400.75))),
     Some(NicDetail(Some(Class2NicDetail(None, None, None, None, true, None)), None)),
     Some(TaxDeductedAtSource(Some(300.25), Some(300.50)))
   )
@@ -114,7 +150,7 @@ class CalculationDetailSpec extends UnitSpec {
     "write to json correctly" when {
 
       "provided with a minimal model" in {
-        Json.toJson(minModel) shouldBe emptyJson
+        Json.toJson(minModel) shouldBe minOutputJson
       }
 
       "provided with a top level model" in {
@@ -125,7 +161,7 @@ class CalculationDetailSpec extends UnitSpec {
     "read from json correctly" when {
 
       "provided with empty json" in {
-        emptyJson.validate[CalculationDetail] shouldBe JsSuccess(minModel)
+        minJson.validate[CalculationDetail] shouldBe JsSuccess(minModel)
       }
 
       "provided with json with empty models" in {
@@ -133,7 +169,7 @@ class CalculationDetailSpec extends UnitSpec {
       }
 
       "provided with json containing all top level models" in {
-        inputJson.validate[CalculationDetail] shouldBe JsSuccess(filledModel)
+        filledJson.validate[CalculationDetail] shouldBe JsSuccess(filledModel)
       }
     }
   }
