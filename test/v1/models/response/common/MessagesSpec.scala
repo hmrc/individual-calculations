@@ -48,7 +48,7 @@ class MessagesSpec extends UnitSpec {
 	      |          {"id":"warn1", "text":"text1"},
 	      |          {"id":"warn2", "text":"text2"}
 	      |        ],
-	      |        "error":[
+	      |        "errors":[
 	      |          {"id":"err1", "text":"text1"},
 	      |          {"id":"err2", "text":"text2"}
 	      |        ]

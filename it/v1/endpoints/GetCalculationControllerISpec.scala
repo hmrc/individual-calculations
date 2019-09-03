@@ -87,7 +87,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
       |       "calculationErrorCount": 1
       |       },
       |     "messages" :{
-      |        "error":[
+      |        "errors":[
       |        {"id":"id1", "text":"text1"}
       |        ]
       |     }
