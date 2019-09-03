@@ -30,7 +30,7 @@ object IncomeTaxDetail extends NestedJsonReads {
   implicit val reads: Reads[IncomeTaxDetail] = (
     (JsPath \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit").readNestedNullable[IncomeTypeBreakdown] and
       (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains").readNestedNullable[IncomeTypeBreakdown] and
-      (JsPath \ "taxCalculation" \ "incomeTax" \ "dividents").readNestedNullable[IncomeTypeBreakdown] and
+      (JsPath \ "taxCalculation" \ "incomeTax" \ "dividends").readNestedNullable[IncomeTypeBreakdown] and
       (JsPath \ "giftAid").readNullable[GiftAid]
   )(IncomeTaxDetail.apply _)
 }
