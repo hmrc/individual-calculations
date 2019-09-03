@@ -122,7 +122,7 @@ class CalculationDetailSpec extends UnitSpec {
       | },
       | "taxDeductedAtSource" : {
       |   "ukLandAndProperty" : 300.25,
-      |   "bbsi" : 300.50
+      |   "savings" : 300.50
       | }
       |}
     """.stripMargin)
