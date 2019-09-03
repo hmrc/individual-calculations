@@ -69,6 +69,11 @@ class CalculationSummarySpec extends UnitSpec {
       |     "totalTaxDeducted" : 400.25,
       |     "totalIncomeTaxAndNicsDue" : 100.25
       |   }
+      | },
+      | "inputs" : {
+      |   "personalInformation" : {
+      |     "taxRegime" : "UK"
+      |   }
       | }
       |}
     """.stripMargin)
@@ -98,13 +103,14 @@ class CalculationSummarySpec extends UnitSpec {
       |}
     """.stripMargin)
 
-  val minModel = CalculationSummary(IncomeTaxSummary(10.25, None, None), None, None, None, 100.25)
+  val minModel = CalculationSummary(IncomeTaxSummary(10.25, None, None), None, None, None, 100.25, None)
   val filledModel = CalculationSummary(
     IncomeTaxSummary(10.25, None, None),
     Some(NicSummary(Some(200.25), None, None)),
     Some(300.25),
     Some(400.25),
-    100.25
+    100.25,
+    Some("UK")
   )
 
   "CalculationDetail" should {

@@ -24,7 +24,8 @@ case class CalculationSummary(incomeTax: IncomeTaxSummary,
                               nics: Option[NicSummary],
                               totalIncomeTaxNicsCharged: Option[BigDecimal],
                               totalTaxDeducted: Option[BigDecimal],
-                              totalIncomeTaxAndNicsDue: BigDecimal)
+                              totalIncomeTaxAndNicsDue: BigDecimal,
+                              taxRegime: Option[String])
 
 object CalculationSummary extends NestedJsonReads {
   implicit val writes: OWrites[CalculationSummary] = Json.writes[CalculationSummary]
@@ -39,6 +40,7 @@ object CalculationSummary extends NestedJsonReads {
       } and
       (JsPath \ "calculation" \ "taxCalculation" \ "totalIncomeTaxNicsCharged").readNestedNullable[BigDecimal] and
       (JsPath \ "calculation" \ "taxCalculation" \ "totalTaxDeducted").readNestedNullable[BigDecimal] and
-      (JsPath \ "calculation" \ "taxCalculation" \ "totalIncomeTaxAndNicsDue").read[BigDecimal]
+      (JsPath \ "calculation" \ "taxCalculation" \ "totalIncomeTaxAndNicsDue").read[BigDecimal] and
+      (JsPath \ "inputs" \ "personalInformation" \ "taxRegime").readNestedNullable[String]
     ) (CalculationSummary.apply _)
 }
