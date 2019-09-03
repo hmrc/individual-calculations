@@ -26,7 +26,7 @@ object IncomeTax {
   implicit val reads: Reads[IncomeTax] = (
     JsPath.read[CalculationSummary] and
     JsPath.readNullable[CalculationDetail].map {
-      case Some(CalculationDetail(None, None, None, None)) => None
+      case Some(CalculationDetail(None, None, None)) => None
       case other => other
     }
   )(IncomeTax.apply _)

@@ -100,7 +100,7 @@ class IncomeTaxSpec extends UnitSpec {
     """.stripMargin)
 
   val calcSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25)
-  val calcDetail = CalculationDetail(None, None, Some(TaxDeductedAtSource(Some(300.25), Some(400.25))), None)
+  val calcDetail = CalculationDetail(None, None, Some(TaxDeductedAtSource(Some(300.25), Some(400.25))))
   val minModel = IncomeTax(calcSummary, None)
   val topLevelModel = IncomeTax(calcSummary, Some(calcDetail))
 

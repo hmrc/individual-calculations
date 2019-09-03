@@ -16,11 +16,21 @@
 
 package v1.models.response.common
 import play.api.libs.json._
+import play.api.libs.functional.syntax._
+import utils.NestedJsonReads
 
 case class IncomeTaxDetail(payPensionsProfit: Option[IncomeTypeBreakdown],
                            savingsAndGains: Option[IncomeTypeBreakdown],
-                           dividends: Option[IncomeTypeBreakdown])
+                           dividends: Option[IncomeTypeBreakdown],
+                           giftAid: Option[GiftAid])
 
-object IncomeTaxDetail {
-  implicit val format: OFormat[IncomeTaxDetail] = Json.format[IncomeTaxDetail]
+object IncomeTaxDetail extends NestedJsonReads {
+  implicit val writes: OWrites[IncomeTaxDetail] = Json.writes[IncomeTaxDetail]
+
+  implicit val reads: Reads[IncomeTaxDetail] = (
+    (JsPath \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit").readNestedNullable[IncomeTypeBreakdown] and
+      (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains").readNestedNullable[IncomeTypeBreakdown] and
+      (JsPath \ "taxCalculation" \ "incomeTax" \ "dividents").readNestedNullable[IncomeTypeBreakdown] and
+      (JsPath \ "giftAid").readNullable[GiftAid]
+  )(IncomeTaxDetail.apply _)
 }

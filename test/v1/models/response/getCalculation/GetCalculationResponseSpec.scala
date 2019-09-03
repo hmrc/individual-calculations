@@ -99,7 +99,7 @@ class GetCalculationResponseSpec extends UnitSpec {
 
   val messages = Messages(None, None, Some(Seq(Message("id1", "text1"))))
   val calculationSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25)
-  val calculationDetail = CalculationDetail(None, None, None, None)
+  val calculationDetail = CalculationDetail(None, None, None)
   val incomeTax = IncomeTax(calculationSummary, None)
   val calculationResponse = GetCalculationResponse(metadata, messages = Some(messages))
   val calculationResponseFull = GetCalculationResponse(metadata, Some(incomeTax), Some(messages))

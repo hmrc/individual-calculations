@@ -83,6 +83,11 @@ class CalculationDetailSpec extends UnitSpec {
       |     "allowancesAllocated" : 200.25,
       |     "incomeTaxAmount" : 200.50,
       |     "taxBands" : []
+      |   },
+      |   "giftAid" : {
+      |     "grossGiftAidPayments" : 400.25,
+      |     "rate" : 400.50,
+      |     "giftAidTax" : 400.75
       |   }
       | },
       | "nics" : {
@@ -93,21 +98,15 @@ class CalculationDetailSpec extends UnitSpec {
       | "taxDeductedAtSource" : {
       |   "ukLandAndProperty" : 300.25,
       |   "bbsi" : 300.50
-      | },
-      | "giftAid" : {
-      |   "grossGiftAidPayments" : 400.25,
-      |   "rate" : 400.50,
-      |   "giftAidTax" : 400.75
       | }
       |}
     """.stripMargin)
 
-  val minModel = CalculationDetail(None, None, None, None)
+  val minModel = CalculationDetail(None, None, None)
   val filledModel = CalculationDetail(
-    Some(IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, Seq())), None, None)),
+    Some(IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, Seq())), None, None, Some(GiftAid(400.25, 400.50, 400.75)))),
     Some(NicDetail(Some(Class2NicDetail(None, None, None, None, true, None)), None)),
-    Some(TaxDeductedAtSource(Some(300.25), Some(300.50))),
-    Some(GiftAid(400.25, 400.50, 400.75))
+    Some(TaxDeductedAtSource(Some(300.25), Some(300.50)))
   )
 
   "CalculationDetail" should {
