@@ -17,14 +17,9 @@
 package v1.models.response.common
 
 import play.api.libs.json._
-import play.api.libs.functional.syntax._
 
-case class IncomeTax(summary: CalculationSummary, detail: CalculationDetail)
+case class IncomeTaxSummary(incomeTaxCharged: BigDecimal, incomeTaxDueAfterReliefs: Option[BigDecimal], incomeTaxDueAfterGiftAid: Option[BigDecimal])
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.read[CalculationDetail]
-  )(IncomeTax.apply _)
+object IncomeTaxSummary {
+  implicit val format: OFormat[IncomeTaxSummary] = Json.format[IncomeTaxSummary]
 }

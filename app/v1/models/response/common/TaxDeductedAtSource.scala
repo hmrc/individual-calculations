@@ -19,12 +19,14 @@ package v1.models.response.common
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
-case class IncomeTax(summary: CalculationSummary, detail: CalculationDetail)
+case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
+                               savings: Option[BigDecimal])
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.read[CalculationDetail]
-  )(IncomeTax.apply _)
+object TaxDeductedAtSource {
+  implicit val writes: OWrites[TaxDeductedAtSource] = Json.writes[TaxDeductedAtSource]
+
+  implicit val reads: Reads[TaxDeductedAtSource] = (
+    (JsPath \ "ukLandAndProperty").readNullable[BigDecimal] and
+      (JsPath \ "bbsi").readNullable[BigDecimal]
+  )(TaxDeductedAtSource.apply _)
 }

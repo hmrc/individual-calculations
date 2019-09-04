@@ -21,26 +21,62 @@ import support.UnitSpec
 
 class IncomeTaxSpec extends UnitSpec {
 
-  val summaryModel = CalculationSummary("")
-  val detailModel = CalculationDetail("")
-  val model = IncomeTax(summaryModel, detailModel)
-
   val json: JsValue = Json.parse(
-    s"""
+    """
        |{
-       | "summary" : ${Json.toJson(summaryModel).toString()},
-       | "detail" : ${Json.toJson(detailModel).toString()}
+       |  "calculation" : {
+       |   "taxCalculation" : {
+       |     "incomeTax" : {
+       |       "incomeTaxCharged" : 100.25,
+       |       "payPensionsProfit" : {
+       |        "allowancesAllocated" : 300.25,
+       |        "incomeTaxAmount" : 400.25
+       |       }
+       |     },
+       |     "totalIncomeTaxAndNicsDue" : 200.25
+       |   }
+       | },
+       | "inputs" : {
+       |  "personalInformation" : {
+       |    "taxRegime" : "UK"
+       |  }
+       | }
        |}
     """.stripMargin)
 
-  "CalculationDetail" should {
+  val outputJson: JsValue = Json.parse(
+    """
+      |{
+      | "summary" : {
+      |   "incomeTax" : {
+      |     "incomeTaxCharged" : 100.25
+      |   },
+      |   "totalIncomeTaxAndNicsDue" : 200.25,
+      |   "taxRegime" : "UK"
+      | },
+      | "detail" : {
+      |   "incomeTax" : {
+      |     "payPensionsProfit" : {
+      |        "allowancesAllocated" : 300.25,
+      |        "incomeTaxAmount" : 400.25
+      |     }
+      |   }
+      | }
+      |}
+    """.stripMargin)
 
-    "write to json correctly" in {
-      Json.toJson(model) shouldBe json
-    }
+  val calcSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25, "UK")
+  val calcDetail = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300.25, 400.25, None)), None, None, None), None, None)
+  val model = IncomeTax(calcSummary, calcDetail)
+
+  "IncomeTax" should {
 
     "read from json correctly" in {
       json.validate[IncomeTax] shouldBe JsSuccess(model)
+    }
+
+    "write to json correctly" in {
+      Json.toJson(model) shouldBe outputJson
     }
   }
 }

@@ -16,15 +16,15 @@
 
 package v1.models.response.common
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{Json, OFormat}
 
-case class IncomeTax(summary: CalculationSummary, detail: CalculationDetail)
+case class NicBand(name: String,
+                   rate: BigDecimal,
+                   threshold: Option[BigDecimal],
+                   apportionedThreshold: Option[BigDecimal],
+                   income: BigDecimal,
+                   amount: BigDecimal)
 
-object IncomeTax {
-  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
-  implicit val reads: Reads[IncomeTax] = (
-    JsPath.read[CalculationSummary] and
-    JsPath.read[CalculationDetail]
-  )(IncomeTax.apply _)
+object NicBand {
+  implicit val format: OFormat[NicBand] = Json.format[NicBand]
 }

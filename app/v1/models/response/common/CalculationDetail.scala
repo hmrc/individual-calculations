@@ -16,10 +16,28 @@
 
 package v1.models.response.common
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+import utils.NestedJsonReads
 
-case class CalculationDetail(incomeTax: String)
+case class CalculationDetail(incomeTax: IncomeTaxDetail, nics: Option[NicDetail], taxDeductedAtSource: Option[TaxDeductedAtSource])
 
-object CalculationDetail {
-  implicit val format: OFormat[CalculationDetail] = Json.format[CalculationDetail]
+object CalculationDetail extends NestedJsonReads {
+  implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
+
+  implicit val reads: Reads[CalculationDetail] = (
+    (JsPath \ "calculation").read[IncomeTaxDetail] and
+      (JsPath \ "calculation" \ "taxCalculation" \ "nics").readNestedNullable[NicDetail].map {
+        _.flatMap {
+          case NicDetail(None, None) => None
+          case other => Some(other)
+        }
+      } and
+      (JsPath \ "calculation" \ "taxDeductedAtSource").readNestedNullable[TaxDeductedAtSource].map {
+        _.flatMap {
+          case TaxDeductedAtSource(None, None) => None
+          case other => Some(other)
+        }
+      }
+  )(CalculationDetail.apply _)
 }
