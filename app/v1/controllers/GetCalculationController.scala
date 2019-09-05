@@ -43,10 +43,10 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
   implicit val endpointLogContext: EndpointLogContext =
     EndpointLogContext(
       controllerName = "GetCalculationMetadataController",
-      endpointName = "getCalculationMetadata"
+      endpointName = "getCalculation"
     )
 
-  def getCalculationMetadata(nino: String, calculationId: String): Action[AnyContent] =
+  def getCalculation(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
       val rawData = GetCalculationRawData(nino, calculationId)
       val result =
