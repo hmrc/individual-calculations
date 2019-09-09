@@ -1,4 +1,5 @@
 GET       /:nino/self-assessment                                        v1.controllers.ListCalculationsController.listCalculations(nino: String, taxYear: Option[String])
 GET       /:nino/self-assessment/:calcId                                v1.controllers.GetCalculationController.getCalculation(nino: String, calcId: String)
+GET       /:nino/self-assessment/:calcId/messages                       v1.controllers.GetCalculationController.getCalculation(nino: String, calcId: String)
 GET       /:nino/self-assessment/:calcId/income-tax-nics-calculated     v1.controllers.GetCalculationController.getCalculation(nino: String, calcId: String)
 POST      /:nino/self-assessment                                        v1.controllers.TriggerTaxCalculationController.triggerTaxCalculation(nino: String)
