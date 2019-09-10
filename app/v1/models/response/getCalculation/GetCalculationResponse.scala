@@ -22,7 +22,7 @@ import v1.models.response.common.{ IncomeTax, Messages, Metadata }
 
 case class GetCalculationResponse(
                                    metadata: Metadata,
-                                   incomeTax: Option[IncomeTax] = None,
+                                   incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
                                    messages: Option[Messages] = None
                                  )
 
