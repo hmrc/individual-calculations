@@ -16,4 +16,15 @@
 
 package v1.models.response.common.taxableIncome.detail
 
-case class Dividends ()
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ Json, Reads, Writes, __ }
+
+case class Dividends(incomeReceived: Int, taxableIncome: Int)
+
+object Dividends {
+  implicit val writes: Writes[Dividends] = Json.writes[Dividends]
+  implicit val reads: Reads[Dividends] = (
+    (__ \ "calculation" \ "incomeTax" \ "dividends" \ "incomeReceived").read[Int] and
+      (__ \ "calculation" \ "incomeTax" \ "dividends" \ "taxableIncome").read[Int]
+  )(Dividends.apply _)
+}

@@ -16,4 +16,10 @@
 
 package v1.models.response.common.taxableIncome.detail
 
-case class PayPensionsProft ()
+import play.api.libs.json.{Json, OFormat}
+
+case class PayPensionsProfit()
+
+object PayPensionsProfit{
+  implicit val format: OFormat[PayPensionsProfit] = Json.format[PayPensionsProfit]
+}

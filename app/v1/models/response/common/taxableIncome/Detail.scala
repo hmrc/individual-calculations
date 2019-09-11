@@ -16,10 +16,17 @@
 
 package v1.models.response.common.taxableIncome
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ Json, Reads, Writes, __ }
+import v1.models.response.common.taxableIncome.detail.{ Dividends, PayPensionsProfit, SavingsAndGains }
 
-case class Detail ()
+case class Detail(dividends: Option[Dividends], savingsAndGains: Option[SavingsAndGains], payPensionsProfit: Option[PayPensionsProfit])
 
-object Detail{
-  implicit val format: OFormat[Detail] = Json.format[Detail]
+object Detail {
+  implicit val writes: Writes[Detail] = Json.writes[Detail]
+  implicit val reads: Reads[Detail] = (
+    (__ ).readNullable[Dividends] and
+      (__).readNullable[SavingsAndGains] and
+      (__).readNullable[PayPensionsProfit]
+  )(Detail.apply _)
 }

@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
+import play.api.libs.json.{ JsPath, Json, Writes, Reads }
 import v1.models.response.common.{ IncomeTax, Messages, Metadata }
 
 case class GetCalculationResponse(
@@ -27,7 +27,7 @@ case class GetCalculationResponse(
                                  )
 
 object GetCalculationResponse {
-  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
+  implicit val writes: Writes[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
   implicit val reads: Reads[GetCalculationResponse] = (
     JsPath.read[Metadata] and

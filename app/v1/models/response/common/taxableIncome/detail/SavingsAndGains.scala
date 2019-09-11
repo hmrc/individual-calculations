@@ -16,4 +16,10 @@
 
 package v1.models.response.common.taxableIncome.detail
 
+import play.api.libs.json.{Json, OFormat}
+
 case class SavingsAndGains ()
+
+object SavingsAndGains {
+  implicit val format: OFormat[SavingsAndGains] = Json.format[SavingsAndGains]
+}
