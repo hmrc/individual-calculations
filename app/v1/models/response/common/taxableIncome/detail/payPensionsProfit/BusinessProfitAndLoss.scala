@@ -16,17 +16,23 @@
 package v1.models.response.common.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
-case class BusinessProfitAndLoss(selfEmployments: Option[Array[SelfEmployments]],
-                                 ukPropertyFhl: Option[Array[UkPropertyFhl]],
-                                 ukPropertyNonFhl: Option[Array[UkPropertyNonFhl]])
+case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmployments]],
+                                 ukPropertyFhl: Option[Seq[UkPropertyFhl]],
+                                 ukPropertyNonFhl: Option[Seq[UkPropertyNonFhl]]){
+  def isEmpty: Boolean = this match{
+    case self if self == BusinessProfitAndLoss(None, None, None) => true
+    case _ => false
+  }
+}
 
 object BusinessProfitAndLoss {
+  val emptyBPAL = BusinessProfitAndLoss(None, None, None)
   implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
   implicit val reads: Reads[BusinessProfitAndLoss] = (
-    JsPath.readNullable[Array[SelfEmployments]] and
-      JsPath.readNullable[Array[UkPropertyFhl]] and
-      JsPath.readNullable[Array[UkPropertyNonFhl]]
+    (JsPath \ "selfEmployments").readNullable[Seq[SelfEmployments]] and
+      (JsPath \ "ukPropertyFhl").readNullable[Seq[UkPropertyFhl]] and
+      (JsPath \ "ukPropertyNonFhl").readNullable[Seq[UkPropertyNonFhl]]
   )(BusinessProfitAndLoss.apply _)
 }

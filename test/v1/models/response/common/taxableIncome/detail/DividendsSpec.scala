@@ -15,8 +15,40 @@
  */
 package v1.models.response.common.taxableIncome.detail
 
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
 
 class DividendsSpec extends UnitSpec {
+
+  val desJson: JsValue = Json.parse("""{
+      |    "incomeReceived":100,
+      |    "taxableIncome":200
+      |}""".stripMargin)
+
+  val invalidDesJson: JsValue = Json.parse("""{
+      |    "incomeReceived":100
+      |}""".stripMargin)
+
+  val dividendsResponse = Dividends(100,200)
+  "Dividends" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in{
+        desJson.validate[Dividends] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected Dividends object" in{
+        desJson.as[Dividends] shouldBe dividendsResponse
+      }
+    }
+    "read from invalid Json" should {
+      "return a JsError" in {
+        invalidDesJson.validate[Dividends] shouldBe a[JsError]
+      }
+    }
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(dividendsResponse) shouldBe desJson
+      }
+    }
+  }
 
 }

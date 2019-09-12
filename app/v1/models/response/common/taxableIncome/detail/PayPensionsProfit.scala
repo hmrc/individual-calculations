@@ -18,6 +18,7 @@ package v1.models.response.common.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import utils.NestedJsonReads
 import v1.models.response.common.taxableIncome.detail.payPensionsProfit.BusinessProfitAndLoss
 
 case class PayPensionsProfit(incomeReceived: BigInt,
@@ -28,15 +29,19 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              totalUKOtherPropertyProfit: Option[BigInt],
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
-object PayPensionsProfit {
+object PayPensionsProfit extends NestedJsonReads{
   implicit val writes: Writes[PayPensionsProfit] = Json.writes[PayPensionsProfit]
   implicit val reads: Reads[PayPensionsProfit] = (
-    (JsPath \ "calculation" \ "taxCalculation").read[BigInt] and
-      (JsPath \ "calculation" \ "taxCalculation").read[BigInt] and
-      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalSelfEmploymentProfit").readNullable[BigInt] and
-      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalPropertyProfit").readNullable[BigInt] and
-      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalFHLPropertyProfit").readNullable[BigInt] and
-      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalUKOtherPropertyProfit").readNullable[BigInt] and
-      JsPath.readNullable[BusinessProfitAndLoss]
+    (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit" \ "incomeReceived").read[BigInt] and
+      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit" \ "taxableIncome").read[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalSelfEmploymentProfit").readNestedNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalPropertyProfit").readNestedNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalFHLPropertyProfit").readNestedNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalUKOtherPropertyProfit").readNestedNullable[BigInt] and
+      JsPath.readNullable[BusinessProfitAndLoss].map(bpal => if (bpal.getOrElse(BusinessProfitAndLoss.emptyBPAL).isEmpty) {
+        None
+      } else {
+        bpal
+      })
   )(PayPensionsProfit.apply _)
 }
