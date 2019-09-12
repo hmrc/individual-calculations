@@ -18,8 +18,20 @@ package v1.models.response.taxableIncome.selfEmployments
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.models.des.LossType
+import v1.models.response.taxableIncome.selfEmployments.UnclaimedLossSpec._
 
-class UnclaimedLossSpec extends UnitSpec {
+object UnclaimedLossSpec {
+
+  def desJson(incomeSourceId: String = "AAIS12345678904", incomeSourceType: String = "01") = Json.parse(s"""
+                             |  {
+                             |    "incomeSourceId": "$incomeSourceId",
+                             |    "incomeSourceType": "$incomeSourceType",
+                             |    "taxYearLossIncurred": 2024,
+                             |    "currentLossValue": 71438847594,
+                             |    "expires": 2079,
+                             |    "lossType": "income"
+                             |  }
+                             |""".stripMargin)
 
   val model = UnclaimedLoss(
     taxYearLossIncurred = "2023-24",
@@ -27,23 +39,13 @@ class UnclaimedLossSpec extends UnitSpec {
     expires = "2078-79",
     lossType = LossType.income
   )
+}
+
+class UnclaimedLossSpec extends UnitSpec {
 
   "reads" should {
     "convert tax years" in {
-
-      val desJson = Json.parse("""
-                                 |  {
-                                 |    "incomeSourceId": "LLIS12345678913",
-                                 |    "incomeSourceType": "01",
-                                 |    "taxYearLossIncurred": 2024,
-                                 |    "currentLossValue": 71438847594,
-                                 |    "expires": 2079,
-                                 |    "lossType": "income"
-                                 |  }
-                                 |""".stripMargin)
-
-      desJson.as[UnclaimedLoss] shouldBe
-        model
+      desJson().as[UnclaimedLoss] shouldBe model
     }
   }
 

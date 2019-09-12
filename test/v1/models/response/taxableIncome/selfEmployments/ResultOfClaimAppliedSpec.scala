@@ -19,8 +19,25 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v1.models.des.LossType
 import v1.models.domain.TypeOfClaim
+import v1.models.response.taxableIncome.selfEmployments.ResultOfClaimAppliedSpec._
 
-class ResultOfClaimAppliedSpec extends UnitSpec {
+object ResultOfClaimAppliedSpec {
+
+  def desJson(claimId: String = "CCIS12345678911", incomeSourceId: String = "AAIS12345678904", incomeSourceType: String = "01") = Json.parse(s"""
+                             |  {
+                             |    "claimId": "$claimId",
+                             |    "originatingClaimId": "000000000000210",
+                             |    "incomeSourceId": "$incomeSourceId",
+                             |    "incomeSourceType": "$incomeSourceType",
+                             |    "taxYearClaimMade": 2039,
+                             |    "claimType": "CF",
+                             |    "mtdLoss": true,
+                             |    "taxYearLossIncurred": 2051,
+                             |    "lossAmountUsed": 64613077921,
+                             |    "remainingLossValue": 72548288090,
+                             |    "lossType": "income"
+                             |  }
+                             |""".stripMargin)
 
   val model = ResultOfClaimApplied(
     claimId = Some("CCIS12345678901"),
@@ -32,28 +49,13 @@ class ResultOfClaimAppliedSpec extends UnitSpec {
     remainingLossValue = 72548288090L,
     lossType = LossType.income
   )
+}
+
+class ResultOfClaimAppliedSpec extends UnitSpec {
 
   "reads" should {
     "convert tax years and claim types" in {
-
-      val desJson = Json.parse("""
-                                 |  {
-                                 |    "claimId": "CCIS12345678901",
-                                 |    "originatingClaimId": "000000000000210",
-                                 |    "incomeSourceId": "LLIS12345678911",
-                                 |    "incomeSourceType": "01",
-                                 |    "taxYearClaimMade": 2039,
-                                 |    "claimType": "CF",
-                                 |    "mtdLoss": true,
-                                 |    "taxYearLossIncurred": 2051,
-                                 |    "lossAmountUsed": 64613077921,
-                                 |    "remainingLossValue": 72548288090,
-                                 |    "lossType": "income"
-                                 |  }
-                                 |""".stripMargin)
-
-      desJson.as[ResultOfClaimApplied] shouldBe
-        model
+      desJson().as[ResultOfClaimApplied] shouldBe model
     }
   }
 

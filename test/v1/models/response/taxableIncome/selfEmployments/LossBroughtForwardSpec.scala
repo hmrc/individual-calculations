@@ -18,8 +18,23 @@ package v1.models.response.taxableIncome.selfEmployments
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.models.des.LossType
+import LossBroughtForwardSpec._
 
-class LossBroughtForwardSpec extends UnitSpec {
+object LossBroughtForwardSpec {
+
+  def desJson(incomeSourceId: String = "AAIS12345678904", incomeSourceType: String = "01") =
+    Json.parse(s"""
+                 |  {
+                 |    "lossId": "0yriP9QrW2jTa6n",
+                 |    "incomeSourceId": "$incomeSourceId",
+                 |    "incomeSourceType": "$incomeSourceType",
+                 |    "submissionTimestamp": "2019-07-13T07:51:43Z",
+                 |    "lossType": "income",
+                 |    "taxYearLossIncurred": 2055,
+                 |    "currentLossValue": 67263350334,
+                 |    "mtdLoss": true
+                 |  }
+                 |""".stripMargin)
 
   val model = LossBroughtForward(
     lossType = LossType.income,
@@ -27,25 +42,13 @@ class LossBroughtForwardSpec extends UnitSpec {
     currentLossValue = 67263350334L,
     mtdLoss = Some(true)
   )
+}
+
+class LossBroughtForwardSpec extends UnitSpec {
 
   "reads" should {
     "convert tax years" in {
-
-      val desJson = Json.parse("""
-                                 |  {
-                                 |    "lossId": "0yriP9QrW2jTa6n",
-                                 |    "incomeSourceId": "AAIS12345678904",
-                                 |    "incomeSourceType": "01",
-                                 |    "submissionTimestamp": "2019-07-13T07:51:43Z",
-                                 |    "lossType": "income",
-                                 |    "taxYearLossIncurred": 2055,
-                                 |    "currentLossValue": 67263350334,
-                                 |    "mtdLoss": true
-                                 |  }
-                                 |""".stripMargin)
-
-      desJson.as[LossBroughtForward] shouldBe
-        model
+      desJson().as[LossBroughtForward] shouldBe model
     }
   }
 

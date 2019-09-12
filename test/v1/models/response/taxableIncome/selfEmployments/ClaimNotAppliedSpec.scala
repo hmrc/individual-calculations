@@ -18,29 +18,31 @@ package v1.models.response.taxableIncome.selfEmployments
 import play.api.libs.json.Json
 import support.UnitSpec
 import v1.models.domain.TypeOfClaim
+import ClaimNotAppliedSpec._
 
-class ClaimNotAppliedSpec extends UnitSpec {
+object ClaimNotAppliedSpec {
+  def desJson(claimId: String = "CCIS12345678912", incomeSourceId: String = "AAIS12345678904", incomeSourceType: String = "01") = Json.parse(s"""
+                             |{
+                             |  "claimId": "$claimId",
+                             |  "incomeSourceId": "$incomeSourceId",
+                             |  "incomeSourceType": "$incomeSourceType",
+                             |  "taxYearClaimMade": 2046,
+                             |  "claimType": "CF"
+                             |}
+                             |""".stripMargin)
 
   val model = ClaimNotApplied(
     claimId = "CCIS12345678912",
     taxYearClaimMade = "2045-46",
     claimType = TypeOfClaim.`carry-forward`
   )
+}
+
+class ClaimNotAppliedSpec extends UnitSpec {
 
   "reads" should {
     "convert tax years and claim types" in {
-      val desJson = Json.parse("""
-          |{
-          |  "claimId": "CCIS12345678912",
-          |  "incomeSourceId": "AAIS12345678901",
-          |  "incomeSourceType": "01",
-          |  "taxYearClaimMade": 2046,
-          |  "claimType": "CF"
-          |}
-          |""".stripMargin)
-
-      desJson.as[ClaimNotApplied] shouldBe
-        model
+      desJson().as[ClaimNotApplied] shouldBe model
     }
   }
 

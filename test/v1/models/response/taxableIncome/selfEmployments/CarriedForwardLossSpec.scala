@@ -19,43 +19,46 @@ import play.api.libs.json.Json
 import support.UnitSpec
 import v1.models.des.LossType
 import v1.models.domain.TypeOfClaim
+import CarriedForwardLossSpec._
 
-class CarriedForwardLossSpec extends UnitSpec {
+object CarriedForwardLossSpec {
 
-  val model = CarriedForwardLoss(
-    claimId = Some("CCIS12345678911"),
+  def desJson(claimId: String = "CCIS12345678911", incomeSourceId: String = "AAIS12345678904", incomeSourceType: String = "01") =
+    Json.parse(s"""
+                           |{
+                           |    "claimId": "$claimId",
+                           |    "originatingClaimId": "OCIS12345678901",
+                           |    "incomeSourceId": "$incomeSourceId",
+                           |    "incomeSourceType": "$incomeSourceType",
+                           |    "claimType": "CF",
+                           |    "taxYearClaimMade": 2047,
+                           |    "taxYearLossIncurred": 2045,
+                           |    "currentLossValue": 49177438626,
+                           |    "lossType": "income"
+                           |}
+                           |""".stripMargin)
+
+  def model(claimId: String = "CCIS12345678911") = CarriedForwardLoss(
+    claimId = Some(claimId),
     claimType = TypeOfClaim.`carry-forward`,
     taxYearClaimMade = Some("2046-47"),
     taxYearLossIncurred = "2044-45",
     currentLossValue = 49177438626L,
     lossType = LossType.income
   )
+}
 
+class CarriedForwardLossSpec extends UnitSpec {
   "reads" should {
     "convert tax years and claim types" in {
-
-      val desJson = Json.parse("""
-          |{
-          |    "claimId": "CCIS12345678911",
-          |    "originatingClaimId": "OCIS12345678901",
-          |    "incomeSourceId": "AAIS12345678901",
-          |    "incomeSourceType": "01",
-          |    "claimType": "CF",
-          |    "taxYearClaimMade": 2047,
-          |    "taxYearLossIncurred": 2045,
-          |    "currentLossValue": 49177438626,
-          |    "lossType": "income"
-          |}
-          |""".stripMargin)
-
-      desJson.as[CarriedForwardLoss] shouldBe
-        model
+      desJson().as[CarriedForwardLoss] shouldBe
+        model()
     }
   }
 
   "writes" should {
     "work" in {
-      Json.toJson(model) shouldBe Json.parse("""
+      Json.toJson(model()) shouldBe Json.parse("""
           |{
           |    "claimId": "CCIS12345678911",
           |    "claimType": "carry-forward",

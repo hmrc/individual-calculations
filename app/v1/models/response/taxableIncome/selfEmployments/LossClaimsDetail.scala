@@ -14,11 +14,35 @@
  * limitations under the License.
  */
 package v1.models.response.taxableIncome.selfEmployments
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ Json, Reads, Writes, __ }
+import utils.NestedJsonReads
 
 case class LossClaimsDetail(
-    lossesBroughtForward: Option[Seq[LossBroughtForward]],
-    resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
-    unclaimedLosses: Option[Seq[UnclaimedLoss]],
-    carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
-    claimsNotApplied: Option[Seq[ClaimNotApplied]]
+    lossesBroughtForward: Option[Seq[LossBroughtForward]] = None,
+    resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]] = None,
+    unclaimedLosses: Option[Seq[UnclaimedLoss]] = None,
+    carriedForwardLosses: Option[Seq[CarriedForwardLoss]] = None,
+    claimsNotApplied: Option[Seq[ClaimNotApplied]] = None
 )
+
+object LossClaimsDetail extends NestedJsonReads {
+
+  implicit val writes: Writes[LossClaimsDetail] = Json.writes[LossClaimsDetail]
+
+  // TODO either extend each of the array objects with incomeSourceId and incomeSourceType and filter in here
+  // (can refactor out the filtering function to a single place) or
+  // get the reads to peak at each array item ???
+
+  implicit val reads: Reads[LossClaimsDetail] = ???
+//  implicit def reads(selfEmploymentId: String): Reads[LossClaimsDetail] = (
+//    Reads.pure(Option.empty[Seq[LossBroughtForward]]) and
+//      Reads.pure(Option.empty[Seq[ResultOfClaimApplied]]) and
+//      Reads.pure(Option.empty[Seq[UnclaimedLoss]]) and
+//      (__ \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable[Seq[CarriedForwardLoss]]
+//        .filter{
+//        xs => xs.map(ys=> ys.filter( ??? ))
+//      } and
+//      Reads.pure(Option.empty[Seq[ClaimNotApplied]])
+//  )(LossClaimsDetail.apply _)
+}
