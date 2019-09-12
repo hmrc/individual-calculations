@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
+package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class GiftAid(grossGiftAidPayments: BigDecimal,
+case class NicBand(name: String,
                    rate: BigDecimal,
-                   giftAidTax: BigDecimal)
+                   threshold: Option[BigDecimal],
+                   apportionedThreshold: Option[BigDecimal],
+                   income: BigDecimal,
+                   amount: BigDecimal)
 
-object GiftAid {
-  implicit val format: OFormat[GiftAid] = Json.format[GiftAid]
+object NicBand {
+  implicit val format: OFormat[NicBand] = Json.format[NicBand]
 }
-

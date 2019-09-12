@@ -16,9 +16,9 @@
 
 package v1.models.response.common
 
+import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads._
-import play.api.libs.functional.syntax._
 
 case class Message(id: String, text: String){
 }
@@ -49,4 +49,3 @@ object Messages {
         case Some(errs) if errs.nonEmpty => Some(errs)
         case _ => None})(Messages.apply _)
 }
-	

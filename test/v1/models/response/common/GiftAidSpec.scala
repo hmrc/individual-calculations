@@ -18,6 +18,7 @@ package v1.models.response.common
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import v1.models.response.getCalculation.incomeTaxAndNics.detail.GiftAid
 
 class GiftAidSpec extends UnitSpec {
 

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package v1.models.response.taxableIncome.selfEmployments
 
-package v1.models.response.common
+import v1.models.domain.LossType
 
-import play.api.libs.json.{Json, OFormat}
-
-case class IncomeTypeBreakdown(allowancesAllocated: BigDecimal, incomeTaxAmount: BigDecimal, taxBands: Option[Seq[TaxBand]])
-
-object IncomeTypeBreakdown {
-  implicit val format: OFormat[IncomeTypeBreakdown] = Json.format[IncomeTypeBreakdown]
-}
+case class UnclaimedLosses (
+                             taxYearLossIncurred: String,
+                             currentLossValue: BigDecimal,
+                             expires: String,
+                             lossType: LossType
+                           )

@@ -19,6 +19,7 @@ package v1.models.response.common
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
 import v1.fixtures.Fixtures._
+import v1.models.response.getCalculation.incomeTaxAndNics.Message
 
 class MessagesSpec extends UnitSpec {
 

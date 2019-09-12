@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
+package v1.models.response.getCalculation.incomeTaxAndNics
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import utils.NestedJsonReads
+import play.api.libs.json._
+import v1.models.response.getCalculation.incomeTaxAndNics.detail.CalculationDetail
+import v1.models.response.getCalculation.incomeTaxAndNics.summary.CalculationSummary
 
-case class NicSummary(class2NicsAmount: Option[BigDecimal], class4NicsAmount: Option[BigDecimal], totalNic: Option[BigDecimal])
+case class IncomeTax(summary: CalculationSummary, detail: CalculationDetail)
 
-object NicSummary extends NestedJsonReads {
-  implicit val writes: OWrites[NicSummary] = Json.writes[NicSummary]
-
-  implicit val reads: Reads[NicSummary] = (
-    (JsPath \ "class2Nics" \ "amount").readNestedNullable[BigDecimal] and
-      (JsPath \ "class4Nics" \ "totalAmount").readNestedNullable[BigDecimal] and
-      (JsPath \ "totalNic").readNullable[BigDecimal]
-  )(NicSummary.apply _)
+object IncomeTax {
+  implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
+  implicit val reads: Reads[IncomeTax] = (
+    JsPath.read[CalculationSummary] and
+    JsPath.read[CalculationDetail]
+  )(IncomeTax.apply _)
 }

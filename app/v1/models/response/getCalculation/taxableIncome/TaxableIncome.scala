@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
+package v1.models.response.common.taxableIncome
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 
-case class Class2NicDetail(weeklyRate: Option[BigDecimal],
-                           weeks: Option[BigDecimal],
-                           limit: Option[BigDecimal],
-                           apportionedLimit: Option[BigDecimal],
-                           underSmallProfitThreshold: Boolean,
-                           actualClass2Nic: Option[Boolean])
+case class TaxableIncome(summary: CalculationSummary, detail: CalculationDetail)
 
-object Class2NicDetail {
-  implicit val format: OFormat[Class2NicDetail] = Json.format[Class2NicDetail]
+object TaxableIncome {
+  implicit val writes: Writes[TaxableIncome] = Json.writes[TaxableIncome]
+  implicit val reads: Reads[TaxableIncome] = (
+    (JsPath \ "calculation" \ "taxCalculation").read[CalculationSummary] and
+      JsPath.read[CalculationDetail]
+  )(TaxableIncome.apply _)
+
 }

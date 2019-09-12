@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package v1.models.response.common
+package v1.models.response.getCalculation.taxableIncome.detail.ukProperty
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TaxBand(name: String,
-                   rate: BigDecimal,
-                   bandLimit: BigDecimal,
-                   apportionedBandLimit: BigDecimal,
-                   income: BigDecimal,
-                   taxAmount: BigDecimal)
+case class UkPropertyFhl(param: String)
 
-object TaxBand {
-  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
+object UkPropertyFhl {
+  implicit val format: OFormat[UkPropertyFhl] = Json.format[UkPropertyFhl]
 }

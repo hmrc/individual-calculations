@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package v1.models.response.taxableIncome.selfEmployments
 
-package v1.models.response.common
+import v1.models.domain.{LossType, TypeOfClaim}
 
-import play.api.libs.json._
-
-case class IncomeTaxSummary(incomeTaxCharged: BigDecimal, incomeTaxDueAfterReliefs: Option[BigDecimal], incomeTaxDueAfterGiftAid: Option[BigDecimal])
-
-object IncomeTaxSummary {
-  implicit val format: OFormat[IncomeTaxSummary] = Json.format[IncomeTaxSummary]
-}
+case class CarriedForwardLosses(
+                                 claimId: Option[String],
+                                 claimType: TypeOfClaim,
+                                 taxYearClaimMade: Option[String],
+                                 taxYearLossIncurred: String,
+                                 currentLossValue: BigDecimal,
+                                 lossType: LossType
+)

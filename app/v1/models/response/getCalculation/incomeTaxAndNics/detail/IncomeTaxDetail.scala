@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
-import play.api.libs.json._
+package v1.models.response.getCalculation.incomeTaxAndNics.detail
+
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import utils.NestedJsonReads
 
 case class IncomeTaxDetail(payPensionsProfit: Option[IncomeTypeBreakdown],

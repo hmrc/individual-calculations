@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
+package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.libs.json.{Json, OFormat}
 
-case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
-                               savings: Option[BigDecimal])
+case class TaxBand(name: String,
+                   rate: BigDecimal,
+                   bandLimit: BigDecimal,
+                   apportionedBandLimit: BigDecimal,
+                   income: BigDecimal,
+                   taxAmount: BigDecimal)
 
-object TaxDeductedAtSource {
-  implicit val writes: OWrites[TaxDeductedAtSource] = Json.writes[TaxDeductedAtSource]
-
-  implicit val reads: Reads[TaxDeductedAtSource] = (
-    (JsPath \ "ukLandAndProperty").readNullable[BigDecimal] and
-      (JsPath \ "bbsi").readNullable[BigDecimal]
-  )(TaxDeductedAtSource.apply _)
+object TaxBand {
+  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
 }

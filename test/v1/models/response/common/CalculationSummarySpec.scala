@@ -18,6 +18,8 @@ package v1.models.response.common
 
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
+import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary, NicSummary}
+import v1.models.response.getCalculation.incomeTaxAndNics.{IncomeTaxSummary, NicSummary}
 
 class CalculationSummarySpec extends UnitSpec {
 

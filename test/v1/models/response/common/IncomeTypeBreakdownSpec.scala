@@ -18,6 +18,8 @@ package v1.models.response.common
 
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
+import v1.models.response.getCalculation.incomeTaxAndNics.TaxBand
+import v1.models.response.getCalculation.incomeTaxAndNics.detail.{IncomeTypeBreakdown, TaxBand}
 
 class IncomeTypeBreakdownSpec extends UnitSpec {
   val json: JsValue = Json.parse(

@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
+package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import utils.NestedJsonReads
 
-case class NicBand(name: String,
-                   rate: BigDecimal,
-                   threshold: Option[BigDecimal],
-                   apportionedThreshold: Option[BigDecimal],
-                   income: BigDecimal,
-                   amount: BigDecimal)
+case class NicDetail(class2Nics: Option[Class2NicDetail], class4NicBands: Option[Seq[NicBand]])
 
-object NicBand {
-  implicit val format: OFormat[NicBand] = Json.format[NicBand]
+object NicDetail extends NestedJsonReads{
+  implicit val writes: OWrites[NicDetail] = Json.writes[NicDetail]
+
+  implicit val reads: Reads[NicDetail] = (
+    (JsPath \ "class2Nics").readNullable[Class2NicDetail] and
+      (JsPath \ "class4Nics" \ "nic4Bands").readNestedNullable[Seq[NicBand]]
+  )(NicDetail.apply _)
 }

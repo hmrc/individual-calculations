@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.common
+package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import utils.NestedJsonReads
 
 case class CalculationDetail(incomeTax: IncomeTaxDetail, nics: Option[NicDetail], taxDeductedAtSource: Option[TaxDeductedAtSource])
