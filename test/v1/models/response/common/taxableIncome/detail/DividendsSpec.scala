@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.response.common.taxableIncome.detail.payPensionsProfit
+package v1.models.response.common.taxableIncome.detail
 
 import support.UnitSpec
 
-class UkPropertyFhl extends UnitSpec {
+class DividendsSpec extends UnitSpec {
 
 }

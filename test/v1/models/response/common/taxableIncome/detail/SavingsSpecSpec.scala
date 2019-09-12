@@ -17,6 +17,6 @@ package v1.models.response.common.taxableIncome.detail
 
 import support.UnitSpec
 
-class PayPensionsProfit extends UnitSpec {
+class SavingsSpecSpec extends UnitSpec {
 
 }
