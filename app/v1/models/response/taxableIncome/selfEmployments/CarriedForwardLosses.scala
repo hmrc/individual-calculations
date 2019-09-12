@@ -15,13 +15,13 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
-import v1.models.domain.{LossType, TypeOfClaim}
+import v1.models.domain.{ LossType, TypeOfClaim }
 
 case class CarriedForwardLosses(
-                                 claimId: Option[String],
-                                 claimType: TypeOfClaim,
-                                 taxYearClaimMade: Option[String],
-                                 taxYearLossIncurred: String,
-                                 currentLossValue: BigDecimal,
-                                 lossType: LossType
+    claimId: Option[String],
+    claimType: TypeOfClaim,
+    taxYearClaimMade: Option[String],
+    taxYearLossIncurred: String,
+    currentLossValue: BigDecimal,
+    lossType: LossType
 )

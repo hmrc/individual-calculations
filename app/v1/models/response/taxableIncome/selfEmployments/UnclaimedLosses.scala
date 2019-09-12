@@ -17,9 +17,9 @@ package v1.models.response.taxableIncome.selfEmployments
 
 import v1.models.domain.LossType
 
-case class UnclaimedLosses (
-                             taxYearLossIncurred: String,
-                             currentLossValue: BigDecimal,
-                             expires: String,
-                             lossType: LossType
-                           )
+case class UnclaimedLosses(
+    taxYearLossIncurred: String,
+    currentLossValue: BigDecimal,
+    expires: String,
+    lossType: LossType
+)

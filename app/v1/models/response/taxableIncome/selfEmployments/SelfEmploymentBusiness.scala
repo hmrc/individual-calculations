@@ -15,15 +15,17 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
-import v1.models.domain.{ LossType, TypeOfClaim }
-
-case class ResultOfClaimsApplied(
-    claimId: Option[String],
-    taxYearClaimMade: String,
-    claimType: TypeOfClaim,
-    mtdLoss: Option[Boolean], // FIXME really?
-    taxYearLossIncurred: BigDecimal,
-    lossAmountUsed: BigDecimal,
-    remainingLossValue: BigDecimal,
-    lossType: LossType
+case class SelfEmploymentBusiness(
+    selfEmploymentId: String,
+    totalIncome: Option[BigDecimal],
+    totalExpenses: Option[BigDecimal],
+    netProfit: Option[BigDecimal],
+    netLoss: Option[BigDecimal],
+    class4loss: Option[BigDecimal],
+    totalAdditions: Option[BigDecimal],
+    totalDeductions: Option[BigDecimal],
+    accountingAdjustments: Option[BigDecimal],
+    adjustedIncomeTaxLoss: Option[BigDecimal],
+    taxableProfit: Option[BigDecimal],
+    taxableProfitAfterIncomeTaxLossesDeduction: Option[BigDecimal]
 )
