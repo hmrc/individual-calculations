@@ -15,6 +15,8 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
+import play.api.libs.json.{ Format, Json }
+
 case class LossClaimsSummary(
     totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
     broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],
@@ -24,3 +26,7 @@ case class LossClaimsSummary(
     carrySidewaysClass4LossesUsed: Option[BigDecimal],
     totalClass4LossesCarriedForward: Option[BigDecimal]
 )
+
+object LossClaimsSummary {
+  implicit val format: Format[LossClaimsSummary] = Json.format[LossClaimsSummary]
+}

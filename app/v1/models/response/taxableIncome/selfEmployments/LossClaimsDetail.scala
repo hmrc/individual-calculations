@@ -16,9 +16,9 @@
 package v1.models.response.taxableIncome.selfEmployments
 
 case class LossClaimsDetail(
-                             lossesBroughtForward: Option[Seq[LossBroughtForward]],
-                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
-                             unclaimedLosses: Option[Seq[UnclaimedLoss]],
-                             carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
-                             claimsNotApplied: Option[Seq[ClaimNotApplied]]
+    lossesBroughtForward: Option[Seq[LossBroughtForward]],
+    resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
+    unclaimedLosses: Option[Seq[UnclaimedLoss]],
+    carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
+    claimsNotApplied: Option[Seq[ClaimNotApplied]]
 )
