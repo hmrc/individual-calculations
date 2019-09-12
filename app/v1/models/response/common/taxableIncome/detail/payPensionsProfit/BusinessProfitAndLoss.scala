@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package v1.models.response.common.taxableIncome.detail
+package v1.models.response.common.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 
-case class Savings(savingsAccountId: String,
-                   savingsAccountName: String,
-                   grossIncome: BigDecimal,
-                   netIncome: Option[BigDecimal],
-                   taxDeducted: Option[BigDecimal])
+case class BusinessProfitAndLoss(selfEmployments: Option[Array[SelfEmployments]],
+                                 ukPropertyFhl: Option[Array[UkPropertyFhl]],
+                                 ukPropertyNonFhl: Option[Array[UkPropertyNonFhl]])
 
-object Savings {
-  implicit val writes: Writes[Savings] = Json.writes[Savings]
-  implicit val reads: Reads[Savings] = (
-    (JsPath \ "incomeSourceId").read[String] and
-      (JsPath \ "incomeSourceName").read[String] and
-      (JsPath \ "grossIncome").read[BigDecimal] and
-      (JsPath \ "netIncome").readNullable[BigDecimal] and
-      (JsPath \ "taxDeducted").readNullable[BigDecimal]
-  )(Savings.apply _)
+object BusinessProfitAndLoss {
+  implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
+  implicit val reads: Reads[BusinessProfitAndLoss] = (
+    JsPath.readNullable[Array[SelfEmployments]] and
+      JsPath.readNullable[Array[UkPropertyFhl]] and
+      JsPath.readNullable[Array[UkPropertyNonFhl]]
+  )(BusinessProfitAndLoss.apply _)
 }

@@ -16,15 +16,15 @@
 
 package v1.models.response.common.taxableIncome
 
-import play.api.libs.json.{Json, Reads, Writes, __}
+import play.api.libs.json.{JsPath, Json, Reads, Writes, __}
 import play.api.libs.functional.syntax._
 
-case class Summary (totalIncomeReceivedFromAllSources: Int, totalTaxableIncome: Int)
+case class Summary (totalIncomeReceivedFromAllSources: BigInt, totalTaxableIncome: BigInt)
 
 object Summary{
   implicit val writes: Writes[Summary] = Json.writes[Summary]
   implicit val reads: Reads[Summary] = (
-    (__ \ "calculation" \ "taxCalculation" \ "totalIncomeReceivedFromAllSources").read[Int] and
-      (__ \ "calculation" \ "taxCalculation" \ "totalTaxableIncome").read[Int]
+    (JsPath  \ "totalIncomeReceivedFromAllSources").read[BigInt] and
+      (JsPath \ "totalTaxableIncome").read[BigInt]
     )(Summary.apply _)
 }

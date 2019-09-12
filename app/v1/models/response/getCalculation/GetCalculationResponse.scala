@@ -18,7 +18,7 @@ package v1.models.response.getCalculation
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{ JsPath, Json, Writes, Reads }
-import v1.models.response.common.{ IncomeTax, Messages, Metadata }
+import v1.models.response.common.{ IncomeTax, Messages, Metadata}
 
 case class GetCalculationResponse(
                                    metadata: Metadata,

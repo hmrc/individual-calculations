@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package v1.models.response.common.taxableIncome.detail.payPensionsProfit
 
-package v1.models.response.common.taxableIncome.detail
+import play.api.libs.json.{Json, OFormat}
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
+case class UkPropertyFhl(param: String)
 
-case class Dividends(incomeReceived: BigInt, taxableIncome: BigInt)
-
-object Dividends {
-  implicit val writes: Writes[Dividends] = Json.writes[Dividends]
-  implicit val reads: Reads[Dividends] = (
-    (JsPath \ "incomeReceived").read[BigInt] and
-      (JsPath \ "taxableIncome").read[BigInt]
-  )(Dividends.apply _)
+object UkPropertyFhl {
+  implicit val format: OFormat[UkPropertyFhl] = Json.format[UkPropertyFhl]
 }

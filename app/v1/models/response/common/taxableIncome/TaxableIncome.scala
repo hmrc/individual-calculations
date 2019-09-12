@@ -16,16 +16,16 @@
 
 package v1.models.response.common.taxableIncome
 
-import play.api.libs.json.{Json, Reads, Writes, __}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 
-case class TaxableIncome (summary: Summary, detail: Detail)
+case class TaxableIncome(summary: Summary, detail: Detail)
 
-object TaxableIncome{
+object TaxableIncome {
   implicit val writes: Writes[TaxableIncome] = Json.writes[TaxableIncome]
   implicit val reads: Reads[TaxableIncome] = (
-    __.read[Summary] and
-      __.read[Detail]
+    (JsPath \ "calculation" \ "taxCalculation").read[Summary] and
+      JsPath.read[Detail]
   )(TaxableIncome.apply _)
 
 }

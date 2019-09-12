@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package v1.models.response.common.taxableIncome.detail.payPensionsProfit
 
-package v1.models.response.common.taxableIncome.detail
+import play.api.libs.json.{Json, OFormat}
 
-case class BusinessProfitAndLoss ()
+case class UkPropertyNonFhl(param: String)
+
+object UkPropertyNonFhl {
+  implicit val format: OFormat[UkPropertyNonFhl] = Json.format[UkPropertyNonFhl]
+}

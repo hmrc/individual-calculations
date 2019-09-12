@@ -16,10 +16,16 @@
 
 package v1.models.response.common.taxableIncome.detail
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 
-case class SavingsAndGains ()
+case class SavingsAndGains(incomeReceived: BigInt, taxableIncome: BigInt, savings: Option[Array[Savings]])
 
 object SavingsAndGains {
-  implicit val format: OFormat[SavingsAndGains] = Json.format[SavingsAndGains]
+  implicit val writes: Writes[SavingsAndGains] = Json.writes[SavingsAndGains]
+  implicit val reads: Reads[SavingsAndGains] = (
+    (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "incomeReceived").read[BigInt] and
+      (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "taxableIncome").read[BigInt] and
+      (JsPath \ "savingsAndGainsIncome").readNullable[Array[Savings]]
+  )(SavingsAndGains.apply _)
 }

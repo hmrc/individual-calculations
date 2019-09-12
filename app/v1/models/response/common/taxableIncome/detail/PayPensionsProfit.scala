@@ -16,10 +16,27 @@
 
 package v1.models.response.common.taxableIncome.detail
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import v1.models.response.common.taxableIncome.detail.payPensionsProfit.BusinessProfitAndLoss
 
-case class PayPensionsProfit()
+case class PayPensionsProfit(incomeReceived: BigInt,
+                             taxableIncome: BigInt,
+                             totalSelfEmploymentProfit: Option[BigInt],
+                             totalPropertyProfit: Option[BigInt],
+                             totalFHLPropertyProfit: Option[BigInt],
+                             totalUKOtherPropertyProfit: Option[BigInt],
+                             businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
-object PayPensionsProfit{
-  implicit val format: OFormat[PayPensionsProfit] = Json.format[PayPensionsProfit]
+object PayPensionsProfit {
+  implicit val writes: Writes[PayPensionsProfit] = Json.writes[PayPensionsProfit]
+  implicit val reads: Reads[PayPensionsProfit] = (
+    (JsPath \ "calculation" \ "taxCalculation").read[BigInt] and
+      (JsPath \ "calculation" \ "taxCalculation").read[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalSelfEmploymentProfit").readNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalPropertyProfit").readNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalFHLPropertyProfit").readNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalUKOtherPropertyProfit").readNullable[BigInt] and
+      JsPath.readNullable[BusinessProfitAndLoss]
+  )(PayPensionsProfit.apply _)
 }

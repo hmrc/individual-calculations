@@ -17,16 +17,16 @@
 package v1.models.response.common.taxableIncome
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ Json, Reads, Writes, __ }
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 import v1.models.response.common.taxableIncome.detail.{ Dividends, PayPensionsProfit, SavingsAndGains }
 
-case class Detail(dividends: Option[Dividends], savingsAndGains: Option[SavingsAndGains], payPensionsProfit: Option[PayPensionsProfit])
+case class Detail(payPensionsProfit: Option[PayPensionsProfit], savingsAndGains: Option[SavingsAndGains], dividends: Option[Dividends])
 
 object Detail {
   implicit val writes: Writes[Detail] = Json.writes[Detail]
   implicit val reads: Reads[Detail] = (
-    (__ ).readNullable[Dividends] and
-      (__).readNullable[SavingsAndGains] and
-      (__).readNullable[PayPensionsProfit]
+    JsPath.readNullable[PayPensionsProfit] and
+      (JsPath \ "calculation").readNullable[SavingsAndGains] and
+      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "dividends").readNullable[Dividends]
   )(Detail.apply _)
 }
