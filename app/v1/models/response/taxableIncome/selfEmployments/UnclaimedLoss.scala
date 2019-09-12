@@ -15,11 +15,27 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
-import v1.models.domain.LossType
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{Json, Reads, Writes, __}
+import v1.models.des.LossType
+import v1.models.request.DesTaxYear
 
-case class LossesBroughtForward(
-    lossType: LossType,
+case class UnclaimedLoss(
     taxYearLossIncurred: String,
     currentLossValue: BigDecimal,
-    mtdLoss: Option[Boolean] // FIXME only when false; why not just mandatory Boolean - easier for vendors???
+    expires: String,
+    lossType: LossType
 )
+
+object UnclaimedLoss {
+
+  implicit val writes: Writes[UnclaimedLoss] = Json.writes[UnclaimedLoss]
+
+  implicit val reads: Reads[UnclaimedLoss] = (
+    (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (__ \ "currentLossValue").read[BigDecimal] and
+      (__ \ "expires").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (__ \ "lossType").read[LossType]
+  )(UnclaimedLoss.apply _)
+
+}

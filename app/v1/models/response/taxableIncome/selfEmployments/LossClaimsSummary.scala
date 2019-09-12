@@ -22,7 +22,5 @@ case class LossClaimsSummary(
     totalBroughtForwardClass4Losses: Option[BigDecimal],
     broughtForwardClass4LossesUsed: Option[BigDecimal],
     carrySidewaysClass4LossesUsed: Option[BigDecimal],
-    totalClass4LossesCarriedForward: Option[BigDecimal],
-    lossClaimsSummary: Option[Seq[LossClaimsSummary]],
-    lossClaimsDetail: Option[Seq[LossClaimsDetail]]
+    totalClass4LossesCarriedForward: Option[BigDecimal]
 )

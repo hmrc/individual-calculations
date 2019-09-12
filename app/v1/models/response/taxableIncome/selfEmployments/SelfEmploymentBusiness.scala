@@ -27,5 +27,7 @@ case class SelfEmploymentBusiness(
     accountingAdjustments: Option[BigDecimal],
     adjustedIncomeTaxLoss: Option[BigDecimal],
     taxableProfit: Option[BigDecimal],
-    taxableProfitAfterIncomeTaxLossesDeduction: Option[BigDecimal]
+    taxableProfitAfterIncomeTaxLossesDeduction: Option[BigDecimal],
+    lossClaimsSummary: Option[Seq[LossClaimsSummary]],
+    lossClaimsDetail: Option[Seq[LossClaimsDetail]]
 )

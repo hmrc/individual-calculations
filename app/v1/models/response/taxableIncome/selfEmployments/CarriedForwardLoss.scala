@@ -15,9 +15,13 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
-import v1.models.domain.{ LossType, TypeOfClaim }
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import v1.models.des.{ LossType, ReliefClaimed }
+import v1.models.domain.TypeOfClaim
+import v1.models.request.DesTaxYear
 
-case class CarriedForwardLosses(
+case class CarriedForwardLoss(
     claimId: Option[String],
     claimType: TypeOfClaim,
     taxYearClaimMade: Option[String],
@@ -25,3 +29,18 @@ case class CarriedForwardLosses(
     currentLossValue: BigDecimal,
     lossType: LossType
 )
+
+object CarriedForwardLoss {
+
+  implicit val writes: Writes[CarriedForwardLoss] = Json.writes[CarriedForwardLoss]
+
+  implicit val reads: Reads[CarriedForwardLoss] = (
+    (__ \ "claimId").readNullable[String] and
+      (__ \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
+      (__ \ "taxYearClaimMade").readNullable[Int].map(_.map(DesTaxYear.fromDesIntToString)) and
+      (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (__ \ "currentLossValue").read[BigDecimal] and
+      (__ \ "lossType").read[LossType]
+  )(CarriedForwardLoss.apply _)
+
+}

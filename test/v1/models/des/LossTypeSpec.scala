@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.response.taxableIncome.selfEmployments
+package v1.models.des
 
-import v1.models.domain.{ LossType, TypeOfClaim }
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import LossType._
 
-case class ResultOfClaimsApplied(
-    claimId: Option[String],
-    taxYearClaimMade: String,
-    claimType: TypeOfClaim,
-    mtdLoss: Option[Boolean], // FIXME really?
-    taxYearLossIncurred: BigDecimal,
-    lossAmountUsed: BigDecimal,
-    remainingLossValue: BigDecimal,
-    lossType: LossType
-)
+class LossTypeSpec  extends UnitSpec with EnumJsonSpecSupport {
+
+  val desJson: JsValue = Json.toJson("")
+
+  testRoundTrip[LossType](
+    ("income", income),
+    ("class4-nics", `class4-nics`))
+}
