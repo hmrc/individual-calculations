@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package v1.models.response.taxableIncome.selfEmployments
+
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import v1.models.domain.TypeOfClaim
 

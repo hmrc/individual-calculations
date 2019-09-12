@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.common.taxableIncome
+package v1.models.response.getCalculation.taxableIncome.summary
 
 import play.api.libs.json.{JsPath, Json, Reads, Writes, __}
 import play.api.libs.functional.syntax._

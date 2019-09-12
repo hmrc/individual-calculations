@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.common.taxableIncome
+package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
-import v1.models.response.common.taxableIncome.detail.{ Dividends, PayPensionsProfit, SavingsAndGains }
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit], savingsAndGains: Option[SavingsAndGains], dividends: Option[Dividends])
 

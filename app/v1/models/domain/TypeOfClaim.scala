@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary
+package v1.models.domain
 
-case class LossClaimsSummary(
-    totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
-    broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],
-    totalIncomeTaxLossesCarriedForward: Option[BigDecimal],
-    totalBroughtForwardClass4Losses: Option[BigDecimal],
-    broughtForwardClass4LossesUsed: Option[BigDecimal],
-    carrySidewaysClass4LossesUsed: Option[BigDecimal],
-    totalClass4LossesCarriedForward: Option[BigDecimal]
-)
+import play.api.libs.json.Format
+import utils.enums.Enums
+
+sealed trait TypeOfClaim
+
+object TypeOfClaim {
+
+  case object `carry-forward` extends TypeOfClaim
+
+  case object `carry-sideways` extends TypeOfClaim
+
+  case object `carry-forward-to-carry-sideways` extends TypeOfClaim
+
+  case object `carry-sideways-fhl` extends TypeOfClaim
+
+  implicit val format: Format[TypeOfClaim] = Enums.format[TypeOfClaim]
+}
