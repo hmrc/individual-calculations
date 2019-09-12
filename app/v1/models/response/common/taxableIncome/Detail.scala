@@ -17,16 +17,17 @@
 package v1.models.response.common.taxableIncome
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
-import v1.models.response.common.taxableIncome.detail.{ Dividends, PayPensionsProfit, SavingsAndGains }
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import utils.NestedJsonReads
+import v1.models.response.common.taxableIncome.detail.{Dividends, PayPensionsProfit, SavingsAndGains}
 
 case class Detail(payPensionsProfit: Option[PayPensionsProfit], savingsAndGains: Option[SavingsAndGains], dividends: Option[Dividends])
 
-object Detail {
+object Detail extends NestedJsonReads {
   implicit val writes: Writes[Detail] = Json.writes[Detail]
   implicit val reads: Reads[Detail] = (
-    JsPath.readNullable[PayPensionsProfit] and
-      (JsPath \ "calculation").readNullable[SavingsAndGains] and
-      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "dividends").readNullable[Dividends]
+    JsPath.readNullable[PayPensionsProfit].orElse(Reads.pure(None)) and
+      (JsPath \ "calculation").readNullable[SavingsAndGains].orElse(Reads.pure(None)) and
+      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "dividends").readNestedNullable[Dividends].orElse(Reads.pure(None))
   )(Detail.apply _)
 }
