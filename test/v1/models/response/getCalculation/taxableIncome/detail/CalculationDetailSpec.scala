@@ -17,9 +17,7 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.json._
 import support.UnitSpec
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployments.SelfEmployments
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.{UkPropertyFhl, UkPropertyNonFhl}
-import v1.fixtures.TaxableIncomeFixtures._
+import v1.fixtures.taxableIncome.calculationDetail.CalculationDetailFixtures._
 
 class CalculationDetailSpec extends UnitSpec {
 
