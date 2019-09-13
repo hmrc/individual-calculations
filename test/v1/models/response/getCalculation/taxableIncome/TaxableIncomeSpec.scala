@@ -15,159 +15,19 @@
  */
 package v1.models.response.getCalculation.taxableIncome
 
-import play.api.libs.json.{JsError, JsObject, JsSuccess, JsValue, Json}
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import support.UnitSpec
-import v1.models.response.getCalculation.taxableIncome.detail.{BusinessProfitAndLoss, CalculationDetail, Dividends, PayPensionsProfit, Savings, SavingsAndGains}
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.{UkPropertyFhl, UkPropertyNonFhl}
-import v1.models.response.getCalculation.taxableIncome.TaxableIncome
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployments.SelfEmployments
-import v1.models.response.getCalculation.taxableIncome.summary.CalculationSummary
+import v1.fixtures.TaxableIncomeFixtures._
 
 class TaxableIncomeSpec extends UnitSpec {
-  val desJson: JsValue = Json.parse("""{
-      |    "calculation" : {
-      |    "taxCalculation" : {
-      |       "totalIncomeReceivedFromAllSources":100,
-      |       "totalTaxableIncome":200,
-      |      "incomeTax" : {
-      |         "payPensionsProfit" : {
-      |             "incomeReceived" : 1,
-      |             "taxableIncome" : 2
-      |             },
-      |         "savingsAndGains": {
-      |           "incomeReceived" : 392,
-      |           "taxableIncome": 3920
-      |            },
-      |        "dividends" : {
-      |          "incomeReceived":100,
-      |          "taxableIncome":200
-      |          }
-      |        }
-      |      },
-      |  "incomeSummaryTotals" : {
-      |     "totalSelfEmploymentProfit" : 3,
-      |     "totalPropertyProfit" : 4,
-      |     "totalFHLPropertyProfit" : 5,
-      |     "totalUKOtherPropertyProfit" : 6
-      |     },
-      |   "savingsAndGainsIncome" : [
-      |   {
-      |     "incomeSourceId":"anId",
-      |     "incomeSourceName":"aName",
-      |     "grossIncome":300.1,
-      |     "netIncome": 12.3,
-      |     "taxDeducted": 456.3
-      |     },
-      |    {
-      |     "incomeSourceId":"anotherId",
-      |     "incomeSourceName":"anotherName",
-      |     "grossIncome":300.12,
-      |     "netIncome": 12.33,
-      |     "taxDeducted": 456.34
-      |     }
-      |     ]
-      |    },
-      |    "selfEmployments" : [
-      |      {"param":"value"},
-      |      {"param":"value2"},
-      |      {"param":"value3"}
-      |    ],
-      |    "ukPropertyFhl" : [
-      |      {"param":"value"},
-      |      {"param":"value2"},
-      |      {"param":"value3"}
-      |    ],
-      |    "ukPropertyNonFhl" : [
-      |      {"param":"value"},
-      |      {"param":"value2"},
-      |      {"param":"value3"}
-      |    ]
-      |}""".stripMargin)
-
-  val emptyJson: JsObject = JsObject.empty
-
-  val invalidDesJson: JsValue = Json.parse("""{
-                                             |    "incomeReceived":100
-                                             |}""".stripMargin)
-
-  val writtenJson: JsValue = Json.parse("""{
-     |  "summary" : {
-     |      "totalIncomeReceivedFromAllSources":100,
-     |      "totalTaxableIncome":200
-     |    },
-     |    "detail": {
-     |   "payPensionsProfit":{
-     |     "incomeReceived":1,
-     |     "taxableIncome":2,
-     |     "totalSelfEmploymentProfit":3,
-     |     "totalPropertyProfit":4,
-     |     "totalFHLPropertyProfit":5,
-     |     "totalUKOtherPropertyProfit":6,
-     |     "businessProfitAndLoss": {
-     |       "selfEmployments":[
-     |         {"param":"value"},
-     |         {"param":"value2"},
-     |         {"param":"value3"}
-     |         ],
-     |     "ukPropertyFhl":[
-     |         {"param":"value"},
-     |         {"param":"value2"},
-     |         {"param":"value3"}
-     |       ],
-     |     "ukPropertyNonFhl":[
-     |         {"param":"value"},
-     |         {"param":"value2"},
-     |         {"param":"value3"}
-     |       ]
-     |     }
-     |   },
-     | "savingsAndGains": {
-     |     "incomeReceived":392,
-     |     "taxableIncome":3920,
-     |   "savings":[
-     |     {
-     |       "savingsAccountId":"anId",
-     |       "savingsAccountName":"aName",
-     |       "grossIncome":300.1,
-     |       "netIncome":12.3,
-     |       "taxDeducted":456.3
-     |     },
-     |     {
-     |     "savingsAccountId":"anotherId",
-     |     "savingsAccountName":"anotherName",
-     |     "grossIncome":300.12,"netIncome":12.33,
-     |     "taxDeducted":456.34
-     |       }
-     |     ]
-     |   },
-     |   "dividends":{
-     |   "incomeReceived":100,
-     |   "taxableIncome":200
-     |     }
-     |     }
-     |   }""".stripMargin)
-
-  val selfEmployments: Seq[SelfEmployments]                = Seq(SelfEmployments("value"), SelfEmployments("value2"), SelfEmployments("value3"))
-  val ukPropertyFhl: Seq[UkPropertyFhl]                    = Seq(UkPropertyFhl("value"), UkPropertyFhl("value2"), UkPropertyFhl("value3"))
-  val ukPropertyNonFhl: Seq[UkPropertyNonFhl]              = Seq(UkPropertyNonFhl("value"), UkPropertyNonFhl("value2"), UkPropertyNonFhl("value3"))
-  val businessProfitAndLossResponse: BusinessProfitAndLoss = BusinessProfitAndLoss(Some(selfEmployments), Some(ukPropertyFhl), Some(ukPropertyNonFhl))
-  val payPensionsProfitResponse: PayPensionsProfit         = PayPensionsProfit(1, 2, Some(3), Some(4), Some(5), Some(6), Some(businessProfitAndLossResponse))
-  val savingsResponse                                      = Savings("anId", "aName", 300.1, Some(12.3), Some(456.3))
-  val savingsResponse2                                     = Savings("anotherId", "anotherName", 300.12, Some(12.33), Some(456.34))
-  val savingsAndGainsResponse                              = SavingsAndGains(392, 3920, Some(Seq(savingsResponse, savingsResponse2)))
-  val dividendsResponse                                    = Dividends(100, 200)
-  val detailResponse                                       = CalculationDetail(Some(payPensionsProfitResponse), Some(savingsAndGainsResponse), Some(dividendsResponse))
-  val emptyDetailResponse                                  = CalculationDetail(None, None, None)
-  val summaryResponse = CalculationSummary(100, 200)
-  val taxableIncomeResponse = TaxableIncome(summaryResponse, detailResponse)
 
   "Taxable income" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        desJson.validate[TaxableIncome] shouldBe a[JsSuccess[_]]
+        taxableIncomeDesJson.validate[TaxableIncome] shouldBe a[JsSuccess[_]]
       }
       "with the expected TaxableIncome object" in {
-        desJson.as[TaxableIncome] shouldBe taxableIncomeResponse
+        taxableIncomeDesJson.as[TaxableIncome] shouldBe taxableIncomeResponse
       }
     }
     "read from invalid Json" should {
@@ -177,7 +37,7 @@ class TaxableIncomeSpec extends UnitSpec {
     }
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(taxableIncomeResponse) shouldBe writtenJson
+        Json.toJson(taxableIncomeResponse) shouldBe taxableIncomeWrittenJson
       }
     }
   }
