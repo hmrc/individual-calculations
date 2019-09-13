@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.{UkPropertyFhl, UkPropertyNonFhl}
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployments.SelfEmployments
 
-case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmployments]],
-                                 ukPropertyFhl: Option[Seq[UkPropertyFhl]],
-                                 ukPropertyNonFhl: Option[Seq[UkPropertyNonFhl]]){
+case class BusinessProfitAndLoss(selfEmployments: Option[String],
+                                 ukPropertyFhl: Option[String],
+                                 ukPropertyNonFhl: Option[String]){
   def isEmpty: Boolean = this match{
     case self if self == BusinessProfitAndLoss(None, None, None) => true
     case _ => false
@@ -33,8 +32,8 @@ object BusinessProfitAndLoss {
   val emptyBPAL = BusinessProfitAndLoss(None, None, None)
   implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
   implicit val reads: Reads[BusinessProfitAndLoss] = (
-    (JsPath \ "selfEmployments").readNullable[Seq[SelfEmployments]] and
-      (JsPath \ "ukPropertyFhl").readNullable[Seq[UkPropertyFhl]] and
-      (JsPath \ "ukPropertyNonFhl").readNullable[Seq[UkPropertyNonFhl]]
+    (JsPath \ "selfEmployments").readNullable[String] and
+      (JsPath \ "ukPropertyFhl").readNullable[String] and
+      (JsPath \ "ukPropertyNonFhl").readNullable[String]
   )(BusinessProfitAndLoss.apply _)
 }
