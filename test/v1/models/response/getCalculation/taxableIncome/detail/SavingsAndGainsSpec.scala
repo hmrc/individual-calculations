@@ -15,61 +15,11 @@
  */
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{ JsError, JsSuccess, JsValue, Json }
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import support.UnitSpec
 import v1.fixtures.TaxableIncomeFixtures._
 
 class SavingsAndGainsSpec extends UnitSpec {
-
-  val desJsonWithoutSavings: JsValue = Json.parse("""{
-      |   "taxCalculation" : {
-      |     "incomeTax" : {
-      |       "savingsAndGains" :{
-      |        "incomeReceived" : 392,
-      |        "taxableIncome": 3920
-      |       }
-      |     }
-      |   }
-      |}""".stripMargin)
-
-  val writtenJson: JsValue = Json.parse("""{
-      |   "incomeReceived" : 392,
-      |   "taxableIncome" : 3920,
-      |   "savings" : [
-      |   {
-      |     "savingsAccountId":"anId",
-      |     "savingsAccountName":"aName",
-      |     "grossIncome":300.1,
-      |     "netIncome": 12.3,
-      |     "taxDeducted": 456.3
-      |     },
-      |   {
-      |     "savingsAccountId":"anId2",
-      |     "savingsAccountName":"aName2",
-      |     "grossIncome":400.1,
-      |     "netIncome": 112.3,
-      |     "taxDeducted": 556.3
-      |     }
-      |
-      |     ]
-      |}""".stripMargin)
-
-  val writtenJsonWithoutSavings: JsValue = Json.parse("""{
-      |   "incomeReceived" : 392,
-      |   "taxableIncome" : 3920
-      |}""".stripMargin)
-
-  val invalidDesJson: JsValue = Json.parse("""{
-      |   "taxCalculation" : {
-      |     "incomeTax" : {
-      |       "savingsAndGains" : {
-      |        "taxableIncome": 3920
-      |       }
-      |     }
-      |   }
-      |}""".stripMargin)
-
-  val savingsAndGainsResponseWithoutSavings: SavingsAndGains = savingsAndGainsResponse.copy(savings = None)
 
   "SavingsAndGains" when {
     "read from valid Json" should {
@@ -82,27 +32,26 @@ class SavingsAndGainsSpec extends UnitSpec {
     }
     "read from valid Json with missing optional fields" should {
       "return a JsSuccess" in {
-        desJsonWithoutSavings.validate[SavingsAndGains] shouldBe a[JsSuccess[_]]
+        savingsAndGainsDesJsonWithoutSavings.validate[SavingsAndGains] shouldBe a[JsSuccess[_]]
       }
       "with the expected SavingsAndGains object" in {
-        desJsonWithoutSavings.as[SavingsAndGains] shouldBe savingsAndGainsResponseWithoutSavings
+        savingsAndGainsDesJsonWithoutSavings.as[SavingsAndGains] shouldBe savingsAndGainsResponseWithoutSavings
       }
     }
     "read from invalid Json" should {
       "return a JsError" in {
-        invalidDesJson.validate[SavingsAndGains] shouldBe a[JsError]
+        savingsAndGainsInvalidJson.validate[SavingsAndGains] shouldBe a[JsError]
       }
     }
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(savingsAndGainsResponse) shouldBe writtenJson
+        Json.toJson(savingsAndGainsResponse) shouldBe savingsAndGainsWrittenJson
       }
     }
     "written to Json with empty optional fields" should {
       "return the expected JsObject" in {
-        Json.toJson(savingsAndGainsResponseWithoutSavings) shouldBe writtenJsonWithoutSavings
+        Json.toJson(savingsAndGainsResponseWithoutSavings) shouldBe savingsAndGainsWrittenJsonWithoutSavings
       }
     }
   }
-
 }
