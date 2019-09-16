@@ -17,9 +17,8 @@ package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.json.{ JsArray, Json }
 import support.UnitSpec
-
+/*
 class LossClaimsDetailSpec extends UnitSpec {
-
   def desJson(businessProfitAndLoss: JsArray = JsArray.empty,
               resultOfClaimsApplied: JsArray = JsArray.empty,
               unclaimedLosses: JsArray = JsArray.empty,
@@ -129,3 +128,4 @@ class LossClaimsDetailSpec extends UnitSpec {
     }
   }
 }
+*/

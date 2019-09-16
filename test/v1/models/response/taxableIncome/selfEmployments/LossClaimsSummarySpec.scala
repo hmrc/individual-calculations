@@ -15,21 +15,31 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.{ Json}
+import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.LossClaimSummaryFixtures._
-
 class LossClaimsSummarySpec extends UnitSpec {
 
-  "reads" should {
-    "work" in {
-      desJson().as[LossClaimsSummary] shouldBe model
+  "LossClaimSummary" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        lossClaimSummaryDesJson.validate[LossClaimsSummary] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected LossClaimSummary object" in {
+        lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryResponse
+      }
     }
-  }
 
-  "writes" should {
-    "work" in {
-      Json.toJson(model) shouldBe a
+    "read from invalid Json" should {
+      "with the expected LossClaimSummary object" in {
+        lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryResponse
+      }
+    }
+
+    "writes" should {
+      "work" in {
+        Json.toJson(lossClaimsSummaryResponse) shouldBe lossClaimSummaryWrittenJson
+      }
     }
   }
 }
