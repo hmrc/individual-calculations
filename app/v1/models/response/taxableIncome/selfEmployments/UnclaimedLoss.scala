@@ -22,7 +22,7 @@ import v1.models.request.DesTaxYear
 
 case class UnclaimedLoss(
     taxYearLossIncurred: String,
-    currentLossValue: BigDecimal,
+    currentLossValue: BigInt,
     expires: String,
     lossType: LossType
 )
@@ -33,7 +33,7 @@ object UnclaimedLoss {
 
   implicit val reads: Reads[UnclaimedLoss] = (
     (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "currentLossValue").read[BigDecimal] and
+      (__ \ "currentLossValue").read[BigInt] and
       (__ \ "expires").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "lossType").read[LossType]
   )(UnclaimedLoss.apply _)

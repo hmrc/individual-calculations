@@ -13,53 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.models.des.LossType
-import v1.models.response.taxableIncome.selfEmployments.UnclaimedLossSpec._
-
-object UnclaimedLossSpec {
-
-  def desJson(incomeSourceId: String = "AAIS12345678904", incomeSourceType: String = "01") = Json.parse(s"""
-                             |  {
-                             |    "incomeSourceId": "$incomeSourceId",
-                             |    "incomeSourceType": "$incomeSourceType",
-                             |    "taxYearLossIncurred": 2024,
-                             |    "currentLossValue": 71438847594,
-                             |    "expires": 2079,
-                             |    "lossType": "income"
-                             |  }
-                             |""".stripMargin)
-
-  val model = UnclaimedLoss(
-    taxYearLossIncurred = "2023-24",
-    currentLossValue = 71438847594L,
-    expires = "2078-79",
-    lossType = LossType.income
-  )
-}
+import v1.fixtures.UnclaimedLossFixtures._
 
 class UnclaimedLossSpec extends UnitSpec {
 
-  "reads" should {
-    "convert tax years" in {
-      desJson().as[UnclaimedLoss] shouldBe model
+  "UnclaimedLoss" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        unclaimedLossDesJson.validate[UnclaimedLoss] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected UnclaimedLoss object" in {
+        unclaimedLossDesJson.as[UnclaimedLoss] shouldBe unclaimedLossResponse
+      }
     }
-  }
 
-  "writes" should {
-    "work" in {
-      Json.toJson(model) shouldBe Json.parse("""
-                                               |  {
-                                               |    "taxYearLossIncurred": "2023-24",
-                                               |    "currentLossValue": 71438847594,
-                                               |    "expires": "2078-79",
-                                               |    "lossType": "income"
-                                               |  }
-                                               |""".stripMargin)
+    "read from invalid Json" should {
+      "return a JsError" in {
+        unclaimedLossInvalidJson.validate[UnclaimedLoss] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(unclaimedLossResponse) shouldBe unclaimedLossWrittenJson
+      }
     }
   }
 
