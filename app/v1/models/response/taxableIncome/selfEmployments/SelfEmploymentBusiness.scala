@@ -15,6 +15,8 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
+import play.api.libs.json.{Json, OWrites, Reads}
+
 case class SelfEmploymentBusiness(
     selfEmploymentId: String,
     totalIncome: Option[BigDecimal],
@@ -31,3 +33,8 @@ case class SelfEmploymentBusiness(
     lossClaimsSummary: Option[Seq[LossClaimsSummary]],
     lossClaimsDetail: Option[Seq[LossClaimsDetail]]
 )
+
+object SelfEmploymentBusiness {
+  implicit val writes: OWrites[SelfEmploymentBusiness] = Json.writes[SelfEmploymentBusiness]
+  implicit val reads: Reads[SelfEmploymentBusiness] = Json.reads[SelfEmploymentBusiness]
+}

@@ -29,7 +29,7 @@ case class LossBroughtForward(
 
 object LossBroughtForward {
 
-  implicit val writes: Writes[LossBroughtForward] = Json.writes[LossBroughtForward]
+  implicit val writes: OWrites[LossBroughtForward] = Json.writes[LossBroughtForward]
 
   implicit val reads: Reads[LossBroughtForward] = (
     (__ \ "lossType").read[LossType] and

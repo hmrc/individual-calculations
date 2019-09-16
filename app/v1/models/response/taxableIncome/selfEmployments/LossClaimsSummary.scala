@@ -15,7 +15,8 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.{ Format, Json }
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{Json, OWrites, Reads, _}
 
 case class LossClaimsSummary(
     totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
@@ -24,9 +25,24 @@ case class LossClaimsSummary(
     totalBroughtForwardClass4Losses: Option[BigDecimal],
     broughtForwardClass4LossesUsed: Option[BigDecimal],
     carrySidewaysClass4LossesUsed: Option[BigDecimal],
-    totalClass4LossesCarriedForward: Option[BigDecimal]
-)
+    totalClass4LossesCarriedForward: Option[BigDecimal]){
+
+    def isEmpty(): Boolean = this match {
+      case LossClaimsSummary.emptyLossClaimsSummary => true
+      case _ => false
+    }
+}
 
 object LossClaimsSummary {
-  implicit val format: Format[LossClaimsSummary] = Json.format[LossClaimsSummary]
+  val emptyLossClaimsSummary = LossClaimsSummary(None,None,None,None,None,None,None)
+  implicit val writes: OWrites[LossClaimsSummary] = Json.writes[LossClaimsSummary]
+  implicit val reads: Reads[LossClaimsSummary] = (
+    (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigDecimal] and
+      (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigDecimal] and
+      (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigDecimal] and
+      (JsPath \ "totalBroughtForwardClass4Losses").readNullable[BigDecimal] and
+      (JsPath \ "broughtForwardClass4LossesUsed").readNullable[BigDecimal] and
+      (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigDecimal] and
+      (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigDecimal]
+    )(LossClaimsSummary.apply _)
 }
