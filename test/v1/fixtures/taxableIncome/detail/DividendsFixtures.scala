@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.calculationDetail
+package v1.fixtures.taxableIncome.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getCalculation.taxableIncome.detail.Dividends
 
 object DividendsFixtures {

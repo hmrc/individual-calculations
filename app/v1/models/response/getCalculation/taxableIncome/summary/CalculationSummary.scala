@@ -21,10 +21,10 @@ import play.api.libs.json.{JsPath, Json, Reads, Writes}
 
 case class CalculationSummary(totalIncomeReceivedFromAllSources: BigInt, totalTaxableIncome: BigInt)
 
-object CalculationSummary{
+object CalculationSummary {
   implicit val writes: Writes[CalculationSummary] = Json.writes[CalculationSummary]
   implicit val reads: Reads[CalculationSummary] = (
-    (JsPath  \ "totalIncomeReceivedFromAllSources").read[BigInt] and
+    (JsPath \ "totalIncomeReceivedFromAllSources").read[BigInt] and
       (JsPath \ "totalTaxableIncome").read[BigInt]
-    )(CalculationSummary.apply _)
+  )(CalculationSummary.apply _)
 }

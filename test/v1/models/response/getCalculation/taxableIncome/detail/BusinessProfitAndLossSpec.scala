@@ -18,7 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.json._
 import support.UnitSpec
-import v1.fixtures.taxableIncome.calculationDetail.BusinessProfitAndLossFixtures._
+import v1.fixtures.taxableIncome.TaxableIncomeFixtures._
+import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures._
 
 class BusinessProfitAndLossSpec extends UnitSpec {
 
@@ -31,7 +32,8 @@ class BusinessProfitAndLossSpec extends UnitSpec {
         businessProfitAndLossDesJson.as[BusinessProfitAndLoss] shouldBe businessProfitAndLossResponse
       }
     }
-    "read from valid Json with only selfEmployments" should {
+
+    "read from valid Json with missing optional fields" should {
       "return a JsSuccess" in {
         selfEmploymentsOnlyDesJson.validate[BusinessProfitAndLoss] shouldBe a[JsSuccess[_]]
       }
@@ -39,6 +41,7 @@ class BusinessProfitAndLossSpec extends UnitSpec {
         selfEmploymentsOnlyDesJson.as[BusinessProfitAndLoss] shouldBe selfEmploymentsOnlyResponse
       }
     }
+
     "read from empty Json" should {
       "return a JsSuccess" in {
         selfEmploymentsOnlyDesJson.validate[BusinessProfitAndLoss] shouldBe a[JsSuccess[_]]
@@ -47,15 +50,28 @@ class BusinessProfitAndLossSpec extends UnitSpec {
         emptyJson.as[BusinessProfitAndLoss].isEmpty shouldBe true
       }
     }
+
     "read from invalid Json" should {
       "return a JsError" in {
         businessProfitAndLossInvalidJson.validate[BusinessProfitAndLoss] shouldBe a[JsError]
       }
     }
-    "written to Json" should {
+
+    "written to Json with all fields present" should {
       "return the expected JsObject" in {
         Json.toJson(businessProfitAndLossResponse) shouldBe businessProfitAndLossWrittenJson
+      }
+    }
+
+    "written to Json with missing optional fields" should {
+      "return the expected JsObject" in {
         Json.toJson(selfEmploymentsOnlyResponse) shouldBe selfEmploymentsOnlyWrittenJson
+      }
+    }
+
+    "written to Json from an empty BusinessProfitAndLoss object" should {
+      "return an empty Json object" in {
+        Json.toJson(emptyBusinessProfitAndLossResponse) shouldBe emptyJson
       }
     }
   }

@@ -16,9 +16,9 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{ JsError, JsSuccess, Json }
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.calculationDetail.PayPensionsProfitFixtures._
+import v1.fixtures.taxableIncome.detail.PayPensionsProfitFixtures._
 
 class PayPensionsProfitSpec extends UnitSpec {
 
@@ -31,31 +31,33 @@ class PayPensionsProfitSpec extends UnitSpec {
         payPensionsProfitDesJson.as[PayPensionsProfit] shouldBe payPensionsProfitResponse
       }
     }
-    "read from valid Json without income summary totals" should {
+
+    "read from valid Json with missing optional fields" should {
       "return a JsSuccess" in {
-        payPensionsProfitDesJsonWithoutOptionals.validate[PayPensionsProfit] shouldBe a[JsSuccess[_]]
+        payPensionsProfitDesJsonWithoutOptionalFields.validate[PayPensionsProfit] shouldBe a[JsSuccess[_]]
       }
       "with the expected BusinessProfitAndLoss object" in {
-        payPensionsProfitDesJsonWithoutOptionals.as[PayPensionsProfit] shouldBe payPensionsProfitResponseWithoutSummaryTotals
+        payPensionsProfitDesJsonWithoutOptionalFields.as[PayPensionsProfit] shouldBe payPensionsProfitResponseWithoutOptionalFields
       }
     }
+
     "read from invalid Json" should {
       "return a JsError" in {
         payPensionsProfitInvalidJson.validate[PayPensionsProfit] shouldBe a[JsError]
       }
     }
 
-    "written to Json" should {
+    "written to Json with all fields present" should {
       "return the expected JsObject" in {
         Json.toJson(payPensionsProfitResponse) shouldBe payPensionsProfitWrittenJson
       }
     }
-    "written to Json with empty fields" should {
+
+    "written to Json with missing optional fields" should {
       "return the expected JsObject" in {
-        Json.toJson(payPensionsProfitResponseWithoutSummaryTotals) shouldBe payPensionsProfitWrittenJsonWithoutSummaryTotals
+        Json.toJson(payPensionsProfitResponseWithoutOptionalFields) shouldBe payPensionsProfitWrittenJsonWithoutOptionalFields
       }
     }
-
   }
 
 }

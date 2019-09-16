@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.calculationDetail
+package v1.fixtures.taxableIncome.detail
 
-import play.api.libs.json.{ JsValue, Json }
-import v1.fixtures.taxableIncome.calculationDetail.SavingsFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.{ Savings, SavingsAndGains }
+import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.taxableIncome.detail.SavingsFixtures._
+import v1.models.response.getCalculation.taxableIncome.detail.{Savings, SavingsAndGains}
 
 object SavingsAndGainsFixtures {
   val incomeReceivedSAG: BigInt                              = 392

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.calculationSummary
+package v1.fixtures.taxableIncome.summary
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getCalculation.taxableIncome.summary.CalculationSummary
 
-object SummaryFixtures {
+object CalculationSummaryFixtures {
   val totalIncomeReceivedFromAllSources: BigInt = 100
   val totalTaxableIncome: BigInt                = 200
   val summaryResponse: CalculationSummary       = CalculationSummary(totalIncomeReceivedFromAllSources, totalTaxableIncome)

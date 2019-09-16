@@ -17,12 +17,13 @@
 package v1.fixtures.taxableIncome
 
 import play.api.libs.json
-import play.api.libs.json.{JsObject, Json}
-import v1.fixtures.taxableIncome.calculationSummary.SummaryFixtures._
+import play.api.libs.json.{ JsObject, Json }
+import v1.fixtures.taxableIncome.detail.CalculationDetailFixtures._
+import v1.fixtures.taxableIncome.summary.CalculationSummaryFixtures._
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
-import v1.fixtures.taxableIncome.calculationDetail.CalculationDetailFixtures._
 
 object TaxableIncomeFixtures {
+
   val taxableIncomeDesJson: JsObject = detailDesJson
     .as[json.JsObject]
     .deepMerge(Json.obj("calculation" -> Json.obj("taxCalculation" -> summaryDesJson)))

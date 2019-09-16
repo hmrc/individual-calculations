@@ -16,9 +16,9 @@
 
 package v1.models.response.getCalculation.taxableIncome.summary
 
-import play.api.libs.json.{ JsError, JsSuccess, Json }
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.calculationSummary.SummaryFixtures._
+import v1.fixtures.taxableIncome.summary.CalculationSummaryFixtures._
 
 class CalculationSummarySpec extends UnitSpec {
 
@@ -31,15 +31,18 @@ class CalculationSummarySpec extends UnitSpec {
         summaryDesJson.as[CalculationSummary] shouldBe summaryResponse
       }
     }
+
     "read from invalid Json" should {
       "return a JsError" in {
         summaryInvalidJson.validate[CalculationSummary] shouldBe a[JsError]
       }
     }
+
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(summaryResponse) shouldBe summaryWrittenJson
       }
     }
   }
+
 }

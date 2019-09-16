@@ -16,9 +16,9 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{ JsError, JsSuccess, Json }
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.calculationDetail.SavingsAndGainsFixtures._
+import v1.fixtures.taxableIncome.detail.SavingsAndGainsFixtures._
 
 class SavingsAndGainsSpec extends UnitSpec {
 
@@ -31,6 +31,7 @@ class SavingsAndGainsSpec extends UnitSpec {
         savingsAndGainsDesJson.as[SavingsAndGains] shouldBe savingsAndGainsResponse
       }
     }
+
     "read from valid Json with missing optional fields" should {
       "return a JsSuccess" in {
         savingsAndGainsDesJsonWithoutSavings.validate[SavingsAndGains] shouldBe a[JsSuccess[_]]
@@ -39,20 +40,24 @@ class SavingsAndGainsSpec extends UnitSpec {
         savingsAndGainsDesJsonWithoutSavings.as[SavingsAndGains] shouldBe savingsAndGainsResponseWithoutSavings
       }
     }
+
     "read from invalid Json" should {
       "return a JsError" in {
         savingsAndGainsInvalidJson.validate[SavingsAndGains] shouldBe a[JsError]
       }
     }
+
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(savingsAndGainsResponse) shouldBe savingsAndGainsWrittenJson
       }
     }
+
     "written to Json with empty optional fields" should {
       "return the expected JsObject" in {
         Json.toJson(savingsAndGainsResponseWithoutSavings) shouldBe savingsAndGainsWrittenJsonWithoutSavings
       }
     }
   }
+
 }

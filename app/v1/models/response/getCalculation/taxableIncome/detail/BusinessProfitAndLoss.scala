@@ -23,7 +23,7 @@ case class BusinessProfitAndLoss(selfEmployments: Option[String],
                                  ukPropertyFhl: Option[String],
                                  ukPropertyNonFhl: Option[String]){
   def isEmpty: Boolean = this match{
-    case self if self == BusinessProfitAndLoss(None, None, None) => true
+    case self if self == BusinessProfitAndLoss.emptyBPAL => true
     case _ => false
   }
 }

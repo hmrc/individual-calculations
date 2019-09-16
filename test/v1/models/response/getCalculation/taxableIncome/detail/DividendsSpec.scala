@@ -16,9 +16,9 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{ JsError, JsSuccess, Json }
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.calculationDetail.DividendsFixtures._
+import v1.fixtures.taxableIncome.detail.DividendsFixtures._
 
 class DividendsSpec extends UnitSpec {
 
@@ -31,15 +31,18 @@ class DividendsSpec extends UnitSpec {
         dividendsDesJson.as[Dividends] shouldBe dividendsResponse
       }
     }
+
     "read from invalid Json" should {
       "return a JsError" in {
         dividendsInvalidJson.validate[Dividends] shouldBe a[JsError]
       }
     }
+
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(dividendsResponse) shouldBe dividendsDesJson
       }
     }
   }
+
 }

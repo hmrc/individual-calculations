@@ -16,9 +16,9 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{ JsError, JsSuccess, Json }
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.calculationDetail.SavingsFixtures._
+import v1.fixtures.taxableIncome.detail.SavingsFixtures._
 
 class SavingsSpec extends UnitSpec {
 
@@ -31,6 +31,7 @@ class SavingsSpec extends UnitSpec {
         savingsDesJson.as[Savings] shouldBe savingsResponse
       }
     }
+
     "read from valid Json with missing optional fields" should {
       "return a JsSuccess" in {
         savingsDesJsonWithoutOptionals.validate[Savings] shouldBe a[JsSuccess[_]]
@@ -39,20 +40,24 @@ class SavingsSpec extends UnitSpec {
         savingsDesJsonWithoutOptionals.as[Savings] shouldBe savingsResponseWithoutOptionals
       }
     }
+
     "read from invalid Json" should {
       "return a JsError" in {
         savingsInvalidJson.validate[Savings] shouldBe a[JsError]
       }
     }
+
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(savingsResponse) shouldBe savingsWrittenJson
       }
     }
-    "written to Json with empty optional fields" should {
+
+    "written to Json with missing optional fields" should {
       "return the expected JsObject" in {
         Json.toJson(savingsResponseWithoutOptionals) shouldBe savingsWrittenJsonWithoutOptionals
       }
     }
   }
+
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.calculationDetail
+package v1.fixtures.taxableIncome.detail
 
-import play.api.libs.json.{ JsObject, JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getCalculation.taxableIncome.detail.BusinessProfitAndLoss
 
 object BusinessProfitAndLossFixtures {
@@ -49,10 +49,8 @@ object BusinessProfitAndLossFixtures {
       |    "selfEmployments" : 1
       |}""".stripMargin)
 
-  val emptyJson: JsValue = JsObject.empty
-
   val businessProfitAndLossResponse: BusinessProfitAndLoss      = BusinessProfitAndLoss(Some(selfEmployments), Some(ukPropertyFhl), Some(ukPropertyNonFhl))
   val selfEmploymentsOnlyResponse: BusinessProfitAndLoss        = businessProfitAndLossResponse.copy(ukPropertyFhl = None, ukPropertyNonFhl = None)
-  val emptyBusinessProfitAndLossResponse: BusinessProfitAndLoss = BusinessProfitAndLoss(None, None, None)
+  val emptyBusinessProfitAndLossResponse: BusinessProfitAndLoss = BusinessProfitAndLoss.emptyBPAL
 
 }

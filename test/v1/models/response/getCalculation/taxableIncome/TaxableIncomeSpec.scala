@@ -31,15 +31,18 @@ class TaxableIncomeSpec extends UnitSpec {
         taxableIncomeDesJson.as[TaxableIncome] shouldBe taxableIncomeResponse
       }
     }
+
     "read from invalid Json" should {
       "return a JsError" in {
         emptyJson.validate[TaxableIncome] shouldBe a[JsError]
       }
     }
+
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(taxableIncomeResponse) shouldBe taxableIncomeWrittenJson
       }
     }
   }
+
 }

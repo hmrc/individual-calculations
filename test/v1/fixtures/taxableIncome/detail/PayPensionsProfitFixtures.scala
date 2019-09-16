@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.calculationDetail
+package v1.fixtures.taxableIncome.detail
 
-import play.api.libs.json.{ JsValue, Json }
-import v1.fixtures.taxableIncome.calculationDetail.BusinessProfitAndLossFixtures._
+import play.api.libs.json.{JsValue, Json}
+import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures._
 import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
 
 object PayPensionsProfitFixtures {
@@ -38,7 +38,7 @@ object PayPensionsProfitFixtures {
     Some(businessProfitAndLossResponse)
   )
 
-  val payPensionsProfitResponseWithoutSummaryTotals: PayPensionsProfit =
+  val payPensionsProfitResponseWithoutOptionalFields: PayPensionsProfit =
     PayPensionsProfit(incomeReceivedPPP, taxableIncomePPP, None, None, None, None, None)
 
   val payPensionsProfitDesJson: JsValue = Json.parse(s"""{
@@ -63,7 +63,7 @@ object PayPensionsProfitFixtures {
       |     "ukPropertyNonFhl" : "$ukPropertyNonFhl"
       |}""".stripMargin)
 
-  val payPensionsProfitDesJsonWithoutOptionals: JsValue = Json.parse(s"""{
+  val payPensionsProfitDesJsonWithoutOptionalFields: JsValue = Json.parse(s"""{
       |    "calculation" : {
       |       "taxCalculation" : {
       |         "incomeTax" : {
@@ -90,12 +90,15 @@ object PayPensionsProfitFixtures {
       |    }
       |}""".stripMargin)
 
-  val payPensionsProfitWrittenJsonWithoutSummaryTotals: JsValue = Json.parse(s"""{
+  val payPensionsProfitWrittenJsonWithoutOptionalFields: JsValue = Json.parse(s"""{
       |    "incomeReceived" : $incomeReceivedPPP,
       |    "taxableIncome" : $taxableIncomePPP
       |}""".stripMargin)
 
   val payPensionsProfitInvalidJson: JsValue = Json.parse(s"""{
-      |    "taxableIncome" : $taxableIncomePPP
+      |    "totalSelfEmploymentProfit" : ${totalSelfEmploymentProfit.get},
+      |    "totalPropertyProfit" : ${totalPropertyProfit.get},
+      |    "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
+      |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get}
       |}""".stripMargin)
 }

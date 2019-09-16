@@ -20,11 +20,13 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import v1.models.response.common.{Messages, Metadata}
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
+import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
 case class GetCalculationResponse(
                                    metadata: Metadata,
                                    incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
-                                   messages: Option[Messages] = None
+                                   messages: Option[Messages] = None,
+                                   taxableIncome: Option[TaxableIncome] = None
                                  )
 
 object GetCalculationResponse {
@@ -36,6 +38,7 @@ object GetCalculationResponse {
       JsPath.readNullable[Messages].map {
         case Some(messages) if messages.hasMessages => Some(messages)
         case _                                      => None
-      }
+      } and
+      JsPath.readNullable[TaxableIncome].orElse(Reads.pure(None))
   )(GetCalculationResponse.apply _)
 }

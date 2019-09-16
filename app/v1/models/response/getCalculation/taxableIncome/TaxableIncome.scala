@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.taxableIncome
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 import v1.models.response.getCalculation.taxableIncome.detail.CalculationDetail
 import v1.models.response.getCalculation.taxableIncome.summary.CalculationSummary
 
