@@ -13,49 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.models.domain.TypeOfClaim
-import ClaimNotAppliedSpec._
-
-object ClaimNotAppliedSpec {
-  def desJson(claimId: String = "CCIS12345678912", incomeSourceId: String = "AAIS12345678904", incomeSourceType: String = "01") = Json.parse(s"""
-                             |{
-                             |  "claimId": "$claimId",
-                             |  "incomeSourceId": "$incomeSourceId",
-                             |  "incomeSourceType": "$incomeSourceType",
-                             |  "taxYearClaimMade": 2046,
-                             |  "claimType": "CF"
-                             |}
-                             |""".stripMargin)
-
-  val model = ClaimNotApplied(
-    claimId = "CCIS12345678912",
-    taxYearClaimMade = "2045-46",
-    claimType = TypeOfClaim.`carry-forward`
-  )
-}
+import v1.fixtures.ClaimNotAppliedFixtures._
 
 class ClaimNotAppliedSpec extends UnitSpec {
 
-  "reads" should {
-    "convert tax years and claim types" in {
-      desJson().as[ClaimNotApplied] shouldBe model
+  "ClaimNotApplied" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        claimNotAppliedDesJson.validate[ClaimNotApplied] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected ClaimNotApplied object" in {
+        claimNotAppliedDesJson.as[ClaimNotApplied] shouldBe claimNotAppliedResponse
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        claimNotAppliedInvalidJson.validate[ClaimNotApplied] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(claimNotAppliedResponse) shouldBe claimNotAppliedWrittenJson
+      }
     }
   }
 
-  "writes" should {
-    "work" in {
-      Json.toJson(model) shouldBe Json.parse("""
-          |{
-          |  "claimId": "CCIS12345678912",
-          |  "taxYearClaimMade": "2045-46",
-          |  "claimType": "carry-forward"
-          |}
-          |""".stripMargin)
-    }
-  }
 }
