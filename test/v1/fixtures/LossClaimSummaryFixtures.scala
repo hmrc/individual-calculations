@@ -15,7 +15,7 @@
  */
 package v1.fixtures
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.models.response.taxableIncome.selfEmployments.LossClaimsSummary
 
 object LossClaimSummaryFixtures {
@@ -68,8 +68,7 @@ object LossClaimSummaryFixtures {
       |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
       |  }""".stripMargin)
 
-  val lossClaimSummaryWrittenJson: JsValue = Json.parse(s"""
-      |{
+  val lossClaimSummaryWrittenJson: JsValue = Json.parse(s"""{
       |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
       |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
       |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
@@ -77,8 +76,13 @@ object LossClaimSummaryFixtures {
       |    "broughtForwardClass4LossesUsed": ${broughtForwardClass4LossesUsed.get},
       |    "carrySidewaysClass4LossesUsed": ${carrySidewaysClass4LossesUsed.get},
       |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
-      |}
-      |""".stripMargin)
+      |}""".stripMargin)
+
+  val lossClaimSummaryInvalidJson: JsValue = Json.parse(s"""{
+      |    "totalBroughtForwardIncomeTaxLosses": true
+      |  }""".stripMargin)
+
+  val emptyJson: JsValue = JsObject.empty
 
   val lossClaimsSummaryResponse = LossClaimsSummary(
     totalBroughtForwardIncomeTaxLosses,
