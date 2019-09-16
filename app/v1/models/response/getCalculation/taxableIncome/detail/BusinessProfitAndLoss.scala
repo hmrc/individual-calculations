@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
 
 case class BusinessProfitAndLoss(selfEmployments: Option[String],
                                  ukPropertyFhl: Option[String],
@@ -30,7 +30,7 @@ case class BusinessProfitAndLoss(selfEmployments: Option[String],
 
 object BusinessProfitAndLoss {
   val emptyBPAL = BusinessProfitAndLoss(None, None, None)
-  implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
+  implicit val writes: OWrites[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
   implicit val reads: Reads[BusinessProfitAndLoss] = (
     (JsPath \ "selfEmployments").readNullable[String] and
       (JsPath \ "ukPropertyFhl").readNullable[String] and

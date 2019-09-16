@@ -17,12 +17,12 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
 
 case class Dividends(incomeReceived: BigInt, taxableIncome: BigInt)
 
 object Dividends {
-  implicit val writes: Writes[Dividends] = Json.writes[Dividends]
+  implicit val writes: OWrites[Dividends] = Json.writes[Dividends]
   implicit val reads: Reads[Dividends] = (
     (JsPath \ "incomeReceived").read[BigInt] and
       (JsPath \ "taxableIncome").read[BigInt]

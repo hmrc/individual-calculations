@@ -17,20 +17,20 @@
 package v1.models.response.getCalculation
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import v1.models.response.common.{Messages, Metadata}
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
+import v1.models.response.common.{ Messages, Metadata }
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
 case class GetCalculationResponse(
-                                   metadata: Metadata,
-                                   incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
-                                   messages: Option[Messages] = None,
-                                   taxableIncome: Option[TaxableIncome] = None
-                                 )
+    metadata: Metadata,
+    incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
+    messages: Option[Messages] = None,
+    taxableIncome: Option[TaxableIncome] = None
+)
 
 object GetCalculationResponse {
-  implicit val writes: Writes[GetCalculationResponse] = Json.writes[GetCalculationResponse]
+  implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
   implicit val reads: Reads[GetCalculationResponse] = (
     JsPath.read[Metadata] and

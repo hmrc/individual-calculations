@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
 import utils.NestedJsonReads
 
 case class PayPensionsProfit(incomeReceived: BigInt,
@@ -29,7 +29,7 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
 object PayPensionsProfit extends NestedJsonReads{
-  implicit val writes: Writes[PayPensionsProfit] = Json.writes[PayPensionsProfit]
+  implicit val writes: OWrites[PayPensionsProfit] = Json.writes[PayPensionsProfit]
   implicit val reads: Reads[PayPensionsProfit] = (
     (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit" \ "incomeReceived").read[BigInt] and
       (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit" \ "taxableIncome").read[BigInt] and

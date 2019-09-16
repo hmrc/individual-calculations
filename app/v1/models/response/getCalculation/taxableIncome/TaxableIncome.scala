@@ -17,14 +17,14 @@
 package v1.models.response.getCalculation.taxableIncome
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
+import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
 import v1.models.response.getCalculation.taxableIncome.detail.CalculationDetail
 import v1.models.response.getCalculation.taxableIncome.summary.CalculationSummary
 
 case class TaxableIncome(summary: CalculationSummary, detail: CalculationDetail)
 
 object TaxableIncome {
-  implicit val writes: Writes[TaxableIncome] = Json.writes[TaxableIncome]
+  implicit val writes: OWrites[TaxableIncome] = Json.writes[TaxableIncome]
   implicit val reads: Reads[TaxableIncome] = (
     (JsPath \ "calculation" \ "taxCalculation").read[CalculationSummary] and
       JsPath.read[CalculationDetail]

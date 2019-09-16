@@ -35,7 +35,7 @@ case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], 
 }
 
 object Messages {
-  implicit val writes: Writes[Messages] = Json.writes[Messages]
+  implicit val writes: OWrites[Messages] = Json.writes[Messages]
   implicit val reads: Reads[Messages] = (
     (__ \ "messages" \ "info").readNestedNullable[Seq[Message]].map {
       case Some(info) if info.nonEmpty => Some(info)

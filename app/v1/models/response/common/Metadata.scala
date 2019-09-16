@@ -35,7 +35,7 @@ case class Metadata(id: String,
 
 
 object Metadata extends NestedJsonReads {
-  implicit val writes: Writes[Metadata] = Json.writes[Metadata]
+  implicit val writes: OWrites[Metadata] = Json.writes[Metadata]
   implicit val reads: Reads[Metadata]=(
   (JsPath \"metadata" \ "calculationId").read[String] and
     (JsPath \"metadata" \ "taxYear").read[Int].map(taxYear => taxYear.toString).map(DesTaxYear.fromDes).map(_.toString) and
