@@ -30,7 +30,6 @@ case class UnclaimedLoss(
 object UnclaimedLoss {
 
   implicit val writes: Writes[UnclaimedLoss] = Json.writes[UnclaimedLoss]
-
   implicit val reads: Reads[UnclaimedLoss] = (
     (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "currentLossValue").read[BigInt] and

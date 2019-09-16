@@ -26,20 +26,19 @@ case class CarriedForwardLoss(
     claimType: TypeOfClaim,
     taxYearClaimMade: Option[String],
     taxYearLossIncurred: String,
-    currentLossValue: BigDecimal,
+    currentLossValue: BigInt,
     lossType: LossType
 )
 
 object CarriedForwardLoss {
 
-  implicit val writes: Writes[CarriedForwardLoss] = Json.writes[CarriedForwardLoss]
-
+  implicit val writes: OWrites[CarriedForwardLoss] = Json.writes[CarriedForwardLoss]
   implicit val reads: Reads[CarriedForwardLoss] = (
     (__ \ "claimId").readNullable[String] and
       (__ \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
       (__ \ "taxYearClaimMade").readNullable[Int].map(_.map(DesTaxYear.fromDesIntToString)) and
       (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "currentLossValue").read[BigDecimal] and
+      (__ \ "currentLossValue").read[BigInt] and
       (__ \ "lossType").read[LossType]
   )(CarriedForwardLoss.apply _)
 

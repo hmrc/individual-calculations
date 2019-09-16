@@ -13,62 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.Json
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import support.UnitSpec
-import v1.models.des.LossType
-import v1.models.domain.TypeOfClaim
-import CarriedForwardLossSpec._
-
-object CarriedForwardLossSpec {
-
-  def desJson(claimId: String = "CCIS12345678911", incomeSourceId: String = "AAIS12345678904", incomeSourceType: String = "01") =
-    Json.parse(s"""
-                           |{
-                           |    "claimId": "$claimId",
-                           |    "originatingClaimId": "OCIS12345678901",
-                           |    "incomeSourceId": "$incomeSourceId",
-                           |    "incomeSourceType": "$incomeSourceType",
-                           |    "claimType": "CF",
-                           |    "taxYearClaimMade": 2047,
-                           |    "taxYearLossIncurred": 2045,
-                           |    "currentLossValue": 49177438626,
-                           |    "lossType": "income"
-                           |}
-                           |""".stripMargin)
-
-  def model(claimId: String = "CCIS12345678911") = CarriedForwardLoss(
-    claimId = Some(claimId),
-    claimType = TypeOfClaim.`carry-forward`,
-    taxYearClaimMade = Some("2046-47"),
-    taxYearLossIncurred = "2044-45",
-    currentLossValue = 49177438626L,
-    lossType = LossType.income
-  )
-}
+import v1.fixtures.CarriedForwardLossFixtures._
 
 class CarriedForwardLossSpec extends UnitSpec {
-  "reads" should {
-    "convert tax years and claim types" in {
-      desJson().as[CarriedForwardLoss] shouldBe
-        model()
+
+  "CarriedForwardLoss" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        carriedForwardLossDesJson.validate[CarriedForwardLoss] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected CarriedForwardLoss object" in {
+        carriedForwardLossDesJson.as[CarriedForwardLoss] shouldBe carriedForwardLossResponse
+      }
+    }
+
+    "read from Json with missing optional fields" should {
+      "return the expected JsObject" in {
+        carriedForwardLossDesJsonWithoutOptionals.as[CarriedForwardLoss] shouldBe carriedForwardLossResponseWithoutOptionals
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        carriedForwardLossInvalidJson.validate[CarriedForwardLoss] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(carriedForwardLossResponse) shouldBe carriedForwardLossWrittenJson
+      }
     }
   }
 
-  "writes" should {
-    "work" in {
-      Json.toJson(model()) shouldBe Json.parse("""
-          |{
-          |    "claimId": "CCIS12345678911",
-          |    "claimType": "carry-forward",
-          |    "taxYearClaimMade": "2046-47",
-          |    "taxYearLossIncurred": "2044-45",
-          |    "currentLossValue": 49177438626,
-          |    "lossType": "income"
-          |}
-          |""".stripMargin)
-    }
-  }
 }

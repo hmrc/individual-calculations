@@ -60,4 +60,5 @@ object UnclaimedLossFixtures {
       |    "currentLossValue": $currentLossValue,
       |    "expires": $expires
       |}""".stripMargin)
+
 }

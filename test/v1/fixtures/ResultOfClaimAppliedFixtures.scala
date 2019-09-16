@@ -102,4 +102,5 @@ object ResultOfClaimAppliedFixtures {
       |    "taxYearLossIncurred": "$taxYearLossIncurred",
       |    "mtdLoss": $mtdLoss
       |}""".stripMargin)
+
 }
