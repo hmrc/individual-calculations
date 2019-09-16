@@ -15,7 +15,7 @@
  */
 package v1.fixtures
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{ JsObject, JsValue, Json }
 import v1.models.response.taxableIncome.selfEmployments.LossClaimsSummary
 
 object LossClaimSummaryFixtures {
@@ -43,6 +43,16 @@ object LossClaimSummaryFixtures {
   val carrySidewaysClass4LossesUsed: Option[BigDecimal]      = Some(2)
   val totalClass4LossesCarriedForward: Option[BigDecimal]    = Some(3)
 
+  val lossClaimsSummaryResponse = LossClaimsSummary(
+    totalBroughtForwardIncomeTaxLosses,
+    broughtForwardIncomeTaxLossesUsed,
+    totalIncomeTaxLossesCarriedForward,
+    totalBroughtForwardClass4Losses,
+    broughtForwardClass4LossesUsed,
+    carrySidewaysClass4LossesUsed,
+    totalClass4LossesCarriedForward
+  )
+
   val lossClaimSummaryDesJson: JsValue = Json.parse(s"""{
       |    "incomeSourceId": "$incomeSourceId",
       |    "incomeSourceType": "$incomeSourceType",
@@ -66,7 +76,7 @@ object LossClaimSummaryFixtures {
       |    "broughtForwardClass4LossesUsed": ${broughtForwardClass4LossesUsed.get},
       |    "carrySidewaysClass4LossesUsed": ${carrySidewaysClass4LossesUsed.get},
       |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
-      |  }""".stripMargin)
+      |}""".stripMargin)
 
   val lossClaimSummaryWrittenJson: JsValue = Json.parse(s"""{
       |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
@@ -80,18 +90,8 @@ object LossClaimSummaryFixtures {
 
   val lossClaimSummaryInvalidJson: JsValue = Json.parse(s"""{
       |    "totalBroughtForwardIncomeTaxLosses": true
-      |  }""".stripMargin)
+      |}""".stripMargin)
 
   val emptyJson: JsValue = JsObject.empty
-
-  val lossClaimsSummaryResponse = LossClaimsSummary(
-    totalBroughtForwardIncomeTaxLosses,
-    broughtForwardIncomeTaxLossesUsed,
-    totalIncomeTaxLossesCarriedForward,
-    totalBroughtForwardClass4Losses,
-    broughtForwardClass4LossesUsed,
-    carrySidewaysClass4LossesUsed,
-    totalClass4LossesCarriedForward
-  )
 
 }

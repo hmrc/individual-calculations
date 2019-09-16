@@ -17,25 +17,24 @@ package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v1.models.des.{ LossType, ReliefClaimed }
+import v1.models.des.LossType
 import v1.models.request.DesTaxYear
 
-case class LossBroughtForward(
+case class LossesBroughtForward(
     lossType: LossType,
     taxYearLossIncurred: String,
     currentLossValue: BigDecimal,
-    mtdLoss: Option[Boolean] // FIXME only when false; why not just mandatory Boolean - easier for vendors???
+    mtdLoss: Boolean
 )
 
-object LossBroughtForward {
+object LossesBroughtForward {
 
-  implicit val writes: OWrites[LossBroughtForward] = Json.writes[LossBroughtForward]
-
-  implicit val reads: Reads[LossBroughtForward] = (
+  implicit val writes: OWrites[LossesBroughtForward] = Json.writes[LossesBroughtForward]
+  implicit val reads: Reads[LossesBroughtForward] = (
     (__ \ "lossType").read[LossType] and
       (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "currentLossValue").read[BigDecimal] and
-      (__ \ "mtdLoss").readNullable[Boolean]
-  )(LossBroughtForward.apply _)
+      (__ \ "mtdLoss").read[Boolean].orElse(Reads.pure(true))
+  )(LossesBroughtForward.apply _)
 
 }

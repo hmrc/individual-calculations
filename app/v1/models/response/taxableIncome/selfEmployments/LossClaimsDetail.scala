@@ -19,11 +19,11 @@ import play.api.libs.json.{ Json, Reads, Writes, __ }
 import utils.NestedJsonReads
 
 case class LossClaimsDetail(
-    lossesBroughtForward: Option[Seq[LossBroughtForward]] = None,
-    resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]] = None,
-    unclaimedLosses: Option[Seq[UnclaimedLoss]] = None,
-    carriedForwardLosses: Option[Seq[CarriedForwardLoss]] = None,
-    claimsNotApplied: Option[Seq[ClaimNotApplied]] = None
+                             lossesBroughtForward: Option[Seq[LossesBroughtForward]] = None,
+                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]] = None,
+                             unclaimedLosses: Option[Seq[UnclaimedLoss]] = None,
+                             carriedForwardLosses: Option[Seq[CarriedForwardLoss]] = None,
+                             claimsNotApplied: Option[Seq[ClaimNotApplied]] = None
 )
 
 object LossClaimsDetail extends NestedJsonReads {
