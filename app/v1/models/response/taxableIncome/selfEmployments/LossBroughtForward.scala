@@ -20,21 +20,21 @@ import play.api.libs.json._
 import v1.models.des.LossType
 import v1.models.request.DesTaxYear
 
-case class LossesBroughtForward(
+case class LossBroughtForward(
     lossType: LossType,
     taxYearLossIncurred: String,
     currentLossValue: BigDecimal,
     mtdLoss: Boolean
 )
 
-object LossesBroughtForward {
+object LossBroughtForward {
 
-  implicit val writes: OWrites[LossesBroughtForward] = Json.writes[LossesBroughtForward]
-  implicit val reads: Reads[LossesBroughtForward] = (
+  implicit val writes: OWrites[LossBroughtForward] = Json.writes[LossBroughtForward]
+  implicit val reads: Reads[LossBroughtForward] = (
     (__ \ "lossType").read[LossType] and
       (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "currentLossValue").read[BigDecimal] and
       (__ \ "mtdLoss").read[Boolean].orElse(Reads.pure(true))
-  )(LossesBroughtForward.apply _)
+  )(LossBroughtForward.apply _)
 
 }

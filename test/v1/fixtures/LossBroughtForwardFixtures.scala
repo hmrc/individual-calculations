@@ -18,9 +18,9 @@ package v1.fixtures
 import play.api.libs.json.{ JsValue, Json }
 import v1.models.des.LossType
 import v1.models.request.DesTaxYear
-import v1.models.response.taxableIncome.selfEmployments.LossesBroughtForward
+import v1.models.response.taxableIncome.selfEmployments.LossBroughtForward
 
-object LossesBroughtForwardFixtures {
+object LossBroughtForwardFixtures {
   val lossId: String               = "0yriP9QrW2jTa6n"
   val incomeSourceId: String       = "AAIS12345678904"
   val incomeSourceType: String     = "01"
@@ -30,10 +30,12 @@ object LossesBroughtForwardFixtures {
   val currentLossValue: BigDecimal = 673350334
   val mtdLoss: Boolean             = false
 
-  val lossesBroughtForwardResponse: LossesBroughtForward =
-    LossesBroughtForward(lossType, DesTaxYear.fromDesIntToString(taxYearLossIncurred), currentLossValue, mtdLoss)
+  val lossBroughtForwardResponse: LossBroughtForward =
+    LossBroughtForward(lossType, DesTaxYear.fromDesIntToString(taxYearLossIncurred), currentLossValue, mtdLoss)
 
-  val lossesBroughtForwardDesJson: JsValue = Json.parse(s"""{
+  val lossBroughtForwardResponseWithoutMtdLoss: LossBroughtForward = lossBroughtForwardResponse.copy(mtdLoss = true)
+
+  val lossBroughtForwardDesJson: JsValue = Json.parse(s"""{
       |    "lossId": "$lossId",
       |    "incomeSourceId": "$incomeSourceId",
       |    "incomeSourceType": "$incomeSourceType",
@@ -44,14 +46,31 @@ object LossesBroughtForwardFixtures {
       |    "mtdLoss": $mtdLoss
       |}""".stripMargin)
 
-  val lossesBroughtForwardWrittenJson: JsValue = Json.parse(f"""{
+  val lossBroughtForwardDesJsonWithoutMtdLoss: JsValue = Json.parse(s"""{
+      |    "lossId": "$lossId",
+      |    "incomeSourceId": "$incomeSourceId",
+      |    "incomeSourceType": "$incomeSourceType",
+      |    "submissionTimestamp": "$submissionTimestamp",
+      |    "lossType": "$lossType",
+      |    "taxYearLossIncurred": $taxYearLossIncurred,
+      |    "currentLossValue": $currentLossValue
+      |}""".stripMargin)
+
+  val lossBroughtForwardWrittenJson: JsValue = Json.parse(f"""{
       |    "lossType": "$lossType",
       |    "taxYearLossIncurred": "${DesTaxYear.fromDesIntToString(taxYearLossIncurred)}",
       |    "currentLossValue": $currentLossValue,
       |    "mtdLoss": $mtdLoss
       |}""".stripMargin)
 
-  val lossesBroughtForwardInvalidJson: JsValue = Json.parse(f"""{
+  val lossBroughtForwardWrittenJsonWithoutMtdLoss: JsValue = Json.parse(f"""{
+      |    "lossType": "$lossType",
+      |    "taxYearLossIncurred": "${DesTaxYear.fromDesIntToString(taxYearLossIncurred)}",
+      |    "currentLossValue": $currentLossValue,
+      |    "mtdLoss": true
+      |}""".stripMargin)
+
+  val lossBroughtForwardInvalidJson: JsValue = Json.parse(f"""{
       |    "lossType": "$lossType",
       |    "taxYearLossIncurred": "$taxYearLossIncurred}",
       |    "currentLossValue": $currentLossValue,

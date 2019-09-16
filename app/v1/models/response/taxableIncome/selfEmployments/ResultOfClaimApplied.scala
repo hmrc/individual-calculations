@@ -25,13 +25,12 @@ case class ResultOfClaimApplied(
     claimId: Option[String],
     taxYearClaimMade: String,
     claimType: TypeOfClaim,
-    mtdLoss: Option[Boolean], // FIXME really?
+    mtdLoss: Boolean,
     taxYearLossIncurred: String,
     lossAmountUsed: BigDecimal,
     remainingLossValue: BigDecimal,
     lossType: LossType
 )
-
 
 object ResultOfClaimApplied {
 
@@ -41,7 +40,7 @@ object ResultOfClaimApplied {
     (__ \ "claimId").readNullable[String] and
       (__ \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
-      (__ \ "mtdLoss").readNullable[Boolean] and
+      (__ \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
       (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "lossAmountUsed").read[BigDecimal] and
       (__ \ "remainingLossValue").read[BigDecimal] and

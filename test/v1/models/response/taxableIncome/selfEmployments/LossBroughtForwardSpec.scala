@@ -17,29 +17,35 @@ package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.LossesBroughtForwardFixtures._
+import v1.fixtures.LossBroughtForwardFixtures._
 
-class LossesBroughtForwardSpec extends UnitSpec {
+class LossBroughtForwardSpec extends UnitSpec {
 
   "LossesBroughtForward" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        lossesBroughtForwardDesJson.validate[LossesBroughtForward] shouldBe a[JsSuccess[_]]
+        lossBroughtForwardDesJson.validate[LossBroughtForward] shouldBe a[JsSuccess[_]]
       }
       "containing the expected LossesBroughtForward object" in {
-        lossesBroughtForwardDesJson.as[LossesBroughtForward] shouldBe lossesBroughtForwardResponse
+        lossBroughtForwardDesJson.as[LossBroughtForward] shouldBe lossBroughtForwardResponse
+      }
+    }
+
+    "read from Json with the MtdLoss field not present" should {
+      "return the expected LossesBroughtForward object" in {
+        lossBroughtForwardDesJsonWithoutMtdLoss.as[LossBroughtForward] shouldBe lossBroughtForwardResponseWithoutMtdLoss
       }
     }
 
     "read from invalid Json" should {
       "return a JsSuccess" in {
-        lossesBroughtForwardInvalidJson.validate[LossesBroughtForward] shouldBe a[JsError]
+        lossBroughtForwardInvalidJson.validate[LossBroughtForward] shouldBe a[JsError]
       }
     }
 
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(lossesBroughtForwardResponse) shouldBe lossesBroughtForwardWrittenJson
+        Json.toJson(lossBroughtForwardResponse) shouldBe lossBroughtForwardWrittenJson
       }
     }
   }
