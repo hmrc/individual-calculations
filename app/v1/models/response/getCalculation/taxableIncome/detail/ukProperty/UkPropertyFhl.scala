@@ -16,10 +16,40 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukProperty
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.LossClaimsDetail
+import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.summary.LossClaimsSummary
 
-case class UkPropertyFhl(param: String)
+case class UkPropertyFhl(totalIncome: Option[BigDecimal],
+                         totalExpenses: Option[BigDecimal],
+                         netProfit: Option[BigDecimal],
+                         netLoss: Option[BigDecimal],
+                         totalAdditions: Option[BigDecimal],
+                         totalDeductions: Option[BigDecimal],
+                         accountingAdjustments: Option[BigDecimal],
+                         adjustedIncomeTaxLoss: Option[BigDecimal],
+                         taxableProfit: Option[BigDecimal],
+                         taxableProfitAfterIncomeTaxLossesDeduction: Option[BigDecimal],
+                         lossClaimsSummary: Option[LossClaimsSummary],
+                         lossClaimsDetail: Option[LossClaimsDetail]
+                        )
 
 object UkPropertyFhl {
-  implicit val format: OFormat[UkPropertyFhl] = Json.format[UkPropertyFhl]
+  implicit val writes: OWrites[UkPropertyFhl] = Json.writes[UkPropertyFhl]
+
+  implicit val reads: Reads[UkPropertyFhl] = (
+    (JsPath \ "totalIncome").readNullable[BigDecimal] and
+      (JsPath \ "totalExpenses").readNullable[BigDecimal] and
+      (JsPath \ "netProfit").readNullable[BigDecimal] and
+      (JsPath \ "netLoss").readNullable[BigDecimal] and
+      (JsPath \ "totalAdditions").readNullable[BigDecimal] and
+      (JsPath \ "totalDeductions").readNullable[BigDecimal] and
+      (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
+      (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigDecimal] and
+      (JsPath \ "taxableProfit").readNullable[BigDecimal] and
+      (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigDecimal] and
+      __.readNullable[LossClaimsSummary] and
+      __.readNullable[LossClaimsDetail]
+  )(UkPropertyFhl.apply _)
 }

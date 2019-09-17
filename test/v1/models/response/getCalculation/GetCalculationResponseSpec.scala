@@ -19,7 +19,7 @@ package v1.models.response.getCalculation
 import play.api.libs.json._
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.common.{CalculationSummary, IncomeTax, Message, Messages, Metadata, _}
+import v1.models.response.common.{Message, Messages, Metadata}
 import v1.models.response.getCalculation.incomeTaxAndNics._
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
