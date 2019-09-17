@@ -34,41 +34,31 @@ object LossClaimsDetail extends NestedJsonReads {
   // (can refactor out the filtering function to a single place) or
   // get the reads to peak at each array item ???
 
-  case class TypeWrapper(incomeSourceType: String)
+  case class FilterWrapper(incomeSourceType: String, incomeSourceId: String)
 
-  object TypeWrapper{
-    implicit val formats: OFormat[TypeWrapper] = Json.format[TypeWrapper]
+  object FilterWrapper{
+    implicit val formats: OFormat[FilterWrapper] = Json.format[FilterWrapper]
   }
 
-  def superReads[A](path: JsPath)(implicit reads: Reads[A]): Reads[Option[Seq[A]]] = {
-    path.readNestedNullable[Seq[JsValue]].map(self => toType[A](self))
-  }
+    def conditionalReads[A](path: JsPath)(implicit reads: Reads[A]): Reads[Option[Seq[A]]] = {
+      path.readNestedNullable[Seq[JsValue]].map(self => toType[A](self))
+    }
 
-  def toType[A](seq: Option[Seq[JsValue]])(implicit reads: Reads[A]): Option[Seq[A]] = {
-    val mappedSequence = seq.getOrElse(Seq.empty).flatMap(v => filterByIncomeSourceType(v).asOpt[A])
-    if (mappedSequence.isEmpty) None else Some(mappedSequence)
-  }
+    def toType[A](seq: Option[Seq[JsValue]])(implicit reads: Reads[A]): Option[Seq[A]] = {
+      val mappedSequence = seq.getOrElse(Seq.empty).flatMap(v => filterByIncomeSourceType(v).asOpt[A])
+      if (mappedSequence.isEmpty) None else Some(mappedSequence)
+    }
 
-  def filterByIncomeSourceType(asd: JsValue): JsValue =  asd.asOpt[TypeWrapper] match {
-    case Some(TypeWrapper(incomeSourceType)) if incomeSourceType == "01" => asd
-    case _ => Json.toJson(None)
-  }
+    def filterByIncomeSourceType(asd: JsValue): JsValue =  asd.asOpt[FilterWrapper] match {
+      case Some(FilterWrapper(incomeSourceType, _)) if incomeSourceType == "01" => asd
+      case _ => Json.toJson(None)
+    }
 
   implicit val reads: Reads[LossClaimsDetail] = (
-    superReads[LossBroughtForward](JsPath \ "inputs" \ "lossesBroughtForward") and
-      superReads[ResultOfClaimApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied") and
-      superReads[UnclaimedLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses") and
-      superReads[CarriedForwardLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses") and
-      superReads[ClaimNotApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied"))(LossClaimsDetail.apply _)
+    conditionalReads[LossBroughtForward](JsPath \ "inputs" \ "lossesBroughtForward") and
+      conditionalReads[ResultOfClaimApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied") and
+      conditionalReads[UnclaimedLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses") and
+      conditionalReads[CarriedForwardLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses") and
+      conditionalReads[ClaimNotApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied"))(LossClaimsDetail.apply _)
 
-//  implicit def reads(selfEmploymentId: String): Reads[LossClaimsDetail] = (
-//    Reads.pure(Option.empty[Seq[LossBroughtForward]]) and
-//      Reads.pure(Option.empty[Seq[ResultOfClaimApplied]]) and
-//      Reads.pure(Option.empty[Seq[UnclaimedLoss]]) and
-//      (__ \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable[Seq[CarriedForwardLoss]]
-//        .filter{
-//        xs => xs.map(ys=> ys.filter( ??? ))
-//      } and
-//      Reads.pure(Option.empty[Seq[ClaimNotApplied]])
-//  )(LossClaimsDetail.apply _)
 }

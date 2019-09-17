@@ -16,7 +16,7 @@
 
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.{JsArray, JsError, JsSuccess, Json}
+import play.api.libs.json.{JsArray, JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
 import v1.fixtures.LossBroughtForwardFixtures
 
@@ -26,14 +26,22 @@ class LossClaimsDetailSpec extends UnitSpec {
               unclaimedLosses: JsArray = JsArray.empty,
               carriedForwardLosses: JsArray = JsArray.empty,
               claimsNotApplied: JsArray = JsArray.empty,
-              lossesBroughtForward: JsArray = JsArray.empty) = {
+              lossesBroughtForward: JsArray = JsArray.empty): JsValue = {
     val json =
       s"""
          |{
+         |"detail" : {
+         |  "payPensionsProfit": {
+         |    "businessProfitAndLoss" : {
+         |      "selfEmployments" : {
+         |          "selfEmploymentId" : "AAIS12345678904"
+         |        }
+         |      }
+         |    }
+         |},
          |"inputs": {
          |  "lossesBroughtForward": [
-         |   ${LossBroughtForwardFixtures.lossBroughtForwardDesJson},
-         |   ${LossBroughtForwardFixtures.lossBroughtForwardInvalidJson}
+         |   ${LossBroughtForwardFixtures.lossBroughtForwardDesJson}
          |  ]
          |},
          |"calculation": {
