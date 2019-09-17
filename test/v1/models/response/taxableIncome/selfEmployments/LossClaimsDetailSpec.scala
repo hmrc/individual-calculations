@@ -129,4 +129,5 @@ class LossClaimsDetailSpec extends UnitSpec {
     }
   }
 }
-*/
+
+ */

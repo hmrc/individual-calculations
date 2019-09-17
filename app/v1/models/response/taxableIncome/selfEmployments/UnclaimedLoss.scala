@@ -16,7 +16,7 @@
 package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{Json, Reads, Writes, __}
+import play.api.libs.json.{JsPath, Json, Reads, Writes, __}
 import v1.models.des.LossType
 import v1.models.request.DesTaxYear
 
@@ -31,10 +31,10 @@ object UnclaimedLoss {
 
   implicit val writes: Writes[UnclaimedLoss] = Json.writes[UnclaimedLoss]
   implicit val reads: Reads[UnclaimedLoss] = (
-    (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "currentLossValue").read[BigInt] and
-      (__ \ "expires").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "lossType").read[LossType]
+    (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (JsPath \ "currentLossValue").read[BigInt] and
+      (JsPath \ "expires").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (JsPath \ "lossType").read[LossType]
   )(UnclaimedLoss.apply _)
 
 }

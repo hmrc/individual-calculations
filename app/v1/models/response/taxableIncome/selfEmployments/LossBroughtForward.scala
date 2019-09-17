@@ -31,10 +31,10 @@ object LossBroughtForward {
 
   implicit val writes: OWrites[LossBroughtForward] = Json.writes[LossBroughtForward]
   implicit val reads: Reads[LossBroughtForward] = (
-    (__ \ "lossType").read[LossType] and
-      (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "currentLossValue").read[BigDecimal] and
-      (__ \ "mtdLoss").read[Boolean].orElse(Reads.pure(true))
+    (JsPath \ "lossType").read[LossType] and
+      (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (JsPath \ "currentLossValue").read[BigDecimal] and
+      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true))
   )(LossBroughtForward.apply _)
 
 }

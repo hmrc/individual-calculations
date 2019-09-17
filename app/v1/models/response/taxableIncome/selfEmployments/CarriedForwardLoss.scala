@@ -34,12 +34,12 @@ object CarriedForwardLoss {
 
   implicit val writes: OWrites[CarriedForwardLoss] = Json.writes[CarriedForwardLoss]
   implicit val reads: Reads[CarriedForwardLoss] = (
-    (__ \ "claimId").readNullable[String] and
-      (__ \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
-      (__ \ "taxYearClaimMade").readNullable[Int].map(_.map(DesTaxYear.fromDesIntToString)) and
-      (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "currentLossValue").read[BigInt] and
-      (__ \ "lossType").read[LossType]
+    (JsPath \ "claimId").readNullable[String] and
+      (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
+      (JsPath \ "taxYearClaimMade").readNullable[Int].map(_.map(DesTaxYear.fromDesIntToString)) and
+      (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (JsPath \ "currentLossValue").read[BigInt] and
+      (JsPath \ "lossType").read[LossType]
   )(CarriedForwardLoss.apply _)
 
 }

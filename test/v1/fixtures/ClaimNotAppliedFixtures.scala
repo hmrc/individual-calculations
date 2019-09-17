@@ -22,11 +22,11 @@ import v1.models.response.taxableIncome.selfEmployments.ClaimNotApplied
 
 object ClaimNotAppliedFixtures {
 
-  val claimId          = "CCIS12345678912"
-  val incomeSourceId   = "$incomeSourceId"
-  val incomeSourceType = "$incomeSourceType"
-  val taxYearClaimMade = 2046
-  val claimType        = "CF"
+  val claimId                  = "CCIS12345678912"
+  val incomeSourceId: String   = "AAIS12345678904"
+  val incomeSourceType: String = "01"
+  val taxYearClaimMade         = 2046
+  val claimType                = "CF"
 
   val claimNotAppliedResponse: ClaimNotApplied = ClaimNotApplied(
     claimId,

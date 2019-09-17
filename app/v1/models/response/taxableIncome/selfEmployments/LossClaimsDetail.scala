@@ -15,26 +15,32 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ Json, Reads, Writes, __ }
+import play.api.libs.json.{JsPath, JsValue, Json, OWrites, Reads, Writes, __}
 import utils.NestedJsonReads
 
 case class LossClaimsDetail(
-                             lossesBroughtForward: Option[Seq[LossBroughtForward]] = None,
-                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]] = None,
-                             unclaimedLosses: Option[Seq[UnclaimedLoss]] = None,
-                             carriedForwardLosses: Option[Seq[CarriedForwardLoss]] = None,
-                             claimsNotApplied: Option[Seq[ClaimNotApplied]] = None
+                             lossesBroughtForward: Option[Seq[LossBroughtForward]],
+                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
+                             unclaimedLosses: Option[Seq[UnclaimedLoss]],
+                             carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
+                             claimsNotApplied: Option[Seq[ClaimNotApplied]]
 )
 
 object LossClaimsDetail extends NestedJsonReads {
 
-  implicit val writes: Writes[LossClaimsDetail] = Json.writes[LossClaimsDetail]
+  implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
   // TODO either extend each of the array objects with incomeSourceId and incomeSourceType and filter in here
   // (can refactor out the filtering function to a single place) or
   // get the reads to peak at each array item ???
 
-  implicit val reads: Reads[LossClaimsDetail] = ???
+  implicit val reads: Reads[LossClaimsDetail] = (
+    (JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable[Seq[JsValue]].map(vv => vv.get.map(v=>v.as[LossBroughtForward])).orElse(Reads.pure(None)) and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").readNestedNullable[Seq[ResultOfClaimApplied]] and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses").readNestedNullable[Seq[UnclaimedLoss]] and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable[Seq[CarriedForwardLoss]] and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied").readNestedNullable[Seq[ClaimNotApplied]])(LossClaimsDetail.apply _)
+
 //  implicit def reads(selfEmploymentId: String): Reads[LossClaimsDetail] = (
 //    Reads.pure(Option.empty[Seq[LossBroughtForward]]) and
 //      Reads.pure(Option.empty[Seq[ResultOfClaimApplied]]) and

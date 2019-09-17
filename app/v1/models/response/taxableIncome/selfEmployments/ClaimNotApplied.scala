@@ -16,7 +16,7 @@
 package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ Json, OWrites, Reads, __ }
+import play.api.libs.json.{JsPath, Json, OWrites, Reads, __}
 import v1.models.des.ReliefClaimed
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
@@ -31,9 +31,9 @@ object ClaimNotApplied {
 
   implicit val writes: OWrites[ClaimNotApplied] = Json.writes[ClaimNotApplied]
   implicit val reads: Reads[ClaimNotApplied] = (
-    (__ \ "claimId").read[String] and
-      (__ \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim)
+    (JsPath \ "claimId").read[String] and
+      (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim)
   )(ClaimNotApplied.apply _)
 
 }

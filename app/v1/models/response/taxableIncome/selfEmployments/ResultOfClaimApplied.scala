@@ -16,7 +16,7 @@
 package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{Json, Reads, Writes, __}
+import play.api.libs.json.{JsPath, Json, Reads, Writes, __}
 import v1.models.des.{LossType, ReliefClaimed}
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
@@ -37,14 +37,14 @@ object ResultOfClaimApplied {
   implicit val writes: Writes[ResultOfClaimApplied] = Json.writes[ResultOfClaimApplied]
 
   implicit val reads: Reads[ResultOfClaimApplied] = (
-    (__ \ "claimId").readNullable[String] and
-      (__ \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
-      (__ \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
-      (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "lossAmountUsed").read[BigDecimal] and
-      (__ \ "remainingLossValue").read[BigDecimal] and
-      (__ \ "lossType").read[LossType]
+    (JsPath \ "claimId").readNullable[String] and
+      (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
+      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
+      (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (JsPath \ "lossAmountUsed").read[BigDecimal] and
+      (JsPath \ "remainingLossValue").read[BigDecimal] and
+      (JsPath \ "lossType").read[LossType]
     )(ResultOfClaimApplied.apply _)
 
 }
