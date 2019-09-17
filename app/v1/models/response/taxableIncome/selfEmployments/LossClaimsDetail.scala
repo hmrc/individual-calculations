@@ -34,12 +34,21 @@ object LossClaimsDetail extends NestedJsonReads {
   // (can refactor out the filtering function to a single place) or
   // get the reads to peak at each array item ???
 
+  def superReads[A](path: JsPath)(implicit reads: Reads[A]): Reads[Option[Seq[A]]] = {
+    path.readNestedNullable[Seq[JsValue]].map(self => toType[A](self))
+  }
+
+  def toType[A](seq: Option[Seq[JsValue]])(implicit reads: Reads[A]): Option[Seq[A]] = {
+    val mappedSequence = seq.getOrElse(Seq.empty).flatMap(v => v.asOpt[A])
+    if (mappedSequence.isEmpty) None else Some(mappedSequence)
+  }
+
   implicit val reads: Reads[LossClaimsDetail] = (
-    (JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable[Seq[JsValue]].map(vv => vv.get.map(v=>v.as[LossBroughtForward])).orElse(Reads.pure(None)) and
-      (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").readNestedNullable[Seq[ResultOfClaimApplied]] and
-      (JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses").readNestedNullable[Seq[UnclaimedLoss]] and
-      (JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable[Seq[CarriedForwardLoss]] and
-      (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied").readNestedNullable[Seq[ClaimNotApplied]])(LossClaimsDetail.apply _)
+    superReads[LossBroughtForward](JsPath \ "inputs" \ "lossesBroughtForward") and
+      superReads[ResultOfClaimApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied") and
+      superReads[UnclaimedLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses") and
+      superReads[CarriedForwardLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses") and
+      superReads[ClaimNotApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied"))(LossClaimsDetail.apply _)
 
 //  implicit def reads(selfEmploymentId: String): Reads[LossClaimsDetail] = (
 //    Reads.pure(Option.empty[Seq[LossBroughtForward]]) and

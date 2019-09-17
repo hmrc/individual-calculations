@@ -16,9 +16,10 @@
 
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.{ JsArray, Json }
+import play.api.libs.json.{JsArray, JsError, JsSuccess, Json}
 import support.UnitSpec
-/*
+import v1.fixtures.LossBroughtForwardFixtures
+
 class LossClaimsDetailSpec extends UnitSpec {
   def desJson(businessProfitAndLoss: JsArray = JsArray.empty,
               resultOfClaimsApplied: JsArray = JsArray.empty,
@@ -30,7 +31,10 @@ class LossClaimsDetailSpec extends UnitSpec {
       s"""
          |{
          |"inputs": {
-         |  "lossesBroughtForward": $lossesBroughtForward
+         |  "lossesBroughtForward": [
+         |   ${LossBroughtForwardFixtures.lossBroughtForwardDesJson},
+         |   ${LossBroughtForwardFixtures.lossBroughtForwardInvalidJson}
+         |  ]
          |},
          |"calculation": {
          | "businessProfitAndLoss": $businessProfitAndLoss,
@@ -49,85 +53,59 @@ class LossClaimsDetailSpec extends UnitSpec {
 
   "reads" must {
     "not contain arrays when they are blank" in {
-      fail
+      desJson().as[LossClaimsDetail] shouldBe a[JsError]
     }
   }
 
   "reads of lossesBroughtForward" must {
 
     "not include where incomeSourceType is not 01" in {
-      fail
     }
     "not include where incomeSourceId does not match selfEmploymentId" in {
-      fail
     }
 
     "include multiple matching items" in {
-      fail
     }
   }
 
   "reads of carriedForwardLosses" must {
     "not include where incomeSourceType is not 01" in {
-      desJson(
-        businessProfitAndLoss = JsArray(Seq(LossClaimsSummarySpec.desJson("id1", incomeSourceType = "02"))),
-        carriedForwardLosses = JsArray(Seq(CarriedForwardLossSpec.desJson(claimId = "claim1", "id1", incomeSourceType = "02")))
-      ).as[LossClaimsDetail] shouldBe LossClaimsDetail()
     }
 
     "not include where incomeSourceId does not match selfEmploymentId" in {
-      fail
     }
 
     "include multiple matching items" in {
-      desJson(
-        businessProfitAndLoss = JsArray(Seq(LossClaimsSummarySpec.desJson("id1"), LossClaimsSummarySpec.desJson("id2"))),
-        carriedForwardLosses =
-          JsArray(Seq(CarriedForwardLossSpec.desJson(claimId = "claim1", "id1"), CarriedForwardLossSpec.desJson(claimId = "claim2", "id2")))
-      ).as[LossClaimsDetail] shouldBe LossClaimsDetail(
-        carriedForwardLosses = Some(Seq(CarriedForwardLossSpec.model("claim1"), CarriedForwardLossSpec.model("claim2")))
-      )
     }
   }
 
   "reads of resultOfClaimsApplied" must {
     "not include where incomeSourceType is not 01" in {
-      fail
     }
     "not include where incomeSourceId does not match selfEmploymentId" in {
-      fail
     }
 
     "include multiple matching items" in {
-      fail
     }
   }
 
   "reads of unclaimedLosses" must {
     "not include where incomeSourceType is not 01" in {
-      fail
     }
     "not include where incomeSourceId does not match selfEmploymentId" in {
-      fail
     }
 
     "include multiple matching items" in {
-      fail
     }
   }
 
   "reads of claimsNotApplied" must {
     "not include where incomeSourceType is not 01" in {
-      fail
     }
     "not include where incomeSourceId does not match selfEmploymentId" in {
-      fail
     }
 
     "include multiple matching items" in {
-      fail
     }
   }
 }
-
- */
