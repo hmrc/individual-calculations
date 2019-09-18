@@ -16,15 +16,10 @@
 
 package v1.models.response.getCalculation.taxableIncome.summary
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
+import play.api.libs.json.{Json, OFormat}
 
 case class CalculationSummary(totalIncomeReceivedFromAllSources: BigInt, totalTaxableIncome: BigInt)
 
 object CalculationSummary {
-  implicit val writes: OWrites[CalculationSummary] = Json.writes[CalculationSummary]
-  implicit val reads: Reads[CalculationSummary] = (
-    (JsPath \ "totalIncomeReceivedFromAllSources").read[BigInt] and
-      (JsPath \ "totalTaxableIncome").read[BigInt]
-  )(CalculationSummary.apply _)
+  implicit val formats: OFormat[CalculationSummary] = Json.format[CalculationSummary]
 }

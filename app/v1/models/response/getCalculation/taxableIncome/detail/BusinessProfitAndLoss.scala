@@ -22,10 +22,7 @@ import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
 case class BusinessProfitAndLoss(selfEmployments: Option[String],
                                  ukPropertyFhl: Option[String],
                                  ukPropertyNonFhl: Option[String]){
-  def isEmpty: Boolean = this match{
-    case self if self == BusinessProfitAndLoss.emptyBPAL => true
-    case _ => false
-  }
+  val isEmpty: Boolean = this == BusinessProfitAndLoss.emptyBPAL
 }
 
 object BusinessProfitAndLoss {
