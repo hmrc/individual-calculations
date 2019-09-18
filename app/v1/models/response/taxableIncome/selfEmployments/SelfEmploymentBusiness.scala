@@ -15,7 +15,9 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.{Json, OWrites, Reads}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import utils.NestedJsonReads
 
 case class SelfEmploymentBusiness(
     selfEmploymentId: String,
@@ -34,7 +36,22 @@ case class SelfEmploymentBusiness(
     lossClaimsDetail: Option[Seq[LossClaimsDetail]]
 )
 
-object SelfEmploymentBusiness {
+object SelfEmploymentBusiness extends NestedJsonReads {
   implicit val writes: OWrites[SelfEmploymentBusiness] = Json.writes[SelfEmploymentBusiness]
-  implicit val reads: Reads[SelfEmploymentBusiness] = Json.reads[SelfEmploymentBusiness]
+  implicit val reads: Reads[SelfEmploymentBusiness] = (
+    JsPath.read[String] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[BigDecimal] and
+      JsPath.readNullable[Seq[LossClaimsSummary]] and
+      JsPath.readNullable[Seq[LossClaimsDetail]]
+  )(SelfEmploymentBusiness.apply _)
 }

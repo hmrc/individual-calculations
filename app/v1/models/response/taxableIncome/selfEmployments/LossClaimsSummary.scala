@@ -18,23 +18,19 @@ package v1.models.response.taxableIncome.selfEmployments
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Json, OWrites, Reads, _}
 
-case class LossClaimsSummary(
-    totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
-    broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],
-    totalIncomeTaxLossesCarriedForward: Option[BigDecimal],
-    totalBroughtForwardClass4Losses: Option[BigDecimal],
-    broughtForwardClass4LossesUsed: Option[BigDecimal],
-    carrySidewaysClass4LossesUsed: Option[BigDecimal],
-    totalClass4LossesCarriedForward: Option[BigDecimal]){
+case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
+                             broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],
+                             totalIncomeTaxLossesCarriedForward: Option[BigDecimal],
+                             totalBroughtForwardClass4Losses: Option[BigDecimal],
+                             broughtForwardClass4LossesUsed: Option[BigDecimal],
+                             carrySidewaysClass4LossesUsed: Option[BigDecimal],
+                             totalClass4LossesCarriedForward: Option[BigDecimal]) {
 
-    def isEmpty(): Boolean = this match {
-      case LossClaimsSummary.emptyLossClaimsSummary => true
-      case _ => false
-    }
+  val isEmpty: Boolean = this == LossClaimsSummary.emptyLossClaimsSummary
 }
 
 object LossClaimsSummary {
-  val emptyLossClaimsSummary = LossClaimsSummary(None,None,None,None,None,None,None)
+  val emptyLossClaimsSummary                      = LossClaimsSummary(None, None, None, None, None, None, None)
   implicit val writes: OWrites[LossClaimsSummary] = Json.writes[LossClaimsSummary]
   implicit val reads: Reads[LossClaimsSummary] = (
     (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigDecimal] and
@@ -44,5 +40,5 @@ object LossClaimsSummary {
       (JsPath \ "broughtForwardClass4LossesUsed").readNullable[BigDecimal] and
       (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigDecimal] and
       (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigDecimal]
-    )(LossClaimsSummary.apply _)
+  )(LossClaimsSummary.apply _)
 }

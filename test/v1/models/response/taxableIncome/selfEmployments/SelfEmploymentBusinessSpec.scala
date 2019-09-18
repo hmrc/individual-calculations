@@ -15,7 +15,7 @@
  */
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.{ JsSuccess, Json }
+import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.CarriedForwardLossFixtures._
 import v1.fixtures.ClaimNotAppliedFixtures._
@@ -24,7 +24,7 @@ import v1.fixtures.LossClaimsDetailFixtures._
 import v1.fixtures.ResultOfClaimAppliedFixtures._
 import v1.fixtures.UnclaimedLossFixtures._
 
-class LossClaimsDetailSpec extends UnitSpec {
+class SelfEmploymentBusinessSpec extends UnitSpec {
 
   "LossClaimsDetail" when {
     "read from valid Json" should {
@@ -142,5 +142,4 @@ class LossClaimsDetailSpec extends UnitSpec {
       }
     }
   }
-
 }

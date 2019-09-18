@@ -16,7 +16,7 @@
 package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes, __}
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import v1.models.des.LossType
 import v1.models.request.DesTaxYear
 
