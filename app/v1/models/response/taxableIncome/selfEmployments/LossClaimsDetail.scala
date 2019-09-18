@@ -26,11 +26,27 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
                             claimsNotApplied: Option[Seq[ClaimNotApplied]]) {
 
   val isEmpty: Boolean = this == LossClaimsDetail.emptyLossClaimsDetail
+ /*
+  def filterById(id: String): Option[LossClaimsDetail] = {
+    val lossesBroughtForward  = this.lossesBroughtForward.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
+    val resultOfClaimsApplied = this.resultOfClaimsApplied.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
+    val unclaimedLosses       = this.unclaimedLosses.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
+    val carriedForwardLosses  = this.carriedForwardLosses.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
+    val claimsNotApplied      = this.claimsNotApplied.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
+    val tempDetail: LossClaimsDetail = LossClaimsDetail(Some(lossesBroughtForward),
+                                                        Some(resultOfClaimsApplied),
+                                                        Some(unclaimedLosses),
+                                                        Some(carriedForwardLosses),
+                                                        Some(claimsNotApplied))
+    if (tempDetail != LossClaimsDetail.emptySeqLossClaimsDetail) { Some(tempDetail) } else None
+  }
+  */
 }
 
 object LossClaimsDetail extends NestedJsonReads {
 
-  val emptyLossClaimsDetail: LossClaimsDetail = LossClaimsDetail(None, None, None, None, None)
+  val emptyLossClaimsDetail: LossClaimsDetail    = LossClaimsDetail(None, None, None, None, None)
+  val emptySeqLossClaimsDetail: LossClaimsDetail = LossClaimsDetail(Some(Seq()), Some(Seq()), Some(Seq()), Some(Seq()), Some(Seq()))
 
   implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
