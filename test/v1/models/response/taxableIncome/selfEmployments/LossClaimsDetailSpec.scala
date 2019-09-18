@@ -16,104 +16,131 @@
 
 package v1.models.response.taxableIncome.selfEmployments
 
-import play.api.libs.json.{JsArray, JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json.{ JsSuccess, Json }
 import support.UnitSpec
-import v1.fixtures.LossBroughtForwardFixtures
+import v1.fixtures.CarriedForwardLossFixtures._
+import v1.fixtures.ClaimNotAppliedFixtures._
+import v1.fixtures.LossBroughtForwardFixtures._
+import v1.fixtures.LossClaimsDetailFixtures._
+import v1.fixtures.ResultOfClaimAppliedFixtures._
+import v1.fixtures.UnclaimedLossFixtures._
 
 class LossClaimsDetailSpec extends UnitSpec {
-  def desJson(businessProfitAndLoss: JsArray = JsArray.empty,
-              resultOfClaimsApplied: JsArray = JsArray.empty,
-              unclaimedLosses: JsArray = JsArray.empty,
-              carriedForwardLosses: JsArray = JsArray.empty,
-              claimsNotApplied: JsArray = JsArray.empty,
-              lossesBroughtForward: JsArray = JsArray.empty): JsValue = {
-    val json =
-      s"""
-         |{
-         |"detail" : {
-         |  "payPensionsProfit": {
-         |    "businessProfitAndLoss" : {
-         |      "selfEmployments" : {
-         |          "selfEmploymentId" : "AAIS12345678904"
-         |        }
-         |      }
-         |    }
-         |},
-         |"inputs": {
-         |  "lossesBroughtForward": [
-         |   ${LossBroughtForwardFixtures.lossBroughtForwardDesJson}
-         |  ]
-         |},
-         |"calculation": {
-         | "businessProfitAndLoss": $businessProfitAndLoss,
-         | "lossesAndClaims": {
-         |    "resultOfClaimsApplied": $resultOfClaimsApplied,
-         |    "unclaimedLosses": $unclaimedLosses,
-         |    "carriedForwardLosses": $carriedForwardLosses,
-         |    "claimsNotApplied": $claimsNotApplied
-         |  }
-         |}
-         |}
-         |""".stripMargin
 
-    Json.parse(json)
-  }
+  "LossClaimsDetail" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        lossClaimsDetailDefaultDesJson.validate[LossClaimsDetail] shouldBe a[JsSuccess[_]]
+      }
+      "containing the expected LossClaimsDetail object" in {
+        lossClaimsDetailDefaultDesJson.as[LossClaimsDetail] shouldBe lossClaimsDetailDefaultResponse
+      }
+    }
 
-  "reads" must {
-    "not contain arrays when they are blank" in {
-      desJson().as[LossClaimsDetail] shouldBe a[JsError]
+    "read from Json with no provided field arrays" should {
+      "return an empty LossClaimsDetail object" in {
+        lossClaimsDetailDesJsonFactory().as[LossClaimsDetail].isEmpty shouldBe true
+      }
+    }
+
+    "read from empty Json" should {
+      "return an empty LossClaimsDetail object" in {
+        emptyJson.as[LossClaimsDetail].isEmpty shouldBe true
+      }
+    }
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(lossClaimsDetailDefaultResponse) shouldBe lossClaimsDetailDefaultWrittenJson
+      }
+    }
+
+    "written to Json from an empty lossClaimsDetail object" should {
+      "return the expected JsObject" in {
+        Json.toJson(LossClaimsDetail.emptyLossClaimsDetail) shouldBe emptyJson
+      }
     }
   }
 
-  "reads of lossesBroughtForward" must {
+  "conditionalReads" when {
+    "reading in a sequence of lossBroughtForward" must {
+      "not include where incomeSourceType is not 01" in {
+        lossClaimsDetailDesJsonFactory(lossesBroughtForward = Seq(lossBroughtForwardDesJsonWithWrongIncomeSourceType))
+          .as[LossClaimsDetail]
+          .isEmpty shouldBe true
+      }
+      "include multiple matching items" in {
+        val lossesBroughtForwardDes =
+          Seq(lossBroughtForwardDesJsonWithWrongIncomeSourceType, lossBroughtForwardDesJson, lossBroughtForwardDesJsonWithoutMtdLoss)
+        val lossesBroughtForwardResponse = Seq(lossBroughtForwardResponse, lossBroughtForwardResponseWithoutMtdLoss)
 
-    "not include where incomeSourceType is not 01" in {
-    }
-    "not include where incomeSourceId does not match selfEmploymentId" in {
-    }
-
-    "include multiple matching items" in {
-    }
-  }
-
-  "reads of carriedForwardLosses" must {
-    "not include where incomeSourceType is not 01" in {
-    }
-
-    "not include where incomeSourceId does not match selfEmploymentId" in {
-    }
-
-    "include multiple matching items" in {
-    }
-  }
-
-  "reads of resultOfClaimsApplied" must {
-    "not include where incomeSourceType is not 01" in {
-    }
-    "not include where incomeSourceId does not match selfEmploymentId" in {
+        lossClaimsDetailDesJsonFactory(lossesBroughtForward = lossesBroughtForwardDes)
+          .as[LossClaimsDetail] shouldBe lossClaimsDetailResponseFactory(lossesBroughtForward = Some(lossesBroughtForwardResponse))
+      }
     }
 
-    "include multiple matching items" in {
-    }
-  }
+    "reading in a sequence of resultOfClaimApplied" must {
+      "not include where incomeSourceType is not 01" in {
+        lossClaimsDetailDesJsonFactory(resultOfClaimsApplied = Seq(resultOfClaimAppliedDesJsonWithWrongIncomeSourceType))
+          .as[LossClaimsDetail]
+          .isEmpty shouldBe true
+      }
+      "include multiple matching items" in {
+        val resultOfClaimsAppliedDes =
+          Seq(resultOfClaimAppliedDesJsonWithWrongIncomeSourceType, resultOfClaimAppliedDesJson, resultOfClaimAppliedDesJsonWithoutMtdLoss)
+        val resultOfClaimsAppliedResponse = Seq(resultOfClaimAppliedResponse, resultOfClaimAppliedResponseWithoutMtdLoss)
 
-  "reads of unclaimedLosses" must {
-    "not include where incomeSourceType is not 01" in {
-    }
-    "not include where incomeSourceId does not match selfEmploymentId" in {
-    }
-
-    "include multiple matching items" in {
-    }
-  }
-
-  "reads of claimsNotApplied" must {
-    "not include where incomeSourceType is not 01" in {
-    }
-    "not include where incomeSourceId does not match selfEmploymentId" in {
+        lossClaimsDetailDesJsonFactory(resultOfClaimsApplied = resultOfClaimsAppliedDes)
+          .as[LossClaimsDetail] shouldBe lossClaimsDetailResponseFactory(resultOfClaimsApplied = Some(resultOfClaimsAppliedResponse))
+      }
     }
 
-    "include multiple matching items" in {
+    "reading in a sequence of unclaimedLoss" must {
+      "not include where incomeSourceType is not 01" in {
+        lossClaimsDetailDesJsonFactory(unclaimedLosses = Seq(unclaimedLossDesJsonWithWrongIncomeSourceType))
+          .as[LossClaimsDetail]
+          .isEmpty shouldBe true
+      }
+      "include multiple matching items" in {
+        val unclaimedLossesDes =
+          Seq(unclaimedLossDesJsonWithWrongIncomeSourceType, unclaimedLossDesJson, unclaimedLossDesJson)
+        val unclaimedLossesResponse = Seq(unclaimedLossResponse, unclaimedLossResponse)
+
+        lossClaimsDetailDesJsonFactory(unclaimedLosses = unclaimedLossesDes)
+          .as[LossClaimsDetail] shouldBe lossClaimsDetailResponseFactory(unclaimedLosses = Some(unclaimedLossesResponse))
+      }
+    }
+
+    "reading in a sequence of carriedForwardLoss" must {
+      "not include where incomeSourceType is not 01" in {
+        lossClaimsDetailDesJsonFactory(carriedForwardLosses = Seq(carriedForwardLossDesJsonWithWrongIncomeSourceType))
+          .as[LossClaimsDetail]
+          .isEmpty shouldBe true
+      }
+      "include multiple matching items" in {
+        val carriedForwardLossDes =
+          Seq(carriedForwardLossDesJsonWithWrongIncomeSourceType, carriedForwardLossDesJson, carriedForwardLossDesJsonWithoutOptionals)
+        val carriedForwardLossesResponse = Seq(carriedForwardLossResponse, carriedForwardLossResponseWithoutOptionals)
+
+        lossClaimsDetailDesJsonFactory(carriedForwardLosses = carriedForwardLossDes)
+          .as[LossClaimsDetail] shouldBe lossClaimsDetailResponseFactory(carriedForwardLosses = Some(carriedForwardLossesResponse))
+      }
+    }
+
+    "reading in a sequence of claimNotApplied" must {
+      "not include where incomeSourceType is not 01" in {
+        lossClaimsDetailDesJsonFactory(claimsNotApplied = Seq(claimNotAppliedDesJsonWithWrongIncomeSourceType))
+          .as[LossClaimsDetail]
+          .isEmpty shouldBe true
+      }
+      "include multiple matching items" in {
+        val claimNotAppliedDes =
+          Seq(claimNotAppliedDesJsonWithWrongIncomeSourceType, claimNotAppliedDesJson, claimNotAppliedDesJson)
+        val claimsNotAppliedResponse = Seq(claimNotAppliedResponse, claimNotAppliedResponse)
+
+        lossClaimsDetailDesJsonFactory(claimsNotApplied = claimNotAppliedDes)
+          .as[LossClaimsDetail] shouldBe lossClaimsDetailResponseFactory(claimsNotApplied = Some(claimsNotAppliedResponse))
+      }
     }
   }
 }

@@ -62,6 +62,20 @@ object ResultOfClaimAppliedFixtures {
       |    "lossType": "$lossType"
       |}""".stripMargin)
 
+  val resultOfClaimAppliedDesJsonWithWrongIncomeSourceType: JsValue = Json.parse(s"""{
+      |    "claimId": "${claimId.get}",
+      |    "originatingClaimId": "$originatingClaimId",
+      |    "incomeSourceId": "$incomeSourceId",
+      |    "incomeSourceType": "02",
+      |    "taxYearClaimMade": $taxYearClaimMade,
+      |    "claimType": "$claimType",
+      |    "mtdLoss": $mtdLoss,
+      |    "taxYearLossIncurred": $taxYearLossIncurred,
+      |    "lossAmountUsed": $lossAmountUsed,
+      |    "remainingLossValue": $remainingLossValue,
+      |    "lossType": "$lossType"
+      |}""".stripMargin)
+
   val resultOfClaimAppliedDesJsonWithoutMtdLoss: JsValue = Json.parse(s"""{
       |    "claimId": "${claimId.get}",
       |    "originatingClaimId": "$originatingClaimId",

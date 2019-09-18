@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 package v1.models.response.taxableIncome.selfEmployments
+
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, JsValue, Json, OFormat, OWrites, Reads, Writes, __}
+import play.api.libs.json._
 import utils.NestedJsonReads
 
 case class LossClaimsDetail(
@@ -23,10 +24,13 @@ case class LossClaimsDetail(
                              resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
                              unclaimedLosses: Option[Seq[UnclaimedLoss]],
                              carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
-                             claimsNotApplied: Option[Seq[ClaimNotApplied]]
-)
+                             claimsNotApplied: Option[Seq[ClaimNotApplied]]) {
+                               val isEmpty: Boolean = this == LossClaimsDetail.emptyLossClaimsDetail
+                             }
 
 object LossClaimsDetail extends NestedJsonReads {
+
+  val emptyLossClaimsDetail: LossClaimsDetail = LossClaimsDetail(None,None,None,None,None)
 
   implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
@@ -34,25 +38,25 @@ object LossClaimsDetail extends NestedJsonReads {
   // (can refactor out the filtering function to a single place) or
   // get the reads to peak at each array item ???
 
-  case class FilterWrapper(incomeSourceType: String, incomeSourceId: String)
-
-  object FilterWrapper{
-    implicit val formats: OFormat[FilterWrapper] = Json.format[FilterWrapper]
-  }
-
     def conditionalReads[A](path: JsPath)(implicit reads: Reads[A]): Reads[Option[Seq[A]]] = {
       path.readNestedNullable[Seq[JsValue]].map(self => toType[A](self))
     }
 
     def toType[A](seq: Option[Seq[JsValue]])(implicit reads: Reads[A]): Option[Seq[A]] = {
-      val mappedSequence = seq.getOrElse(Seq.empty).flatMap(v => filterByIncomeSourceType(v).asOpt[A])
+      val mappedSequence = seq.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js).asOpt[A])
       if (mappedSequence.isEmpty) None else Some(mappedSequence)
     }
 
-    def filterByIncomeSourceType(asd: JsValue): JsValue =  asd.asOpt[FilterWrapper] match {
-      case Some(FilterWrapper(incomeSourceType, _)) if incomeSourceType == "01" => asd
+    def filterByIncomeSourceType(js: JsValue): JsValue =  js.asOpt[FilterWrapper] match {
+      case Some(FilterWrapper(incomeSourceType, _)) if incomeSourceType == "01" => js
       case _ => Json.toJson(None)
     }
+
+  case class FilterWrapper(incomeSourceType: String, incomeSourceId: String)
+
+  object FilterWrapper{
+    implicit val formats: OFormat[FilterWrapper] = Json.format[FilterWrapper]
+  }
 
   implicit val reads: Reads[LossClaimsDetail] = (
     conditionalReads[LossBroughtForward](JsPath \ "inputs" \ "lossesBroughtForward") and

@@ -56,6 +56,18 @@ object CarriedForwardLossFixtures {
       |    "lossType": "$lossType"
       |}""".stripMargin)
 
+  val carriedForwardLossDesJsonWithWrongIncomeSourceType: JsValue = Json.parse(f"""{
+      |    "claimId": "${claimId.get}",
+      |    "originatingClaimId": "$originatingClaimId",
+      |    "incomeSourceId": "$incomeSourceId",
+      |    "incomeSourceType": "02",
+      |    "claimType": "$claimType",
+      |    "taxYearClaimMade": ${taxYearClaimMade.get},
+      |    "taxYearLossIncurred": $taxYearLossIncurred,
+      |    "currentLossValue": $currentLossValue,
+      |    "lossType": "$lossType"
+      |}""".stripMargin)
+
   val carriedForwardLossDesJsonWithoutOptionals: JsValue = Json.parse(f"""{
       |    "originatingClaimId": "$originatingClaimId",
       |    "incomeSourceId": "$incomeSourceId",

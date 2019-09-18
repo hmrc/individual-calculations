@@ -45,6 +45,15 @@ object UnclaimedLossFixtures {
       |    "lossType": "$lossType"
       |}""".stripMargin)
 
+  val unclaimedLossDesJsonWithWrongIncomeSourceType: JsValue = Json.parse(s"""{
+      |    "incomeSourceId": "$incomeSourceId",
+      |    "incomeSourceType": "02",
+      |    "taxYearLossIncurred": $taxYearLossIncurred,
+      |    "currentLossValue": $currentLossValue,
+      |    "expires": $expires,
+      |    "lossType": "$lossType"
+      |}""".stripMargin)
+
   val unclaimedLossWrittenJson: JsValue = Json.parse(f"""
       |  {
       |    "taxYearLossIncurred": "${DesTaxYear.fromDesIntToString(taxYearLossIncurred)}",

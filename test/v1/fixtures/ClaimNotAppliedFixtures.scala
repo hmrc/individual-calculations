@@ -42,6 +42,14 @@ object ClaimNotAppliedFixtures {
       |  "claimType": "$claimType"
       |}""".stripMargin)
 
+  val claimNotAppliedDesJsonWithWrongIncomeSourceType: JsValue = Json.parse(s"""{
+      |  "claimId": "$claimId",
+      |  "incomeSourceId": "$incomeSourceId",
+      |  "incomeSourceType": "02",
+      |  "taxYearClaimMade": $taxYearClaimMade,
+      |  "claimType": "$claimType"
+      |}""".stripMargin)
+
   val claimNotAppliedWrittenJson: JsValue = Json.parse(s"""{
       |  "claimId": "$claimId",
       |  "taxYearClaimMade": "${DesTaxYear.fromDesIntToString(taxYearClaimMade)}",

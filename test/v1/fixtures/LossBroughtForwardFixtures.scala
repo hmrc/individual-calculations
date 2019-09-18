@@ -46,6 +46,17 @@ object LossBroughtForwardFixtures {
       |    "mtdLoss": $mtdLoss
       |}""".stripMargin)
 
+  val lossBroughtForwardDesJsonWithWrongIncomeSourceType: JsValue = Json.parse(s"""{
+      |    "lossId": "$lossId",
+      |    "incomeSourceId": "$incomeSourceId",
+      |    "incomeSourceType": "02",
+      |    "submissionTimestamp": "$submissionTimestamp",
+      |    "lossType": "$lossType",
+      |    "taxYearLossIncurred": $taxYearLossIncurred,
+      |    "currentLossValue": $currentLossValue,
+      |    "mtdLoss": $mtdLoss
+      |}""".stripMargin)
+
   val lossBroughtForwardDesJsonWithoutMtdLoss: JsValue = Json.parse(s"""{
       |    "lossId": "$lossId",
       |    "incomeSourceId": "$incomeSourceId",
