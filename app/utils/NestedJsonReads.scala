@@ -40,6 +40,19 @@ trait NestedJsonReads {
       )
     }
 
+    def readNestedNullableOpt[T](implicit rds: Reads[Option[T]]): Reads[Option[T]] = Reads[Option[T]] { json =>
+      applyTillLastNested(json).fold(
+        jsErr => jsErr,
+        jsRes => jsRes.fold(
+          invalid = _ => JsSuccess(None),
+          valid = {
+            case JsNull => JsSuccess(None)
+            case js => rds.reads(js).repath(jsPath)
+          }
+        )
+      )
+    }
+
     def applyTillLastNested(json: JsValue): Either[JsError, JsResult[JsValue]] = {
       def singleJsError(msg: String) = JsError(Seq(jsPath -> Seq(JsonValidationError(msg))))
       @tailrec
@@ -69,8 +82,9 @@ trait NestedJsonReads {
     }
   }
 
-  def filteredArrayValueReads[T](fieldName: Option[String], filterName: String, matching: String)(implicit rds: Reads[T]): Reads[T] = new Reads[T] {
-    override def reads(json: JsValue): JsResult[T] = {
+  def filteredArrayValueReads[T](fieldName: Option[String],
+                                 filterName: String, matching: String)(implicit rds: Reads[T]): Reads[Option[T]] = new Reads[Option[T]] {
+    override def reads(json: JsValue): JsResult[Option[T]] = {
       json.validate[Seq[JsValue]].flatMap(readJson => Json.toJson(readJson.find { element =>
         element.\(filterName).asOpt[String].contains(matching)
       }.map { jsValue =>
@@ -78,7 +92,7 @@ trait NestedJsonReads {
           case Some(name) => jsValue.\(name).getOrElse(Json.obj())
           case None => jsValue
         }
-      }).validate[T])
+      }).validateOpt[T])
     }
   }
 

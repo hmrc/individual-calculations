@@ -38,27 +38,27 @@ object UkPropertyNonFhl extends NestedJsonReads {
 
   implicit val reads: Reads[UkPropertyNonFhl] = (
     (JsPath \ "calculation" \ "businessProfitAndLoss")
-      .readNestedNullable[BigDecimal](filteredArrayValueReads(Some("totalIncome"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+      .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("totalIncome"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigDecimal](filteredArrayValueReads(Some("totalExpenses"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("totalExpenses"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigDecimal](filteredArrayValueReads(Some("netProfit"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("netProfit"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigDecimal](filteredArrayValueReads(Some("netLoss"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("netLoss"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigDecimal](filteredArrayValueReads(Some("totalAdditions"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("totalAdditions"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigDecimal](filteredArrayValueReads(Some("totalDeductions"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("totalDeductions"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigDecimal](filteredArrayValueReads(Some("accountingAdjustments"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("accountingAdjustments"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigInt](filteredArrayValueReads(Some("taxableProfit"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigInt](filteredArrayValueReads(Some("taxableProfit"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigInt](filteredArrayValueReads(Some("adjustedIncomeTaxLoss"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigInt](filteredArrayValueReads(Some("adjustedIncomeTaxLoss"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[BigInt](filteredArrayValueReads(Some("taxableProfitAfterLossesDeduction"), "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[BigInt](filteredArrayValueReads(Some("taxableProfitAfterLossesDeduction"), "incomeSourceType", "02")) and
       (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullable[LossClaimsSummary](filteredArrayValueReads(None, "incomeSourceType", "02")).orElse(Reads.pure(None)) and
+        .readNestedNullableOpt[LossClaimsSummary](filteredArrayValueReads(None, "incomeSourceType", "02")) and
       JsPath.readNullable[LossClaimsDetail].map {
         case Some(LossClaimsDetail(None, None, None, None)) => None
         case other => other
