@@ -16,7 +16,26 @@
 
 package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
 
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+import utils.NestedJsonReads
+
 case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],
                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
                             defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]],
                             claimsNotApplied: Option[Seq[ClaimNotApplied]])
+
+object LossClaimsDetail extends NestedJsonReads {
+  implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
+
+  implicit val reads: Reads[LossClaimsDetail] = (
+    (JsPath \ "inputs" \ "lossesBroughtForward")
+      .readNestedNullable[Seq[LossBroughtForward]](filteredArrayReads("incomeSourceType", "02")).map(emptySeqToNone) and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied")
+        .readNestedNullable[Seq[ResultOfClaimApplied]](filteredArrayReads("incomeSourceType", "02")).map(emptySeqToNone) and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "defaultCarriedForwardLosses")
+        .readNestedNullable[Seq[DefaultCarriedForwardLoss]](filteredArrayReads("incomeSourceType", "02")).map(emptySeqToNone) and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied")
+        .readNestedNullable[Seq[ClaimNotApplied]](filteredArrayReads("incomeSourceType", "02")).map(emptySeqToNone)
+  )(LossClaimsDetail.apply _)
+}

@@ -16,6 +16,20 @@
 
 package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
 
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+import v1.models.request.DesTaxYear
+
 case class ClaimNotApplied(claimId: String,
                            taxYearClaimMade: String,
                            claimType: String)
+
+object ClaimNotApplied {
+  implicit val writes: OWrites[ClaimNotApplied] = Json.writes[ClaimNotApplied]
+
+  implicit val reads: Reads[ClaimNotApplied] = (
+    (JsPath \ "claimId").read[String] and
+      (JsPath \ "taxYearClaimMade").read[String](DesTaxYear.reads) and
+      (JsPath \ "claimType").read[String]
+  )(ClaimNotApplied.apply _)
+}

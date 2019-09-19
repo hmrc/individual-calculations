@@ -16,6 +16,7 @@
 
 package utils
 
+import play.api.Logger
 import play.api.libs.json._
 
 import scala.annotation.tailrec
@@ -60,6 +61,33 @@ trait NestedJsonReads {
     }
   }
 
+  def filteredArrayReads[T](filterName: String, matching: String)(implicit rds: Reads[Seq[T]]): Reads[Seq[T]] = new Reads[Seq[T]] {
+    override def reads(json: JsValue): JsResult[Seq[T]] = {
+      json.validate[Seq[JsValue]].flatMap(readJson => Json.toJson(readJson.filter { element =>
+        element.\(filterName).asOpt[String].contains(matching)
+      }).validate[Seq[T]])
+    }
+  }
+
+  def filteredArrayValueReads[T](fieldName: Option[String], filterName: String, matching: String)(implicit rds: Reads[T]): Reads[T] = new Reads[T] {
+    override def reads(json: JsValue): JsResult[T] = {
+      json.validate[Seq[JsValue]].flatMap(readJson => Json.toJson(readJson.find { element =>
+        element.\(filterName).asOpt[String].contains(matching)
+      }.map { jsValue =>
+        fieldName match {
+          case Some(name) => jsValue.\(name).getOrElse(Json.obj())
+          case None => jsValue
+        }
+      }).validate[T])
+    }
+  }
+
+  def emptySeqToNone[T](seq: Option[Seq[T]]): Option[Seq[T]] = {
+    seq match {
+      case Some(Nil) => None
+      case _ => seq
+    }
+  }
 }
 
 object NestedJsonReads extends NestedJsonReads

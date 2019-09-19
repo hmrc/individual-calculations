@@ -16,6 +16,8 @@
 
 package v1.models.request
 
+import play.api.libs.json.{JsResult, JsValue, Reads}
+
 /**
   * Represents a tax year for DES
   *
@@ -36,4 +38,10 @@ object DesTaxYear {
 
   def fromDes(taxYear: String): DesTaxYear =
     DesTaxYear((taxYear.toInt -1) + "-" + taxYear.drop(2))
+
+  def reads: Reads[String] = new Reads[String] {
+    override def reads(json: JsValue): JsResult[String] = {
+      json.validate[Int].map(taxYear => fromDes(taxYear.toString).toString)
+    }
+  }
 }

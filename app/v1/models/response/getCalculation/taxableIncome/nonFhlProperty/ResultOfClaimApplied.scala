@@ -16,11 +16,30 @@
 
 package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
 
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.functional.syntax._
+import v1.models.request.DesTaxYear
+
 case class ResultOfClaimApplied(claimId: Option[String],
                                 originatingClaimId: Option[String],
                                 taxYearClaimMade: String,
                                 claimType: String,
                                 mtdLoss: Boolean,
                                 taxYearLossIncurred: String,
-                                lossAmountUsed: BigDecimal,
-                                remainingLossValue: BigDecimal)
+                                lossAmountUsed: BigInt,
+                                remainingLossValue: BigInt)
+
+object ResultOfClaimApplied {
+  implicit val writes: OWrites[ResultOfClaimApplied] = Json.writes[ResultOfClaimApplied]
+
+  implicit val reads: Reads[ResultOfClaimApplied] = (
+    (JsPath \ "claimId").readNullable[String] and
+      (JsPath \ "originatingClaimId").readNullable[String] and
+      (JsPath \ "taxYearClaimMade").read[String](DesTaxYear.reads) and
+      (JsPath \ "claimType").read[String] and
+      (JsPath \ "mtdLoss").read[Boolean] and
+      (JsPath \ "taxYearLossIncurred").read[String](DesTaxYear.reads) and
+      (JsPath \ "lossAmountUsed").read[BigInt] and
+      (JsPath \ "remainingLossValue").read[BigInt]
+  )(ResultOfClaimApplied.apply _)
+}

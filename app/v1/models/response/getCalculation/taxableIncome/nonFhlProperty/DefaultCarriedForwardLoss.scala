@@ -16,5 +16,18 @@
 
 package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
 
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.functional.syntax._
+import v1.models.request.DesTaxYear
+
 case class DefaultCarriedForwardLoss(taxYearLossIncurred: String,
-                                     currentLossValue: BigDecimal)
+                                     currentLossValue: BigInt)
+
+object DefaultCarriedForwardLoss {
+  implicit val writes: OWrites[DefaultCarriedForwardLoss] = Json.writes[DefaultCarriedForwardLoss]
+
+  implicit val reads: Reads[DefaultCarriedForwardLoss] = (
+    (JsPath \ "taxYearLossIncurred").read[String](DesTaxYear.reads) and
+      (JsPath \ "currentLossValue").read[BigInt]
+  )(DefaultCarriedForwardLoss.apply _)
+}

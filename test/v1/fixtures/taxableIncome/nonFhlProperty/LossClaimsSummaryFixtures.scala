@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
+package v1.fixtures.taxableIncome.nonFhlProperty
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.{JsValue, Json}
+import v1.models.response.getCalculation.taxableIncome.nonFhlProperty.LossClaimsSummary
 
-case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
-                             broughtForwardIncomeTaxLossesUsed: Option[BigInt],
-                             totalIncomeTaxLossesCarriedForward: Option[BigInt])
+object LossClaimsSummaryFixtures {
 
-object LossClaimsSummary {
-  implicit val formats: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]
+  val lossClaimsSummaryJson: JsValue = Json.parse(
+    """
+      |{
+      | "totalBroughtForwardIncomeTaxLosses" : 2000,
+      | "broughtForwardIncomeTaxLossesUsed" : 2000,
+      | "totalIncomeTaxLossesCarriedForward" : 2000
+      |}
+    """.stripMargin)
+
+  val lossClaimsSummaryModel = LossClaimsSummary(Some(2000), Some(2000), Some(2000))
 }
