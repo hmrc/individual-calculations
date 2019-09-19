@@ -23,7 +23,8 @@ import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.LossClaimsDetail
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.summary.LossClaimsSummary
 
-case class ComponentOne(totalIncome: Option[BigDecimal],
+case class ComponentOne(incomeSourceType: String,
+                        totalIncome: Option[BigDecimal],
                          totalExpenses: Option[BigDecimal],
                          netProfit: Option[BigDecimal],
                          netLoss: Option[BigDecimal],
@@ -52,32 +53,7 @@ object ComponentOne {
       (JsPath \ "taxableProfit").readNullable[BigDecimal] and
       (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigDecimal] and
       __.readNullable[LossClaimsSummary]
-    )((incomeSourceType, totalIncome,
-       totalExpenses,
-       netProfit,
-       netLoss,
-       totalAdditions,
-       totalDeductions,
-       accountingAdjustments,
-       adjustedIncomeTaxLoss,
-       taxableProfit,
-       taxableProfitAfterIncomeTaxLossesDeduction,
-       lossClaimsSummary) => {
-    incomeSourceType match {
-      case "04" => ComponentOne(totalIncome,
-        totalExpenses,
-        netProfit,
-        netLoss,
-        totalAdditions,
-        totalDeductions,
-        accountingAdjustments,
-        adjustedIncomeTaxLoss,
-        taxableProfit,
-        taxableProfitAfterIncomeTaxLossesDeduction,
-        lossClaimsSummary)
-      case _ => ComponentOne(None, None, None, None, None, None, None, None, None, None, None)
-    }
-  })
+    )(ComponentOne.apply _)
 }
 
 case class UkPropertyFhl(totalIncome: Option[BigDecimal],
@@ -118,7 +94,7 @@ object UkPropertyFhl extends NestedJsonReads{
     (__ \ "calculation" \ "businessProfitAndLoss").readNestedNullable[Seq[ComponentOne]]
       .map(_.flatMap {
         case Nil => None
-        case x => Some(x.last)
+        case x => x.find(x => x.incomeSourceType == "04")
       }) and
      __.readNullable[LossClaimsDetail].map(_.flatMap {
        case LossClaimsDetail(None,None,None) => None

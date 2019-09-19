@@ -44,6 +44,11 @@ object LossClaimsDetailFixtures {
       "2050-51",1000.00,1000.00))),
     None)
 
+  val lossClaimsDetailWithMultipleLBF = LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000.00,true), LossBroughtForward("2056-57",1000.00,true))),
+    Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39", TypeOfClaim.`carry-forward`, mtdLoss = true,
+      "2050-51",1000.00,1000.00))),
+    Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))
+
   val desJson: JsValue = Json.parse(
     """
       |{
@@ -55,6 +60,92 @@ object LossClaimsDetailFixtures {
       |			"submissionTimestamp": "2019-07-13T07:51:43Z",
       |			"lossType": "income",
       |			"taxYearLossIncurred": 2055,
+      |			"currentLossValue": 1000.00,
+      |			"mtdLoss": true
+      |		}],
+      |		"claims": [{
+      |			"claimId": "CCIS12345678901",
+      |			"originatingClaimId": "LLIS12345678905",
+      |			"incomeSourceId": "LLIS12345678905",
+      |			"incomeSourceType": "04",
+      |			"submissionTimestamp": "2019-08-13T07:51:43Z",
+      |			"taxYearClaimMade": 2038,
+      |			"claimType": "CF"
+      |		}]
+      |	},
+      |	"calculation": {
+      |		"lossesAndClaims": {
+      |			"resultOfClaims": [{
+      |				"claimId": "CCIS12345678901",
+      |				"originatingClaimId": "000000000000210",
+      |				"incomeSourceId": "LLIS12345678911",
+      |				"incomeSourceType": "04",
+      |				"taxYearClaimMade": 2039,
+      |				"claimType": "CF",
+      |				"mtdLoss": true,
+      |				"taxYearLossIncurred": 2051,
+      |				"lossAmountUsed": 1000.00,
+      |				"remainingLossValue": 1000.00,
+      |				"lossType": "income"
+      |			}],
+      |			"unclaimedLosses": [{
+      |				"incomeSourceId": "LLIS12345678913",
+      |				"incomeSourceType": "04",
+      |				"taxYearLossIncurred": 2024,
+      |				"currentLossValue": 71438847594,
+      |				"expires": 2079,
+      |				"lossType": "income"
+      |			}],
+      |			"carriedForwardLosses": [{
+      |				"claimId": "CCIS12345678911",
+      |				"originatingClaimId": "OCIS12345678901",
+      |				"incomeSourceId": "AAIS12345678901",
+      |				"incomeSourceType": "04",
+      |				"claimType": "CF",
+      |				"taxYearClaimMade": 2047,
+      |				"taxYearLossIncurred": 2045,
+      |				"currentLossValue": 49177438626,
+      |				"lossType": "income"
+      |			}],
+      |			"defaultCarriedForwardLosses": [{
+      |				"incomeSourceId": "AAIS12345678912",
+      |				"incomeSourceType": "04",
+      |				"taxYearLossIncurred": 2027,
+      |				"currentLossValue": 1000.00
+      |			}],
+      |			"claimsNotApplied": [{
+      |				"claimId": "CCIS12345678912",
+      |				"incomeSourceId": "AAIS12345678901",
+      |				"incomeSourceType": "04",
+      |				"taxYearClaimMade": 2046,
+      |				"claimType": "CF"
+      |			}]
+      |		}
+      |	}
+      |}
+    """.stripMargin)
+
+  val desJsonWithMultipleLBF: JsValue = Json.parse(
+    """
+      |{
+      |	"inputs": {
+      |		"lossesBroughtForward": [{
+      |			"lossId": "0yriP9QrW2jTa6n",
+      |			"incomeSourceId": "AAIS12345678904",
+      |			"incomeSourceType": "04",
+      |			"submissionTimestamp": "2019-07-13T07:51:43Z",
+      |			"lossType": "income",
+      |			"taxYearLossIncurred": 2055,
+      |			"currentLossValue": 1000.00,
+      |			"mtdLoss": true
+      |		},
+      |  {
+      |			"lossId": "123",
+      |			"incomeSourceId": "AAIS12345678904",
+      |			"incomeSourceType": "04",
+      |			"submissionTimestamp": "2019-07-13T07:51:43Z",
+      |			"lossType": "income",
+      |			"taxYearLossIncurred": 2057,
       |			"currentLossValue": 1000.00,
       |			"mtdLoss": true
       |		}],

@@ -23,7 +23,7 @@ import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.{UkPropertyFhl, UkPropertyNonFhl}
 
-case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmployment]],
+case class BusinessProfitAndLoss(selfEmployments: Option[SelfEmployment],
                                  ukPropertyFhl: Option[UkPropertyFhl],
                                  ukPropertyNonFhl: Option[UkPropertyNonFhl])
 
@@ -32,11 +32,8 @@ object BusinessProfitAndLoss extends NestedJsonReads {
 
 
   implicit val reads: Reads[BusinessProfitAndLoss] = (
-    __.readNestedNullable[Seq[SelfEmployment]].map(_.flatMap {
-      case Nil => None
-      case x => Some(x)
-    }) and
-      __.readNullable[UkPropertyFhl].map(_.flatMap {
+    __.readNullable[SelfEmployment] and
+    __.readNullable[UkPropertyFhl].map(_.flatMap {
         case UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None) => None
         case x => Some(x)
       }) and

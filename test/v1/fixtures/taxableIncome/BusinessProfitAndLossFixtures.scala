@@ -17,21 +17,23 @@
 package v1.fixtures.taxableIncome
 
 import play.api.libs.json.Json
+import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.detail.BusinessProfitAndLoss
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.UkPropertyFhl
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.LossClaimsDetail
+import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.{UkPropertyFhl, UkPropertyNonFhl}
+import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.summary.LossClaimsSummary
 
 object BusinessProfitAndLossFixtures {
 
   val businessProfitAndLoss =
-    BusinessProfitAndLoss(selfEmployments = Some(List(SelfEmployment(None))),
-      ukPropertyFhl = Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-        Some(1000.00),Some(1000.00),Some(1000.00),None,Some(1000.00),None,
-        Some(LossClaimsSummary(Some(1000.00),None,None,None)),
-        Some(LossClaimsDetail(None,None,None)))),
-      ukPropertyNonFhl = None)
+    BusinessProfitAndLoss(Some(SelfEmployment(None)),
+      Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
+        Some(1000.00),None,Some(1000.00),None,Some(LossClaimsSummary(Some(1000.00),None,None,None)),
+        Some(LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000.00,true))),
+          Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39",
+            TypeOfClaim.`carry-forward`,true,"2050-51",1000.00,1000.00))),
+          Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))))),Some(UkPropertyNonFhl(None)))
 
   val desJson = Json.parse(
     """{

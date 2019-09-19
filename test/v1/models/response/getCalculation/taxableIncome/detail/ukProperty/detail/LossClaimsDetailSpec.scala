@@ -33,6 +33,10 @@ class LossClaimsDetailSpec extends UnitSpec {
         desJson.as[LossClaimsDetail] shouldBe lossClaimsDetail
       }
 
+      "return a LossClaimsDetail object with multiple LossBroughtForward fields" in {
+        desJsonWithMultipleLBF.as[LossClaimsDetail] shouldBe lossClaimsDetailWithMultipleLBF
+      }
+
       "return a LossClaimsDetail object without LossBroughtForward" in {
         desJsonWithoutLossesBroughtForward.as[LossClaimsDetail] shouldBe lossClaimsDetailWithoutLossBroughtForward
       }

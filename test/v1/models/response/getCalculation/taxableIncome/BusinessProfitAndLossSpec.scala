@@ -17,7 +17,16 @@
 package v1.models.response.getCalculation.taxableIncome
 
 import support.UnitSpec
+import v1.fixtures.taxableIncome.BusinessProfitAndLossFixtures._
+import v1.models.response.getCalculation.taxableIncome.detail.{BusinessProfitAndLoss, PayPensionsProfit}
 
 class BusinessProfitAndLossSpec extends UnitSpec {
 
+  "BusinessProfitAndLoss" when {
+    "reads with a valid json" should {
+      "return JsSuccess" in {
+        desJson.as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss
+      }
+    }
+  }
 }
