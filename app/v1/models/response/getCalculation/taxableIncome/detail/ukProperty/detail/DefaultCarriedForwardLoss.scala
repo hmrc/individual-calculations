@@ -16,9 +16,9 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail
 
+import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import v1.models.request.DesTaxYear
-import play.api.libs.functional.syntax._
 
 case class DefaultCarriedForwardLoss(
                                        taxYearLossIncurred: String,
@@ -29,6 +29,12 @@ object DefaultCarriedForwardLoss {
 
   implicit val reads:Reads[DefaultCarriedForwardLoss] = (
     (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "currentLossValue").read[BigDecimal]
-  ) (DefaultCarriedForwardLoss.apply _)
+      (JsPath \ "currentLossValue").read[BigDecimal] and
+      (JsPath \ "incomeSourceType").read[String]
+  )((taxYearLossIncurred, currentLossValue, incomeSourceType) => {
+    incomeSourceType match {
+      case "04" => DefaultCarriedForwardLoss(taxYearLossIncurred, currentLossValue)
+      case _ => null
+    }
+  })
 }

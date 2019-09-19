@@ -18,8 +18,67 @@ package v1.models.response.getCalculation.taxableIncome.detail.ukProperty
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import play.api.libs.json.Reads._
+import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.LossClaimsDetail
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.summary.LossClaimsSummary
+
+case class ComponentOne(totalIncome: Option[BigDecimal],
+                         totalExpenses: Option[BigDecimal],
+                         netProfit: Option[BigDecimal],
+                         netLoss: Option[BigDecimal],
+                         totalAdditions: Option[BigDecimal],
+                         totalDeductions: Option[BigDecimal],
+                         accountingAdjustments: Option[BigDecimal],
+                         adjustedIncomeTaxLoss: Option[BigDecimal],
+                         taxableProfit: Option[BigDecimal],
+                         taxableProfitAfterIncomeTaxLossesDeduction: Option[BigDecimal],
+                         lossClaimsSummary: Option[LossClaimsSummary]
+                        )
+object ComponentOne {
+
+  implicit val writes: OWrites[ComponentOne] = Json.writes[ComponentOne]
+
+  implicit val reads: Reads[ComponentOne] = (
+    (JsPath \ "incomeSourceType").read[String] and
+      (JsPath \ "totalIncome").readNullable[BigDecimal] and
+      (JsPath \ "totalExpenses").readNullable[BigDecimal] and
+      (JsPath \ "netProfit").readNullable[BigDecimal] and
+      (JsPath \ "netLoss").readNullable[BigDecimal] and
+      (JsPath \ "totalAdditions").readNullable[BigDecimal] and
+      (JsPath \ "totalDeductions").readNullable[BigDecimal] and
+      (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
+      (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigDecimal] and
+      (JsPath \ "taxableProfit").readNullable[BigDecimal] and
+      (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigDecimal] and
+      __.readNullable[LossClaimsSummary]
+    )((incomeSourceType, totalIncome,
+       totalExpenses,
+       netProfit,
+       netLoss,
+       totalAdditions,
+       totalDeductions,
+       accountingAdjustments,
+       adjustedIncomeTaxLoss,
+       taxableProfit,
+       taxableProfitAfterIncomeTaxLossesDeduction,
+       lossClaimsSummary) => {
+    incomeSourceType match {
+      case "04" => ComponentOne(totalIncome,
+        totalExpenses,
+        netProfit,
+        netLoss,
+        totalAdditions,
+        totalDeductions,
+        accountingAdjustments,
+        adjustedIncomeTaxLoss,
+        taxableProfit,
+        taxableProfitAfterIncomeTaxLossesDeduction,
+        lossClaimsSummary)
+      case _ => ComponentOne(None, None, None, None, None, None, None, None, None, None, None)
+    }
+  })
+}
 
 case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          totalExpenses: Option[BigDecimal],
@@ -35,21 +94,37 @@ case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          lossClaimsDetail: Option[LossClaimsDetail]
                         )
 
-object UkPropertyFhl {
+object UkPropertyFhl extends NestedJsonReads{
   implicit val writes: OWrites[UkPropertyFhl] = Json.writes[UkPropertyFhl]
 
+  def readsApply(componentOne: Option[ComponentOne], lossClaimsDetail: Option[LossClaimsDetail]):UkPropertyFhl =
+    componentOne match {
+      case None => UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, lossClaimsDetail)
+      case Some(componentOne) => UkPropertyFhl(componentOne.totalIncome,
+        componentOne.totalExpenses,
+        componentOne. netProfit,
+        componentOne.netLoss,
+        componentOne.totalAdditions,
+        componentOne.totalDeductions,
+        componentOne.accountingAdjustments,
+        componentOne.adjustedIncomeTaxLoss,
+        componentOne.taxableProfit,
+        componentOne.taxableProfitAfterIncomeTaxLossesDeduction,
+        componentOne.lossClaimsSummary,
+        lossClaimsDetail)
+    }
+
   implicit val reads: Reads[UkPropertyFhl] = (
-    (JsPath \ "totalIncome").readNullable[BigDecimal] and
-      (JsPath \ "totalExpenses").readNullable[BigDecimal] and
-      (JsPath \ "netProfit").readNullable[BigDecimal] and
-      (JsPath \ "netLoss").readNullable[BigDecimal] and
-      (JsPath \ "totalAdditions").readNullable[BigDecimal] and
-      (JsPath \ "totalDeductions").readNullable[BigDecimal] and
-      (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
-      (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigDecimal] and
-      (JsPath \ "taxableProfit").readNullable[BigDecimal] and
-      (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigDecimal] and
-      __.readNullable[LossClaimsSummary] and
-      __.readNullable[LossClaimsDetail]
-  )(UkPropertyFhl.apply _)
+    (__ \ "calculation" \ "businessProfitAndLoss").readNestedNullable[Seq[ComponentOne]]
+      .map(_.flatMap {
+        case Nil => None
+        case x => Some(x.last)
+      }) and
+     __.readNullable[LossClaimsDetail].map(_.flatMap {
+       case LossClaimsDetail(None,None,None) => None
+       case x => Some(x)
+     })
+    )(UkPropertyFhl.readsApply _)
+
+
 }

@@ -16,12 +16,25 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukProperty
 
-import play.api.libs.json._
+import play.api.libs.json.JsSuccess
+import support.UnitSpec
+import v1.fixtures.taxableIncome.ukProperty.UkPropertyFhlFixtures._
 
-case class UkPropertyNonFhl(path: Option[String])
+class UkPropertyFhlSpec extends UnitSpec {
 
-object UkPropertyNonFhl {
-  implicit val writes: OWrites[UkPropertyNonFhl] = Json.writes[UkPropertyNonFhl]
+  "UkPropertyFhl" when {
+    "reads with a valid json" should {
+      "return JsSuccess" in {
+        desJson.validate[UkPropertyFhl] shouldBe a[JsSuccess[UkPropertyFhl]]
+      }
 
-  implicit val reads: Reads[UkPropertyNonFhl] = Json.reads[UkPropertyNonFhl]
+      "return the expected ukPropertyFhl object" in {
+        desJson.as[UkPropertyFhl] shouldBe ukPropertyFhlObject
+      }
+
+      "return the ukPropertyFhl with out LossClaimsDetail object" in {
+        desJsonWithOutLossClaimsDetail.as[UkPropertyFhl] shouldBe ukPropertyFhlWithOutLossClaimsDetailObject
+      }
+    }
+  }
 }

@@ -41,6 +41,14 @@ object ResultOfClaimApplied {
       (__ \ "mtdLoss").read[Boolean] and
       (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "lossAmountUsed").read[BigDecimal] and
-      (__ \ "remainingLossValue").read[BigDecimal]
-    )(ResultOfClaimApplied.apply _)
+      (__ \ "remainingLossValue").read[BigDecimal] and
+      (__ \ "incomeSourceType").read[String]
+    )((claimId, taxYearClaimMade, claimType, mtdLoss, taxYearLossIncurred,
+       lossAmountUsed, remainingLossValue, incomeSourceType) => {
+    incomeSourceType match {
+      case "04" => ResultOfClaimApplied(claimId, taxYearClaimMade, claimType, mtdLoss, taxYearLossIncurred,
+        lossAmountUsed, remainingLossValue)
+      case _ => null
+    }
+  })
 }

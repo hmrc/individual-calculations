@@ -38,7 +38,13 @@ class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators{
       }
     }
 
-    "written to Json" should {
+    "read from invalid Json" should {
+      "return null object" in {
+        desJsonWithInvalidSourceType.as[LossBroughtForward] shouldBe null
+      }
+    }
+
+    "writes to Json" should {
       "return the expected JsObject" in {
         Json.toJson(lossBroughtForwardResponse) shouldBe lossBroughtForwardWrittenJson
       }

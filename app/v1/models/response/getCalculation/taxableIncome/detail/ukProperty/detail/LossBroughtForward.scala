@@ -16,10 +16,9 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail
 
-import play.api.libs.json._
-import v1.models.domain.TypeOfLoss
-import v1.models.request.DesTaxYear
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import v1.models.request.DesTaxYear
 
 case class LossBroughtForward(
                               taxYearLossIncurred: String,
@@ -27,12 +26,19 @@ case class LossBroughtForward(
                               mtdLoss: Boolean
                              )
 
+
 object LossBroughtForward {
   implicit val writes: Writes[LossBroughtForward] = Json.writes[LossBroughtForward]
 
   implicit val reads: Reads[LossBroughtForward] = (
     (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "currentLossValue").read[BigDecimal] and
-      (__ \ "mtdLoss").read[Boolean]
-    )(LossBroughtForward.apply _)
+      (__ \ "mtdLoss").read[Boolean] and
+      (__ \ "incomeSourceType").read[String]
+    )((taxYearLossIncurred, currentLossValue, mtdLoss, incomeSourceType) => {
+      incomeSourceType match {
+        case "04" => LossBroughtForward(taxYearLossIncurred, currentLossValue, mtdLoss)
+        case _ => null
+      }
+    })
 }

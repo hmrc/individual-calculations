@@ -41,12 +41,19 @@ class ResultOfClaimAppliedSpec extends UnitSpec with JsonErrorValidators {
       "return a JsSuccess" in {
         resultOfClaimAppliedDesJson.validate[ResultOfClaimApplied] shouldBe a[JsSuccess[_]]
       }
+
       "with the expected ResultOfClaimApplied object" in {
         resultOfClaimAppliedDesJson.as[ResultOfClaimApplied] shouldBe resultOfClaimAppliedResponse
       }
     }
 
-    "written to Json" should {
+    "read from invalid Json" should {
+      "return null object" in {
+        desJsonWithInvalidSourceType.as[ResultOfClaimApplied] shouldBe null
+      }
+    }
+
+    "writes to Json" should {
       "return the expected JsObject" in {
         Json.toJson(resultOfClaimAppliedResponse) shouldBe resultOfClaimAppliedWrittenJson
       }

@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail
 
-import play.api.libs.json.JsSuccess
+import play.api.libs.json.{JsObject, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.taxableIncome.ukProperty.LossClaimsDetailFixtures._
 
@@ -30,19 +30,33 @@ class LossClaimsDetailSpec extends UnitSpec {
       }
 
       "return a LossClaimsDetail object with all fields" in {
-        desJson.validate[LossClaimsDetail].get shouldBe lossClaimsDetail
+        desJson.as[LossClaimsDetail] shouldBe lossClaimsDetail
       }
 
       "return a LossClaimsDetail object without LossBroughtForward" in {
-        desJsonWithoutLossesBroughtForward.validate[LossClaimsDetail].get shouldBe lossClaimsDetailWithoutLossBroughtForward
+        desJsonWithoutLossesBroughtForward.as[LossClaimsDetail] shouldBe lossClaimsDetailWithoutLossBroughtForward
       }
 
       "return a LossClaimsDetail object without ResultOfClaimApplied" in {
-        desJsonWithoutResultOfClaims.validate[LossClaimsDetail].get shouldBe lossClaimsDetailResultOfClaimApplied
+        desJsonWithoutResultOfClaims.as[LossClaimsDetail] shouldBe lossClaimsDetailResultOfClaimApplied
       }
 
       "return a LossClaimsDetail object without DefaultCarriedForwardLoss" in {
-        desJsonWithoutDefaultCarriedForwardLosses.validate[LossClaimsDetail].get shouldBe lossClaimsDetailDefaultCarriedForwardLoss
+        desJsonWithoutDefaultCarriedForwardLosses.as[LossClaimsDetail] shouldBe lossClaimsDetailDefaultCarriedForwardLoss
+      }
+
+      "return an empty LossClaimsDetail object" in {
+        desJsonWithNoFhlDetails.as[LossClaimsDetail] shouldBe LossClaimsDetail(None,None,None)
+      }
+    }
+
+    "writes to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(lossClaimsDetail) shouldBe mtdJson
+      }
+
+      "return an empty JsObject" in {
+        Json.toJson(LossClaimsDetail(None,None,None)) shouldBe JsObject.empty
       }
     }
   }

@@ -17,19 +17,30 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployments
+import play.api.libs.json.Reads._
+import play.api.libs.json._
+import utils.NestedJsonReads
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.{UkPropertyFhl, UkPropertyNonFhl}
 
-case class BusinessProfitAndLoss(selfEmployments: Option[Array[SelfEmployments]],
-                                 ukPropertyFhl: Option[Array[UkPropertyFhl]],
-                                 ukPropertyNonFhl: Option[Array[UkPropertyNonFhl]])
+case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmployment]],
+                                 ukPropertyFhl: Option[UkPropertyFhl],
+                                 ukPropertyNonFhl: Option[UkPropertyNonFhl])
 
-object BusinessProfitAndLoss {
+object BusinessProfitAndLoss extends NestedJsonReads {
   implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
+
+
   implicit val reads: Reads[BusinessProfitAndLoss] = (
-    JsPath.readNullable[Array[SelfEmployments]] and
-      JsPath.readNullable[Array[UkPropertyFhl]] and
-      JsPath.readNullable[Array[UkPropertyNonFhl]]
-  )(BusinessProfitAndLoss.apply _)
+    __.readNestedNullable[Seq[SelfEmployment]].map(_.flatMap {
+      case Nil => None
+      case x => Some(x)
+    }) and
+      __.readNullable[UkPropertyFhl].map(_.flatMap {
+        case UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None) => None
+        case x => Some(x)
+      }) and
+      __.readNullable[UkPropertyNonFhl]
+    )(BusinessProfitAndLoss.apply _)
+
 }

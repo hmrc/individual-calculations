@@ -32,12 +32,19 @@ class DefaultCarriedForwardLossSpec extends UnitSpec with JsonErrorValidators {
       "return a JsSuccess" in {
         carriedForwardLossDesJson.validate[DefaultCarriedForwardLoss] shouldBe a[JsSuccess[_]]
       }
+
       "with the expected CarriedForwardLoss object" in {
         carriedForwardLossDesJson.as[DefaultCarriedForwardLoss] shouldBe carriedForwardLossResponse
       }
     }
 
-    "written to Json" should {
+    "read from invalid Json" should {
+      "return null object" in {
+        desJsonInvalidSourceType.as[DefaultCarriedForwardLoss] shouldBe null
+      }
+    }
+
+    "writes to Json" should {
       "return the expected JsObject" in {
         Json.toJson(carriedForwardLossResponse) shouldBe carriedForwardLossWrittenJson
       }

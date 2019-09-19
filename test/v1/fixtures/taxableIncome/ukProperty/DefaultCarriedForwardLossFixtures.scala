@@ -24,7 +24,7 @@ object DefaultCarriedForwardLossFixtures {
 
 
   val incomeSourceId: String        = "AAIS12345678904"
-  val incomeSourceType: String      = "01"
+  val incomeSourceType: String      = "04"
   val taxYearLossIncurred: Int      = 2045
   val currentLossValue: BigDecimal     = 49177
 
@@ -52,8 +52,11 @@ object DefaultCarriedForwardLossFixtures {
       |    "currentLossValue": $currentLossValue
       |}""".stripMargin)
 
-  val carriedForwardLossInvalidJson: JsValue = Json.parse(f"""{
-      |    "taxYearLossIncurred": $taxYearLossIncurred
-      |}""".stripMargin)
-
+  val desJsonInvalidSourceType: JsValue =
+    Json.parse(f"""{
+                   |    "incomeSourceId": "$incomeSourceId",
+                   |    "incomeSourceType": "01",
+                   |    "taxYearLossIncurred": $taxYearLossIncurred,
+                   |    "currentLossValue": $currentLossValue
+                   |}""".stripMargin)
 }

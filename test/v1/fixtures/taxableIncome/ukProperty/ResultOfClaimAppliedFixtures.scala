@@ -26,7 +26,7 @@ object ResultOfClaimAppliedFixtures {
   val claimId: Option[String]    = Some("CCIS12345678901")
   val originatingClaimId: String = "000000000000210"
   val incomeSourceId: String     = "AAIS12345678904"
-  val incomeSourceType: String   = "01"
+  val incomeSourceType: String   = "04"
   val taxYearClaimMade: Int      = 2020
   val claimType: String          = "CF"
   val mtdLoss: Boolean           = true
@@ -71,5 +71,19 @@ object ResultOfClaimAppliedFixtures {
       |    "taxYearLossIncurred": "$taxYearLossIncurred",
       |    "mtdLoss": $mtdLoss
       |}""".stripMargin)
+
+  val desJsonWithInvalidSourceType: JsValue =
+    Json.parse(s"""{
+                   |    "claimId": "${claimId.get}",
+                   |    "originatingClaimId": "$originatingClaimId",
+                   |    "incomeSourceId": "$incomeSourceId",
+                   |    "incomeSourceType": "01",
+                   |    "taxYearClaimMade": $taxYearClaimMade,
+                   |    "claimType": "$claimType",
+                   |    "mtdLoss": $mtdLoss,
+                   |    "taxYearLossIncurred": $taxYearLossIncurred,
+                   |    "lossAmountUsed": $lossAmountUsed,
+                   |    "remainingLossValue": $remainingLossValue
+                   |}""".stripMargin)
 
 }

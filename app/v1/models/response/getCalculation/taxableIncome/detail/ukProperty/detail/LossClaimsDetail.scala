@@ -16,9 +16,9 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail
 
+import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import play.api.libs.functional.syntax._
 
 case class LossClaimsDetail(
                              lossesBroughtForward: Option[Seq[LossBroughtForward]],
@@ -30,8 +30,18 @@ object LossClaimsDetail extends NestedJsonReads{
   implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
   implicit val reads: Reads[LossClaimsDetail] = (
-    (JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable[Seq[LossBroughtForward]] and
-      (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaims").readNestedNullable[Seq[ResultOfClaimApplied]] and
-      (JsPath \ "calculation" \ "lossesAndClaims" \ "defaultCarriedForwardLosses").readNestedNullable[Seq[DefaultCarriedForwardLoss]]
+    (JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable[Seq[LossBroughtForward]]
+    .map(_.flatMap {
+      case List(null) => None
+      case x => Some(x)
+    }) and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaims").readNestedNullable[Seq[ResultOfClaimApplied]].map(_.flatMap {
+        case List(null) => None
+        case x => Some(x)
+      }) and
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "defaultCarriedForwardLosses").readNestedNullable[Seq[DefaultCarriedForwardLoss]].map(_.flatMap {
+        case List(null) => None
+        case x => Some(x)
+      })
   )(LossClaimsDetail.apply _)
 }

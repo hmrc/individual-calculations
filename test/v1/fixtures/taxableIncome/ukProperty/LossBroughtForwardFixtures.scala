@@ -23,7 +23,7 @@ import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.
 object LossBroughtForwardFixtures {
   val lossId: String               = "0yriP9QrW2jTa6n"
   val incomeSourceId: String       = "AAIS12345678904"
-  val incomeSourceType: String     = "01"
+  val incomeSourceType: String     = "04"
   val submissionTimestamp: String  = "2019-07-13T07:51:43Z"
   val taxYearLossIncurred: Int     = 2055
   val currentLossValue: BigDecimal = 673350334
@@ -62,5 +62,16 @@ object LossBroughtForwardFixtures {
       |    "currentLossValue": $currentLossValue,
       |    "mtdLoss": $mtdLoss
       |}""".stripMargin)
+
+  val desJsonWithInvalidSourceType: JsValue =
+    Json.parse(s"""{
+                     |    "lossId": "$lossId",
+                     |    "incomeSourceId": "$incomeSourceId",
+                     |    "incomeSourceType": "01",
+                     |    "submissionTimestamp": "$submissionTimestamp",
+                     |    "taxYearLossIncurred": $taxYearLossIncurred,
+                     |    "currentLossValue": $currentLossValue,
+                     |    "mtdLoss": $mtdLoss
+                     |}""".stripMargin)
 
 }

@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.getCalculation.taxableIncome
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
 
-case class SelfEmployments (param: String)
+class BusinessProfitAndLossSpec extends UnitSpec {
 
-object SelfEmployments {
-  implicit val format: OFormat[SelfEmployments] = Json.format[SelfEmployments]
 }

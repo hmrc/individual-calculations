@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
-import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import utils.NestedJsonReads
 
-case class PayPensionsProfit(incomeReceived: Option[BigDecimal],
-                             businessProfitAndLoss: Option[BusinessProfitAndLoss])
+case class SelfEmployment(test: Option[String])
 
-object PayPensionsProfit extends NestedJsonReads{
-  implicit val writes: Writes[PayPensionsProfit] = Json.writes[PayPensionsProfit]
-  implicit val reads: Reads[PayPensionsProfit] = (
-    (JsPath \ "calculation" \ "incomeReceived").readNullable[BigDecimal] and
-     __.readNullable[BusinessProfitAndLoss]
-  )(PayPensionsProfit.apply _)
+object SelfEmployment {
+  implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
+
+  implicit val reads: Reads[SelfEmployment] = Json.reads[SelfEmployment]
+
 }
