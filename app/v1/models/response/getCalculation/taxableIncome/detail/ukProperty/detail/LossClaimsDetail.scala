@@ -33,15 +33,15 @@ object LossClaimsDetail extends NestedJsonReads{
     (JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable[Seq[LossBroughtForward]]
     .map(_.flatMap {
       case List(null) => None
-      case x => Some(x)
+      case x => Some(x.filter(x => x != null))
     }) and
       (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaims").readNestedNullable[Seq[ResultOfClaimApplied]].map(_.flatMap {
         case List(null) => None
-        case x => Some(x)
+        case x => Some(x.filter(x => x != null))
       }) and
       (JsPath \ "calculation" \ "lossesAndClaims" \ "defaultCarriedForwardLosses").readNestedNullable[Seq[DefaultCarriedForwardLoss]].map(_.flatMap {
         case List(null) => None
-        case x => Some(x)
+        case x => Some(x.filter(x => x != null))
       })
   )(LossClaimsDetail.apply _)
 }

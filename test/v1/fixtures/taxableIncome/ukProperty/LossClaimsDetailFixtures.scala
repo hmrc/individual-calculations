@@ -62,6 +62,16 @@ object LossClaimsDetailFixtures {
       |			"taxYearLossIncurred": 2055,
       |			"currentLossValue": 1000.00,
       |			"mtdLoss": true
+      |		},
+      |  {
+      |			"lossId": "123",
+      |			"incomeSourceId": "AAIS12345678904",
+      |			"incomeSourceType": "02",
+      |			"submissionTimestamp": "2019-07-13T07:51:43Z",
+      |			"lossType": "income",
+      |			"taxYearLossIncurred": 2057,
+      |			"currentLossValue": 1000.00,
+      |			"mtdLoss": true
       |		}],
       |		"claims": [{
       |			"claimId": "CCIS12345678901",
