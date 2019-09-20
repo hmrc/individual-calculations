@@ -345,6 +345,62 @@ object UkPropertyFhlFixtures {
     Some(1000.00),Some(1000.00),None,Some(1000.00),None,
     Some(LossClaimsSummary(Some(1000.00),None,None,None)),None)
 
+  val emptyUkPropertyFhl = UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None)
+
+  val mtdUkPropertyFhlObj = Json.parse(
+    """
+      |{
+      |	"totalIncome": 1000,
+      |	"totalExpenses": 1000,
+      |	"netProfit": 1000,
+      |	"netLoss": 1000,
+      |	"totalAdditions": 1000,
+      |	"totalDeductions": 1000,
+      |	"accountingAdjustments": 1000,
+      |	"taxableProfit": 1000,
+      |	"lossClaimsSummary": {
+      |		"lossForCSFHL": 1000
+      |	},
+      |	"lossClaimsDetail": {
+      |		"lossesBroughtForward": [{
+      |			"taxYearLossIncurred": "2054-55",
+      |			"currentLossValue": 1000,
+      |			"mtdLoss": true
+      |		}],
+      |		"resultOfClaimsApplied": [{
+      |			"claimId": "CCIS12345678901",
+      |			"taxYearClaimMade": "2038-39",
+      |			"claimType": "carry-forward",
+      |			"mtdLoss": true,
+      |			"taxYearLossIncurred": "2050-51",
+      |			"lossAmountUsed": 1000,
+      |			"remainingLossValue": 1000
+      |		}],
+      |		"carriedForwardLosses": [{
+      |			"taxYearLossIncurred": "2026-27",
+      |			"currentLossValue": 1000
+      |		}]
+      |	}
+      |}
+    """.stripMargin)
+
+  val mtdUkPropertyFhlObjWithOutLossClaimsDetail = Json.parse(
+    """
+      |{
+      |	"totalIncome": 1000,
+      |	"totalExpenses": 1000,
+      |	"netProfit": 1000,
+      |	"netLoss": 1000,
+      |	"totalAdditions": 1000,
+      |	"totalDeductions": 1000,
+      |	"accountingAdjustments": 1000,
+      |	"taxableProfit": 1000,
+      |	"lossClaimsSummary": {
+      |		"lossForCSFHL": 1000
+      |	}
+      |}
+    """.stripMargin)
+
   val desJsonWithOutLossClaimsDetail = Json.parse(
     """{
       |"inputs": {

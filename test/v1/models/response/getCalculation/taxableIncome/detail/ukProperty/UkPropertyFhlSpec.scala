@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukProperty
 
-import play.api.libs.json.JsSuccess
+import play.api.libs.json.{JsObject, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.taxableIncome.ukProperty.UkPropertyFhlFixtures._
 
@@ -34,6 +34,21 @@ class UkPropertyFhlSpec extends UnitSpec {
 
       "return the ukPropertyFhl with out LossClaimsDetail object" in {
         desJsonWithOutLossClaimsDetail.as[UkPropertyFhl] shouldBe ukPropertyFhlWithOutLossClaimsDetailObject
+      }
+    }
+
+    "writes with a valid object" should {
+      "return a valid json" in {
+        Json.toJson(ukPropertyFhlObject) shouldBe mtdUkPropertyFhlObj
+      }
+
+      "return a valid json with out LossClaimsDetail" in {
+        Json.toJson(ukPropertyFhlWithOutLossClaimsDetailObject) shouldBe mtdUkPropertyFhlObjWithOutLossClaimsDetail
+      }
+
+      "return a empty json with empty UkPropertyFhl object" in {
+        Json.toJson(emptyUkPropertyFhl) shouldBe
+          JsObject.empty
       }
     }
   }
