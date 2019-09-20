@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary
 
-import play.api.libs.json.{Json, OFormat}
-
-case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
-                             broughtForwardIncomeTaxLossesUsed: Option[BigInt],
-                             totalIncomeTaxLossesCarriedForward: Option[BigInt])
-
-object LossClaimsSummary {
-  implicit val formats: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]
-}
+case class LossClaimsSummary(
+    totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
+    broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],
+    totalIncomeTaxLossesCarriedForward: Option[BigDecimal],
+    totalBroughtForwardClass4Losses: Option[BigDecimal],
+    broughtForwardClass4LossesUsed: Option[BigDecimal],
+    carrySidewaysClass4LossesUsed: Option[BigDecimal],
+    totalClass4LossesCarriedForward: Option[BigDecimal]
+)

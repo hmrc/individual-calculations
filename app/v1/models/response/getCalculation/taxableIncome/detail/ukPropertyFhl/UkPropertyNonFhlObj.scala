@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.incomeTaxAndNics.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json._
 
-case class TaxBand(name: String,
-                   rate: BigDecimal,
-                   bandLimit: BigDecimal,
-                   apportionedBandLimit: BigDecimal,
-                   income: BigDecimal,
-                   taxAmount: BigDecimal)
+case class UkPropertyNonFhlObj(path: Option[String])
 
-object TaxBand {
-  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
+object UkPropertyNonFhlObj {
+  implicit val writes: OWrites[UkPropertyNonFhlObj] = Json.writes[UkPropertyNonFhlObj]
+
+  implicit val reads: Reads[UkPropertyNonFhlObj] = Json.reads[UkPropertyNonFhlObj]
 }

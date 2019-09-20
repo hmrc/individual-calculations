@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
+package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail
 
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import utils.NestedJsonReads
 
 case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],

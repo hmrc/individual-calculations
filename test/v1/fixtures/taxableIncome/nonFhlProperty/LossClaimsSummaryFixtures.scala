@@ -17,7 +17,7 @@
 package v1.fixtures.taxableIncome.nonFhlProperty
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getCalculation.taxableIncome.nonFhlProperty.LossClaimsSummary
+import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.summary.LossClaimsSummary
 
 object LossClaimsSummaryFixtures {
 

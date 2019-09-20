@@ -17,7 +17,6 @@
 package v1.fixtures.taxableIncome.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures._
 import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
 
 object PayPensionsProfitFixtures {
@@ -35,7 +34,7 @@ object PayPensionsProfitFixtures {
     totalPropertyProfit,
     totalFHLPropertyProfit,
     totalUKOtherPropertyProfit,
-    Some(businessProfitAndLossResponse)
+    None
   )
 
   val payPensionsProfitResponseWithoutOptionalFields: PayPensionsProfit =
@@ -57,10 +56,7 @@ object PayPensionsProfitFixtures {
       |         "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
       |         "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get}
       |         }
-      |     },
-      |     "selfEmployments" : "$selfEmployments",
-      |     "ukPropertyFhl" : "$ukPropertyFhl",
-      |     "ukPropertyNonFhl" : "$ukPropertyNonFhl"
+      |     }
       |}""".stripMargin)
 
   val payPensionsProfitDesJsonWithoutOptionalFields: JsValue = Json.parse(s"""{
@@ -82,12 +78,7 @@ object PayPensionsProfitFixtures {
       |    "totalSelfEmploymentProfit" : ${totalSelfEmploymentProfit.get},
       |    "totalPropertyProfit" : ${totalPropertyProfit.get},
       |    "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
-      |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get},
-      |    "businessProfitAndLoss" : {
-      |       "selfEmployments" : "$selfEmployments",
-      |       "ukPropertyFhl" : "$ukPropertyFhl",
-      |       "ukPropertyNonFhl" : "$ukPropertyNonFhl"
-      |    }
+      |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get}
       |}""".stripMargin)
 
   val payPensionsProfitWrittenJsonWithoutOptionalFields: JsValue = Json.parse(s"""{

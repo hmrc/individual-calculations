@@ -16,10 +16,15 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{ Json, OFormat }
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, Reads, Writes }
 
 case class Dividends(incomeReceived: BigInt, taxableIncome: BigInt)
 
 object Dividends {
-  implicit val format: OFormat[Dividends] = Json.format[Dividends]
+  implicit val writes: Writes[Dividends] = Json.writes[Dividends]
+  implicit val reads: Reads[Dividends] = (
+    (JsPath \ "incomeReceived").read[BigInt] and
+      (JsPath \ "taxableIncome").read[BigInt]
+  )(Dividends.apply _)
 }

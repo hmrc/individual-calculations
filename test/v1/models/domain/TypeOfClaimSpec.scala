@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.incomeTaxAndNics.detail
+package v1.models.domain
 
-import play.api.libs.json.{Json, OFormat}
+import support.UnitSpec
+import v1.models.des.ReliefClaimed
+import v1.models.domain.TypeOfClaim._
 
-case class TaxBand(name: String,
-                   rate: BigDecimal,
-                   bandLimit: BigDecimal,
-                   apportionedBandLimit: BigDecimal,
-                   income: BigDecimal,
-                   taxAmount: BigDecimal)
-
-object TaxBand {
-  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
+class TypeOfClaimSpec extends UnitSpec {
+  "TypeOfClaim" when {
+    "getting DES reliefClaimed" must {
+      "work" in {
+        `carry-forward`.toReliefClaimed shouldBe ReliefClaimed.`CF`
+        `carry-sideways`.toReliefClaimed shouldBe ReliefClaimed.`CSGI`
+        `carry-forward-to-carry-sideways`.toReliefClaimed shouldBe ReliefClaimed.`CFCSGI`
+        `carry-sideways-fhl`.toReliefClaimed shouldBe ReliefClaimed.`CSFHL`
+      }
+    }
+  }
 }

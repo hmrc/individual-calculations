@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
+import play.api.libs.json._
 import utils.NestedJsonReads
 
 case class PayPensionsProfit(incomeReceived: BigInt,
@@ -37,9 +37,9 @@ object PayPensionsProfit extends NestedJsonReads{
       (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalPropertyProfit").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalFHLPropertyProfit").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalUKOtherPropertyProfit").readNestedNullable[BigInt] and
-      JsPath.readNullable[BusinessProfitAndLoss].map{
-        case Some(bpal) if !bpal.isEmpty => Some(bpal)
-        case _ => None
-      }
+      __.readNullable[BusinessProfitAndLoss].map(_.flatMap {
+        case BusinessProfitAndLoss(None,None,None) => None
+        case x => Some(x)
+      })
   )(PayPensionsProfit.apply _)
 }

@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.incomeTaxAndNics.detail
+package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.summary
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TaxBand(name: String,
-                   rate: BigDecimal,
-                   bandLimit: BigDecimal,
-                   apportionedBandLimit: BigDecimal,
-                   income: BigDecimal,
-                   taxAmount: BigDecimal)
+case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
+                             broughtForwardIncomeTaxLossesUsed: Option[BigInt],
+                             totalIncomeTaxLossesCarriedForward: Option[BigInt])
 
-object TaxBand {
-  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
+object LossClaimsSummary {
+  implicit val formats: OFormat[LossClaimsSummary] = Json.format[LossClaimsSummary]
 }

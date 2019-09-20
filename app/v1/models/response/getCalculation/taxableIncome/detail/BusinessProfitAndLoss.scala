@@ -17,20 +17,33 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
+import play.api.libs.json.Reads._
+import play.api.libs.json._
+import utils.NestedJsonReads
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.{UkPropertyFhl, UkPropertyNonFhlObj}
 
-case class BusinessProfitAndLoss(selfEmployments: Option[String],
-                                 ukPropertyFhl: Option[String],
-                                 ukPropertyNonFhl: Option[String]){
-  val isEmpty: Boolean = this == BusinessProfitAndLoss.emptyBPAL
-}
+case class BusinessProfitAndLoss(selfEmployments: Option[SelfEmployment],
+                                 ukPropertyFhl: Option[UkPropertyFhl],
+                                 ukPropertyNonFhl: Option[UkPropertyNonFhlObj])
 
-object BusinessProfitAndLoss {
-  val emptyBPAL = BusinessProfitAndLoss(None, None, None)
-  implicit val writes: OWrites[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
+object BusinessProfitAndLoss extends NestedJsonReads {
+  implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
+
+
   implicit val reads: Reads[BusinessProfitAndLoss] = (
-    (JsPath \ "selfEmployments").readNullable[String] and
-      (JsPath \ "ukPropertyFhl").readNullable[String] and
-      (JsPath \ "ukPropertyNonFhl").readNullable[String]
-  )(BusinessProfitAndLoss.apply _)
+    __.readNullable[SelfEmployment].map(_.flatMap {
+      case SelfEmployment(None) => None
+      case x => Some(x)
+    }) and
+    __.readNullable[UkPropertyFhl].map(_.flatMap {
+        case UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None) => None
+        case x => Some(x)
+      }) and
+      __.readNullable[UkPropertyNonFhlObj].map(_.flatMap {
+        case UkPropertyNonFhlObj(None) => None
+        case x => Some(x)
+      })
+    )(BusinessProfitAndLoss.apply _)
+
 }

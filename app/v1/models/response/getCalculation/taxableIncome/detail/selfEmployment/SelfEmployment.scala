@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.incomeTaxAndNics.detail
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json._
 
-case class TaxBand(name: String,
-                   rate: BigDecimal,
-                   bandLimit: BigDecimal,
-                   apportionedBandLimit: BigDecimal,
-                   income: BigDecimal,
-                   taxAmount: BigDecimal)
+case class SelfEmployment(test: Option[String])
 
-object TaxBand {
-  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
+object SelfEmployment {
+  implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
+
+  implicit val reads: Reads[SelfEmployment] = Json.reads[SelfEmployment]
+
 }

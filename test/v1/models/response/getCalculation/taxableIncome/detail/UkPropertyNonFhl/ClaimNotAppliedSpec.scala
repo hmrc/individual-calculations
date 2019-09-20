@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
+package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.nonFhlProperty.LossBroughtForwardFixtures
+import v1.fixtures.taxableIncome.nonFhlProperty.ClaimNotAppliedFixtures
+import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail.ClaimNotApplied
 
-class LossBroughtForwardSpec extends UnitSpec {
+class ClaimNotAppliedSpec extends UnitSpec {
 
-  "Loss Brought Forward" should {
+  "Claim Not Applied" should {
 
     "read correctly from json" when {
 
       "provided with valid json" in {
-        val result = LossBroughtForwardFixtures.lossBroughtForwardDesJson.validate[LossBroughtForward]
+        val result = ClaimNotAppliedFixtures.claimNotAppliedDesJson.validate[ClaimNotApplied]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe LossBroughtForwardFixtures.lossBroughtForwardModel
+        result.get shouldBe ClaimNotAppliedFixtures.claimNotAppliedModel
       }
     }
 
     "write correctly to json" when {
 
       "provided with a valid model" in {
-        Json.toJson(LossBroughtForwardFixtures.lossBroughtForwardModel) shouldBe
-          LossBroughtForwardFixtures.lossBroughtForwardMtdJson
+        Json.toJson(ClaimNotAppliedFixtures.claimNotAppliedModel) shouldBe ClaimNotAppliedFixtures.claimNotAppliedMtdJson
       }
     }
   }
