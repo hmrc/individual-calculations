@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukProperty
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl
 
 import play.api.libs.json.{JsObject, JsSuccess, Json}
 import support.UnitSpec

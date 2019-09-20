@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
@@ -35,12 +35,6 @@ class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators{
       }
       "containing the expected LossesBroughtForward object" in {
         lossBroughtForwardDesJson.as[LossBroughtForward] shouldBe lossBroughtForwardResponse
-      }
-    }
-
-    "read from invalid Json" should {
-      "return null object" in {
-        desJsonWithInvalidSourceType.as[LossBroughtForward] shouldBe null
       }
     }
 

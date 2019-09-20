@@ -18,7 +18,7 @@ package v1.fixtures.taxableIncome.ukProperty
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.request.DesTaxYear
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.DefaultCarriedForwardLoss
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.DefaultCarriedForwardLoss
 
 object DefaultCarriedForwardLossFixtures {
 

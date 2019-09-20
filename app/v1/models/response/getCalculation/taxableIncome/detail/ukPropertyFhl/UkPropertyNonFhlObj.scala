@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukProperty
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl
 
 import play.api.libs.json._
 
-case class UkPropertyNonFhl(path: Option[String])
+case class UkPropertyNonFhlObj(path: Option[String])
 
-object UkPropertyNonFhl {
-  implicit val writes: OWrites[UkPropertyNonFhl] = Json.writes[UkPropertyNonFhl]
+object UkPropertyNonFhlObj {
+  implicit val writes: OWrites[UkPropertyNonFhlObj] = Json.writes[UkPropertyNonFhlObj]
 
-  implicit val reads: Reads[UkPropertyNonFhl] = Json.reads[UkPropertyNonFhl]
+  implicit val reads: Reads[UkPropertyNonFhlObj] = Json.reads[UkPropertyNonFhlObj]
 }

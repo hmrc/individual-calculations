@@ -18,7 +18,7 @@ package v1.fixtures.taxableIncome.ukProperty
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.domain.TypeOfClaim
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail._
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail._
 
 object LossClaimsDetailFixtures {
 

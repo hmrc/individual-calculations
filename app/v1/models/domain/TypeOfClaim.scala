@@ -54,3 +54,4 @@ object TypeOfClaim {
 
   implicit val writes: Writes[TypeOfClaim] = Writes[TypeOfClaim](ts => JsString(ts.toString))
 }
+

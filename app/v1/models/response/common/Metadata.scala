@@ -38,7 +38,7 @@ object Metadata extends NestedJsonReads {
   implicit val writes: OWrites[Metadata] = Json.writes[Metadata]
   implicit val reads: Reads[Metadata]=(
   (JsPath \"metadata" \ "calculationId").read[String] and
-    (JsPath \"metadata" \ "taxYear").read[Int].map(taxYear => taxYear.toString).map(DesTaxYear.fromDes).map(_.toString) and
+    (JsPath \"metadata" \ "taxYear").read[String](DesTaxYear.reads) and
     (JsPath \"metadata" \ "requestedBy").read[CalculationRequestor] and
     (JsPath \"metadata" \ "requestedTimestamp").readNullable[String] and
     (JsPath \"metadata" \ "calculationReason").read[CalculationReason] and

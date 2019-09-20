@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -29,12 +29,6 @@ object DefaultCarriedForwardLoss {
 
   implicit val reads:Reads[DefaultCarriedForwardLoss] = (
     (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "currentLossValue").read[BigDecimal] and
-      (JsPath \ "incomeSourceType").read[String]
-  )((taxYearLossIncurred, currentLossValue, incomeSourceType) => {
-    incomeSourceType match {
-      case "04" => DefaultCarriedForwardLoss(taxYearLossIncurred, currentLossValue)
-      case _ => null
-    }
-  })
+      (JsPath \ "currentLossValue").read[BigDecimal]
+  )(DefaultCarriedForwardLoss.apply _)
 }

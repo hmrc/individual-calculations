@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
@@ -44,12 +44,6 @@ class ResultOfClaimAppliedSpec extends UnitSpec with JsonErrorValidators {
 
       "with the expected ResultOfClaimApplied object" in {
         resultOfClaimAppliedDesJson.as[ResultOfClaimApplied] shouldBe resultOfClaimAppliedResponse
-      }
-    }
-
-    "read from invalid Json" should {
-      "return null object" in {
-        desJsonWithInvalidSourceType.as[ResultOfClaimApplied] shouldBe null
       }
     }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -33,12 +33,6 @@ object LossBroughtForward {
   implicit val reads: Reads[LossBroughtForward] = (
     (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (__ \ "currentLossValue").read[BigDecimal] and
-      (__ \ "mtdLoss").read[Boolean] and
-      (__ \ "incomeSourceType").read[String]
-    )((taxYearLossIncurred, currentLossValue, mtdLoss, incomeSourceType) => {
-      incomeSourceType match {
-        case "04" => LossBroughtForward(taxYearLossIncurred, currentLossValue, mtdLoss)
-        case _ => null
-      }
-    })
+      (__ \ "mtdLoss").read[Boolean]
+    )(LossBroughtForward.apply _)
 }

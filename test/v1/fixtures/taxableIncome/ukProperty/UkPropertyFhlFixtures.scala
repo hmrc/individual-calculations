@@ -18,9 +18,9 @@ package v1.fixtures.taxableIncome.ukProperty
 
 import play.api.libs.json.Json
 import v1.models.domain.TypeOfClaim
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.UkPropertyFhl
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.summary.LossClaimsSummary
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.LossClaimsSummary
 
 object UkPropertyFhlFixtures {
 
