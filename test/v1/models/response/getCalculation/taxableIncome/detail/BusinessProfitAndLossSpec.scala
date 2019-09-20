@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome
+package v1.models.response.getCalculation.taxableIncome.detail
 
 import support.UnitSpec
-import v1.fixtures.taxableIncome.BusinessProfitAndLossFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.{BusinessProfitAndLoss, PayPensionsProfit}
+import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures._
 
 class BusinessProfitAndLossSpec extends UnitSpec {
 

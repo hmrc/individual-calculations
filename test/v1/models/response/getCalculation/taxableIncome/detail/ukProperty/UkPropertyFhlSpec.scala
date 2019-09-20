@@ -25,7 +25,7 @@ class UkPropertyFhlSpec extends UnitSpec {
   "UkPropertyFhl" when {
     "reads with a valid json" should {
       "return JsSuccess" in {
-        desJson.validate[UkPropertyFhl] shouldBe a[JsSuccess[UkPropertyFhl]]
+        desJson.validate[UkPropertyFhl] shouldBe a[JsSuccess[_]]
       }
 
       "return the expected ukPropertyFhl object" in {

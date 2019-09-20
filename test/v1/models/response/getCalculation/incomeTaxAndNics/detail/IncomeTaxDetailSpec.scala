@@ -18,6 +18,7 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 import support.UnitSpec
+import v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 class IncomeTaxDetailSpec extends UnitSpec{
 
@@ -87,7 +88,7 @@ class IncomeTaxDetailSpec extends UnitSpec{
   def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, None)
 
   val emptyModel = IncomeTaxDetail(None, None, None, None)
-  val filledModel = IncomeTaxDetail(Some(incomeTypeBreakdown(100)),
+  val filledModel = detail.IncomeTaxDetail(Some(incomeTypeBreakdown(100)),
     Some(incomeTypeBreakdown(200)),
     Some(incomeTypeBreakdown(300)),
     Some(GiftAid(400.25, 400.50, 400.75))

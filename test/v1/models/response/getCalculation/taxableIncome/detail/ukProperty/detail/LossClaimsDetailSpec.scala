@@ -26,7 +26,7 @@ class LossClaimsDetailSpec extends UnitSpec {
     "reads a valid json" should {
 
       "return a JsSuccess" in {
-        desJson.validate[LossClaimsDetail] shouldBe a[JsSuccess[LossClaimsDetail]]
+        desJson.validate[LossClaimsDetail] shouldBe a[JsSuccess[_]]
       }
 
       "return a LossClaimsDetail object with all fields" in {

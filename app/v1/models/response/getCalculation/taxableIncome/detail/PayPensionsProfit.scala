@@ -20,13 +20,26 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
 
-case class PayPensionsProfit(incomeReceived: Option[BigDecimal],
+case class PayPensionsProfit(incomeReceived: BigInt,
+                             taxableIncome: BigInt,
+                             totalSelfEmploymentProfit: Option[BigInt],
+                             totalPropertyProfit: Option[BigInt],
+                             totalFHLPropertyProfit: Option[BigInt],
+                             totalUKOtherPropertyProfit: Option[BigInt],
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
 object PayPensionsProfit extends NestedJsonReads{
-  implicit val writes: Writes[PayPensionsProfit] = Json.writes[PayPensionsProfit]
+  implicit val writes: OWrites[PayPensionsProfit] = Json.writes[PayPensionsProfit]
   implicit val reads: Reads[PayPensionsProfit] = (
-    (JsPath \ "calculation" \ "incomeReceived").readNullable[BigDecimal] and
-     __.readNullable[BusinessProfitAndLoss]
+    (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit" \ "incomeReceived").read[BigInt] and
+      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit" \ "taxableIncome").read[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalSelfEmploymentProfit").readNestedNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalPropertyProfit").readNestedNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalFHLPropertyProfit").readNestedNullable[BigInt] and
+      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalUKOtherPropertyProfit").readNestedNullable[BigInt] and
+      __.readNullable[BusinessProfitAndLoss].map(_.flatMap {
+        case BusinessProfitAndLoss(None,None,None) => None
+        case x => Some(x)
+      })
   )(PayPensionsProfit.apply _)
 }

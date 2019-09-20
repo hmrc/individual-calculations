@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome
+package v1.fixtures.taxableIncome.detail
 
 import play.api.libs.json.Json
 import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.detail.BusinessProfitAndLoss
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
-import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.{UkPropertyFhl, UkPropertyNonFhl}
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.summary.LossClaimsSummary
+import v1.models.response.getCalculation.taxableIncome.detail.ukProperty.{UkPropertyFhl, UkPropertyNonFhl}
 
 object BusinessProfitAndLossFixtures {
 
   val businessProfitAndLoss =
-    BusinessProfitAndLoss(Some(SelfEmployment(None)),
+    BusinessProfitAndLoss(None,
       Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
         Some(1000.00),None,Some(1000.00),None,Some(LossClaimsSummary(Some(1000.00),None,None,None)),
         Some(LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000.00,true))),
           Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39",
             TypeOfClaim.`carry-forward`,true,"2050-51",1000.00,1000.00))),
-          Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))))),Some(UkPropertyNonFhl(None)))
+          Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))))),None)
 
   val desJson = Json.parse(
     """{

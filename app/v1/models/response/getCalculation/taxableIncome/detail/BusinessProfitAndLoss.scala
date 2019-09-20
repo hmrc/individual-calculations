@@ -32,12 +32,18 @@ object BusinessProfitAndLoss extends NestedJsonReads {
 
 
   implicit val reads: Reads[BusinessProfitAndLoss] = (
-    __.readNullable[SelfEmployment] and
+    __.readNullable[SelfEmployment].map(_.flatMap {
+      case SelfEmployment(None) => None
+      case x => Some(x)
+    }) and
     __.readNullable[UkPropertyFhl].map(_.flatMap {
         case UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None) => None
         case x => Some(x)
       }) and
-      __.readNullable[UkPropertyNonFhl]
+      __.readNullable[UkPropertyNonFhl].map(_.flatMap {
+        case UkPropertyNonFhl(None) => None
+        case x => Some(x)
+      })
     )(BusinessProfitAndLoss.apply _)
 
 }
