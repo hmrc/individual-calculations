@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.json.{ JsSuccess, Json }

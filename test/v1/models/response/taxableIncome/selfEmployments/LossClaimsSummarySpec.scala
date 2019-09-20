@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package v1.models.response.taxableIncome.selfEmployments
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
@@ -32,7 +33,7 @@ class LossClaimsSummarySpec extends UnitSpec {
 
     "read from empty Json" should {
       "return a JsSuccess" in {
-        emptyJson.as[LossClaimsSummary].isEmpty() shouldBe true
+        emptyJson.as[LossClaimsSummary].isEmpty shouldBe true
       }
       "with the expected LossClaimSummary object" in {
         lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryResponse
