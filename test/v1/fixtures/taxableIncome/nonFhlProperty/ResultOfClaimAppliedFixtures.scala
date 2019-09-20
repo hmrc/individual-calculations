@@ -17,6 +17,7 @@
 package v1.fixtures.taxableIncome.nonFhlProperty
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.nonFhlProperty.ResultOfClaimApplied
 
 object ResultOfClaimAppliedFixtures {
@@ -27,7 +28,7 @@ object ResultOfClaimAppliedFixtures {
       | "claimId" : "EzluDU2ObK02SdA",
       | "originatingClaimId" : "EzluDU2ObK02SdA",
       | "taxYearClaimMade" : 2019,
-      | "claimType" : "carry-forward",
+      | "claimType" : "CF",
       | "mtdLoss" : false,
       | "taxYearLossIncurred" : 2019,
       | "lossAmountUsed" : 2000,
@@ -39,7 +40,7 @@ object ResultOfClaimAppliedFixtures {
     """
       |{
       | "taxYearClaimMade" : 2019,
-      | "claimType" : "carry-forward",
+      | "claimType" : "CF",
       | "mtdLoss" : false,
       | "taxYearLossIncurred" : 2019,
       | "lossAmountUsed" : 2000,
@@ -74,8 +75,8 @@ object ResultOfClaimAppliedFixtures {
     """.stripMargin)
 
   val resultOfClaimAppliedModel = ResultOfClaimApplied(Some("EzluDU2ObK02SdA"), Some("EzluDU2ObK02SdA"), "2018-19",
-    "carry-forward", false, "2018-19", 2000, 2000)
+    TypeOfClaim.`carry-forward`, false, "2018-19", 2000, 2000)
 
   val resultOfClaimAppliedModelWithoutOptionals = ResultOfClaimApplied(None, None, "2018-19",
-    "carry-forward", false, "2018-19", 2000, 2000)
+    TypeOfClaim.`carry-forward`, false, "2018-19", 2000, 2000)
 }

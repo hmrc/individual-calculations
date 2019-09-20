@@ -17,6 +17,7 @@
 package v1.fixtures.taxableIncome.nonFhlProperty
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.nonFhlProperty.ClaimNotApplied
 
 object ClaimNotAppliedFixtures {
@@ -26,7 +27,7 @@ object ClaimNotAppliedFixtures {
       |{
       | "claimId" : "EzluDU2ObK02SdA",
       | "taxYearClaimMade" : 2019,
-      | "claimType" : "carry-sideways"
+      | "claimType" : "CSGI"
       |}
     """.stripMargin)
 
@@ -39,5 +40,5 @@ object ClaimNotAppliedFixtures {
       |}
     """.stripMargin)
 
-  val claimNotAppliedModel = ClaimNotApplied("EzluDU2ObK02SdA", "2018-19", "carry-sideways")
+  val claimNotAppliedModel = ClaimNotApplied("EzluDU2ObK02SdA", "2018-19", TypeOfClaim.`carry-sideways`)
 }
