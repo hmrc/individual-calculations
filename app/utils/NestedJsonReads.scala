@@ -74,6 +74,11 @@ trait NestedJsonReads {
     }
   }
 
+
+  /*  Json Reads that replaces the standard reads for a sequence of type T. Instead of immediately reading in the json
+      this takes the raw json sequence and filters out all elements which do not include the required matching element.
+      After the filter it executes the standard json reads for the type T to read in only the filtered values.
+  */
   def filteredArrayReads[T](filterName: String, matching: String)(implicit rds: Reads[Seq[T]]): Reads[Seq[T]] = new Reads[Seq[T]] {
     override def reads(json: JsValue): JsResult[Seq[T]] = {
       json.validate[Seq[JsValue]].flatMap(readJson => Json.toJson(readJson.filter { element =>
@@ -82,6 +87,12 @@ trait NestedJsonReads {
     }
   }
 
+  /* Json Reads that replaces the standard reads for an optional value of type T from a sequence of json values. Instead
+      of immediately reading in the value it first takes the array of json values and identifies which element, if any,
+      contains the matching element provided to the function. It then attempts to read the json element as the type T
+      as long as it exists otherwise it reads in a None value. This method can either read an individual element of the
+      matching json object or all top level elements depending on whether a specific element is provided.
+   */
   def filteredArrayValueReads[T](fieldName: Option[String],
                                  filterName: String, matching: String)(implicit rds: Reads[T]): Reads[Option[T]] = new Reads[Option[T]] {
     override def reads(json: JsValue): JsResult[Option[T]] = {

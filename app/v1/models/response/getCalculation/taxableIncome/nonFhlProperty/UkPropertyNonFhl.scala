@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.taxableIncome.nonFhlProperty
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import utils.NestedJsonReads
 
@@ -34,34 +34,51 @@ case class UkPropertyNonFhl(totalIncome: Option[BigDecimal],
                             lossClaimsDetail: Option[LossClaimsDetail])
 
 object UkPropertyNonFhl extends NestedJsonReads {
+
+  case class TopLevelElements(totalIncome: Option[BigDecimal],
+                                      totalExpenses: Option[BigDecimal],
+                                      netProfit: Option[BigDecimal],
+                                      netLoss: Option[BigDecimal],
+                                      totalAdditions: Option[BigDecimal],
+                                      totalDeductions: Option[BigDecimal],
+                                      accountingAdjustments: Option[BigDecimal],
+                                      adjustedIncomeTaxLoss: Option[BigInt],
+                                      taxableProfit: Option[BigInt],
+                                      taxableProfitAfterLossesDeduction: Option[BigInt],
+                                      lossClaimsSummary: Option[LossClaimsSummary])
+
+  implicit val topLevelReads: Reads[TopLevelElements] = (
+    (JsPath \ "totalIncome").readNullable[BigDecimal] and
+      (JsPath \ "totalExpenses").readNullable[BigDecimal] and
+      (JsPath \ "netProfit").readNullable[BigDecimal] and
+      (JsPath \ "netLoss").readNullable[BigDecimal] and
+      (JsPath \ "totalAdditions").readNullable[BigDecimal] and
+      (JsPath \ "totalDeductions").readNullable[BigDecimal] and
+      (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
+      (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
+      (JsPath \ "taxableProfit").readNullable[BigInt] and
+      (JsPath \ "taxableProfitAfterLossesDeduction").readNullable[BigInt] and
+      JsPath.readNullable[LossClaimsSummary]
+  )(TopLevelElements.apply _)
+
+  def componentApply(topLevelElementsOpt: Option[TopLevelElements], lossClaimsDetail: Option[LossClaimsDetail]): UkPropertyNonFhl = {
+    topLevelElementsOpt match {
+      case Some(topLevelElements) => UkPropertyNonFhl(topLevelElements.totalIncome, topLevelElements.totalExpenses,
+        topLevelElements.netProfit, topLevelElements.netLoss, topLevelElements.totalAdditions, topLevelElements.totalDeductions,
+        topLevelElements.accountingAdjustments, topLevelElements.adjustedIncomeTaxLoss, topLevelElements.taxableProfit,
+        topLevelElements.taxableProfitAfterLossesDeduction, topLevelElements.lossClaimsSummary, lossClaimsDetail)
+      case None => UkPropertyNonFhl(None, None, None, None, None, None, None, None, None, None, None, lossClaimsDetail)
+    }
+  }
+
   implicit val writes: OWrites[UkPropertyNonFhl] = Json.writes[UkPropertyNonFhl]
 
   implicit val reads: Reads[UkPropertyNonFhl] = (
     (JsPath \ "calculation" \ "businessProfitAndLoss")
-      .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("totalIncome"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("totalExpenses"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("netProfit"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("netLoss"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("totalAdditions"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("totalDeductions"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigDecimal](filteredArrayValueReads(Some("accountingAdjustments"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigInt](filteredArrayValueReads(Some("taxableProfit"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigInt](filteredArrayValueReads(Some("adjustedIncomeTaxLoss"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[BigInt](filteredArrayValueReads(Some("taxableProfitAfterLossesDeduction"), "incomeSourceType", "02")) and
-      (JsPath \ "calculation" \ "businessProfitAndLoss")
-        .readNestedNullableOpt[LossClaimsSummary](filteredArrayValueReads(None, "incomeSourceType", "02")) and
+      .readNestedNullableOpt[TopLevelElements](filteredArrayValueReads(None, "incomeSourceType", "02")) and
       JsPath.readNullable[LossClaimsDetail].map {
         case Some(LossClaimsDetail(None, None, None, None)) => None
         case other => other
       }
-  )(UkPropertyNonFhl.apply _)
+  )(UkPropertyNonFhl.componentApply _)
 }
