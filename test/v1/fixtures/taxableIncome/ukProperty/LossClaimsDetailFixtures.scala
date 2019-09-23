@@ -84,7 +84,7 @@ object LossClaimsDetailFixtures {
       |	},
       |	"calculation": {
       |		"lossesAndClaims": {
-      |			"resultOfClaims": [{
+      |			"resultOfClaimsApplied": [{
       |				"claimId": "CCIS12345678901",
       |				"originatingClaimId": "000000000000210",
       |				"incomeSourceId": "LLIS12345678911",
@@ -170,7 +170,7 @@ object LossClaimsDetailFixtures {
       |	},
       |	"calculation": {
       |		"lossesAndClaims": {
-      |			"resultOfClaims": [{
+      |			"resultOfClaimsApplied": [{
       |				"claimId": "CCIS12345678901",
       |				"originatingClaimId": "000000000000210",
       |				"incomeSourceId": "LLIS12345678911",
@@ -236,7 +236,7 @@ object LossClaimsDetailFixtures {
       |	},
       |	"calculation": {
       |		"lossesAndClaims": {
-      |			"resultOfClaims": [{
+      |			"resultOfClaimsApplied": [{
       |				"claimId": "CCIS12345678901",
       |				"originatingClaimId": "000000000000210",
       |				"incomeSourceId": "LLIS12345678911",
@@ -375,7 +375,7 @@ object LossClaimsDetailFixtures {
       |	},
       |	"calculation": {
       |		"lossesAndClaims": {
-      |			"resultOfClaims": [{
+      |			"resultOfClaimsApplied": [{
       |				"claimId": "CCIS12345678901",
       |				"originatingClaimId": "000000000000210",
       |				"incomeSourceId": "LLIS12345678911",
@@ -445,7 +445,7 @@ object LossClaimsDetailFixtures {
       |	},
       |	"calculation": {
       |		"lossesAndClaims": {
-      |			"resultOfClaims": [{
+      |			"resultOfClaimsApplied": [{
       |				"claimId": "CCIS12345678901",
       |				"originatingClaimId": "000000000000210",
       |				"incomeSourceId": "LLIS12345678911",

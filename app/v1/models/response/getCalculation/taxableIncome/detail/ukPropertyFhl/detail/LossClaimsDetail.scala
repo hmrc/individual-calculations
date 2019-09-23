@@ -32,7 +32,7 @@ object LossClaimsDetail extends NestedJsonReads{
   implicit val reads: Reads[LossClaimsDetail] = (
     (JsPath \ "inputs" \ "lossesBroughtForward")
       .readNestedNullable[Seq[LossBroughtForward]](filteredArrayReads("incomeSourceType", "04")).map(emptySeqToNone) and
-      (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaims").
+      (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").
         readNestedNullable[Seq[ResultOfClaimApplied]](filteredArrayReads("incomeSourceType", "04")).map(emptySeqToNone) and
       (JsPath \ "calculation" \ "lossesAndClaims" \ "defaultCarriedForwardLosses").
         readNestedNullable[Seq[DefaultCarriedForwardLoss]](filteredArrayReads("incomeSourceType", "04")).map(emptySeqToNone)

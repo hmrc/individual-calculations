@@ -272,7 +272,7 @@ object UkPropertyFhlFixtures {
       |            "incomeTaxNicAmount": 692547010
       |        },
       |        "lossesAndClaims": {
-      |            "resultOfClaims": [
+      |            "resultOfClaimsApplied": [
       |                {
       |                    "claimId": "CCIS12345678901",
       |                    "originatingClaimId": "000000000000210",
@@ -649,7 +649,7 @@ object UkPropertyFhlFixtures {
       |            "incomeTaxNicAmount": 692547010
       |        },
       |        "lossesAndClaims": {
-      |            "resultOfClaims": [
+      |            "resultOfClaimsApplied": [
       |                {
       |                    "claimId": "CCIS12345678901",
       |                    "originatingClaimId": "000000000000210",

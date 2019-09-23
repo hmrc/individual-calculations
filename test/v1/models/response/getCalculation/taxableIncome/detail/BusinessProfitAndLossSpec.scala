@@ -24,7 +24,25 @@ class BusinessProfitAndLossSpec extends UnitSpec {
   "BusinessProfitAndLoss" when {
     "reads with a valid json" should {
       "return JsSuccess" in {
-        desJson.as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss
+        desJson("04", "02").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(ukPropertyFhlObject, ukPropertyNonFhlObject)
+      }
+    }
+
+    "reads with a valid json having only UkPropertyFhl details" should {
+      "return JsSuccess" in {
+        desJson("04").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(ukPropertyFhlObject, None)
+      }
+    }
+
+    "reads with a valid json having only UkPropertyNonFhl details" should {
+      "return JsSuccess" in {
+        desJson("02").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(None, ukPropertyNonFhlObject)
+      }
+    }
+
+    "reads with a valid json with no details" should {
+      "return JsSuccess" in {
+        desJson("05", "06").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(None, None)
       }
     }
   }
