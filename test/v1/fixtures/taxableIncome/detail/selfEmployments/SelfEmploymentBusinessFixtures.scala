@@ -82,37 +82,14 @@ object SelfEmploymentBusinessFixtures {
           .deepMerge(
             Json.obj("lossClaimsDetail" -> lossClaimsDetailDefaultWrittenJson)
           ))
+/*
+  val selfEmploymentDetailDefaultWrittenJsonSequence: JsValue =
+     Json.toJsObject(Seq(additionalWrittenFieldsJson.as[JsObject].deepMerge(
+      Json.obj("lossClaimsSummary" -> lossClaimSummaryWrittenJson)
+        .deepMerge(
+          Json.obj("lossClaimsDetail" -> lossClaimsDetailDefaultWrittenJson)
+        )))
+ */
 
   val emptyJson: JsObject = JsObject.empty
-
-  def lossClaimsDetailDesJsonFactory(resultOfClaimsApplied: Seq[JsValue] = Seq.empty,
-                                     unclaimedLosses: Seq[JsValue] = Seq.empty,
-                                     carriedForwardLosses: Seq[JsValue] = Seq.empty,
-                                     claimsNotApplied: Seq[JsValue] = Seq.empty,
-                                     lossesBroughtForward: Seq[JsValue] = Seq.empty): JsValue =
-    Json
-      .obj("inputs" -> Json.obj("lossesBroughtForward" -> lossesBroughtForward))
-      .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("resultOfClaimsApplied" -> resultOfClaimsApplied))))
-      .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("unclaimedLosses" -> unclaimedLosses))))
-      .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("carriedForwardLosses" -> carriedForwardLosses))))
-      .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("claimsNotApplied" -> claimsNotApplied))))
-
-  def lossClaimsDetailWrittenJsonFactory(resultOfClaimsApplied: Seq[JsValue] = Seq.empty,
-                                         unclaimedLosses: Seq[JsValue] = Seq.empty,
-                                         carriedForwardLosses: Seq[JsValue] = Seq.empty,
-                                         claimsNotApplied: Seq[JsValue] = Seq.empty,
-                                         lossesBroughtForward: Seq[JsValue] = Seq.empty): JsValue =
-    Json
-      .obj("lossesBroughtForward" -> lossesBroughtForward)
-      .deepMerge(Json.obj("resultOfClaimsApplied" -> resultOfClaimsApplied))
-      .deepMerge(Json.obj("unclaimedLosses" -> unclaimedLosses))
-      .deepMerge(Json.obj("carriedForwardLosses" -> carriedForwardLosses))
-      .deepMerge(Json.obj("claimsNotApplied" -> claimsNotApplied))
-
-  def lossClaimsDetailResponseFactory(resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]] = None,
-                                      unclaimedLosses: Option[Seq[UnclaimedLoss]] = None,
-                                      carriedForwardLosses: Option[Seq[CarriedForwardLoss]] = None,
-                                      claimsNotApplied: Option[Seq[ClaimNotApplied]] = None,
-                                      lossesBroughtForward: Option[Seq[LossBroughtForward]] = None): LossClaimsDetail =
-    detail.LossClaimsDetail(lossesBroughtForward, resultOfClaimsApplied, unclaimedLosses, carriedForwardLosses, claimsNotApplied)
 }

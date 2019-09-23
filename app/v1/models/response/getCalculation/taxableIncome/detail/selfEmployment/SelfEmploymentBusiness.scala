@@ -41,8 +41,6 @@ case class SelfEmploymentBusiness(
 
 object SelfEmploymentBusiness extends NestedJsonReads {
 
-  val safetyValue: SelfEmploymentBusiness =
-    SelfEmploymentBusiness("test", None, None, None, None, None, None, None, None, None, None, None, None, None)
   implicit val writes: OWrites[SelfEmploymentBusiness] = Json.writes[SelfEmploymentBusiness]
 
   implicit val singleReads: Reads[SelfEmploymentBusiness] = ((JsPath \ "incomeSourceId").read[String] and
@@ -57,18 +55,17 @@ object SelfEmploymentBusiness extends NestedJsonReads {
     (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigDecimal] and
     (JsPath \ "taxableProfit").readNullable[BigDecimal] and
     (JsPath \ "taxableProfitAfterLossesDeduction").readNullable[BigDecimal] and
-    JsPath.readNullable[LossClaimsSummary] and Reads.pure(None))(SelfEmploymentBusiness.apply _).orElse(Reads.pure(safetyValue))
+    JsPath.readNullable[LossClaimsSummary] and Reads.pure(None))(SelfEmploymentBusiness.apply _)
 
   implicit val seqReads: Reads[Seq[SelfEmploymentBusiness]] = ((JsPath \ "calculation" \ "businessProfitAndLoss")
     .readNestedNullable[Seq[JsValue]]
-    .map(_.getOrElse(Seq()))
-    .map(seq => seq.map(item => item.as[SelfEmploymentBusiness]))
-    .map(seq => Some(seq)) and
+    .map(_.getOrElse(Seq()).flatMap(item => item.asOpt[SelfEmploymentBusiness]))
+    .map(x => Some(x)) and
     JsPath.readNullable[LossClaimsDetail])(filterAndBuild(_, _))
 
-  def filterAndBuild(sebsO: Option[Seq[SelfEmploymentBusiness]], detailsO: Option[LossClaimsDetail]): Seq[SelfEmploymentBusiness] = {
-    val sebs    = sebsO.getOrElse(Seq()).filterNot(seb => seb == safetyValue)
-    val details = detailsO.getOrElse(LossClaimsDetail.emptyLossClaimsDetail)
+  def filterAndBuild(oSebs: Option[Seq[SelfEmploymentBusiness]], oDetails: Option[LossClaimsDetail]): Seq[SelfEmploymentBusiness] = {
+    val sebs    = oSebs.getOrElse(Seq())
+    val details = oDetails.getOrElse(LossClaimsDetail.emptyLossClaimsDetail)
     sebs.map(seb => seb.copy(lossClaimsDetail = details.filterById(seb.selfEmploymentId)))
   }
 

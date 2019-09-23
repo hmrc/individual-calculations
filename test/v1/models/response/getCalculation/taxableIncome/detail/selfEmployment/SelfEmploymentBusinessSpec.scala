@@ -32,12 +32,16 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
         selfEmploymentBusinessDefaultDesJsonSingular.as[SelfEmploymentBusiness] shouldBe selfEmploymentBusinessDefaultResponseWithoutDetail
       }
     }
+    //Failure case
+    //Missing optionals
 
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(selfEmploymentBusinessDefaultResponse) shouldBe selfEmploymentDetailDefaultWrittenJsonSingular
       }
     }
+
+    //Missing optionals
   }
 
   "SelfEmploymentBusiness: sequence" when {
@@ -50,9 +54,13 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
       }
     }
 
+    //Empty Json/ invalid Json
+    //Prove filter
+    //Missing optionals
+
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(selfEmploymentBusinessDefaultResponse) shouldBe selfEmploymentDetailDefaultWrittenJsonSingular
+        //Json.toJson(Seq(selfEmploymentBusinessDefaultResponse)) shouldBe selfEmploymentDetailDefaultWrittenJsonSequence
       }
     }
   }
