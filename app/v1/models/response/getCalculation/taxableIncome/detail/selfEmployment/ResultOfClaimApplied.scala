@@ -14,33 +14,38 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.selfEmployments
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import v1.models.des.{LossType, ReliefClaimed}
-import v1.models.domain.TypeOfClaim
+import v1.models.domain.{TypeOfClaim, TypeOfLoss}
 import v1.models.request.DesTaxYear
 
-case class CarriedForwardLoss(
+case class ResultOfClaimApplied(
     claimId: Option[String],
+    taxYearClaimMade: String,
     claimType: TypeOfClaim,
-    taxYearClaimMade: Option[String],
+    mtdLoss: Boolean,
     taxYearLossIncurred: String,
-    currentLossValue: BigInt,
-    lossType: LossType
+    lossAmountUsed: BigDecimal,
+    remainingLossValue: BigDecimal,
+    lossType: TypeOfLoss
 )
 
-object CarriedForwardLoss {
+object ResultOfClaimApplied {
 
-  implicit val writes: OWrites[CarriedForwardLoss] = Json.writes[CarriedForwardLoss]
-  implicit val reads: Reads[CarriedForwardLoss] = (
+  implicit val writes: Writes[ResultOfClaimApplied] = Json.writes[ResultOfClaimApplied]
+
+  implicit val reads: Reads[ResultOfClaimApplied] = (
     (JsPath \ "claimId").readNullable[String] and
+      (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
-      (JsPath \ "taxYearClaimMade").readNullable[Int].map(_.map(DesTaxYear.fromDesIntToString)) and
+      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "currentLossValue").read[BigInt] and
-      (JsPath \ "lossType").read[LossType]
-  )(CarriedForwardLoss.apply _)
+      (JsPath \ "lossAmountUsed").read[BigDecimal] and
+      (JsPath \ "remainingLossValue").read[BigDecimal] and
+      (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss)
+    )(ResultOfClaimApplied.apply _)
 
 }

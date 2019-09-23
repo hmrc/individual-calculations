@@ -46,7 +46,4 @@ object DesTaxYear {
       json.validate[Int].map(taxYear => fromDes(taxYear.toString).toString)
     }
   }
-
-  def fromDesIntToString(taxYear: Int): String =
-    (taxYear - 1) + "-" + taxYear.toString.drop(2)
 }

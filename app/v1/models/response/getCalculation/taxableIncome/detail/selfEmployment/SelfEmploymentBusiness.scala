@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.selfEmployments
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.{LossClaimsDetail, LossClaimsSummary}
 
 case class SelfEmploymentBusiness(
     selfEmploymentId: String,

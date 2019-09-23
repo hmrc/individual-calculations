@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.selfEmployments
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.ResultOfClaimAppliedFixtures._
+import v1.fixtures.LossBroughtForwardFixtures._
 
-class ResultOfClaimAppliedSpec extends UnitSpec {
+class LossBroughtForwardSpec extends UnitSpec {
 
-  "ResultOfClaimApplied" when {
+  "LossesBroughtForward" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        resultOfClaimAppliedDesJson.validate[ResultOfClaimApplied] shouldBe a[JsSuccess[_]]
+        lossBroughtForwardDesJson.validate[LossBroughtForward] shouldBe a[JsSuccess[_]]
       }
-      "with the expected ResultOfClaimApplied object" in {
-        resultOfClaimAppliedDesJson.as[ResultOfClaimApplied] shouldBe resultOfClaimAppliedResponse
+      "containing the expected LossesBroughtForward object" in {
+        lossBroughtForwardDesJson.as[LossBroughtForward] shouldBe lossBroughtForwardResponse
       }
     }
 
     "read from Json with the MtdLoss field not present" should {
       "return the expected LossesBroughtForward object" in {
-        resultOfClaimAppliedDesJsonWithoutMtdLoss.as[ResultOfClaimApplied] shouldBe resultOfClaimAppliedResponseWithoutMtdLoss
+        lossBroughtForwardDesJsonWithoutMtdLoss.as[LossBroughtForward] shouldBe lossBroughtForwardResponseWithoutMtdLoss
       }
     }
 
     "read from invalid Json" should {
-      "return a JsError" in {
-        resultOfClaimAppliedInvalidJson.validate[ResultOfClaimApplied] shouldBe a[JsError]
+      "return a JsSuccess" in {
+        lossBroughtForwardInvalidJson.validate[LossBroughtForward] shouldBe a[JsError]
       }
     }
 
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(resultOfClaimAppliedResponse) shouldBe resultOfClaimAppliedWrittenJson
+        Json.toJson(lossBroughtForwardResponse) shouldBe lossBroughtForwardWrittenJson
       }
     }
   }

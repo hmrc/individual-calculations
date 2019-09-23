@@ -16,11 +16,11 @@
 
 package v1.fixtures
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
 import v1.models.des.LossType
-import v1.models.domain.TypeOfClaim
+import v1.models.domain.{TypeOfClaim, TypeOfLoss}
 import v1.models.request.DesTaxYear
-import v1.models.response.taxableIncome.selfEmployments.ResultOfClaimApplied
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.ResultOfClaimApplied
 
 object ResultOfClaimAppliedFixtures {
 
@@ -35,6 +35,7 @@ object ResultOfClaimAppliedFixtures {
   val lossAmountUsed: Long       = 64613077921L
   val remainingLossValue: Long   = 72548288090L
   val lossType: String           = "income"
+  val mtdLossType: String        = "self-employment"
 
   val resultOfClaimAppliedResponse: ResultOfClaimApplied = ResultOfClaimApplied(
     claimId,
@@ -44,7 +45,7 @@ object ResultOfClaimAppliedFixtures {
     DesTaxYear.fromDesIntToString(taxYearLossIncurred),
     lossAmountUsed,
     remainingLossValue,
-    LossType.income
+    TypeOfLoss.`self-employment`
   )
 
   val resultOfClaimAppliedResponseWithoutMtdLoss: ResultOfClaimApplied = resultOfClaimAppliedResponse.copy(mtdLoss = true)
@@ -98,7 +99,7 @@ object ResultOfClaimAppliedFixtures {
       |    "taxYearLossIncurred": "${DesTaxYear.fromDesIntToString(taxYearLossIncurred)}",
       |    "lossAmountUsed": $lossAmountUsed,
       |    "remainingLossValue": $remainingLossValue,
-      |    "lossType": "$lossType"
+      |    "lossType": "$mtdLossType"
       |}""".stripMargin)
 
   val resultOfClaimAppliedWrittenJsonWithoutMtdLoss: JsValue = Json.parse(f"""{

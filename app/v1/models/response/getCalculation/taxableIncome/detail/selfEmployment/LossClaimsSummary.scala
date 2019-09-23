@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.selfEmployments
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Json, OWrites, Reads, _}

@@ -14,39 +14,33 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.selfEmployments
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.LossBroughtForwardFixtures._
+import v1.fixtures.UnclaimedLossFixtures._
 
-class LossBroughtForwardSpec extends UnitSpec {
+class UnclaimedLossSpec extends UnitSpec {
 
-  "LossesBroughtForward" when {
+  "UnclaimedLoss" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        lossBroughtForwardDesJson.validate[LossBroughtForward] shouldBe a[JsSuccess[_]]
+        unclaimedLossDesJson.validate[UnclaimedLoss] shouldBe a[JsSuccess[_]]
       }
-      "containing the expected LossesBroughtForward object" in {
-        lossBroughtForwardDesJson.as[LossBroughtForward] shouldBe lossBroughtForwardResponse
-      }
-    }
-
-    "read from Json with the MtdLoss field not present" should {
-      "return the expected LossesBroughtForward object" in {
-        lossBroughtForwardDesJsonWithoutMtdLoss.as[LossBroughtForward] shouldBe lossBroughtForwardResponseWithoutMtdLoss
+      "with the expected UnclaimedLoss object" in {
+        unclaimedLossDesJson.as[UnclaimedLoss] shouldBe unclaimedLossResponse
       }
     }
 
     "read from invalid Json" should {
-      "return a JsSuccess" in {
-        lossBroughtForwardInvalidJson.validate[LossBroughtForward] shouldBe a[JsError]
+      "return a JsError" in {
+        unclaimedLossInvalidJson.validate[UnclaimedLoss] shouldBe a[JsError]
       }
     }
 
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(lossBroughtForwardResponse) shouldBe lossBroughtForwardWrittenJson
+        Json.toJson(unclaimedLossResponse) shouldBe unclaimedLossWrittenJson
       }
     }
   }

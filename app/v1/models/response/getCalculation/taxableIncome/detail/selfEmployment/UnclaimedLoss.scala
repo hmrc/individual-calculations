@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.selfEmployments
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import v1.models.des.LossType
+import v1.models.domain.TypeOfLoss
 import v1.models.request.DesTaxYear
 
 case class UnclaimedLoss(
     taxYearLossIncurred: String,
     currentLossValue: BigInt,
     expires: String,
-    lossType: LossType
+    lossType: TypeOfLoss
 )
 
 object UnclaimedLoss {
@@ -35,7 +36,7 @@ object UnclaimedLoss {
     (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "expires").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "lossType").read[LossType]
+      (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss)
   )(UnclaimedLoss.apply _)
 
 }

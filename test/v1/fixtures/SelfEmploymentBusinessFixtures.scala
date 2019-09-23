@@ -22,7 +22,7 @@ import v1.fixtures.ClaimNotAppliedFixtures._
 import v1.fixtures.LossBroughtForwardFixtures._
 import v1.fixtures.ResultOfClaimAppliedFixtures._
 import v1.fixtures.UnclaimedLossFixtures._
-import v1.models.response.taxableIncome.selfEmployments._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment._
 
 object SelfEmploymentBusinessFixtures {
 

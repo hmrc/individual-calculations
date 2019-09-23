@@ -27,14 +27,14 @@ object LossType {
   case object INCOME extends LossType {
     override def toTypeOfLoss: TypeOfLoss = TypeOfLoss.`self-employment`
   }
-  case object CLASS4 extends LossType {
+  case object CLASS4NICS extends LossType {
     override def toTypeOfLoss: TypeOfLoss = TypeOfLoss.`self-employment-class4`
   }
 
   implicit val reads: Reads[LossType] = implicitly[Reads[String]].collect(JsonValidationError("error.expected.lossType")){
-    case "INCOME" => INCOME
-    case "CLASS4" => CLASS4
+    case "income" => INCOME
+    case "class4nics" => CLASS4NICS
   }
 
-  implicit val writes: Writes[LossType] = Writes[LossType](ts => JsString(ts.toString))
+  implicit val writes: Writes[LossType] = Writes[LossType](ts => JsString(ts.toString.toLowerCase()))
 }

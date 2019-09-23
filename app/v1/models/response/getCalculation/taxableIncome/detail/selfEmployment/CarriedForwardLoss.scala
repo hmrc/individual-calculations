@@ -14,38 +14,33 @@
  * limitations under the License.
  */
 
-package v1.models.response.taxableIncome.selfEmployments
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import play.api.libs.json._
 import v1.models.des.{LossType, ReliefClaimed}
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
 
-case class ResultOfClaimApplied(
+case class CarriedForwardLoss(
     claimId: Option[String],
-    taxYearClaimMade: String,
     claimType: TypeOfClaim,
-    mtdLoss: Boolean,
+    taxYearClaimMade: Option[String],
     taxYearLossIncurred: String,
-    lossAmountUsed: BigDecimal,
-    remainingLossValue: BigDecimal,
+    currentLossValue: BigInt,
     lossType: LossType
 )
 
-object ResultOfClaimApplied {
+object CarriedForwardLoss {
 
-  implicit val writes: Writes[ResultOfClaimApplied] = Json.writes[ResultOfClaimApplied]
-
-  implicit val reads: Reads[ResultOfClaimApplied] = (
+  implicit val writes: OWrites[CarriedForwardLoss] = Json.writes[CarriedForwardLoss]
+  implicit val reads: Reads[CarriedForwardLoss] = (
     (JsPath \ "claimId").readNullable[String] and
-      (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
-      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
+      (JsPath \ "taxYearClaimMade").readNullable[Int].map(_.map(DesTaxYear.fromDesIntToString)) and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "lossAmountUsed").read[BigDecimal] and
-      (JsPath \ "remainingLossValue").read[BigDecimal] and
+      (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "lossType").read[LossType]
-    )(ResultOfClaimApplied.apply _)
+  )(CarriedForwardLoss.apply _)
 
 }

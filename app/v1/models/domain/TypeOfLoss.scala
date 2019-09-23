@@ -43,7 +43,7 @@ object TypeOfLoss {
   }
 
   case object `self-employment-class4` extends TypeOfLoss {
-    override def toLossType: Option[LossType] = Some(LossType.CLASS4)
+    override def toLossType: Option[LossType] = Some(LossType.CLASS4NICS)
   }
 
   val parser: PartialFunction[String, TypeOfLoss] = {

@@ -16,10 +16,10 @@
 
 package v1.fixtures
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
-import v1.models.response.taxableIncome.selfEmployments.ClaimNotApplied
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.ClaimNotApplied
 
 object ClaimNotAppliedFixtures {
 

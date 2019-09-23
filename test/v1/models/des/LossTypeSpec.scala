@@ -26,6 +26,6 @@ class LossTypeSpec  extends UnitSpec with EnumJsonSpecSupport {
   val desJson: JsValue = Json.toJson("")
 
   testRoundTrip[LossType](
-    ("income", income),
-    ("class4-nics", `class4-nics`))
+    ("income", INCOME),
+    ("class4nics", CLASS4NICS))
 }

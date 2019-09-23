@@ -16,8 +16,8 @@
 
 package v1.fixtures
 
-import play.api.libs.json.{ JsObject, JsValue, Json }
-import v1.models.response.taxableIncome.selfEmployments.LossClaimsSummary
+import play.api.libs.json.{JsObject, JsValue, Json}
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.LossClaimsSummary
 
 object LossClaimSummaryFixtures {
 
