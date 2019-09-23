@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.nonFhlProperty.DefaultCarriedForwardLossFixtures
+import v1.fixtures.taxableIncome.detail.nonFhlProperty.DefaultCarriedForwardLossFixtures
 import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail.DefaultCarriedForwardLoss
 
 class DefaultCarriedForwardLossSpec extends UnitSpec {

@@ -18,12 +18,12 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 
 import play.api.libs.json.{ JsSuccess, Json }
 import support.UnitSpec
-import v1.fixtures.CarriedForwardLossFixtures._
-import v1.fixtures.ClaimNotAppliedFixtures._
-import v1.fixtures.LossBroughtForwardFixtures._
-import v1.fixtures.LossClaimsDetailFixtures._
-import v1.fixtures.ResultOfClaimAppliedFixtures._
-import v1.fixtures.UnclaimedLossFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.CarriedForwardLossFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.ClaimNotAppliedFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.LossBroughtForwardFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.LossClaimsDetailFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.ResultOfClaimAppliedFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.UnclaimedLossFixtures._
 
 class LossClaimsDetailSpec extends UnitSpec {
 

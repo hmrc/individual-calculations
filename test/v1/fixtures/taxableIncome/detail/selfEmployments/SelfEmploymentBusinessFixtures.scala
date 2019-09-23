@@ -14,54 +14,74 @@
  * limitations under the License.
  */
 
-package v1.fixtures
+package v1.fixtures.taxableIncome.detail.selfEmployments
 
 import play.api.libs.json.{ JsObject, JsValue, Json }
-import v1.fixtures.CarriedForwardLossFixtures._
-import v1.fixtures.ClaimNotAppliedFixtures._
-import v1.fixtures.LossBroughtForwardFixtures._
-import v1.fixtures.ResultOfClaimAppliedFixtures._
-import v1.fixtures.UnclaimedLossFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
+import v1.fixtures.taxableIncome.detail.selfEmployments.LossClaimSummaryFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.LossClaimsDetailFixtures._
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.{ SelfEmploymentBusiness, detail }
 
-object LossClaimsDetailFixtures {
+object SelfEmploymentBusinessFixtures {
 
-  val incomeSourceId: String   = "AAIS12345678904"
-  val incomeSourceType: String = "01"
-  val taxYearLossIncurred: Int = 2051
-  val lossType: String         = "income"
-  val currentLossValue: BigInt = 71438847594L
-  val expires: Int             = 2079
+  val selfEmploymentId: String                              = "AAIS12345678904"
+  val totalIncome: Option[BigDecimal]                       = Some(79291394)
+  val totalExpenses: Option[BigDecimal]                     = Some(89005890)
+  val netProfit: Option[BigDecimal]                         = Some(93480427)
+  val netLoss: Option[BigDecimal]                           = Some(10017816)
+  val class4Loss: Option[BigDecimal]                        = Some(2)
+  val totalAdditions: Option[BigDecimal]                    = Some(39901282)
+  val totalDeductions: Option[BigDecimal]                   = Some(80648172)
+  val accountingAdjustments: Option[BigDecimal]             = Some(-8769926.99)
+  val taxableProfit: Option[BigDecimal]                     = Some(92149284)
+  val adjustedIncomeTaxLoss: Option[BigDecimal]             = Some(2)
+  val taxableProfitAfterLossesDeduction: Option[BigDecimal] = Some(2)
 
-  val lossClaimsDetailDefaultResponse: LossClaimsDetail = LossClaimsDetail(
-    Some(Seq(lossBroughtForwardResponse)),
-    Some(Seq(resultOfClaimAppliedResponse)),
-    Some(Seq(unclaimedLossResponse)),
-    Some(Seq(carriedForwardLossResponse)),
-    Some(Seq(claimNotAppliedResponse))
+  val selfEmploymentBusinessDefaultResponse: SelfEmploymentBusiness = SelfEmploymentBusiness(
+    selfEmploymentId,
+    totalIncome,
+    totalExpenses,
+    netProfit,
+    netLoss,
+    class4Loss,
+    totalAdditions,
+    totalDeductions,
+    accountingAdjustments,
+    adjustedIncomeTaxLoss,
+    taxableProfit,
+    taxableProfitAfterLossesDeduction,
+    Some(lossClaimsSummaryResponse),
+    Some(lossClaimsDetailDefaultResponse)
   )
+  val selfEmploymentBusinessDefaultResponseWithoutDetail: SelfEmploymentBusiness = selfEmploymentBusinessDefaultResponse.copy(lossClaimsDetail = None)
 
-  val lossClaimsDetailResponseNotAllIdsMatch: LossClaimsDetail =
-    lossClaimsDetailDefaultResponse.copy(lossesBroughtForward = Some(Seq(lossBroughtForwardResponseWithDifferentId)))
+  val selfEmploymentBusinessDefaultDesJsonSingular: JsValue = lossClaimSummaryDesJson
 
-  val lossClaimsDetailResponseNoLossesBroughtForward: LossClaimsDetail =
-    lossClaimsDetailDefaultResponse.copy(lossesBroughtForward = None)
+  val selfEmploymentBusinessDefaultDesJsonSequence: JsValue = Json
+    .obj("calculation" -> Json.obj("businessProfitAndLoss" -> Seq(lossClaimSummaryDesJson)))
+    .deepMerge(lossClaimsDetailDefaultDesJson.as[JsObject])
 
-  val lossClaimsDetailDefaultDesJson: JsValue = Json
-    .obj("inputs" -> Json.obj("lossesBroughtForward" -> Seq(lossBroughtForwardDesJson)))
-    .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("resultOfClaimsApplied" -> Seq(resultOfClaimAppliedDesJson)))))
-    .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("unclaimedLosses" -> Seq(unclaimedLossDesJson)))))
-    .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("carriedForwardLosses" -> Seq(carriedForwardLossDesJson)))))
-    .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("claimsNotApplied" -> Seq(claimNotAppliedDesJson)))))
+  val additionalWrittenFieldsJson: JsValue = Json.parse(s"""{
+      |    "selfEmploymentId": "$selfEmploymentId",
+      |    "totalIncome": ${totalIncome.get},
+      |    "totalExpenses": ${totalExpenses.get},
+      |    "netProfit": ${netProfit.get},
+      |    "netLoss": ${netLoss.get},
+      |    "class4Loss": ${class4Loss.get},
+      |    "totalAdditions": ${totalAdditions.get},
+      |    "totalDeductions": ${totalDeductions.get},
+      |    "accountingAdjustments": ${accountingAdjustments.get},
+      |    "adjustedIncomeTaxLoss": ${adjustedIncomeTaxLoss.get},
+      |    "taxableProfit": ${taxableProfit.get},
+      |    "taxableProfitAfterLossesDeduction": ${taxableProfitAfterLossesDeduction.get}
+      |}""".stripMargin)
 
-  val lossClaimsDetailDefaultWrittenJson: JsValue =
-    Json
-      .obj("lossesBroughtForward" -> Seq(lossBroughtForwardWrittenJson))
-      .deepMerge(Json.obj("resultOfClaimsApplied" -> Seq(resultOfClaimAppliedWrittenJson)))
-      .deepMerge(Json.obj("unclaimedLosses" -> Seq(unclaimedLossWrittenJson)))
-      .deepMerge(Json.obj("carriedForwardLosses" -> Seq(carriedForwardLossWrittenJson)))
-      .deepMerge(Json.obj("claimsNotApplied" -> Seq(claimNotAppliedWrittenJson)))
+  val selfEmploymentDetailDefaultWrittenJsonSingular: JsValue =
+   additionalWrittenFieldsJson.as[JsObject].deepMerge(
+        Json.obj("lossClaimsSummary" -> lossClaimSummaryWrittenJson)
+          .deepMerge(
+            Json.obj("lossClaimsDetail" -> lossClaimsDetailDefaultWrittenJson)
+          ))
 
   val emptyJson: JsObject = JsObject.empty
 

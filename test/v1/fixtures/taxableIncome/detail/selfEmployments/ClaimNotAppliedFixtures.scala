@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.fixtures
+package v1.fixtures.taxableIncome.detail.selfEmployments
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.domain.TypeOfClaim

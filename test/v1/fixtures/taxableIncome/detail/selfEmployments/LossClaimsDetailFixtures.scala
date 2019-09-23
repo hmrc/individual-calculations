@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package v1.fixtures
+package v1.fixtures.taxableIncome.detail.selfEmployments
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.CarriedForwardLossFixtures._
-import v1.fixtures.ClaimNotAppliedFixtures._
-import v1.fixtures.LossBroughtForwardFixtures._
-import v1.fixtures.ResultOfClaimAppliedFixtures._
-import v1.fixtures.UnclaimedLossFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.{detail, _}
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{CarriedForwardLoss, ClaimNotApplied, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied, UnclaimedLoss}
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail._
+import v1.fixtures.taxableIncome.detail.selfEmployments.LossBroughtForwardFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.ResultOfClaimAppliedFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.UnclaimedLossFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.CarriedForwardLossFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.ClaimNotAppliedFixtures._
 
-object SelfEmploymentBusinessFixtures {
+
+object LossClaimsDetailFixtures {
 
   val incomeSourceId: String   = "AAIS12345678904"
   val incomeSourceType: String = "01"
@@ -41,6 +42,12 @@ object SelfEmploymentBusinessFixtures {
     Some(Seq(carriedForwardLossResponse)),
     Some(Seq(claimNotAppliedResponse))
   )
+
+  val lossClaimsDetailResponseNotAllIdsMatch: LossClaimsDetail =
+    lossClaimsDetailDefaultResponse.copy(lossesBroughtForward = Some(Seq(lossBroughtForwardResponseWithDifferentId)))
+
+  val lossClaimsDetailResponseNoLossesBroughtForward: LossClaimsDetail =
+    lossClaimsDetailDefaultResponse.copy(lossesBroughtForward = None)
 
   val lossClaimsDetailDefaultDesJson: JsValue = Json
     .obj("inputs" -> Json.obj("lossesBroughtForward" -> Seq(lossBroughtForwardDesJson)))
