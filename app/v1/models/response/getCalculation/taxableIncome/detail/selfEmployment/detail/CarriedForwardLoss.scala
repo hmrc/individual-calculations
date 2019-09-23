@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v1.models.des.{LossType, ReliefClaimed}
+import v1.models.des.{ LossType, ReliefClaimed }
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
 
@@ -28,19 +28,32 @@ case class CarriedForwardLoss(
     taxYearClaimMade: Option[String],
     taxYearLossIncurred: String,
     currentLossValue: BigInt,
-    lossType: LossType
+    lossType: LossType,
+    incomeSourceId: String
 )
 
 object CarriedForwardLoss {
 
-  implicit val writes: OWrites[CarriedForwardLoss] = Json.writes[CarriedForwardLoss]
+  implicit val writes: OWrites[CarriedForwardLoss] = new OWrites[CarriedForwardLoss] {
+
+    def writes(carriedForwardLoss: CarriedForwardLoss): JsObject = Json.obj(
+      "claimId"             -> carriedForwardLoss.claimId,
+      "claimType"           -> carriedForwardLoss.claimType,
+      "taxYearClaimMade"    -> carriedForwardLoss.taxYearClaimMade,
+      "taxYearLossIncurred" -> carriedForwardLoss.taxYearLossIncurred,
+      "currentLossValue"    -> carriedForwardLoss.currentLossValue,
+      "lossType"            -> carriedForwardLoss.lossType
+    )
+  }
+
   implicit val reads: Reads[CarriedForwardLoss] = (
     (JsPath \ "claimId").readNullable[String] and
       (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
       (JsPath \ "taxYearClaimMade").readNullable[Int].map(_.map(DesTaxYear.fromDesIntToString)) and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
-      (JsPath \ "lossType").read[LossType]
+      (JsPath \ "lossType").read[LossType] and
+      (JsPath \ "incomeSourceId").read[String]
   )(CarriedForwardLoss.apply _)
 
 }

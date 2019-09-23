@@ -20,7 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import v1.models.des.LossType
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.CarriedForwardLoss
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.CarriedForwardLoss
 
 object CarriedForwardLossFixtures {
 
@@ -40,7 +40,8 @@ object CarriedForwardLossFixtures {
     taxYearClaimMade.map(taxYear => DesTaxYear.fromDesIntToString(taxYear)),
     DesTaxYear.fromDesIntToString(taxYearLossIncurred),
     currentLossValue,
-    LossType.INCOME
+    LossType.INCOME,
+    incomeSourceId
   )
 
   val carriedForwardLossResponseWithoutOptionals: CarriedForwardLoss = carriedForwardLossResponse.copy(claimId = None, taxYearClaimMade = None)

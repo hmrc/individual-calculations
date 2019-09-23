@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.json.{ JsSuccess, Json }
 import support.UnitSpec
@@ -140,6 +140,39 @@ class LossClaimsDetailSpec extends UnitSpec {
 
         lossClaimsDetailDesJsonFactory(claimsNotApplied = claimNotAppliedDes)
           .as[LossClaimsDetail] shouldBe lossClaimsDetailResponseFactory(claimsNotApplied = Some(claimsNotAppliedResponse))
+      }
+    }
+  }
+
+  "toNoneIfEmpty" when {
+    "given an empty sequence" should {
+      "return None" in {
+        LossClaimsDetail.toNoneIfEmpty(Seq()) shouldBe None
+      }
+    }
+    "given a non-empty sequence" should {
+      "return that sequence as an optional" in {
+        LossClaimsDetail.toNoneIfEmpty(Seq(1)) shouldBe Some(Seq(1))
+      }
+    }
+  }
+
+  "filterById" when {
+    "all detail present have the desired incomeSourceId" should {
+      "return the expected LossClaimsDetail object" in {
+        lossClaimsDetailDefaultResponse.filterById("AAIS12345678904") shouldBe Some(lossClaimsDetailDefaultResponse)
+      }
+    }
+
+    "some details have an undesired incomeSourceId" should {
+      "return the LossClaimsDetail without those details" in {
+        lossClaimsDetailResponseNotAllIdsMatch.filterById("AAIS12345678904") shouldBe Some(lossClaimsDetailResponseNoLossesBroughtForward)
+      }
+    }
+
+    "no detail is present with the provided incomeSourceId" should {
+      "return None" in {
+        lossClaimsDetailDefaultResponse.filterById("BA112DDWQ2SV41D") shouldBe None
       }
     }
   }

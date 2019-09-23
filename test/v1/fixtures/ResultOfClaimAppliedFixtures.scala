@@ -20,7 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import v1.models.des.LossType
 import v1.models.domain.{TypeOfClaim, TypeOfLoss}
 import v1.models.request.DesTaxYear
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.ResultOfClaimApplied
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.ResultOfClaimApplied
 
 object ResultOfClaimAppliedFixtures {
 
@@ -45,7 +45,8 @@ object ResultOfClaimAppliedFixtures {
     DesTaxYear.fromDesIntToString(taxYearLossIncurred),
     lossAmountUsed,
     remainingLossValue,
-    TypeOfLoss.`self-employment`
+    TypeOfLoss.`self-employment`,
+    incomeSourceId
   )
 
   val resultOfClaimAppliedResponseWithoutMtdLoss: ResultOfClaimApplied = resultOfClaimAppliedResponse.copy(mtdLoss = true)

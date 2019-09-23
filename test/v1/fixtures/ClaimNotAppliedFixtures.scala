@@ -19,7 +19,7 @@ package v1.fixtures
 import play.api.libs.json.{JsValue, Json}
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.ClaimNotApplied
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.ClaimNotApplied
 
 object ClaimNotAppliedFixtures {
 
@@ -32,7 +32,8 @@ object ClaimNotAppliedFixtures {
   val claimNotAppliedResponse: ClaimNotApplied = ClaimNotApplied(
     claimId,
     DesTaxYear.fromDesIntToString(taxYearClaimMade),
-    claimType = TypeOfClaim.`carry-forward`
+    claimType = TypeOfClaim.`carry-forward`,
+    incomeSourceId
   )
 
   val claimNotAppliedDesJson: JsValue = Json.parse(s"""{

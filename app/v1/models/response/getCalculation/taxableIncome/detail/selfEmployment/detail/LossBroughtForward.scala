@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -23,20 +23,31 @@ import v1.models.domain.TypeOfLoss
 import v1.models.request.DesTaxYear
 
 case class LossBroughtForward(
-                               lossType: TypeOfLoss,
-                               taxYearLossIncurred: String,
-                               currentLossValue: BigDecimal,
-                               mtdLoss: Boolean
+    lossType: TypeOfLoss,
+    taxYearLossIncurred: String,
+    currentLossValue: BigDecimal,
+    mtdLoss: Boolean,
+    incomeSourceId: String
 )
 
 object LossBroughtForward {
 
-  implicit val writes: OWrites[LossBroughtForward] = Json.writes[LossBroughtForward]
+  implicit val writes: OWrites[LossBroughtForward] = new OWrites[LossBroughtForward] {
+
+    def writes(lossBroughtForward: LossBroughtForward): JsObject = Json.obj(
+      "lossType"            -> lossBroughtForward.lossType,
+      "taxYearLossIncurred" -> lossBroughtForward.taxYearLossIncurred,
+      "currentLossValue"    -> lossBroughtForward.currentLossValue,
+      "mtdLoss"             -> lossBroughtForward.mtdLoss
+    )
+  }
+
   implicit val reads: Reads[LossBroughtForward] = (
     (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss) and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigDecimal] and
-      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true))
+      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
+      (JsPath \ "incomeSourceId").read[String]
   )(LossBroughtForward.apply _)
 
 }

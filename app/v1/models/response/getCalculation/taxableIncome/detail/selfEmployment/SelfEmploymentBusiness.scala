@@ -19,7 +19,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.{LossClaimsDetail, LossClaimsSummary}
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
 case class SelfEmploymentBusiness(
     selfEmploymentId: String,
@@ -61,15 +62,10 @@ object SelfEmploymentBusiness extends NestedJsonReads {
   implicit val seqReads: Reads[Seq[SelfEmploymentBusiness]] = (bpalPath.readNestedNullable[Seq[SelfEmploymentBusiness]] and
     JsPath.readNullable[LossClaimsDetail])(filterAndBuild(_, _))
 
-  def filterAndBuild(maybeBusinesses: Option[Seq[SelfEmploymentBusiness]], maybeValue: Option[LossClaimsDetail]): Seq[SelfEmploymentBusiness] = {
-    maybeBusinesses
-      .getOrElse(Seq())
-      .map(seb => seb.copy(lossClaimsDetail = Some(maybeValue.getOrElse(LossClaimsDetail.emptyLossClaimsDetail))))
-    // TODO: Add the 'incomeSourceId' field into each of the LossClaimsDetail sub-models and update the reads,
-    // TODO: Write an explicit Writes function for each which doesn't write the incomeSourceId field,
-    // TODO: Update the tests (+fixtures) to include the new field in the response, and desJson values,
-    // TODO: An example filter is already implemented in LossClaimDetail,
-    // TODO: Add a case in the reads for when LossClaimDetail is empty (map it to None so it isn't written)
+  def filterAndBuild(sebsO: Option[Seq[SelfEmploymentBusiness]], detailsO: Option[LossClaimsDetail]): Seq[SelfEmploymentBusiness] = {
+    val sebs = sebsO.getOrElse(Seq())
+    val details = detailsO.getOrElse(LossClaimsDetail.emptyLossClaimsDetail)
+    sebs.map(seb => seb.copy(lossClaimsDetail = details.filterById(seb.selfEmploymentId)))
   }
 
 }

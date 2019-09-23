@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json.{JsObject, JsPath, Json, OWrites, Reads}
 import v1.models.des.ReliefClaimed
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
@@ -25,16 +25,26 @@ import v1.models.request.DesTaxYear
 case class ClaimNotApplied(
     claimId: String,
     taxYearClaimMade: String,
-    claimType: TypeOfClaim
+    claimType: TypeOfClaim,
+    incomeSourceId: String
 )
 
 object ClaimNotApplied {
 
-  implicit val writes: OWrites[ClaimNotApplied] = Json.writes[ClaimNotApplied]
+  implicit val writes: OWrites[ClaimNotApplied] = new OWrites[ClaimNotApplied] {
+
+    def writes(claimNotApplied: ClaimNotApplied): JsObject = Json.obj(
+      "claimId"          -> claimNotApplied.claimId,
+      "taxYearClaimMade" -> claimNotApplied.taxYearClaimMade,
+      "claimType"        -> claimNotApplied.claimType
+    )
+  }
+
   implicit val reads: Reads[ClaimNotApplied] = (
     (JsPath \ "claimId").read[String] and
       (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim)
+      (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
+      (JsPath \ "incomeSourceId").read[String]
   )(ClaimNotApplied.apply _)
 
 }

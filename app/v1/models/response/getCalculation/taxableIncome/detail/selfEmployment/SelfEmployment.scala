@@ -22,7 +22,5 @@ case class SelfEmployment(test: Option[String])
 
 object SelfEmployment {
   implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
-
-  implicit val reads: Reads[SelfEmployment] = Json.reads[SelfEmployment]
-
+  implicit val reads: Reads[SelfEmployment]    = Json.reads[SelfEmployment]
 }

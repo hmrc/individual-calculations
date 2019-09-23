@@ -16,13 +16,14 @@
 
 package v1.fixtures
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{ JsObject, JsValue, Json }
 import v1.fixtures.CarriedForwardLossFixtures._
 import v1.fixtures.ClaimNotAppliedFixtures._
 import v1.fixtures.LossBroughtForwardFixtures._
 import v1.fixtures.ResultOfClaimAppliedFixtures._
 import v1.fixtures.UnclaimedLossFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail._
 
 object LossClaimsDetailFixtures {
 
@@ -40,6 +41,12 @@ object LossClaimsDetailFixtures {
     Some(Seq(carriedForwardLossResponse)),
     Some(Seq(claimNotAppliedResponse))
   )
+
+  val lossClaimsDetailResponseNotAllIdsMatch: LossClaimsDetail =
+    lossClaimsDetailDefaultResponse.copy(lossesBroughtForward = Some(Seq(lossBroughtForwardResponseWithDifferentId)))
+
+  val lossClaimsDetailResponseNoLossesBroughtForward: LossClaimsDetail =
+    lossClaimsDetailDefaultResponse.copy(lossesBroughtForward = None)
 
   val lossClaimsDetailDefaultDesJson: JsValue = Json
     .obj("inputs" -> Json.obj("lossesBroughtForward" -> Seq(lossBroughtForwardDesJson)))
@@ -87,5 +94,5 @@ object LossClaimsDetailFixtures {
                                       carriedForwardLosses: Option[Seq[CarriedForwardLoss]] = None,
                                       claimsNotApplied: Option[Seq[ClaimNotApplied]] = None,
                                       lossesBroughtForward: Option[Seq[LossBroughtForward]] = None): LossClaimsDetail =
-    LossClaimsDetail(lossesBroughtForward, resultOfClaimsApplied, unclaimedLosses, carriedForwardLosses, claimsNotApplied)
+    detail.LossClaimsDetail(lossesBroughtForward, resultOfClaimsApplied, unclaimedLosses, carriedForwardLosses, claimsNotApplied)
 }

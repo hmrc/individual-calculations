@@ -22,7 +22,8 @@ import v1.fixtures.ClaimNotAppliedFixtures._
 import v1.fixtures.LossBroughtForwardFixtures._
 import v1.fixtures.ResultOfClaimAppliedFixtures._
 import v1.fixtures.UnclaimedLossFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.{detail, _}
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{CarriedForwardLoss, ClaimNotApplied, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied, UnclaimedLoss}
 
 object SelfEmploymentBusinessFixtures {
 
@@ -87,5 +88,5 @@ object SelfEmploymentBusinessFixtures {
                                       carriedForwardLosses: Option[Seq[CarriedForwardLoss]] = None,
                                       claimsNotApplied: Option[Seq[ClaimNotApplied]] = None,
                                       lossesBroughtForward: Option[Seq[LossBroughtForward]] = None): LossClaimsDetail =
-    LossClaimsDetail(lossesBroughtForward, resultOfClaimsApplied, unclaimedLosses, carriedForwardLosses, claimsNotApplied)
+    detail.LossClaimsDetail(lossesBroughtForward, resultOfClaimsApplied, unclaimedLosses, carriedForwardLosses, claimsNotApplied)
 }

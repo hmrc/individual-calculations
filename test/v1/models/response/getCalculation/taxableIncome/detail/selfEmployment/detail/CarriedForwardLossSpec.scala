@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
-import play.api.libs.json.{ JsError, JsSuccess, Json }
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.CarriedForwardLossFixtures._
 

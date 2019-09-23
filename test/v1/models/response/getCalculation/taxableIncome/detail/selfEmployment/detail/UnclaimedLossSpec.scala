@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.ClaimNotAppliedFixtures._
+import v1.fixtures.UnclaimedLossFixtures._
 
-class ClaimNotAppliedSpec extends UnitSpec {
+class UnclaimedLossSpec extends UnitSpec {
 
-  "ClaimNotApplied" when {
+  "UnclaimedLoss" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        claimNotAppliedDesJson.validate[ClaimNotApplied] shouldBe a[JsSuccess[_]]
+        unclaimedLossDesJson.validate[UnclaimedLoss] shouldBe a[JsSuccess[_]]
       }
-      "with the expected ClaimNotApplied object" in {
-        claimNotAppliedDesJson.as[ClaimNotApplied] shouldBe claimNotAppliedResponse
+      "with the expected UnclaimedLoss object" in {
+        unclaimedLossDesJson.as[UnclaimedLoss] shouldBe unclaimedLossResponse
       }
     }
 
     "read from invalid Json" should {
       "return a JsError" in {
-        claimNotAppliedInvalidJson.validate[ClaimNotApplied] shouldBe a[JsError]
+        unclaimedLossInvalidJson.validate[UnclaimedLoss] shouldBe a[JsError]
       }
     }
 
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(claimNotAppliedResponse) shouldBe claimNotAppliedWrittenJson
+        Json.toJson(unclaimedLossResponse) shouldBe unclaimedLossWrittenJson
       }
     }
   }

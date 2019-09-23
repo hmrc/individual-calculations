@@ -24,6 +24,7 @@ import v1.fixtures.LossBroughtForwardFixtures._
 import v1.fixtures.LossClaimsDetailFixtures._
 import v1.fixtures.ResultOfClaimAppliedFixtures._
 import v1.fixtures.UnclaimedLossFixtures._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
 
 class SelfEmploymentBusinessSpec extends UnitSpec {
 

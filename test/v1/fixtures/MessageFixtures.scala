@@ -18,7 +18,7 @@ package v1.fixtures
 
 import v1.models.response.common.Message
 
-object Fixtures {
+object MessageFixtures {
   val err1 = Message("err1", "text1")
   val err2 = Message("err2", "text2")
   val info1 = Message("info1", "text1")
