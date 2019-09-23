@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsObject, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.ukPropertyFhl.LossClaimSummaryFixtures._
+import v1.fixtures.taxableIncome.ukPropertyNonFhl.LossClaimsSummaryFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
@@ -26,14 +26,9 @@ class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
 
   "LossClaimSummary" when {
 
-    val emptyLossClaimSummary = LossClaimsSummary(None,None,None,None)
+    val emptyLossClaimSummary = LossClaimsSummary(None,None,None)
 
     "read from valid Json" should {
-
-      testPropertyType[LossClaimsSummary](lossClaimSummaryDesJson)(
-        path = "/lossForCSFHL",
-        replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
       testPropertyType[LossClaimsSummary](lossClaimSummaryDesJson)(
         path = "/totalBroughtForwardIncomeTaxLosses",
@@ -55,28 +50,28 @@ class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
       }
 
       "with the expected LossClaimSummary object" in {
-        lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryResponse
+        lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryModel
       }
     }
 
     "read from empty Json" should {
       "return a JsSuccess" in {
-        emptyJson.as[LossClaimsSummary] shouldBe emptyLossClaimSummary
+        JsObject.empty.as[LossClaimsSummary] shouldBe emptyLossClaimSummary
       }
       "with the expected LossClaimSummary object" in {
-        lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryResponse
+        lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryModel
       }
     }
 
     "written to JSON" should {
       "return the expected JsObject" in {
-        Json.toJson(lossClaimsSummaryResponse) shouldBe lossClaimSummaryWrittenJson
+        Json.toJson(lossClaimsSummaryModel) shouldBe lossClaimsSummaryJson
       }
     }
 
     "written from empty JSON" should {
       "return an empty JsObject" in {
-        Json.toJson(emptyLossClaimSummary) shouldBe emptyJson
+        Json.toJson(emptyLossClaimSummary) shouldBe JsObject.empty
       }
     }
   }

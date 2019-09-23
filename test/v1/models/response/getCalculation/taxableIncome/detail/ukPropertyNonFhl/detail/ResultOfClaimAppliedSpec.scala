@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.nonFhlProperty.ResultOfClaimAppliedFixtures
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.ResultOfClaimApplied
+import v1.fixtures.taxableIncome.ukPropertyNonFhl.ResultOfClaimAppliedFixtures
 
 class ResultOfClaimAppliedSpec extends UnitSpec {
 

@@ -14,30 +14,29 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.nonFhlProperty.ClaimNotAppliedFixtures
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.ClaimNotApplied
+import v1.fixtures.taxableIncome.ukPropertyNonFhl.DefaultCarriedForwardLossFixtures
 
-class ClaimNotAppliedSpec extends UnitSpec {
+class DefaultCarriedForwardLossSpec extends UnitSpec {
 
-  "Claim Not Applied" should {
-
+  "Default Carried Forward Loss" should {
     "read correctly from json" when {
 
       "provided with valid json" in {
-        val result = ClaimNotAppliedFixtures.claimNotAppliedDesJson.validate[ClaimNotApplied]
+        val result = DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossDesJson.validate[DefaultCarriedForwardLoss]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe ClaimNotAppliedFixtures.claimNotAppliedModel
+        result.get shouldBe DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossModel
       }
     }
 
     "write correctly to json" when {
 
       "provided with a valid model" in {
-        Json.toJson(ClaimNotAppliedFixtures.claimNotAppliedModel) shouldBe ClaimNotAppliedFixtures.claimNotAppliedMtdJson
+        Json.toJson(DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossModel) shouldBe
+          DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossMtdJson
       }
     }
   }
