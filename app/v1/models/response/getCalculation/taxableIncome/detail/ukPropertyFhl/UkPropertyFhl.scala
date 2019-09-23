@@ -30,9 +30,9 @@ case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          totalAdditions: Option[BigDecimal],
                          totalDeductions: Option[BigDecimal],
                          accountingAdjustments: Option[BigDecimal],
-                         adjustedIncomeTaxLoss: Option[BigDecimal],
-                         taxableProfit: Option[BigDecimal],
-                         taxableProfitAfterIncomeTaxLossesDeduction: Option[BigDecimal],
+                         adjustedIncomeTaxLoss: Option[BigInt],
+                         taxableProfit: Option[BigInt],
+                         taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                          lossClaimsSummary: Option[LossClaimsSummary],
                          lossClaimsDetail: Option[LossClaimsDetail]
                         )
@@ -47,9 +47,9 @@ object UkPropertyFhl extends NestedJsonReads{
                               totalAdditions: Option[BigDecimal],
                               totalDeductions: Option[BigDecimal],
                               accountingAdjustments: Option[BigDecimal],
-                              adjustedIncomeTaxLoss: Option[BigDecimal],
-                              taxableProfit: Option[BigDecimal],
-                              taxableProfitAfterIncomeTaxLossesDeduction: Option[BigDecimal],
+                              adjustedIncomeTaxLoss: Option[BigInt],
+                              taxableProfit: Option[BigInt],
+                              taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                               lossClaimsSummary: Option[LossClaimsSummary]
                              )
   object TopLevelElements {
@@ -65,9 +65,9 @@ object UkPropertyFhl extends NestedJsonReads{
         (JsPath \ "totalAdditions").readNullable[BigDecimal] and
         (JsPath \ "totalDeductions").readNullable[BigDecimal] and
         (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
-        (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigDecimal] and
-        (JsPath \ "taxableProfit").readNullable[BigDecimal] and
-        (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigDecimal] and
+        (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
+        (JsPath \ "taxableProfit").readNullable[BigInt] and
+        (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
         __.readNullable[LossClaimsSummary]
       )(TopLevelElements.apply _)
   }

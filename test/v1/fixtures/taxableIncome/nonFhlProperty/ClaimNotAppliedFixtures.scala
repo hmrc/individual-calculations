@@ -18,7 +18,7 @@ package v1.fixtures.taxableIncome.nonFhlProperty
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.domain.TypeOfClaim
-import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail.ClaimNotApplied
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.ClaimNotApplied
 
 object ClaimNotAppliedFixtures {
 

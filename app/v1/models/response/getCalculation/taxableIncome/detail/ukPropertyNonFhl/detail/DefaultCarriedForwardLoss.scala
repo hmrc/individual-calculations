@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import v1.models.request.DesTaxYear
 
-case class LossBroughtForward(taxYearLossIncurred: String,
-                              currentLossValue: BigInt,
-                              mtdLoss: Boolean)
+case class DefaultCarriedForwardLoss(taxYearLossIncurred: String,
+                                     currentLossValue: BigInt)
 
-object LossBroughtForward {
-  implicit val writes: OWrites[LossBroughtForward] = Json.writes[LossBroughtForward]
+object DefaultCarriedForwardLoss {
+  implicit val writes: OWrites[DefaultCarriedForwardLoss] = Json.writes[DefaultCarriedForwardLoss]
 
-  implicit val reads: Reads[LossBroughtForward] = (
-    (JsPath \ "taxYearLossIncurred").read[String](DesTaxYear.reads) and
-      (JsPath \ "currentLossValue").read[BigInt] and
-      (JsPath \ "mtdLoss").read[Boolean]
-  )(LossBroughtForward.apply _)
+  implicit val reads: Reads[DefaultCarriedForwardLoss] = (
+    (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
+      (JsPath \ "currentLossValue").read[BigInt]
+  )(DefaultCarriedForwardLoss.apply _)
 }

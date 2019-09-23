@@ -26,7 +26,7 @@ object LossBroughtForwardFixtures {
   val incomeSourceType: String     = "04"
   val submissionTimestamp: String  = "2019-07-13T07:51:43Z"
   val taxYearLossIncurred: Int     = 2055
-  val currentLossValue: BigDecimal = 673350334
+  val currentLossValue: BigInt = 673350334
   val mtdLoss: Boolean             = false
 
   val lossBroughtForwardResponse: LossBroughtForward =

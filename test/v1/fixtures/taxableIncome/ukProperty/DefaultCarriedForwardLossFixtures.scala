@@ -26,7 +26,7 @@ object DefaultCarriedForwardLossFixtures {
   val incomeSourceId: String        = "AAIS12345678904"
   val incomeSourceType: String      = "04"
   val taxYearLossIncurred: Int      = 2045
-  val currentLossValue: BigDecimal     = 49177
+  val currentLossValue: BigInt     = 49177
 
   val carriedForwardLossResponse: DefaultCarriedForwardLoss = DefaultCarriedForwardLoss(
     DesTaxYear.fromDesIntToString(taxYearLossIncurred),

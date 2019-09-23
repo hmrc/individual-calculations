@@ -28,8 +28,8 @@ case class ResultOfClaimApplied(
                                   claimType: TypeOfClaim,
                                   mtdLoss: Boolean,
                                   taxYearLossIncurred: String,
-                                  lossAmountUsed: BigDecimal,
-                                  remainingLossValue: BigDecimal
+                                  lossAmountUsed: BigInt,
+                                  remainingLossValue: BigInt
                                 )
 object ResultOfClaimApplied {
   implicit val writes: Writes[ResultOfClaimApplied] = Json.writes[ResultOfClaimApplied]
@@ -40,7 +40,7 @@ object ResultOfClaimApplied {
       (__ \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
       (__ \ "mtdLoss").read[Boolean] and
       (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "lossAmountUsed").read[BigDecimal] and
-      (__ \ "remainingLossValue").read[BigDecimal]
+      (__ \ "lossAmountUsed").read[BigInt] and
+      (__ \ "remainingLossValue").read[BigInt]
     )(ResultOfClaimApplied.apply _)
 }

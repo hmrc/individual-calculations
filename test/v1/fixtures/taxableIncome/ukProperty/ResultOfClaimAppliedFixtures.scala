@@ -31,8 +31,8 @@ object ResultOfClaimAppliedFixtures {
   val claimType: String          = "CF"
   val mtdLoss: Boolean           = true
   val taxYearLossIncurred: Int   = 2019
-  val lossAmountUsed: BigDecimal = 1000
-  val remainingLossValue: BigDecimal   = 4000
+  val lossAmountUsed: BigInt = 1000
+  val remainingLossValue: BigInt   = 4000
 
   val resultOfClaimAppliedResponse: ResultOfClaimApplied = ResultOfClaimApplied(
     claimId,

@@ -23,31 +23,30 @@ import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.deta
 object LossClaimsDetailFixtures {
 
   val lossClaimsDetail = LossClaimsDetail(
-    Some(List(LossBroughtForward("2054-55",1000.00,mtdLoss = true))),
+    Some(List(LossBroughtForward("2054-55",1000,mtdLoss = true))),
     Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39", TypeOfClaim.`carry-forward`, mtdLoss = true,
-      "2050-51",1000.00,1000.00))),
-    Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))
+      "2050-51",1000,1000))),
+    Some(List(DefaultCarriedForwardLoss("2026-27",1000))))
 
   val lossClaimsDetailWithoutLossBroughtForward = LossClaimsDetail(None,
     Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39", TypeOfClaim.`carry-forward`, mtdLoss = true,
-      "2050-51",1000.00,1000.00))),
-    Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))
+      "2050-51",1000,1000))),
+    Some(List(DefaultCarriedForwardLoss("2026-27",1000))))
 
   val lossClaimsDetailResultOfClaimApplied = LossClaimsDetail(
-    Some(List(LossBroughtForward("2054-55",1000.00,mtdLoss = true))),
+    Some(List(LossBroughtForward("2054-55",1000,mtdLoss = true))),
     None,
-    Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))
+    Some(List(DefaultCarriedForwardLoss("2026-27",1000))))
 
   val lossClaimsDetailDefaultCarriedForwardLoss = LossClaimsDetail(
-    Some(List(LossBroughtForward("2054-55",1000.00,mtdLoss = true))),
-    Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39", TypeOfClaim.`carry-forward`, mtdLoss = true,
-      "2050-51",1000.00,1000.00))),
-    None)
+    Some(List(LossBroughtForward("2054-55",1000,mtdLoss = true))),
+    Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39", TypeOfClaim.`carry-forward`, mtdLoss = true, "2050-51",1000,1000))), None)
 
-  val lossClaimsDetailWithMultipleLBF = LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000.00,true), LossBroughtForward("2056-57",1000.00,true))),
+  val lossClaimsDetailWithMultipleLBF = LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000,mtdLoss = true),
+    LossBroughtForward("2056-57",1000,mtdLoss = true))),
     Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39", TypeOfClaim.`carry-forward`, mtdLoss = true,
-      "2050-51",1000.00,1000.00))),
-    Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))
+      "2050-51",1000,1000))),
+    Some(List(DefaultCarriedForwardLoss("2026-27",1000))))
 
   val desJson: JsValue = Json.parse(
     """
@@ -482,7 +481,7 @@ object LossClaimsDetailFixtures {
       |}
     """.stripMargin)
 
-  val mtdJson = Json.parse(
+  val mtdJson: JsValue = Json.parse(
     """
       |{
       |	"lossesBroughtForward": [{

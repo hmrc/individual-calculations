@@ -20,12 +20,13 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 import utils.NestedJsonReads
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.{UkPropertyFhl, UkPropertyNonFhlObj}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 
 case class BusinessProfitAndLoss(selfEmployments: Option[SelfEmployment],
                                  ukPropertyFhl: Option[UkPropertyFhl],
-                                 ukPropertyNonFhl: Option[UkPropertyNonFhlObj])
+                                 ukPropertyNonFhl: Option[UkPropertyNonFhl])
 
 object BusinessProfitAndLoss extends NestedJsonReads {
   implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
@@ -40,8 +41,8 @@ object BusinessProfitAndLoss extends NestedJsonReads {
         case UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None) => None
         case x => Some(x)
       }) and
-      __.readNullable[UkPropertyNonFhlObj].map(_.flatMap {
-        case UkPropertyNonFhlObj(None) => None
+      __.readNullable[UkPropertyNonFhl].map(_.flatMap {
+        case UkPropertyNonFhl(None, None, None, None, None, None, None, None, None, None, None, None) => None
         case x => Some(x)
       })
     )(BusinessProfitAndLoss.apply _)

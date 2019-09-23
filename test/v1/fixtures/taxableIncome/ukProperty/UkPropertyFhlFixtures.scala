@@ -16,7 +16,7 @@
 
 package v1.fixtures.taxableIncome.ukProperty
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
@@ -24,7 +24,7 @@ import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summ
 
 object UkPropertyFhlFixtures {
 
-  val desJson = Json.parse(
+  val desJson: JsValue = Json.parse(
     """{
       |"inputs": {
       |        "personalInformation": {
@@ -142,7 +142,7 @@ object UkPropertyFhlFixtures {
       |                "taxableProfit": 1000.00,
       |                "finalLoss": 1000.00,
       |                "totalBroughtForwardLosses": 1000.00,
-      |                "lossForCSFHL": 1000.00,
+      |                "lossForCSFHL": 1000,
       |                "broughtForwardLossesUsed": 1000.00,
       |                "taxableProfitAfterLossesDeduction": 1000.00,
       |                "totalLossesCarriedForward": 1000.00
@@ -333,21 +333,21 @@ object UkPropertyFhlFixtures {
 
   val ukPropertyFhlObject = UkPropertyFhl(Some(1000.00),
     Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-    Some(1000.00),Some(1000.00),None,Some(1000.00),None,
-    Some(LossClaimsSummary(Some(1000.00),None,None,None)),
-    Some(LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000.00,true))),
+    Some(1000.00),Some(1000.00),None,Some(1000),None,
+    Some(LossClaimsSummary(Some(1000),None,None,None)),
+    Some(LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000,mtdLoss = true))),
       Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39",
-        TypeOfClaim.`carry-forward`,true,"2050-51",1000.00,1000.00))),
-      Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))))
+        TypeOfClaim.`carry-forward`,mtdLoss = true,"2050-51",1000,1000))),
+      Some(List(DefaultCarriedForwardLoss("2026-27",1000))))))
 
   val ukPropertyFhlWithOutLossClaimsDetailObject = UkPropertyFhl(Some(1000.00),
     Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-    Some(1000.00),Some(1000.00),None,Some(1000.00),None,
-    Some(LossClaimsSummary(Some(1000.00),None,None,None)),None)
+    Some(1000.00),Some(1000.00),None,Some(1000),None,
+    Some(LossClaimsSummary(Some(1000),None,None,None)),None)
 
   val emptyUkPropertyFhl = UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None)
 
-  val mtdUkPropertyFhlObj = Json.parse(
+  val mtdUkPropertyFhlObj: JsValue = Json.parse(
     """
       |{
       |	"totalIncome": 1000,
@@ -384,7 +384,7 @@ object UkPropertyFhlFixtures {
       |}
     """.stripMargin)
 
-  val mtdUkPropertyFhlObjWithOutLossClaimsDetail = Json.parse(
+  val mtdUkPropertyFhlObjWithOutLossClaimsDetail: JsValue = Json.parse(
     """
       |{
       |	"totalIncome": 1000,
@@ -401,7 +401,7 @@ object UkPropertyFhlFixtures {
       |}
     """.stripMargin)
 
-  val desJsonWithOutLossClaimsDetail = Json.parse(
+  val desJsonWithOutLossClaimsDetail: JsValue = Json.parse(
     """{
       |"inputs": {
       |        "personalInformation": {

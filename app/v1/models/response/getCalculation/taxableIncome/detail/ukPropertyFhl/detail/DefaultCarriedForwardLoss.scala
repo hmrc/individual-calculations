@@ -22,13 +22,13 @@ import v1.models.request.DesTaxYear
 
 case class DefaultCarriedForwardLoss(
                                        taxYearLossIncurred: String,
-                                       currentLossValue: BigDecimal
+                                       currentLossValue: BigInt
                                       )
 object DefaultCarriedForwardLoss {
   implicit val writes:OWrites[DefaultCarriedForwardLoss] = Json.format[DefaultCarriedForwardLoss]
 
   implicit val reads:Reads[DefaultCarriedForwardLoss] = (
     (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "currentLossValue").read[BigDecimal]
+      (JsPath \ "currentLossValue").read[BigInt]
   )(DefaultCarriedForwardLoss.apply _)
 }

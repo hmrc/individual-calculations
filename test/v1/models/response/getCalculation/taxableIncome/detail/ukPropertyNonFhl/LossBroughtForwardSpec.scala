@@ -14,30 +14,31 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.nonFhlProperty.DefaultCarriedForwardLossFixtures
-import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail.DefaultCarriedForwardLoss
+import v1.fixtures.taxableIncome.nonFhlProperty.LossBroughtForwardFixtures
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.LossBroughtForward
 
-class DefaultCarriedForwardLossSpec extends UnitSpec {
+class LossBroughtForwardSpec extends UnitSpec {
 
-  "Default Carried Forward Loss" should {
+  "Loss Brought Forward" should {
+
     "read correctly from json" when {
 
       "provided with valid json" in {
-        val result = DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossDesJson.validate[DefaultCarriedForwardLoss]
+        val result = LossBroughtForwardFixtures.lossBroughtForwardDesJson.validate[LossBroughtForward]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossModel
+        result.get shouldBe LossBroughtForwardFixtures.lossBroughtForwardModel
       }
     }
 
     "write correctly to json" when {
 
       "provided with a valid model" in {
-        Json.toJson(DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossModel) shouldBe
-          DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossMtdJson
+        Json.toJson(LossBroughtForwardFixtures.lossBroughtForwardModel) shouldBe
+          LossBroughtForwardFixtures.lossBroughtForwardMtdJson
       }
     }
   }

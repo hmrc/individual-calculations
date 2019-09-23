@@ -33,11 +33,11 @@ object LossClaimSummaryFixtures {
   val accountingAdjustments: BigDecimal                      = -1000.00
   val taxableProfit: BigDecimal                                  = 1000.00
   val adjustedIncomeTaxLoss: BigDecimal                      = 1000.00
-  val totalBroughtForwardIncomeTaxLosses: Option[BigDecimal] = Some(1000.00)
-  val lossForCSFHL: Option[BigDecimal]                       = Some(1000.00)
-  val broughtForwardIncomeTaxLossesUsed: Option[BigDecimal]  = Some(1000.00)
+  val totalBroughtForwardIncomeTaxLosses: Option[BigInt] = Some(1000)
+  val lossForCSFHL: Option[BigInt]                       = Some(1000)
+  val broughtForwardIncomeTaxLossesUsed: Option[BigInt]  = Some(1000)
   val taxableProfitAfterIncomeTaxLossesDeduction: BigDecimal = 1000.00
-  val totalIncomeTaxLossesCarriedForward: Option[BigDecimal] = Some(1000.00)
+  val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(1000)
   val class4Loss: BigDecimal                                 = 1000.00
   val totalBroughtForwardClass4Losses: Option[BigDecimal]    = Some(1000.00)
   val broughtForwardClass4LossesUsed: Option[BigDecimal]     = Some(1000.00)

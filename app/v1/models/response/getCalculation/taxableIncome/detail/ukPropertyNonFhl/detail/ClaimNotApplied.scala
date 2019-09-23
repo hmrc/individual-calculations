@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -31,7 +31,7 @@ object ClaimNotApplied {
 
   implicit val reads: Reads[ClaimNotApplied] = (
     (JsPath \ "claimId").read[String] and
-      (JsPath \ "taxYearClaimMade").read[String](DesTaxYear.reads) and
+      (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "claimType").read[ReliefClaimed].map(_.toTypeOfClaim)
   )(ClaimNotApplied.apply _)
 }

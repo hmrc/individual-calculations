@@ -20,19 +20,19 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 case class LossClaimsSummary(
-                              lossForCSFHL: Option[BigDecimal],
-                              totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
-                              broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],
-                              totalIncomeTaxLossesCarriedForward: Option[BigDecimal]
+                              lossForCSFHL: Option[BigInt],
+                              totalBroughtForwardIncomeTaxLosses: Option[BigInt],
+                              broughtForwardIncomeTaxLossesUsed: Option[BigInt],
+                              totalIncomeTaxLossesCarriedForward: Option[BigInt]
                             )
 
 object LossClaimsSummary {
   implicit val writes: OWrites[LossClaimsSummary] = Json.writes[LossClaimsSummary]
 
   implicit val reads: Reads[LossClaimsSummary] = (
-    (JsPath \ "lossForCSFHL").readNullable[BigDecimal] and
-      (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigDecimal] and
-      (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigDecimal] and
-      (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigDecimal]
+    (JsPath \ "lossForCSFHL").readNullable[BigInt] and
+      (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigInt] and
+      (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigInt] and
+      (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigInt]
   )(LossClaimsSummary.apply _)
 }

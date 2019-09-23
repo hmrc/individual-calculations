@@ -21,18 +21,21 @@ import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.detail.BusinessProfitAndLoss
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.LossClaimsSummary
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.{LossClaimsSummary => FhlLossClaimsSummary}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary.{LossClaimsSummary => NonFhlLossClaimsSummary}
 
 object BusinessProfitAndLossFixtures {
 
   val businessProfitAndLoss: BusinessProfitAndLoss =
-    BusinessProfitAndLoss(None,
-      Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-        Some(1000.00),None,Some(1000.00),None,Some(LossClaimsSummary(Some(1000.00),None,None,None)),
-        Some(LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000.00,mtdLoss = true))),
-          Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39",
-            TypeOfClaim.`carry-forward`, mtdLoss = true,"2050-51",1000.00,1000.00))),
-          Some(List(DefaultCarriedForwardLoss("2026-27",1000.00))))))),None)
+    BusinessProfitAndLoss(None,Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
+      Some(1000.00),Some(1000.00),Some(1000.00),None,Some(1000),None,
+      Some(FhlLossClaimsSummary(Some(1000),Some(1000),Some(1000),Some(100))),
+      Some(LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000, mtdLoss = true))),
+        Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39",TypeOfClaim.`carry-forward`,
+          mtdLoss = true,"2050-51",1000,1000))),Some(List(DefaultCarriedForwardLoss("2026-27",1000))))))),
+      Some(UkPropertyNonFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
+        Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),Some(NonFhlLossClaimsSummary(Some(1000),Some(1000),Some(100))),None)))
 
   val desJson: JsValue = Json.parse(
     """{
@@ -155,7 +158,10 @@ object BusinessProfitAndLossFixtures {
       |                "lossForCSFHL": 1000.00,
       |                "broughtForwardLossesUsed": 1000.00,
       |                "taxableProfitAfterLossesDeduction": 1000.00,
-      |                "totalLossesCarriedForward": 1000.00
+      |                "totalLossesCarriedForward": 1000.00,
+      |                "totalBroughtForwardIncomeTaxLosses": 1000.00,
+      |                "broughtForwardIncomeTaxLossesUsed": 1000.00,
+      |                "totalIncomeTaxLossesCarriedForward":100.00
       |            },
       |            {
       |                "incomeSourceId": "LLIS12345678908",
@@ -174,7 +180,10 @@ object BusinessProfitAndLossFixtures {
       |                "lossForCSFHL": 1000.00,
       |                "broughtForwardLossesUsed": 1000.00,
       |                "taxableProfitAfterLossesDeduction": 1000.00,
-      |                "totalLossesCarriedForward": 1000.00
+      |                "totalLossesCarriedForward": 1000.00,
+      |                "totalBroughtForwardIncomeTaxLosses": 1000,
+      |                "broughtForwardIncomeTaxLossesUsed": 1000,
+      |                "totalIncomeTaxLossesCarriedForward":100
       |            }
       |        ],
       |        "savingsAndGainsIncome": [

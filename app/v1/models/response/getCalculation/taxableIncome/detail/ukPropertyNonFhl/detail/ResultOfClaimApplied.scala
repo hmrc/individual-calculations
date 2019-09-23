@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
@@ -37,10 +37,10 @@ object ResultOfClaimApplied {
   implicit val reads: Reads[ResultOfClaimApplied] = (
     (JsPath \ "claimId").readNullable[String] and
       (JsPath \ "originatingClaimId").readNullable[String] and
-      (JsPath \ "taxYearClaimMade").read[String](DesTaxYear.reads) and
+      (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "claimType").read[ReliefClaimed].map(_.toTypeOfClaim) and
       (JsPath \ "mtdLoss").read[Boolean] and
-      (JsPath \ "taxYearLossIncurred").read[String](DesTaxYear.reads) and
+      (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "lossAmountUsed").read[BigInt] and
       (JsPath \ "remainingLossValue").read[BigInt]
   )(ResultOfClaimApplied.apply _)

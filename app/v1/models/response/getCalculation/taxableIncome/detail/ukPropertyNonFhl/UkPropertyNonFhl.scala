@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl
 
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import utils.NestedJsonReads
-import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail.LossClaimsDetail
-import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.summary.LossClaimsSummary
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.LossClaimsDetail
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummary
 
 case class UkPropertyNonFhl(totalIncome: Option[BigDecimal],
                             totalExpenses: Option[BigDecimal],
