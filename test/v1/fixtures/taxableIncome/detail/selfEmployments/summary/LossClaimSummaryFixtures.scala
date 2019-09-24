@@ -113,4 +113,29 @@ object LossClaimSummaryFixtures {
 
   val emptyJson: JsValue = JsObject.empty
 
+  def lossClaimsSummaryDesJsonIdFactory(incomeSourceId: String = selfEmploymentId, incomeSourceType: String = incomeSourceType): JsValue = Json.parse(s"""{
+     |    "incomeSourceId": "$incomeSourceId",
+     |    "incomeSourceType": "$incomeSourceType",
+     |    "incomeSourceName": "$incomeSourceName",
+     |    "totalIncome": $totalIncome,
+     |    "totalExpenses": $totalExpenses,
+     |    "netProfit": $netProfit,
+     |    "netLoss": $netLoss,
+     |    "totalAdditions": $totalAdditions,
+     |    "totalDeductions": $totalDeductions,
+     |    "accountingAdjustments": $accountingAdjustments,
+     |    "taxableProfit": $taxableProfit,
+     |    "adjustedIncomeTaxLoss": $adjustedIncomeTaxLoss,
+     |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
+     |    "lossForCSFHL": $lossForCSFHL,
+     |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
+     |    "taxableProfitAfterLossesDeduction": $taxableProfitAfterLossesDeduction,
+     |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
+     |    "class4Loss": $class4Loss,
+     |    "totalBroughtForwardClass4Losses": ${totalBroughtForwardClass4Losses.get},
+     |    "broughtForwardClass4LossesUsed": ${broughtForwardClass4LossesUsed.get},
+     |    "carrySidewaysClass4LossesUsed": ${carrySidewaysClass4LossesUsed.get},
+     |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
+     |}""".stripMargin)
+
 }

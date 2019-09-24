@@ -61,7 +61,12 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
       }
     }
 
-    "read f"
+    "read from Json with multiple selfEmployments" should {
+      "return the expected sequence of SelfEmploymentBusiness" in {
+        summariesDesJson.as[Seq[SelfEmploymentBusiness]] shouldBe selfEmployments
+      }
+    }
+
 
     //Prove filter
 

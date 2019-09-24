@@ -16,12 +16,10 @@
 
 package v1.fixtures.taxableIncome.detail.selfEmployments
 
-import play.api.libs.json.{JsArray, JsObject, JsValue, Json}
+import play.api.libs.json.{ JsObject, JsValue, Json }
 import v1.fixtures.taxableIncome.detail.selfEmployments.detail.LossClaimsDetailFixtures._
 import v1.fixtures.taxableIncome.detail.selfEmployments.summary.LossClaimSummaryFixtures._
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmploymentBusiness
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
 object SelfEmploymentBusinessFixtures {
 
@@ -89,17 +87,50 @@ object SelfEmploymentBusinessFixtures {
           ))
 
   val selfEmploymentDetailDefaultWrittenJsonSequence: JsValue =
-   Json.arr(additionalWrittenFieldsJson.as[JsObject].deepMerge(
-      Json.obj("lossClaimsSummary" -> lossClaimSummaryWrittenJson)
+    Json.arr(
+      additionalWrittenFieldsJson
+        .as[JsObject]
         .deepMerge(
-          Json.obj("lossClaimsDetail" -> lossClaimsDetailDefaultWrittenJson)
-        )))
+          Json
+            .obj("lossClaimsSummary" -> lossClaimSummaryWrittenJson)
+            .deepMerge(
+              Json.obj("lossClaimsDetail" -> lossClaimsDetailDefaultWrittenJson)
+            )))
 
-  def selfEmploymentBusinessResponseFactory(
-      selfEmploymentId: String = "a1s2d3f4g5h6j7k"
-  ): SelfEmploymentBusiness = selfEmploymentBusinessDefaultResponse.copy(selfEmploymentId = selfEmploymentId)
+  val summaryDesJson1: JsValue = lossClaimsSummaryDesJsonIdFactory("AA11WWLD30FKEKK")
+  val summaryDesJson2: JsValue = lossClaimsSummaryDesJsonIdFactory("FW01LCMWAIKSAND")
+  val summaryDesJson3: JsValue = lossClaimsSummaryDesJsonIdFactory("WIVJEJDJFJEHFI2")
+  val summaryDesJson4: JsValue = lossClaimsSummaryDesJsonIdFactory("J3OC939CKEO2JFI")
 
+  val summariesDesJson = Json.obj(
+    "calculation" -> Json.obj(
+      "businessProfitAndLoss" -> Seq(summaryDesJson1, summaryDesJson2, summaryDesJson3, summaryDesJson4)
+    )
+  )
 
+  val selfEmployments: Seq[SelfEmploymentBusiness] = Seq(
+    selfEmploymentResponseIdFactory("AA11WWLD30FKEKK"),
+    selfEmploymentResponseIdFactory("FW01LCMWAIKSAND"),
+    selfEmploymentResponseIdFactory("WIVJEJDJFJEHFI2"),
+    selfEmploymentResponseIdFactory("J3OC939CKEO2JFI")
+  )
   val emptyJson: JsObject = JsObject.empty
+
+  def selfEmploymentResponseIdFactory(selfEmploymentId: String = selfEmploymentId): SelfEmploymentBusiness = SelfEmploymentBusiness(
+    selfEmploymentId,
+    totalIncome,
+    totalExpenses,
+    netProfit,
+    netLoss,
+    class4Loss,
+    totalAdditions,
+    totalDeductions,
+    accountingAdjustments,
+    adjustedIncomeTaxLoss,
+    taxableProfit,
+    taxableProfitAfterLossesDeduction,
+    Some(lossClaimsSummaryResponse),
+    Some(lossClaimsDetailDefaultResponse)
+  )
 
 }
