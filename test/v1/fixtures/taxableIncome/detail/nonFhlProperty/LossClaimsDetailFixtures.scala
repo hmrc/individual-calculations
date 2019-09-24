@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.nonFhlProperty
+package v1.fixtures.taxableIncome.detail.nonFhlProperty
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 import support.UnitSpec

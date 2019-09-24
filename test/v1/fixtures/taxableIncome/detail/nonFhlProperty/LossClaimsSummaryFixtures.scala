@@ -14,30 +14,21 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.nonFhlProperty
+package v1.fixtures.taxableIncome.detail.nonFhlProperty
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail.LossBroughtForward
+import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.summary.LossClaimsSummary
 
-object LossBroughtForwardFixtures {
+object LossClaimsSummaryFixtures {
 
-  val lossBroughtForwardDesJson: JsValue = Json.parse(
+  val lossClaimsSummaryJson: JsValue = Json.parse(
     """
       |{
-      | "taxYearLossIncurred" : 2019,
-      | "currentLossValue" : 2000,
-      | "mtdLoss" : false
+      | "totalBroughtForwardIncomeTaxLosses" : 2000,
+      | "broughtForwardIncomeTaxLossesUsed" : 2000,
+      | "totalIncomeTaxLossesCarriedForward" : 2000
       |}
     """.stripMargin)
 
-  val lossBroughtForwardMtdJson: JsValue = Json.parse(
-    """
-      |{
-      | "taxYearLossIncurred" : "2018-19",
-      | "currentLossValue" : 2000,
-      | "mtdLoss" : false
-      |}
-    """.stripMargin)
-
-  val lossBroughtForwardModel = LossBroughtForward("2018-19", 2000, false)
+  val lossClaimsSummaryModel = LossClaimsSummary(Some(2000), Some(2000), Some(2000))
 }

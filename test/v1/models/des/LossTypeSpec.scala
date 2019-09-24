@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package v1.fixtures
+package v1.models.des
 
-import v1.models.response.common.Message
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import LossType._
 
-object Fixtures {
-  val err1 = Message("err1", "text1")
-  val err2 = Message("err2", "text2")
-  val info1 = Message("info1", "text1")
-  val info2 = Message("info2", "text2")
-  val warn1 = Message("warn1", "text1")
-  val warn2 = Message("warn2", "text2")
+class LossTypeSpec  extends UnitSpec with EnumJsonSpecSupport {
 
+  val desJson: JsValue = Json.toJson("")
+
+  testRoundTrip[LossType](
+    ("income", INCOME),
+    ("class4nics", CLASS4NICS))
 }

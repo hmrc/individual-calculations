@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.nonFhlProperty.ResultOfClaimAppliedFixtures
+import v1.fixtures.taxableIncome.detail.nonFhlProperty.ResultOfClaimAppliedFixtures
 import v1.models.response.getCalculation.taxableIncome.detail.UkPropertyNonFhl.detail.ResultOfClaimApplied
 
 class ResultOfClaimAppliedSpec extends UnitSpec {

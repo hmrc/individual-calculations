@@ -16,12 +16,35 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary
 
-case class LossClaimsSummary(
-    totalBroughtForwardIncomeTaxLosses: Option[BigDecimal],
-    broughtForwardIncomeTaxLossesUsed: Option[BigDecimal],
-    totalIncomeTaxLossesCarriedForward: Option[BigDecimal],
-    totalBroughtForwardClass4Losses: Option[BigDecimal],
-    broughtForwardClass4LossesUsed: Option[BigDecimal],
-    carrySidewaysClass4LossesUsed: Option[BigDecimal],
-    totalClass4LossesCarriedForward: Option[BigDecimal]
-)
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ Json, OWrites, Reads, _ }
+
+case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
+                             broughtForwardIncomeTaxLossesUsed: Option[BigInt],
+                             totalIncomeTaxLossesCarriedForward: Option[BigInt],
+                             totalBroughtForwardClass4Losses: Option[BigInt],
+                             broughtForwardClass4LossesUsed: Option[BigInt],
+                             carrySidewaysClass4LossesUsed: Option[BigInt],
+                             totalClass4LossesCarriedForward: Option[BigInt]) {
+
+  val isEmpty: Boolean = this == LossClaimsSummary.emptyLossClaimsSummary
+
+}
+
+object LossClaimsSummary {
+
+  val emptyLossClaimsSummary: LossClaimsSummary = LossClaimsSummary(None, None, None, None, None, None, None)
+
+  implicit val writes: OWrites[LossClaimsSummary] = Json.writes[LossClaimsSummary]
+
+  implicit val reads: Reads[LossClaimsSummary] = (
+    (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigInt] and
+      (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigInt] and
+      (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigInt] and
+      (JsPath \ "totalBroughtForwardClass4Losses").readNullable[BigInt] and
+      (JsPath \ "broughtForwardClass4LossesUsed").readNullable[BigInt] and
+      (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigInt] and
+      (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigInt]
+  )(LossClaimsSummary.apply _)
+
+}

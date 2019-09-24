@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.detail.ukProperty.LossBroughtForwardFixtures._
-import v1.models.utils.JsonErrorValidators
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.LossBroughtForwardFixtures._
 
-class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators{
+class LossBroughtForwardSpec extends UnitSpec {
 
   "LossesBroughtForward" when {
     "read from valid Json" should {
-
-      testMandatoryProperty[LossBroughtForward](lossBroughtForwardDesJson)("/taxYearLossIncurred")
-      testMandatoryProperty[LossBroughtForward](lossBroughtForwardDesJson)("/currentLossValue")
-      testMandatoryProperty[LossBroughtForward](lossBroughtForwardDesJson)("/mtdLoss")
-
       "return a JsSuccess" in {
         lossBroughtForwardDesJson.validate[LossBroughtForward] shouldBe a[JsSuccess[_]]
       }
@@ -38,7 +32,19 @@ class LossBroughtForwardSpec extends UnitSpec with JsonErrorValidators{
       }
     }
 
-    "writes to Json" should {
+    "read from Json with the MtdLoss field not present" should {
+      "map the MtdLoss field to 'true' and return the expected LossesBroughtForward object" in {
+        lossBroughtForwardDesJsonWithoutMtdLoss.as[LossBroughtForward] shouldBe lossBroughtForwardResponseWithoutMtdLoss
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        lossBroughtForwardInvalidJson.validate[LossBroughtForward] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(lossBroughtForwardResponse) shouldBe lossBroughtForwardWrittenJson
       }

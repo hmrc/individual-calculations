@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.fixtures
 
-import play.api.libs.json._
+import v1.models.response.common.Message
 
-case class SelfEmployment(test: Option[String])
+object MessageFixtures {
+  val err1 = Message("err1", "text1")
+  val err2 = Message("err2", "text2")
+  val info1 = Message("info1", "text1")
+  val info2 = Message("info2", "text2")
+  val warn1 = Message("warn1", "text1")
+  val warn2 = Message("warn2", "text2")
 
-object SelfEmployment {
-  implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
-  implicit val reads: Reads[SelfEmployment]    = Json.reads[SelfEmployment]
 }

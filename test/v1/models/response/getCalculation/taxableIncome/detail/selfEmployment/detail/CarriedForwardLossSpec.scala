@@ -14,31 +14,37 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import support.UnitSpec
-import v1.fixtures.taxableIncome.detail.ukProperty.DefaultCarriedForwardLossFixtures._
-import v1.models.utils.JsonErrorValidators
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.CarriedForwardLossFixtures._
 
-class DefaultCarriedForwardLossSpec extends UnitSpec with JsonErrorValidators {
+class CarriedForwardLossSpec extends UnitSpec {
 
   "CarriedForwardLoss" when {
     "read from valid Json" should {
-
-      testMandatoryProperty[DefaultCarriedForwardLoss](carriedForwardLossDesJson)("/taxYearLossIncurred")
-      testMandatoryProperty[DefaultCarriedForwardLoss](carriedForwardLossDesJson)("/currentLossValue")
-
       "return a JsSuccess" in {
-        carriedForwardLossDesJson.validate[DefaultCarriedForwardLoss] shouldBe a[JsSuccess[_]]
+        carriedForwardLossDesJson.validate[CarriedForwardLoss] shouldBe a[JsSuccess[_]]
       }
-
       "with the expected CarriedForwardLoss object" in {
-        carriedForwardLossDesJson.as[DefaultCarriedForwardLoss] shouldBe carriedForwardLossResponse
+        carriedForwardLossDesJson.as[CarriedForwardLoss] shouldBe carriedForwardLossResponse
       }
     }
 
-    "writes to Json" should {
+    "read from Json with missing optional fields" should {
+      "return the expected CarriedForwardLoss" in {
+        carriedForwardLossDesJsonWithoutOptionals.as[CarriedForwardLoss] shouldBe carriedForwardLossResponseWithoutOptionals
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        carriedForwardLossInvalidJson.validate[CarriedForwardLoss] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(carriedForwardLossResponse) shouldBe carriedForwardLossWrittenJson
       }

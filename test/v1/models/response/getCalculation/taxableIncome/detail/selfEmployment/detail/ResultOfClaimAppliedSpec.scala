@@ -14,40 +14,37 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.detail.ukProperty.ResultOfClaimAppliedFixtures._
-import v1.models.utils.JsonErrorValidators
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.ResultOfClaimAppliedFixtures._
 
-class ResultOfClaimAppliedSpec extends UnitSpec with JsonErrorValidators {
+class ResultOfClaimAppliedSpec extends UnitSpec {
 
   "ResultOfClaimApplied" when {
     "read from valid Json" should {
-
-      testMandatoryProperty[ResultOfClaimApplied](resultOfClaimAppliedDesJson)("/taxYearClaimMade")
-      testMandatoryProperty[ResultOfClaimApplied](resultOfClaimAppliedDesJson)("/claimType")
-      testMandatoryProperty[ResultOfClaimApplied](resultOfClaimAppliedDesJson)("/mtdLoss")
-      testMandatoryProperty[ResultOfClaimApplied](resultOfClaimAppliedDesJson)("/taxYearLossIncurred")
-      testMandatoryProperty[ResultOfClaimApplied](resultOfClaimAppliedDesJson)("/lossAmountUsed")
-      testMandatoryProperty[ResultOfClaimApplied](resultOfClaimAppliedDesJson)("/remainingLossValue")
-
-      testPropertyType[ResultOfClaimApplied](resultOfClaimAppliedDesJson)(
-        path = "/claimId",
-        replacement = 12344.toJson,
-        expectedError = JsonError.STRING_FORMAT_EXCEPTION)
-
       "return a JsSuccess" in {
         resultOfClaimAppliedDesJson.validate[ResultOfClaimApplied] shouldBe a[JsSuccess[_]]
       }
-
       "with the expected ResultOfClaimApplied object" in {
         resultOfClaimAppliedDesJson.as[ResultOfClaimApplied] shouldBe resultOfClaimAppliedResponse
       }
     }
 
-    "writes to Json" should {
+    "read from Json with the MtdLoss field not present" should {
+      "map the MtdLoss field to 'true' and return the expected ResultOfClaimApplied object" in {
+        resultOfClaimAppliedDesJsonWithoutMtdLoss.as[ResultOfClaimApplied] shouldBe resultOfClaimAppliedResponseWithoutMtdLoss
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        resultOfClaimAppliedInvalidJson.validate[ResultOfClaimApplied] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(resultOfClaimAppliedResponse) shouldBe resultOfClaimAppliedWrittenJson
       }
