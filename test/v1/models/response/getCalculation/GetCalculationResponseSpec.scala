@@ -19,15 +19,15 @@ package v1.models.response.getCalculation
 import play.api.libs.json._
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
-import v1.models.response.common.{Message, Messages, Metadata, _}
+import v1.models.response.common.{Message, Messages, Metadata}
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
+import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
 class GetCalculationResponseSpec extends UnitSpec {
 
-  val desJson: JsValue = Json.parse(
-    """{
+  val desJson: JsValue = Json.parse("""{
       |    "metadata":{
       |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |       "taxYear": 2019,
@@ -39,15 +39,39 @@ class GetCalculationResponseSpec extends UnitSpec {
       |       "periodFrom": "1-2018",
       |       "periodTo": "1-2019"
       |     },
-      |     "messages" :{
+      |     "messages": {
       |        "errors":[
       |        {"id":"id1", "text":"text1"}
       |        ]
       |     }
       |}""".stripMargin)
 
-  val invalidDesJson: JsValue = Json.parse(
-    """{
+  val desJsonWithAllParts: JsValue = desJson.as[JsObject] ++
+    Json.parse("""
+                 |{
+                 | "calculation" : {
+                 |   "taxCalculation" : {
+                 |     "incomeTax" : {
+                 |       "incomeTaxCharged" : 100.25,
+                 |       "payPensionsProfit" : {
+                 |           "allowancesAllocated" : 300.25,
+                 |           "incomeTaxAmount": 400.25
+                 |        }
+                 |     },
+                 |     "totalIncomeTaxAndNicsDue" : 200.25,
+                 |     "totalIncomeReceivedFromAllSources": 123,
+                 |     "totalTaxableIncome": 234
+                 |   }
+                 |  },
+                 | "inputs" : {
+                 |  "personalInformation" : {
+                 |    "taxRegime" : "UK"
+                 |  }
+                 | }
+                 |}
+      """.stripMargin).as[JsObject]
+
+  val invalidDesJson: JsValue = Json.parse("""{
       |    "metadata":{
       |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
       |       "taxYear": 2019,
@@ -67,25 +91,54 @@ class GetCalculationResponseSpec extends UnitSpec {
       |}""".stripMargin)
 
   val writtenJson: JsValue = Json.parse(
-    """{
-      |    "metadata":{
-      |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |       "taxYear": "2018-19",
-      |       "requestedBy": "customer",
-      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |       "calculationReason": "customerRequest",
-      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |       "calculationType": "inYear",
-      |       "intentToCrystallise": false,
-      |       "crystallised": false,
-      |       "calculationErrorCount": 1
-      |       },
-      |    "messages" :{
-      |        "errors":[
-      |        {"id":"id1", "text":"text1"}
-      |        ]
-      |     }
-      |}""".stripMargin)
+    """
+      |{
+      |  "metadata": {
+      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |    "taxYear": "2018-19",
+      |    "requestedBy": "customer",
+      |    "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |    "calculationReason": "customerRequest",
+      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |    "calculationType": "inYear",
+      |    "intentToCrystallise": false,
+      |    "crystallised": false,
+      |    "calculationErrorCount": 1
+      |  },
+      |  "incomeTaxAndNicsCalculated": {
+      |    "summary": {
+      |      "incomeTax": {
+      |        "incomeTaxCharged": 100.25
+      |      },
+      |      "totalIncomeTaxAndNicsDue": 200.25,
+      |      "taxRegime": "UK"
+      |    },
+      |    "detail": {
+      |      "incomeTax": {
+      |        "payPensionsProfit": {
+      |          "allowancesAllocated": 300.25,
+      |          "incomeTaxAmount": 400.25
+      |        }
+      |      }
+      |    }
+      |  },
+      |  "messages": {
+      |    "errors": [
+      |      {
+      |        "id": "id1",
+      |        "text": "text1"
+      |      }
+      |    ]
+      |  },
+      |  "taxableIncome": {
+      |    "summary": {
+      |      "totalIncomeReceivedFromAllSources": 123,
+      |      "totalTaxableIncome": 234
+      |    },
+      |    "detail": {}
+      |  }
+      |}
+      |""".stripMargin)
 
   val metadata = Metadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -100,49 +153,28 @@ class GetCalculationResponseSpec extends UnitSpec {
     calculationErrorCount = Some(1)
   )
 
-  val messages = Messages(None, None, Some(Seq(Message("id1", "text1"))))
+  val messages           = Messages(None, None, Some(Seq(Message("id1", "text1"))))
   val calculationSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25, "UK")
-  val calculationDetail = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300.25, 400.25, None)), None, None, None), None, None)
-  val incomeTax = IncomeTax(calculationSummary, calculationDetail)
-  val calculationResponse = GetCalculationResponse(metadata, messages = Some(messages))
-  val calculationResponseFull = GetCalculationResponse(metadata, Some(incomeTax), Some(messages))
+  val calculationDetail  = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300.25, 400.25, None)), None, None, None), None, None)
+  val incomeTax          = IncomeTax(calculationSummary, calculationDetail)
 
-  val desJsonWithIncomeTax: JsValue = desJson.as[JsObject] ++
-    Json.parse(
-      """
-        |{
-        | "calculation" : {
-        |   "taxCalculation" : {
-        |     "incomeTax" : {
-        |       "incomeTaxCharged" : 100.25,
-        |       "payPensionsProfit" : {
-        |           "allowancesAllocated" : 300.25,
-        |           "incomeTaxAmount": 400.25
-        |        }
-        |     },
-        |     "totalIncomeTaxAndNicsDue" : 200.25
-        |   }
-        | },
-        | "inputs" : {
-        |  "personalInformation" : {
-        |    "taxRegime" : "UK"
-        |  }
-        | }
-        |}
-      """.stripMargin).as[JsObject]
+  val taxableIncomeModel = TaxableIncome(
+    taxableIncome.summary.CalculationSummary(123, 234),
+    taxableIncome.detail.CalculationDetail(None, None, None)
+  )
+  val calculationResponse         = GetCalculationResponse(metadata, messages = Some(messages))
+  val calculationResponseAllParts = GetCalculationResponse(metadata, Some(incomeTax), Some(messages), Some(taxableIncomeModel))
 
   "GetCalculationResponse" should {
 
     "successfully read from json" when {
 
       "provided with valid json with only metadata" in {
-        desJson.validate[GetCalculationResponse] shouldBe a[JsSuccess[_]]
         desJson.as[GetCalculationResponse] shouldBe calculationResponse
       }
 
-      "provided with valid json with income tax and messages" in {
-        desJsonWithIncomeTax.validate[GetCalculationResponse] shouldBe a[JsSuccess[_]]
-        desJsonWithIncomeTax.as[GetCalculationResponse] shouldBe calculationResponseFull
+      "provided with valid json with all optional top-level parts" in {
+        desJsonWithAllParts.as[GetCalculationResponse] shouldBe calculationResponseAllParts
       }
     }
 
@@ -156,8 +188,7 @@ class GetCalculationResponseSpec extends UnitSpec {
     "write correctly to json" when {
 
       "using a model with only metadata" in {
-
-        Json.toJson(calculationResponse) shouldBe writtenJson
+        Json.toJson(calculationResponseAllParts) shouldBe writtenJson
       }
     }
   }
