@@ -79,6 +79,24 @@ object LossClaimSummaryFixtures {
       |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
       |}""".stripMargin)
 
+  val lossClaimSummaryDesJsonWithoutOptionals: JsValue = Json.parse(s"""{
+      |    "incomeSourceId": "$selfEmploymentId",
+      |    "incomeSourceType": "$incomeSourceType",
+      |    "incomeSourceName": "$incomeSourceName",
+      |    "totalIncome": $totalIncome,
+      |    "totalExpenses": $totalExpenses,
+      |    "netProfit": $netProfit,
+      |    "netLoss": $netLoss,
+      |    "totalAdditions": $totalAdditions,
+      |    "totalDeductions": $totalDeductions,
+      |    "accountingAdjustments": $accountingAdjustments,
+      |    "taxableProfit": $taxableProfit,
+      |    "adjustedIncomeTaxLoss": $adjustedIncomeTaxLoss,
+      |    "lossForCSFHL": $lossForCSFHL,
+      |    "taxableProfitAfterLossesDeduction": $taxableProfitAfterLossesDeduction,
+      |    "class4Loss": $class4Loss
+      |}""".stripMargin)
+
   val lossClaimSummaryWrittenJson: JsValue = Json.parse(s"""{
       |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
       |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},

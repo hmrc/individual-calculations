@@ -16,26 +16,27 @@
 
 package v1.fixtures.taxableIncome.detail.selfEmployments
 
-import play.api.libs.json.{ JsObject, JsValue, Json }
-import v1.fixtures.taxableIncome.detail.selfEmployments.summary.LossClaimSummaryFixtures._
+import play.api.libs.json.{JsArray, JsObject, JsValue, Json}
 import v1.fixtures.taxableIncome.detail.selfEmployments.detail.LossClaimsDetailFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail._
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.{ SelfEmploymentBusiness, detail }
+import v1.fixtures.taxableIncome.detail.selfEmployments.summary.LossClaimSummaryFixtures._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmploymentBusiness
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
 object SelfEmploymentBusinessFixtures {
 
-  val selfEmploymentId: String                              = "AAIS12345678904"
-  val totalIncome: Option[BigDecimal]                       = Some(79291394)
-  val totalExpenses: Option[BigDecimal]                     = Some(89005890)
-  val netProfit: Option[BigDecimal]                         = Some(93480427)
-  val netLoss: Option[BigDecimal]                           = Some(10017816)
-  val class4Loss: Option[BigDecimal]                        = Some(2)
-  val totalAdditions: Option[BigDecimal]                    = Some(39901282)
-  val totalDeductions: Option[BigDecimal]                   = Some(80648172)
-  val accountingAdjustments: Option[BigDecimal]             = Some(-8769926.99)
-  val taxableProfit: Option[BigDecimal]                     = Some(92149284)
-  val adjustedIncomeTaxLoss: Option[BigDecimal]             = Some(2)
-  val taxableProfitAfterLossesDeduction: Option[BigDecimal] = Some(2)
+  val selfEmploymentId: String                          = "AAIS12345678904"
+  val totalIncome: Option[BigDecimal]                   = Some(79291394)
+  val totalExpenses: Option[BigDecimal]                 = Some(89005890)
+  val netProfit: Option[BigDecimal]                     = Some(93480427)
+  val netLoss: Option[BigDecimal]                       = Some(10017816)
+  val class4Loss: Option[BigInt]                        = Some(2)
+  val totalAdditions: Option[BigDecimal]                = Some(39901282)
+  val totalDeductions: Option[BigDecimal]               = Some(80648172)
+  val accountingAdjustments: Option[BigDecimal]         = Some(-8769926.99)
+  val taxableProfit: Option[BigDecimal]                 = Some(92149284)
+  val adjustedIncomeTaxLoss: Option[BigInt]             = Some(2)
+  val taxableProfitAfterLossesDeduction: Option[BigInt] = Some(2)
 
   val selfEmploymentBusinessDefaultResponse: SelfEmploymentBusiness = SelfEmploymentBusiness(
     selfEmploymentId,
@@ -53,6 +54,7 @@ object SelfEmploymentBusinessFixtures {
     Some(lossClaimsSummaryResponse),
     Some(lossClaimsDetailDefaultResponse)
   )
+
   val selfEmploymentBusinessDefaultResponseWithoutDetail: SelfEmploymentBusiness = selfEmploymentBusinessDefaultResponse.copy(lossClaimsDetail = None)
 
   val selfEmploymentBusinessDefaultDesJsonSingular: JsValue = lossClaimSummaryDesJson
@@ -77,19 +79,27 @@ object SelfEmploymentBusinessFixtures {
       |}""".stripMargin)
 
   val selfEmploymentDetailDefaultWrittenJsonSingular: JsValue =
-   additionalWrittenFieldsJson.as[JsObject].deepMerge(
-        Json.obj("lossClaimsSummary" -> lossClaimSummaryWrittenJson)
+    additionalWrittenFieldsJson
+      .as[JsObject]
+      .deepMerge(
+        Json
+          .obj("lossClaimsSummary" -> lossClaimSummaryWrittenJson)
           .deepMerge(
             Json.obj("lossClaimsDetail" -> lossClaimsDetailDefaultWrittenJson)
           ))
-/*
+
   val selfEmploymentDetailDefaultWrittenJsonSequence: JsValue =
-     Json.toJsObject(Seq(additionalWrittenFieldsJson.as[JsObject].deepMerge(
+   Json.arr(additionalWrittenFieldsJson.as[JsObject].deepMerge(
       Json.obj("lossClaimsSummary" -> lossClaimSummaryWrittenJson)
         .deepMerge(
           Json.obj("lossClaimsDetail" -> lossClaimsDetailDefaultWrittenJson)
         )))
- */
+
+  def selfEmploymentBusinessResponseFactory(
+      selfEmploymentId: String = "a1s2d3f4g5h6j7k"
+  ): SelfEmploymentBusiness = selfEmploymentBusinessDefaultResponse.copy(selfEmploymentId = selfEmploymentId)
+
 
   val emptyJson: JsObject = JsObject.empty
+
 }

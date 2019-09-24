@@ -16,9 +16,8 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
-import play.api.libs.json.{ JsSuccess, Json }
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import support.UnitSpec
-import v1.fixtures.taxableIncome.detail.selfEmployments.summary.LossClaimSummaryFixtures._
 import v1.fixtures.taxableIncome.detail.selfEmployments.SelfEmploymentBusinessFixtures._
 
 class SelfEmploymentBusinessSpec extends UnitSpec {
@@ -32,22 +31,18 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
         selfEmploymentBusinessDefaultDesJsonSingular.as[SelfEmploymentBusiness] shouldBe selfEmploymentBusinessDefaultResponseWithoutDetail
       }
     }
-    /*
-    "read from invalid Json" should{
-      "return a JsError"
-    }
-    //Failure case
-    //Missing optionals
 
-     */
+    "read from invalid Json" should {
+      "return a JsError" in {
+        emptyJson.validate[SelfEmploymentBusiness] shouldBe a[JsError]
+      }
+    }
 
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(selfEmploymentBusinessDefaultResponse) shouldBe selfEmploymentDetailDefaultWrittenJsonSingular
       }
     }
-
-    //Missing optionals
   }
 
   "SelfEmploymentBusiness: sequence" when {
@@ -60,13 +55,19 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
       }
     }
 
-    //Empty Json/ invalid Json
+    "read from empty Json" should {
+      "return an empty sequence" in {
+        emptyJson.as[Seq[SelfEmploymentBusiness]].isEmpty shouldBe true
+      }
+    }
+
+    "read f"
+
     //Prove filter
-    //Missing optionals
 
     "written to Json" should {
       "return the expected JsObject" in {
-        //Json.toJson(Seq(selfEmploymentBusinessDefaultResponse)) shouldBe selfEmploymentDetailDefaultWrittenJsonSequence
+        Json.toJson(Seq(selfEmploymentBusinessDefaultResponse)) shouldBe selfEmploymentDetailDefaultWrittenJsonSequence
       }
     }
   }
