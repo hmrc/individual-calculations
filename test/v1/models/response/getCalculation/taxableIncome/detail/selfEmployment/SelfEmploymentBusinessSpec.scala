@@ -16,9 +16,11 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
-import play.api.libs.json.{ JsError, JsSuccess, Json }
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.taxableIncome.detail.selfEmployments.SelfEmploymentBusinessFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.SelfEmploymentJson._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{LossBroughtForward, LossClaimsDetail}
 
 class SelfEmploymentBusinessSpec extends UnitSpec {
 
@@ -62,13 +64,17 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
     }
 
     "read from Json with multiple selfEmployments" should {
-      "return the expected sequence of SelfEmploymentBusiness" in {
+      "return the expected sequence of SelfEmployments" in {
         summariesDesJson.as[Seq[SelfEmploymentBusiness]] shouldBe selfEmployments
       }
     }
 
+    "" should {
+      "" in {
+        sdf.as[SelfEmploymentBusiness] shouldBe seSeq
+      }
+    }
 
-    //Prove filter
 
     "written to Json" should {
       "return the expected JsObject" in {
