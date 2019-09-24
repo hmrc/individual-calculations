@@ -69,9 +69,9 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
       }
     }
 
-    "" should {
-      "" in {
-        sdf.as[SelfEmploymentBusiness] shouldBe seSeq
+    "read from a complex Json scenario" should {
+      "return the expected sequence of SelfEmployments" in {
+        complexSelfEmploymentCaseDesJson.as[Seq[SelfEmploymentBusiness]] shouldBe complexSelfEmploymentCaseResponse
       }
     }
 
@@ -81,5 +81,12 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
         Json.toJson(Seq(selfEmploymentBusinessDefaultResponse)) shouldBe selfEmploymentDetailDefaultWrittenJsonSequence
       }
     }
+
+    "written from a complex selfEmployment object" should {
+      "return the expected JsObject" in {
+        Json.toJson(complexSelfEmploymentCaseResponse) shouldBe complexSelfEmploymentCaseWrittenJson
+      }
+    }
   }
+
 }
