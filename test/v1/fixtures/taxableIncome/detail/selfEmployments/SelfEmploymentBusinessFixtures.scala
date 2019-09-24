@@ -130,7 +130,7 @@ object SelfEmploymentBusinessFixtures {
     taxableProfit,
     taxableProfitAfterLossesDeduction,
     Some(lossClaimsSummaryResponse),
-    Some(lossClaimsDetailDefaultResponse)
+    None
   )
 
 }

@@ -77,6 +77,18 @@ object LossClaimsDetailFixtures {
       .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("carriedForwardLosses" -> carriedForwardLosses))))
       .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("claimsNotApplied" -> claimsNotApplied))))
 
+  def lossClaimsDetailDesJsonIdFactory(resultOfClaimsApplied: Seq[JsValue] = Seq.empty,
+                                     unclaimedLosses: Seq[JsValue] = Seq.empty,
+                                     carriedForwardLosses: Seq[JsValue] = Seq.empty,
+                                     claimsNotApplied: Seq[JsValue] = Seq.empty,
+                                     lossesBroughtForward: Seq[JsValue] = Seq.empty): JsValue =
+    Json
+      .obj("inputs" -> Json.obj("lossesBroughtForward" -> lossesBroughtForward))
+      .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("resultOfClaimsApplied" -> resultOfClaimsApplied))))
+      .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("unclaimedLosses" -> unclaimedLosses))))
+      .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("carriedForwardLosses" -> carriedForwardLosses))))
+      .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("claimsNotApplied" -> claimsNotApplied))))
+
   def lossClaimsDetailWrittenJsonFactory(resultOfClaimsApplied: Seq[JsValue] = Seq.empty,
                                          unclaimedLosses: Seq[JsValue] = Seq.empty,
                                          carriedForwardLosses: Seq[JsValue] = Seq.empty,
