@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import support.UnitSpec
 import v1.fixtures.taxableIncome.detail.selfEmployments.CarriedForwardLossFixtures._
 
@@ -33,7 +33,7 @@ class CarriedForwardLossSpec extends UnitSpec {
     }
 
     "read from Json with missing optional fields" should {
-      "return the expected JsObject" in {
+      "return the expected CarriedForwardLoss" in {
         carriedForwardLossDesJsonWithoutOptionals.as[CarriedForwardLoss] shouldBe carriedForwardLossResponseWithoutOptionals
       }
     }

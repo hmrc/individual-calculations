@@ -33,13 +33,13 @@ class LossBroughtForwardSpec extends UnitSpec {
     }
 
     "read from Json with the MtdLoss field not present" should {
-      "return the expected LossesBroughtForward object" in {
+      "map the MtdLoss field to 'true' and return the expected LossesBroughtForward object" in {
         lossBroughtForwardDesJsonWithoutMtdLoss.as[LossBroughtForward] shouldBe lossBroughtForwardResponseWithoutMtdLoss
       }
     }
 
     "read from invalid Json" should {
-      "return a JsSuccess" in {
+      "return a JsError" in {
         lossBroughtForwardInvalidJson.validate[LossBroughtForward] shouldBe a[JsError]
       }
     }

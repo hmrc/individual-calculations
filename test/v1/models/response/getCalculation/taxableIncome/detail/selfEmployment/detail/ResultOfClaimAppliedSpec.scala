@@ -33,7 +33,7 @@ class ResultOfClaimAppliedSpec extends UnitSpec {
     }
 
     "read from Json with the MtdLoss field not present" should {
-      "return the expected LossesBroughtForward object" in {
+      "map the MtdLoss field to 'true' and return the expected ResultOfClaimApplied object" in {
         resultOfClaimAppliedDesJsonWithoutMtdLoss.as[ResultOfClaimApplied] shouldBe resultOfClaimAppliedResponseWithoutMtdLoss
       }
     }

@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsObject, JsPath, Json, OWrites, Reads}
+import play.api.libs.json._
 import v1.models.des.ReliefClaimed
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear

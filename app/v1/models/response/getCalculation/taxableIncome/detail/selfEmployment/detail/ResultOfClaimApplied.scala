@@ -17,9 +17,9 @@
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsObject, JsPath, Json, OWrites, Reads}
-import v1.models.des.{LossType, ReliefClaimed}
-import v1.models.domain.{TypeOfClaim, TypeOfLoss}
+import play.api.libs.json._
+import v1.models.des.{ LossType, ReliefClaimed }
+import v1.models.domain.{ TypeOfClaim, TypeOfLoss }
 import v1.models.request.DesTaxYear
 
 case class ResultOfClaimApplied(
@@ -28,8 +28,8 @@ case class ResultOfClaimApplied(
     claimType: TypeOfClaim,
     mtdLoss: Boolean,
     taxYearLossIncurred: String,
-    lossAmountUsed: BigDecimal,
-    remainingLossValue: BigDecimal,
+    lossAmountUsed: BigInt,
+    remainingLossValue: BigInt,
     lossType: TypeOfLoss,
     incomeSourceId: String
 )
@@ -56,8 +56,8 @@ object ResultOfClaimApplied {
       (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
       (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "lossAmountUsed").read[BigDecimal] and
-      (JsPath \ "remainingLossValue").read[BigDecimal] and
+      (JsPath \ "lossAmountUsed").read[BigInt] and
+      (JsPath \ "remainingLossValue").read[BigInt] and
       (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss) and
       (JsPath \ "incomeSourceId").read[String]
   )(ResultOfClaimApplied.apply _)

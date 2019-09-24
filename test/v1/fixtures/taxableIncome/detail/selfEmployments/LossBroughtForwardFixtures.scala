@@ -16,21 +16,22 @@
 
 package v1.fixtures.taxableIncome.detail.selfEmployments
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{ JsValue, Json }
 import v1.models.domain.TypeOfLoss
 import v1.models.request.DesTaxYear
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossBroughtForward
 
 object LossBroughtForwardFixtures {
-  val lossId: String               = "0yriP9QrW2jTa6n"
-  val incomeSourceId: String       = "AAIS12345678904"
-  val incomeSourceType: String     = "01"
-  val submissionTimestamp: String  = "2019-07-13T07:51:43Z"
-  val lossType                     = "income"
-  val mtdLossType                  = "self-employment"
-  val taxYearLossIncurred: Int     = 2055
-  val currentLossValue: BigDecimal = 673350334
-  val mtdLoss: Boolean             = false
+
+  val lossId: String              = "0yriP9QrW2jTa6n"
+  val incomeSourceId: String      = "AAIS12345678904"
+  val incomeSourceType: String    = "01"
+  val submissionTimestamp: String = "2019-07-13T07:51:43Z"
+  val lossType: String            = "income"
+  val mtdLossType: String         = "self-employment"
+  val taxYearLossIncurred: Int    = 2055
+  val currentLossValue: BigInt    = 673350334
+  val mtdLoss: Boolean            = false
 
   val lossBroughtForwardResponse: LossBroughtForward =
     LossBroughtForward(TypeOfLoss.`self-employment`, DesTaxYear.fromDesIntToString(taxYearLossIncurred), currentLossValue, mtdLoss, incomeSourceId)

@@ -16,7 +16,7 @@
 
 package v1.fixtures.taxableIncome.detail.selfEmployments
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{ JsValue, Json }
 import v1.models.des.LossType
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear

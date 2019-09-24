@@ -32,6 +32,9 @@ class SelfEmploymentBusinessSpec extends UnitSpec {
         selfEmploymentBusinessDefaultDesJsonSingular.as[SelfEmploymentBusiness] shouldBe selfEmploymentBusinessDefaultResponseWithoutDetail
       }
     }
+    "read from invalid Json" should{
+      "return a JsError"
+    }
     //Failure case
     //Missing optionals
 
