@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class LossClaimsSummary(
-                              lossForCSFHL: Option[BigInt],
-                              totalBroughtForwardIncomeTaxLosses: Option[BigInt],
-                              broughtForwardIncomeTaxLossesUsed: Option[BigInt],
-                              totalIncomeTaxLossesCarriedForward: Option[BigInt]
-                            )
+case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
+                             broughtForwardIncomeTaxLossesUsed: Option[BigInt],
+                             totalIncomeTaxLossesCarriedForward: Option[BigInt])
 
 object LossClaimsSummary {
   implicit val writes: OWrites[LossClaimsSummary] = Json.writes[LossClaimsSummary]
 
   implicit val reads: Reads[LossClaimsSummary] = (
-    (JsPath \ "lossForCSFHL").readNullable[BigInt] and
-      (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigInt] and
+    (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigInt] and
       (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigInt] and
       (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigInt]
-  )(LossClaimsSummary.apply _)
+    )(LossClaimsSummary.apply _)
 }

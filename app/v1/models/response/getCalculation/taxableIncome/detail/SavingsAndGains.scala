@@ -17,15 +17,16 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import utils.NestedJsonReads
 
 case class SavingsAndGains(incomeReceived: BigInt, taxableIncome: BigInt, savings: Option[Seq[Savings]])
 
-object SavingsAndGains {
+object SavingsAndGains extends NestedJsonReads{
   implicit val writes: OWrites[SavingsAndGains] = Json.writes[SavingsAndGains]
   implicit val reads: Reads[SavingsAndGains] = (
     (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "incomeReceived").read[BigInt] and
       (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "taxableIncome").read[BigInt] and
-      (JsPath \ "savingsAndGainsIncome").readNullable[Seq[Savings]]
+      (JsPath \ "savingsAndGainsIncome").readNullable[Seq[Savings]](filteredArrayReads("incomeSourceType", "09"))
   )(SavingsAndGains.apply _)
 }

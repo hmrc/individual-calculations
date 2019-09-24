@@ -19,7 +19,7 @@ package v1.fixtures.taxableIncome.detail.selfEmployments
 import play.api.libs.json.{ JsObject, JsValue, Json }
 import v1.fixtures.taxableIncome.detail.selfEmployments.detail.LossClaimsDetailFixtures._
 import v1.fixtures.taxableIncome.detail.selfEmployments.summary.LossClaimSummaryFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmploymentBusiness
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
 
 object SelfEmploymentBusinessFixtures {
 
@@ -34,9 +34,9 @@ object SelfEmploymentBusinessFixtures {
   val accountingAdjustments: Option[BigDecimal]         = Some(-8769926.99)
   val taxableProfit: Option[BigDecimal]                 = Some(92149284)
   val adjustedIncomeTaxLoss: Option[BigInt]             = Some(2)
-  val taxableProfitAfterLossesDeduction: Option[BigInt] = Some(2)
+  val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2)
 
-  val selfEmploymentBusinessDefaultResponse: SelfEmploymentBusiness = SelfEmploymentBusiness(
+  val selfEmploymentBusinessDefaultResponse: SelfEmployment = SelfEmployment(
     selfEmploymentId,
     totalIncome,
     totalExpenses,
@@ -48,12 +48,12 @@ object SelfEmploymentBusinessFixtures {
     accountingAdjustments,
     adjustedIncomeTaxLoss,
     taxableProfit,
-    taxableProfitAfterLossesDeduction,
+    taxableProfitAfterIncomeTaxLossesDeduction,
     Some(lossClaimsSummaryResponse),
     Some(lossClaimsDetailDefaultResponse)
   )
 
-  val selfEmploymentBusinessDefaultResponseWithoutDetail: SelfEmploymentBusiness = selfEmploymentBusinessDefaultResponse.copy(lossClaimsDetail = None)
+  val selfEmploymentBusinessDefaultResponseWithoutDetail: SelfEmployment = selfEmploymentBusinessDefaultResponse.copy(lossClaimsDetail = None)
 
   val selfEmploymentBusinessDefaultDesJsonSingular: JsValue = lossClaimSummaryDesJson
 
@@ -73,7 +73,7 @@ object SelfEmploymentBusinessFixtures {
       |    "accountingAdjustments": ${accountingAdjustments.get},
       |    "adjustedIncomeTaxLoss": ${adjustedIncomeTaxLoss.get},
       |    "taxableProfit": ${taxableProfit.get},
-      |    "taxableProfitAfterLossesDeduction": ${taxableProfitAfterLossesDeduction.get}
+      |    "taxableProfitAfterIncomeTaxLossesDeduction": ${taxableProfitAfterIncomeTaxLossesDeduction.get}
       |}""".stripMargin)
 
   val selfEmploymentDetailDefaultWrittenJsonSingular: JsValue =
@@ -108,7 +108,7 @@ object SelfEmploymentBusinessFixtures {
     )
   )
 
-  val selfEmployments: Seq[SelfEmploymentBusiness] = Seq(
+  val selfEmployments: Seq[SelfEmployment] = Seq(
     selfEmploymentResponseIdFactory("AA11WWLD30FKEKK"),
     selfEmploymentResponseIdFactory("FW01LCMWAIKSAND"),
     selfEmploymentResponseIdFactory("WIVJEJDJFJEHFI2"),
@@ -116,7 +116,7 @@ object SelfEmploymentBusinessFixtures {
   )
   val emptyJson: JsObject = JsObject.empty
 
-  def selfEmploymentResponseIdFactory(selfEmploymentId: String = selfEmploymentId): SelfEmploymentBusiness = SelfEmploymentBusiness(
+  def selfEmploymentResponseIdFactory(selfEmploymentId: String = selfEmploymentId): SelfEmployment = SelfEmployment(
     selfEmploymentId,
     totalIncome,
     totalExpenses,
@@ -128,7 +128,7 @@ object SelfEmploymentBusinessFixtures {
     accountingAdjustments,
     adjustedIncomeTaxLoss,
     taxableProfit,
-    taxableProfitAfterLossesDeduction,
+    taxableProfitAfterIncomeTaxLossesDeduction,
     Some(lossClaimsSummaryResponse),
     None
   )

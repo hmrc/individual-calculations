@@ -22,7 +22,7 @@ import v1.models.request.DesTaxYear
 
 case class LossBroughtForward(
                               taxYearLossIncurred: String,
-                              currentLossValue: BigDecimal,
+                              currentLossValue: BigInt,
                               mtdLoss: Boolean
                              )
 
@@ -32,7 +32,7 @@ object LossBroughtForward {
 
   implicit val reads: Reads[LossBroughtForward] = (
     (__ \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (__ \ "currentLossValue").read[BigDecimal] and
+      (__ \ "currentLossValue").read[BigInt] and
       (__ \ "mtdLoss").read[Boolean]
     )(LossBroughtForward.apply _)
 }

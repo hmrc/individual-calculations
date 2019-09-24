@@ -16,11 +16,57 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
+import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import utils.NestedJsonReads
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
-case class SelfEmployment(test: Option[String])
+case class SelfEmployment(
+    selfEmploymentId: String,
+    totalIncome: Option[BigDecimal],
+    totalExpenses: Option[BigDecimal],
+    netProfit: Option[BigDecimal],
+    netLoss: Option[BigDecimal],
+    class4Loss: Option[BigInt],
+    totalAdditions: Option[BigDecimal],
+    totalDeductions: Option[BigDecimal],
+    accountingAdjustments: Option[BigDecimal],
+    adjustedIncomeTaxLoss: Option[BigInt],
+    taxableProfit: Option[BigDecimal],
+    taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
+    lossClaimsSummary: Option[LossClaimsSummary],
+    lossClaimsDetail: Option[LossClaimsDetail]
+)
 
-object SelfEmployment {
+object SelfEmployment extends NestedJsonReads {
+
   implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
-  implicit val reads: Reads[SelfEmployment]    = Json.reads[SelfEmployment]
+
+  private implicit val singleReads: Reads[SelfEmployment] = ((JsPath \ "incomeSourceId").read[String] and
+    (JsPath \ "totalIncome").readNullable[BigDecimal] and
+    (JsPath \ "totalExpenses").readNullable[BigDecimal] and
+    (JsPath \ "netProfit").readNullable[BigDecimal] and
+    (JsPath \ "netLoss").readNullable[BigDecimal] and
+    (JsPath \ "class4Loss").readNullable[BigInt] and
+    (JsPath \ "totalAdditions").readNullable[BigDecimal] and
+    (JsPath \ "totalDeductions").readNullable[BigDecimal] and
+    (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
+    (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
+    (JsPath \ "taxableProfit").readNullable[BigDecimal] and
+    (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
+    JsPath.readNullable[LossClaimsSummary] and Reads.pure(None))(SelfEmployment.apply _)
+
+  implicit val seqReads: Reads[Seq[SelfEmployment]] = ((JsPath \ "calculation" \ "businessProfitAndLoss")
+    .readNestedNullable[Seq[JsValue]]
+    .map(_.getOrElse(Seq.empty).flatMap(js => LossClaimsDetail.filterByIncomeSourceType(js).asOpt[SelfEmployment]))
+    .map(x => Some(x)) and
+    JsPath.readNullable[LossClaimsDetail])(buildSelfEmployments(_, _))
+
+  def buildSelfEmployments(seqSelfEmploysOpt: Option[Seq[SelfEmployment]], detailsOpt: Option[LossClaimsDetail]): Seq[SelfEmployment] = {
+    val seqSelfEmploys    = seqSelfEmploysOpt.getOrElse(Seq.empty)
+    val details = detailsOpt.getOrElse(LossClaimsDetail.emptyLossClaimsDetail)
+    seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId)))
+  }
+
 }

@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.det
 
 import play.api.libs.json.{JsObject, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.detail.ukProperty.LossClaimsDetailFixtures._
+import v1.fixtures.taxableIncome.ukPropertyFhl.LossClaimsDetailFixtures._
 
 class LossClaimsDetailSpec extends UnitSpec {
 

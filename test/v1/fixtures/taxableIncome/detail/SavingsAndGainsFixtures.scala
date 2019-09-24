@@ -40,6 +40,7 @@ object SavingsAndGainsFixtures {
        |   "savingsAndGainsIncome" : [
        |   {
        |     "incomeSourceId":"$incomeSourceId",
+       |     "incomeSourceType": "09",
        |     "incomeSourceName":"$incomeSourceName",
        |     "grossIncome":$grossIncome,
        |     "netIncome": ${netIncome.get},
@@ -47,7 +48,16 @@ object SavingsAndGainsFixtures {
        |     },
        |    {
        |     "incomeSourceId":"${incomeSourceId concat "2"}",
+       |     "incomeSourceType": "09",
        |     "incomeSourceName":"${incomeSourceName concat "2"}",
+       |     "grossIncome":${grossIncome + 100},
+       |     "netIncome": ${netIncome.get + 100},
+       |     "taxDeducted": ${taxDeducted.get + 100}
+       |     },
+       |    {
+       |     "incomeSourceId":"${incomeSourceId concat "3"}",
+       |     "incomeSourceType": "04",
+       |     "incomeSourceName":"${incomeSourceName concat "3"}",
        |     "grossIncome":${grossIncome + 100},
        |     "netIncome": ${netIncome.get + 100},
        |     "taxDeducted": ${taxDeducted.get + 100}
