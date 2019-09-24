@@ -144,7 +144,7 @@ object UkPropertyFhlFixtures {
       |                "totalBroughtForwardLosses": 1000.00,
       |                "lossForCSFHL": 1000,
       |                "broughtForwardLossesUsed": 1000.00,
-      |                "taxableProfitAfterLossesDeduction": 1000.00,
+      |                "taxableProfitAfterIncomeTaxLossesDeduction": 1000.00,
       |                "totalLossesCarriedForward": 1000.00
       |            }
       |        ],
@@ -333,7 +333,7 @@ object UkPropertyFhlFixtures {
 
   val ukPropertyFhlObject = UkPropertyFhl(Some(1000.00),
     Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-    Some(1000.00),Some(1000.00),None,Some(1000),None,
+    Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),
     Some(LossClaimsSummary(Some(1000),None,None,None)),
     Some(LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000,mtdLoss = true))),
       Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39",
@@ -342,7 +342,7 @@ object UkPropertyFhlFixtures {
 
   val ukPropertyFhlWithOutLossClaimsDetailObject = UkPropertyFhl(Some(1000.00),
     Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-    Some(1000.00),Some(1000.00),None,Some(1000),None,
+    Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),
     Some(LossClaimsSummary(Some(1000),None,None,None)),None)
 
   val emptyUkPropertyFhl = UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None)
@@ -358,6 +358,7 @@ object UkPropertyFhlFixtures {
       |	"totalDeductions": 1000,
       |	"accountingAdjustments": 1000,
       |	"taxableProfit": 1000,
+      | "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
       |	"lossClaimsSummary": {
       |		"lossForCSFHL": 1000
       |	},
@@ -395,6 +396,7 @@ object UkPropertyFhlFixtures {
       |	"totalDeductions": 1000,
       |	"accountingAdjustments": 1000,
       |	"taxableProfit": 1000,
+      | "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
       |	"lossClaimsSummary": {
       |		"lossForCSFHL": 1000
       |	}
@@ -521,7 +523,7 @@ object UkPropertyFhlFixtures {
       |                "totalBroughtForwardLosses": 1000.00,
       |                "lossForCSFHL": 1000.00,
       |                "broughtForwardLossesUsed": 1000.00,
-      |                "taxableProfitAfterLossesDeduction": 1000.00,
+      |                "taxableProfitAfterIncomeTaxLossesDeduction": 1000.00,
       |                "totalLossesCarriedForward": 1000.00
       |            }
       |        ],

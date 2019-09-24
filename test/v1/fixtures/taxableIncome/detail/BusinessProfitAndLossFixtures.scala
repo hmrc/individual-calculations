@@ -40,7 +40,7 @@ object BusinessProfitAndLossFixtures {
       Some(100),None,None,None,None)),None)))
 
   val ukPropertyFhlObject = Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-    Some(1000.00),Some(1000.00),Some(1000.00),None,Some(1000),None,
+    Some(1000.00),Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),
     Some(FhlLossClaimsSummary(Some(1000),Some(1000),Some(1000),Some(100))),
     Some(FhlLossClaimsDetail(Some(List(FhlLossBroughtForward("2054-55",1000, mtdLoss = true))),
       Some(List(FhlResultOfClaimApplied(Some("CCIS12345678901"),"2038-39",TypeOfClaim.`carry-forward`,
@@ -109,7 +109,7 @@ object BusinessProfitAndLossFixtures {
          |                "totalBroughtForwardLosses": 1000.00,
          |                "lossForCSFHL": 1000.00,
          |                "broughtForwardLossesUsed": 1000.00,
-         |                "taxableProfitAfterLossesDeduction": 1000.00,
+         |                "taxableProfitAfterIncomeTaxLossesDeduction": 1000.00,
          |                "totalLossesCarriedForward": 1000.00,
          |                "totalBroughtForwardIncomeTaxLosses": 1000.00,
          |                "broughtForwardIncomeTaxLossesUsed": 1000.00,
@@ -223,7 +223,7 @@ object BusinessProfitAndLossFixtures {
       |		"totalDeductions": 1000,
       |		"accountingAdjustments": 1000,
       |		"taxableProfit": 1000,
-      |		"taxableProfitAfterLossesDeduction": 1000,
+      |		"taxableProfitAfterIncomeTaxLossesDeduction": 1000,
       |		"lossClaimsSummary": {
       |			"totalBroughtForwardIncomeTaxLosses": 1000,
       |			"broughtForwardIncomeTaxLossesUsed": 1000,
@@ -239,6 +239,7 @@ object BusinessProfitAndLossFixtures {
       |		"totalDeductions": 1000,
       |		"accountingAdjustments": 1000,
       |		"taxableProfit": 1000,
+      |		"taxableProfitAfterIncomeTaxLossesDeduction": 1000,
       |		"lossClaimsSummary": {
       |			"lossForCSFHL": 1000,
       |			"totalBroughtForwardIncomeTaxLosses": 1000,
@@ -275,7 +276,7 @@ object BusinessProfitAndLossFixtures {
       |		"totalDeductions": 1000,
       |		"accountingAdjustments": 1000,
       |		"taxableProfit": 1000,
-      |		"taxableProfitAfterLossesDeduction": 1000,
+      |		"taxableProfitAfterIncomeTaxLossesDeduction": 1000,
       |		"lossClaimsSummary": {
       |			"totalBroughtForwardIncomeTaxLosses": 1000,
       |			"broughtForwardIncomeTaxLossesUsed": 1000,

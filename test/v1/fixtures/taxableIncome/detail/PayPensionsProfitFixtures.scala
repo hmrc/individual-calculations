@@ -178,6 +178,7 @@ object PayPensionsProfitFixtures {
        |			"totalDeductions": 1000,
        |			"accountingAdjustments": 1000,
        |			"taxableProfit": 1000,
+       |      "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
        |			"lossClaimsSummary": {
        |				"lossForCSFHL": 1000,
        |				"totalBroughtForwardIncomeTaxLosses": 1000,
@@ -214,7 +215,7 @@ object PayPensionsProfitFixtures {
        |			"totalDeductions": 1000,
        |			"accountingAdjustments": 1000,
        |			"taxableProfit": 1000,
-       |			"taxableProfitAfterLossesDeduction": 1000,
+       |			"taxableProfitAfterIncomeTaxLossesDeduction": 1000,
        |			"lossClaimsSummary": {
        |				"totalBroughtForwardIncomeTaxLosses": 1000,
        |				"broughtForwardIncomeTaxLossesUsed": 1000,

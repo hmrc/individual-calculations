@@ -34,7 +34,7 @@ object SelfEmploymentBusinessFixtures {
   val accountingAdjustments: Option[BigDecimal]         = Some(-8769926.99)
   val taxableProfit: Option[BigDecimal]                 = Some(92149284)
   val adjustedIncomeTaxLoss: Option[BigInt]             = Some(2)
-  val taxableProfitAfterLossesDeduction: Option[BigInt] = Some(2)
+  val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2)
 
   val selfEmploymentBusinessDefaultResponse: SelfEmployment = SelfEmployment(
     selfEmploymentId,
@@ -48,7 +48,7 @@ object SelfEmploymentBusinessFixtures {
     accountingAdjustments,
     adjustedIncomeTaxLoss,
     taxableProfit,
-    taxableProfitAfterLossesDeduction,
+    taxableProfitAfterIncomeTaxLossesDeduction,
     Some(lossClaimsSummaryResponse),
     Some(lossClaimsDetailDefaultResponse)
   )
@@ -73,7 +73,7 @@ object SelfEmploymentBusinessFixtures {
       |    "accountingAdjustments": ${accountingAdjustments.get},
       |    "adjustedIncomeTaxLoss": ${adjustedIncomeTaxLoss.get},
       |    "taxableProfit": ${taxableProfit.get},
-      |    "taxableProfitAfterLossesDeduction": ${taxableProfitAfterLossesDeduction.get}
+      |    "taxableProfitAfterIncomeTaxLossesDeduction": ${taxableProfitAfterIncomeTaxLossesDeduction.get}
       |}""".stripMargin)
 
   val selfEmploymentDetailDefaultWrittenJsonSingular: JsValue =
@@ -128,7 +128,7 @@ object SelfEmploymentBusinessFixtures {
     accountingAdjustments,
     adjustedIncomeTaxLoss,
     taxableProfit,
-    taxableProfitAfterLossesDeduction,
+    taxableProfitAfterIncomeTaxLossesDeduction,
     Some(lossClaimsSummaryResponse),
     None
   )

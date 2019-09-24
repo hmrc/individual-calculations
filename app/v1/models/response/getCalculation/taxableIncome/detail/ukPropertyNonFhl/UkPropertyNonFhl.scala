@@ -31,7 +31,7 @@ case class UkPropertyNonFhl(totalIncome: Option[BigDecimal],
                             accountingAdjustments: Option[BigDecimal],
                             adjustedIncomeTaxLoss: Option[BigInt],
                             taxableProfit: Option[BigInt],
-                            taxableProfitAfterLossesDeduction: Option[BigInt],
+                            taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                             lossClaimsSummary: Option[LossClaimsSummary],
                             lossClaimsDetail: Option[LossClaimsDetail])
 
@@ -46,7 +46,7 @@ object UkPropertyNonFhl extends NestedJsonReads {
                                       accountingAdjustments: Option[BigDecimal],
                                       adjustedIncomeTaxLoss: Option[BigInt],
                                       taxableProfit: Option[BigInt],
-                                      taxableProfitAfterLossesDeduction: Option[BigInt],
+                                      taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                                       lossClaimsSummary: Option[LossClaimsSummary])
 
   implicit val topLevelReads: Reads[TopLevelElements] = (
@@ -59,7 +59,7 @@ object UkPropertyNonFhl extends NestedJsonReads {
       (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
       (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
       (JsPath \ "taxableProfit").readNullable[BigInt] and
-      (JsPath \ "taxableProfitAfterLossesDeduction").readNullable[BigInt] and
+      (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
       JsPath.readNullable[LossClaimsSummary]
   )(TopLevelElements.apply _)
 
@@ -68,7 +68,7 @@ object UkPropertyNonFhl extends NestedJsonReads {
       case Some(topLevelElements) => UkPropertyNonFhl(topLevelElements.totalIncome, topLevelElements.totalExpenses,
         topLevelElements.netProfit, topLevelElements.netLoss, topLevelElements.totalAdditions, topLevelElements.totalDeductions,
         topLevelElements.accountingAdjustments, topLevelElements.adjustedIncomeTaxLoss, topLevelElements.taxableProfit,
-        topLevelElements.taxableProfitAfterLossesDeduction, topLevelElements.lossClaimsSummary, lossClaimsDetail)
+        topLevelElements.taxableProfitAfterIncomeTaxLossesDeduction, topLevelElements.lossClaimsSummary, lossClaimsDetail)
       case None => UkPropertyNonFhl(None, None, None, None, None, None, None, None, None, None, None, lossClaimsDetail)
     }
   }

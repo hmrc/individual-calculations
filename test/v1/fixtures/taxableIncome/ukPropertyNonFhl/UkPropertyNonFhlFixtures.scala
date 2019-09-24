@@ -34,7 +34,7 @@ object UkPropertyNonFhlFixtures {
       | "accountingAdjustments" : -2000.98,
       | "taxableProfit" : 2000,
       | "adjustedIncomeTaxLoss" : 2000,
-      | "taxableProfitAfterLossesDeduction" : 2000
+      | "taxableProfitAfterIncomeTaxLossesDeduction" : 2000
       |}
     """.stripMargin).asInstanceOf[JsObject].deepMerge(LossClaimsSummaryFixtures.lossClaimsSummaryJson.asInstanceOf[JsObject])
 
@@ -84,7 +84,7 @@ object UkPropertyNonFhlFixtures {
       | "accountingAdjustments" : -2000.98,
       | "taxableProfit" : 2000,
       | "adjustedIncomeTaxLoss" : 2000,
-      | "taxableProfitAfterLossesDeduction" : 2000,
+      | "taxableProfitAfterIncomeTaxLossesDeduction" : 2000,
       | "lossClaimsSummary" : ${LossClaimsSummaryFixtures.lossClaimsSummaryJson.toString()},
       | "lossClaimsDetail" : ${LossClaimsDetailFixtures.lossClaimsDetailMtdJson.toString()}
       |}

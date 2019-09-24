@@ -36,7 +36,7 @@ object LossClaimSummaryFixtures {
   val totalBroughtForwardIncomeTaxLosses: Option[BigInt] = Some(1)
   val lossForCSFHL: BigDecimal                           = 2
   val broughtForwardIncomeTaxLossesUsed: Option[BigInt]  = Some(2)
-  val taxableProfitAfterLossesDeduction: BigInt          = 2
+  val taxableProfitAfterIncomeTaxLossesDeduction: BigInt          = 2
   val totalIncomeTaxLossesCarriedForward: Option[BigInt] = Some(3)
   val class4Loss: BigDecimal                             = 2
   val totalBroughtForwardClass4Losses: Option[BigInt]    = Some(1)
@@ -70,7 +70,7 @@ object LossClaimSummaryFixtures {
       |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
       |    "lossForCSFHL": $lossForCSFHL,
       |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
-      |    "taxableProfitAfterLossesDeduction": $taxableProfitAfterLossesDeduction,
+      |    "taxableProfitAfterIncomeTaxLossesDeduction": $taxableProfitAfterIncomeTaxLossesDeduction,
       |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
       |    "class4Loss": $class4Loss,
       |    "totalBroughtForwardClass4Losses": ${totalBroughtForwardClass4Losses.get},
@@ -93,7 +93,7 @@ object LossClaimSummaryFixtures {
       |    "taxableProfit": $taxableProfit,
       |    "adjustedIncomeTaxLoss": $adjustedIncomeTaxLoss,
       |    "lossForCSFHL": $lossForCSFHL,
-      |    "taxableProfitAfterLossesDeduction": $taxableProfitAfterLossesDeduction,
+      |    "taxableProfitAfterIncomeTaxLossesDeduction": $taxableProfitAfterIncomeTaxLossesDeduction,
       |    "class4Loss": $class4Loss
       |}""".stripMargin)
 
@@ -129,7 +129,7 @@ object LossClaimSummaryFixtures {
      |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
      |    "lossForCSFHL": $lossForCSFHL,
      |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
-     |    "taxableProfitAfterLossesDeduction": $taxableProfitAfterLossesDeduction,
+     |    "taxableProfitAfterIncomeTaxLossesDeduction": $taxableProfitAfterIncomeTaxLossesDeduction,
      |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
      |    "class4Loss": $class4Loss,
      |    "totalBroughtForwardClass4Losses": ${totalBroughtForwardClass4Losses.get},
