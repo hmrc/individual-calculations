@@ -56,13 +56,13 @@ class LossClaimsDetailSpec extends UnitSpec {
     }
 
     "written to Json from an empty lossClaimsDetail object" should {
-      "return the expected JsObject" in {
+      "return an empty JsObject" in {
         Json.toJson(LossClaimsDetail.emptyLossClaimsDetail) shouldBe emptyJson
       }
     }
   }
 
-  "conditionalReads" when {
+  "readSequenceAndMapToType" when {
     "reading in a sequence of lossBroughtForward" must {
       "not include where incomeSourceType is not 01" in {
         lossClaimsDetailDesJsonFactory(lossesBroughtForward = Seq(lossBroughtForwardDesJsonWithWrongIncomeSourceType))

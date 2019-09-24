@@ -16,9 +16,10 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import support.UnitSpec
 import v1.fixtures.taxableIncome.detail.selfEmployments.summary.LossClaimSummaryFixtures._
+
 class LossClaimsSummarySpec extends UnitSpec {
 
   "LossClaimSummary" when {
@@ -26,33 +27,30 @@ class LossClaimsSummarySpec extends UnitSpec {
       "return a JsSuccess" in {
         lossClaimSummaryDesJson.validate[LossClaimsSummary] shouldBe a[JsSuccess[_]]
       }
-      "with the expected LossClaimSummary object" in {
+      "with the expected LossClaimsSummary object" in {
         lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryResponse
       }
     }
 
     "read from empty Json" should {
-      "return a JsSuccess" in {
+      "return an empty LossClaimsSummary object" in {
         emptyJson.as[LossClaimsSummary].isEmpty shouldBe true
-      }
-      "with the expected LossClaimSummary object" in {
-        lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryResponse
       }
     }
 
     "read from invalid Json" should {
-      "with the expected LossClaimSummary object" in {
+      "return a JsError" in {
         lossClaimSummaryInvalidJson.validate[LossClaimsSummary] shouldBe a[JsError]
       }
     }
 
-    "written to JSON" should {
+    "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(lossClaimsSummaryResponse) shouldBe lossClaimSummaryWrittenJson
       }
     }
 
-    "written from empty JSON" should {
+    "written from an empty LossClaimsSummary object" should {
       "return an empty JsObject" in {
         Json.toJson(LossClaimsSummary.emptyLossClaimsSummary) shouldBe emptyJson
       }

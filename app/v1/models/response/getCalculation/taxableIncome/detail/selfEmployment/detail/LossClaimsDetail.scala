@@ -30,13 +30,13 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
 
   def filterById(id: String): Option[LossClaimsDetail] = {
 
-    val lossesBroughtForward  = this.lossesBroughtForward.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
-    val resultOfClaimsApplied = this.resultOfClaimsApplied.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
-    val unclaimedLosses       = this.unclaimedLosses.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
-    val carriedForwardLosses  = this.carriedForwardLosses.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
-    val claimsNotApplied      = this.claimsNotApplied.getOrElse(Seq()).filter(arr => arr.incomeSourceId == id)
+    val lossesBroughtForward  = this.lossesBroughtForward.getOrElse(Seq.empty).filter(lbf => lbf.incomeSourceId == id)
+    val resultOfClaimsApplied = this.resultOfClaimsApplied.getOrElse(Seq.empty).filter(rca => rca.incomeSourceId == id)
+    val unclaimedLosses       = this.unclaimedLosses.getOrElse(Seq.empty).filter(ucl => ucl.incomeSourceId == id)
+    val carriedForwardLosses  = this.carriedForwardLosses.getOrElse(Seq.empty).filter(cfl => cfl.incomeSourceId == id)
+    val claimsNotApplied      = this.claimsNotApplied.getOrElse(Seq.empty).filter(cna => cna.incomeSourceId == id)
 
-    val tempDetail: LossClaimsDetail = LossClaimsDetail(
+    val filteredDetail: LossClaimsDetail = LossClaimsDetail(
       LossClaimsDetail.toNoneIfEmpty(lossesBroughtForward),
       LossClaimsDetail.toNoneIfEmpty(resultOfClaimsApplied),
       LossClaimsDetail.toNoneIfEmpty(unclaimedLosses),
@@ -44,44 +44,43 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
       LossClaimsDetail.toNoneIfEmpty(claimsNotApplied)
     )
 
-    if (!tempDetail.isEmpty) Some(tempDetail) else None
+    if (filteredDetail.isEmpty) None else Some(filteredDetail)
   }
 
 }
 
 object LossClaimsDetail extends NestedJsonReads {
-  val emptyLossClaimsDetail: LossClaimsDetail = LossClaimsDetail(None, None, None, None, None)
 
-  def toNoneIfEmpty[A](seq: Seq[A]): Option[Seq[A]] = {
-    if (seq.nonEmpty) Some(seq) else None
-  }
+  def toNoneIfEmpty[A](seq: Seq[A]): Option[Seq[A]] = if (seq.nonEmpty) Some(seq) else None
+
+  val emptyLossClaimsDetail: LossClaimsDetail = LossClaimsDetail(None, None, None, None, None)
 
   implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
-  def conditionalReads[A](path: JsPath)(implicit reads: Reads[A]): Reads[Option[Seq[A]]] = {
-    path.readNestedNullable[Seq[JsValue]].map(self => toType[A](self))
+  implicit val reads: Reads[LossClaimsDetail] = (readSequenceAndMapToType[LossBroughtForward](JsPath \ "inputs" \ "lossesBroughtForward") and
+    readSequenceAndMapToType[ResultOfClaimApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied") and
+    readSequenceAndMapToType[UnclaimedLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses") and
+    readSequenceAndMapToType[CarriedForwardLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses") and
+    readSequenceAndMapToType[ClaimNotApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied"))(LossClaimsDetail.apply _)
+
+  def readSequenceAndMapToType[A](path: JsPath)(implicit reads: Reads[A]): Reads[Option[Seq[A]]] = {
+    path.readNestedNullable[Seq[JsValue]].map(optJsSeq => mapOptionalSequenceToType[A](optJsSeq))
   }
 
-  def toType[A](seq: Option[Seq[JsValue]])(implicit reads: Reads[A]): Option[Seq[A]] = {
-    val mappedSequence = seq.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js).asOpt[A])
+  def mapOptionalSequenceToType[A](optJsSeq: Option[Seq[JsValue]])(implicit reads: Reads[A]): Option[Seq[A]] = {
+    val mappedSequence = optJsSeq.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js).asOpt[A])
     if (mappedSequence.isEmpty) None else Some(mappedSequence)
   }
 
   def filterByIncomeSourceType(js: JsValue): JsValue = js.asOpt[FilterWrapper] match {
-    case Some(FilterWrapper(incomeSourceType, _)) if incomeSourceType == "01" => js
-    case _                                                                    => Json.toJson(None)
+    case Some(FilterWrapper(incomeSourceType)) if incomeSourceType == "01" => js
+    case _                                                                 => Json.toJson(None)
   }
 
-  case class FilterWrapper(incomeSourceType: String, incomeSourceId: String)
+  case class FilterWrapper(incomeSourceType: String)
 
   object FilterWrapper {
     implicit val formats: OFormat[FilterWrapper] = Json.format[FilterWrapper]
   }
-
-  implicit val reads: Reads[LossClaimsDetail] = (conditionalReads[LossBroughtForward](JsPath \ "inputs" \ "lossesBroughtForward") and
-    conditionalReads[ResultOfClaimApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied") and
-    conditionalReads[UnclaimedLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses") and
-    conditionalReads[CarriedForwardLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses") and
-    conditionalReads[ClaimNotApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied"))(LossClaimsDetail.apply _)
 
 }
