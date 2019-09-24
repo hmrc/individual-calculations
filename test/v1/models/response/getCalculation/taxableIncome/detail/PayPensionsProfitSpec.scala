@@ -25,10 +25,10 @@ class PayPensionsProfitSpec extends UnitSpec {
   "PayPensionsProfit" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        payPensionsProfitDesJson.validate[PayPensionsProfit] shouldBe a[JsSuccess[_]]
+        desJson("04", "02").validate[PayPensionsProfit] shouldBe a[JsSuccess[_]]
       }
       "with the expected BusinessProfitAndLoss object" in {
-        payPensionsProfitDesJson.as[PayPensionsProfit] shouldBe payPensionsProfitResponse
+        desJson("04", "02").as[PayPensionsProfit] shouldBe payPensionsProfitResponse
       }
     }
 

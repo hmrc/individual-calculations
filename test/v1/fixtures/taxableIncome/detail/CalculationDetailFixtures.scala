@@ -17,16 +17,36 @@
 package v1.fixtures.taxableIncome.detail
 
 import play.api.libs.json.{JsObject, JsValue, Json}
+import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures.{businessProfitAndLoss, ukPropertyFhlObject, ukPropertyNonFhlObject}
 import v1.fixtures.taxableIncome.detail.DividendsFixtures._
 import v1.fixtures.taxableIncome.detail.PayPensionsProfitFixtures._
 import v1.fixtures.taxableIncome.detail.SavingsAndGainsFixtures._
-import v1.models.response.getCalculation.taxableIncome.detail.CalculationDetail
+import v1.models.response.getCalculation.taxableIncome.detail.{CalculationDetail, PayPensionsProfit}
 
 object CalculationDetailFixtures {
-  val detailResponse           = CalculationDetail(Some(payPensionsProfitResponse), Some(savingsAndGainsResponse), Some(dividendsResponse))
+
+  val payPensionsProfitObject: PayPensionsProfit = PayPensionsProfit(
+    incomeReceivedPPP,
+    taxableIncomePPP,
+    totalSelfEmploymentProfit,
+    totalPropertyProfit,
+    totalFHLPropertyProfit,
+    totalUKOtherPropertyProfit,
+    None)
+
+  val payPensionsProfitMtdJson: JsValue = Json.parse(s"""{
+                                                            |    "incomeReceived" : $incomeReceivedPPP,
+                                                            |    "taxableIncome" : $taxableIncomePPP,
+                                                            |    "totalSelfEmploymentProfit" : ${totalSelfEmploymentProfit.get},
+                                                            |    "totalPropertyProfit" : ${totalPropertyProfit.get},
+                                                            |    "totalFHLPropertyProfit" : ${totalFHLPropertyProfit.get},
+                                                            |    "totalUKOtherPropertyProfit" : ${totalUKOtherPropertyProfit.get}
+                                                            |}""".stripMargin)
+
+  val detailResponse           = CalculationDetail(Some(payPensionsProfitObject), Some(savingsAndGainsResponse), Some(dividendsResponse))
   val detailResponseWithoutPPP = CalculationDetail(None, Some(savingsAndGainsResponse), Some(dividendsResponse))
-  val detailResponseWithoutSAG = CalculationDetail(Some(payPensionsProfitResponse), None, Some(dividendsResponse))
-  val detailResponseWithoutDiv = CalculationDetail(Some(payPensionsProfitResponse), Some(savingsAndGainsResponse), None)
+  val detailResponseWithoutSAG = CalculationDetail(Some(payPensionsProfitObject), None, Some(dividendsResponse))
+  val detailResponseWithoutDiv = CalculationDetail(Some(payPensionsProfitObject), Some(savingsAndGainsResponse), None)
 
   val dividendsDesJsonWithFullPath: JsObject =
     Json.obj("calculation" -> Json.obj("taxCalculation" -> Json.obj("incomeTax" -> Json.obj("dividends" -> dividendsDesJson))))
@@ -45,7 +65,7 @@ object CalculationDetailFixtures {
 
   val dividendsJsonComponent: JsObject         = Json.obj("dividends"         -> dividendsWrittenJson)
   val savingsAndGainsJsonComponent: JsObject   = Json.obj("savingsAndGains"   -> savingsAndGainsWrittenJson)
-  val payPensionsProfitJsonComponent: JsObject = Json.obj("payPensionsProfit" -> payPensionsProfitWrittenJson)
+  val payPensionsProfitJsonComponent: JsObject = Json.obj("payPensionsProfit" -> payPensionsProfitMtdJson)
 
   val detailWrittenJson: JsValue           = dividendsJsonComponent.deepMerge(savingsAndGainsJsonComponent).deepMerge(payPensionsProfitJsonComponent)
   val detailWrittenJsonWithoutPPP: JsValue = dividendsJsonComponent.deepMerge(savingsAndGainsJsonComponent)
