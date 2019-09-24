@@ -18,7 +18,7 @@ package v1.models.response.common
 
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import support.UnitSpec
-import v1.fixtures.Fixtures._
+import v1.fixtures.MessageFixtures._
 
 class MessagesSpec extends UnitSpec {
 

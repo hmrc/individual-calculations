@@ -36,7 +36,7 @@ object PayPensionsProfitFixtures {
     totalPropertyProfit,
     totalFHLPropertyProfit,
     totalUKOtherPropertyProfit,
-    Some(businessProfitAndLoss(ukPropertyFhlObject, ukPropertyNonFhlObject)))
+    Some(businessProfitAndLoss(None, ukPropertyFhlObject, ukPropertyNonFhlObject)))
 
   val payPensionsProfitResponseWithoutOptionalFields: PayPensionsProfit =
     PayPensionsProfit(incomeReceivedPPP, taxableIncomePPP, None, None, None, None, None)

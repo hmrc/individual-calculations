@@ -19,6 +19,8 @@ package v1.fixtures.taxableIncome.detail
 import play.api.libs.json.{JsArray, JsValue, Json}
 import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.detail.BusinessProfitAndLoss
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss => FhlDefaultCarriedForwardLoss, LossBroughtForward => FhlLossBroughtForward, LossClaimsDetail => FhlLossClaimsDetail, ResultOfClaimApplied => FhlResultOfClaimApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.{LossClaimsSummary => FhlLossClaimsSummary}
@@ -28,10 +30,14 @@ import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.s
 
 object BusinessProfitAndLossFixtures {
 
-  //@TODO Add self-employment sequence objects once it is ready
-  def businessProfitAndLoss(ukPropertyFhl: Option[UkPropertyFhl],
+  def businessProfitAndLoss(selfEmployments: Option[Seq[SelfEmployment]],
+                            ukPropertyFhl: Option[UkPropertyFhl],
                             ukPropertyNonFhl: Option[UkPropertyNonFhl]): BusinessProfitAndLoss =
-    BusinessProfitAndLoss(None,ukPropertyFhl, ukPropertyNonFhl)
+    BusinessProfitAndLoss(selfEmployments, ukPropertyFhl, ukPropertyNonFhl)
+
+  val selfEmployments = Some(List(SelfEmployment("LLIS12345678908",Some(1000),Some(1000),Some(1000),Some(1000),None,
+    Some(1000),Some(1000),Some(1000),None,Some(1000),Some(1000),Some(LossClaimsSummary(Some(1000),Some(1000),
+      Some(100),None,None,None,None)),None)))
 
   val ukPropertyFhlObject = Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
     Some(1000.00),Some(1000.00),Some(1000.00),None,Some(1000),None,
@@ -202,4 +208,106 @@ object BusinessProfitAndLossFixtures {
       |        }
       |    }
       |}""".stripMargin)
+
+
+  val mtdJson = Json.parse(
+    """
+      |{
+      |	"selfEmployments": [{
+      |		"selfEmploymentId": "LLIS12345678908",
+      |		"totalIncome": 1000,
+      |		"totalExpenses": 1000,
+      |		"netProfit": 1000,
+      |		"netLoss": 1000,
+      |		"totalAdditions": 1000,
+      |		"totalDeductions": 1000,
+      |		"accountingAdjustments": 1000,
+      |		"taxableProfit": 1000,
+      |		"taxableProfitAfterLossesDeduction": 1000,
+      |		"lossClaimsSummary": {
+      |			"totalBroughtForwardIncomeTaxLosses": 1000,
+      |			"broughtForwardIncomeTaxLossesUsed": 1000,
+      |			"totalIncomeTaxLossesCarriedForward": 100
+      |		}
+      |	}],
+      |	"ukPropertyFhl": {
+      |		"totalIncome": 1000,
+      |		"totalExpenses": 1000,
+      |		"netProfit": 1000,
+      |		"netLoss": 1000,
+      |		"totalAdditions": 1000,
+      |		"totalDeductions": 1000,
+      |		"accountingAdjustments": 1000,
+      |		"taxableProfit": 1000,
+      |		"lossClaimsSummary": {
+      |			"lossForCSFHL": 1000,
+      |			"totalBroughtForwardIncomeTaxLosses": 1000,
+      |			"broughtForwardIncomeTaxLossesUsed": 1000,
+      |			"totalIncomeTaxLossesCarriedForward": 100
+      |		},
+      |		"lossClaimsDetail": {
+      |			"lossesBroughtForward": [{
+      |				"taxYearLossIncurred": "2054-55",
+      |				"currentLossValue": 1000,
+      |				"mtdLoss": true
+      |			}],
+      |			"resultOfClaimsApplied": [{
+      |				"claimId": "CCIS12345678901",
+      |				"taxYearClaimMade": "2038-39",
+      |				"claimType": "carry-forward",
+      |				"mtdLoss": true,
+      |				"taxYearLossIncurred": "2050-51",
+      |				"lossAmountUsed": 1000,
+      |				"remainingLossValue": 1000
+      |			}],
+      |			"carriedForwardLosses": [{
+      |				"taxYearLossIncurred": "2026-27",
+      |				"currentLossValue": 1000
+      |			}]
+      |		}
+      |	},
+      |	"ukPropertyNonFhl": {
+      |		"totalIncome": 1000,
+      |		"totalExpenses": 1000,
+      |		"netProfit": 1000,
+      |		"netLoss": 1000,
+      |		"totalAdditions": 1000,
+      |		"totalDeductions": 1000,
+      |		"accountingAdjustments": 1000,
+      |		"taxableProfit": 1000,
+      |		"taxableProfitAfterLossesDeduction": 1000,
+      |		"lossClaimsSummary": {
+      |			"totalBroughtForwardIncomeTaxLosses": 1000,
+      |			"broughtForwardIncomeTaxLossesUsed": 1000,
+      |			"totalIncomeTaxLossesCarriedForward": 100
+      |		},
+      |		"lossClaimsDetail": {
+      |			"lossesBroughtForward": [{
+      |				"taxYearLossIncurred": "2054-55",
+      |				"currentLossValue": 1000,
+      |				"mtdLoss": true
+      |			}],
+      |			"resultOfClaimsApplied": [{
+      |				"claimId": "CCIS12345678901",
+      |				"originatingClaimId": "000000000000210",
+      |				"taxYearClaimMade": "2038-39",
+      |				"claimType": "carry-forward",
+      |				"mtdLoss": true,
+      |				"taxYearLossIncurred": "2050-51",
+      |				"lossAmountUsed": 1000,
+      |				"remainingLossValue": 1000
+      |			}],
+      |			"defaultCarriedForwardLosses": [{
+      |				"taxYearLossIncurred": "2026-27",
+      |				"currentLossValue": 1000
+      |			}],
+      |			"claimsNotApplied": [{
+      |				"claimId": "CCIS12345678912",
+      |				"taxYearClaimMade": "2045-46",
+      |				"claimType": "carry-forward"
+      |			}]
+      |		}
+      |	}
+      |}
+      |""".stripMargin)
 }

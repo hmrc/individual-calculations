@@ -25,7 +25,7 @@ class TypeOfLossSpec extends UnitSpec {
     "getting DES LossType" must {
       "work" in {
         `self-employment`.toLossType shouldBe Some(LossType.INCOME)
-        `self-employment-class4`.toLossType shouldBe Some(LossType.CLASS4)
+        `self-employment-class4`.toLossType shouldBe Some(LossType.CLASS4NICS)
         `uk-property-non-fhl`.toLossType shouldBe None
         `uk-property-fhl`.toLossType shouldBe None
       }

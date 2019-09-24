@@ -16,6 +16,7 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
+import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures._
 
@@ -24,25 +25,37 @@ class BusinessProfitAndLossSpec extends UnitSpec {
   "BusinessProfitAndLoss" when {
     "reads with a valid json" should {
       "return JsSuccess" in {
-        desJson("04", "02").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(ukPropertyFhlObject, ukPropertyNonFhlObject)
+        desJson("04", "02", "01").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(selfEmployments, ukPropertyFhlObject, ukPropertyNonFhlObject)
       }
     }
 
     "reads with a valid json having only UkPropertyFhl details" should {
       "return JsSuccess" in {
-        desJson("04").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(ukPropertyFhlObject, None)
+        desJson("04").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(None, ukPropertyFhlObject, None)
       }
     }
 
     "reads with a valid json having only UkPropertyNonFhl details" should {
       "return JsSuccess" in {
-        desJson("02").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(None, ukPropertyNonFhlObject)
+        desJson("02").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(None, None, ukPropertyNonFhlObject)
+      }
+    }
+
+    "reads with a valid json having only Self-Employments details" should {
+      "return JsSuccess" in {
+        desJson("01").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(selfEmployments, None, None)
       }
     }
 
     "reads with a valid json with no details" should {
       "return JsSuccess" in {
-        desJson("05", "06").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(None, None)
+        desJson("05", "06").as[BusinessProfitAndLoss] shouldBe businessProfitAndLoss(None, None, None)
+      }
+    }
+
+    "writes a object with all fields" should {
+      "return a valid json" in {
+        Json.toJson(businessProfitAndLoss(selfEmployments, ukPropertyFhlObject, ukPropertyNonFhlObject)) shouldBe mtdJson
       }
     }
   }
