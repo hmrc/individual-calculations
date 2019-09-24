@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.json.{ JsSuccess, Json }
 import support.UnitSpec
-import v1.fixtures.taxableIncome.detail.selfEmployments.LossClaimSummaryFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.summary.LossClaimSummaryFixtures._
 import v1.fixtures.taxableIncome.detail.selfEmployments.SelfEmploymentBusinessFixtures._
 
 class SelfEmploymentBusinessSpec extends UnitSpec {

@@ -17,8 +17,8 @@
 package v1.fixtures.taxableIncome.detail.selfEmployments
 
 import play.api.libs.json.{ JsObject, JsValue, Json }
-import v1.fixtures.taxableIncome.detail.selfEmployments.LossClaimSummaryFixtures._
-import v1.fixtures.taxableIncome.detail.selfEmployments.LossClaimsDetailFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.summary.LossClaimSummaryFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.LossClaimsDetailFixtures._
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail._
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.{ SelfEmploymentBusiness, detail }
 

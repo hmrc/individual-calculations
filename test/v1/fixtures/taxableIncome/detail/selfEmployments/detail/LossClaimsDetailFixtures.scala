@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.detail.selfEmployments
+package v1.fixtures.taxableIncome.detail.selfEmployments.detail
 
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail._
-import v1.fixtures.taxableIncome.detail.selfEmployments.LossBroughtForwardFixtures._
-import v1.fixtures.taxableIncome.detail.selfEmployments.ResultOfClaimAppliedFixtures._
-import v1.fixtures.taxableIncome.detail.selfEmployments.UnclaimedLossFixtures._
-import v1.fixtures.taxableIncome.detail.selfEmployments.CarriedForwardLossFixtures._
-import v1.fixtures.taxableIncome.detail.selfEmployments.ClaimNotAppliedFixtures._
-
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.CarriedForwardLossFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.ClaimNotAppliedFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.LossBroughtForwardFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.ResultOfClaimAppliedFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.detail.UnclaimedLossFixtures._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
 
 object LossClaimsDetailFixtures {
 
