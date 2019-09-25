@@ -22,6 +22,8 @@ import v1.models.response.common.{ Messages, Metadata }
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
+import play.api.libs.json._
+
 case class GetCalculationResponse(
     metadata: Metadata,
     incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
@@ -32,13 +34,18 @@ case class GetCalculationResponse(
 object GetCalculationResponse {
   implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
-  implicit val reads: Reads[GetCalculationResponse] = (
-    JsPath.read[Metadata] and
-      JsPath.readNullable[IncomeTax].orElse(Reads.pure(None)) and
-      JsPath.readNullable[Messages].map {
-        case Some(messages) if messages.hasMessages => Some(messages)
-        case _                                      => None
-      } and
-      JsPath.readNullable[TaxableIncome].orElse(Reads.pure(None))
-  )(GetCalculationResponse.apply _)
+  implicit val reads: Reads[GetCalculationResponse] = {
+    def emptyIfNotPresent[A: Reads](path: JsPath): Reads[Option[A]] =
+      (path.readNullable[JsObject].filter(_.isEmpty).map(_ => None) or JsPath.readNullable[A])
+
+    (
+      JsPath.read[Metadata] and
+        (emptyIfNotPresent[IncomeTax](__ \ "calculation")) and
+        JsPath.readNullable[Messages].map {
+          case Some(messages) if messages.hasMessages => Some(messages)
+          case _                                      => None
+        } and
+        (emptyIfNotPresent[TaxableIncome](__ \ "calculation"))
+    )(GetCalculationResponse.apply _)
+  }
 }
