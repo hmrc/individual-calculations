@@ -25,10 +25,14 @@ class TaxableIncomeSpec extends UnitSpec {
   "Taxable income" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        taxableIncomeDesJson.validate[TaxableIncome] shouldBe a[JsSuccess[_]]
+        desJson.validate[TaxableIncome] shouldBe a[JsSuccess[_]]
       }
       "with the expected TaxableIncome object" in {
-        taxableIncomeDesJson.as[TaxableIncome] shouldBe taxableIncomeResponse
+        desJson.as[TaxableIncome] shouldBe taxableIncomeResponse
+      }
+
+      "return full obj" in {
+        desJson.as[TaxableIncome] shouldBe taxableIncomeResponse
       }
     }
 
