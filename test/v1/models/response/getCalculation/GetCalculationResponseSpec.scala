@@ -53,14 +53,14 @@ class GetCalculationResponseSpec extends UnitSpec {
                  |   "taxCalculation" : {
                  |     "incomeTax" : {
                  |       "incomeTaxCharged" : 100.25,
+                 |       "totalIncomeReceivedFromAllSources": 123,
+                 |       "totalTaxableIncome": 234,
                  |       "payPensionsProfit" : {
                  |           "allowancesAllocated" : 300.25,
                  |           "incomeTaxAmount": 400.25
                  |        }
                  |     },
-                 |     "totalIncomeTaxAndNicsDue" : 200.25,
-                 |     "totalIncomeReceivedFromAllSources": 123,
-                 |     "totalTaxableIncome": 234
+                 |     "totalIncomeTaxAndNicsDue" : 200.25
                  |   }
                  |  },
                  | "inputs" : {
