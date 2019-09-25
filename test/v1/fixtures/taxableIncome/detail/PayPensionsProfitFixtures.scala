@@ -200,7 +200,7 @@ object PayPensionsProfitFixtures {
        |					"lossAmountUsed": 1000,
        |					"remainingLossValue": 1000
        |				}],
-       |				"carriedForwardLosses": [{
+       |				"defaultCarriedForwardLosses": [{
        |					"taxYearLossIncurred": "2026-27",
        |					"currentLossValue": 1000
        |				}]
