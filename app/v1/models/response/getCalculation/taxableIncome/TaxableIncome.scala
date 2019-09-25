@@ -26,7 +26,7 @@ case class TaxableIncome(summary: CalculationSummary, detail: CalculationDetail)
 object TaxableIncome {
   implicit val writes: OWrites[TaxableIncome] = Json.writes[TaxableIncome]
   implicit val reads: Reads[TaxableIncome] = (
-    (JsPath \ "calculation" \ "taxCalculation").read[CalculationSummary] and
+    (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax").read[CalculationSummary] and
       JsPath.read[CalculationDetail]
   )(TaxableIncome.apply _)
 
