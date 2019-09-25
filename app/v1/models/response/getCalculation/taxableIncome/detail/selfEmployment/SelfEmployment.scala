@@ -55,7 +55,10 @@ object SelfEmployment extends NestedJsonReads {
     (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
     (JsPath \ "taxableProfit").readNullable[BigDecimal] and
     (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
-    JsPath.readNullable[LossClaimsSummary] and Reads.pure(None))(SelfEmployment.apply _)
+    JsPath.readNullable[LossClaimsSummary].map(_.getOrElse(LossClaimsSummary.emptyLossClaimsSummary)).map{
+      case LossClaimsSummary.emptyLossClaimsSummary => None
+      case lossClaimSummary: LossClaimsSummary => Some(lossClaimSummary)
+    } and Reads.pure(None))(SelfEmployment.apply _)
 
   implicit val seqReads: Reads[Seq[SelfEmployment]] = ((JsPath \ "calculation" \ "businessProfitAndLoss")
     .readNestedNullable[Seq[JsValue]]

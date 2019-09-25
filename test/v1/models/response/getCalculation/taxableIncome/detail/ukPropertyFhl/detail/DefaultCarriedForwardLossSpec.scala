@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.det
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.ukPropertyFhl.DefaultCarriedForwardLossFixtures._
+import v1.fixtures.taxableIncome.detail.ukPropertyFhl.DefaultCarriedForwardLossFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class DefaultCarriedForwardLossSpec extends UnitSpec with JsonErrorValidators {
