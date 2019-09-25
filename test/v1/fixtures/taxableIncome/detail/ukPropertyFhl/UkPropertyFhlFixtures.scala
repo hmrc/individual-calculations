@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.fixtures.taxableIncome.ukPropertyFhl
+package v1.fixtures.taxableIncome.detail.ukPropertyFhl
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.domain.TypeOfClaim

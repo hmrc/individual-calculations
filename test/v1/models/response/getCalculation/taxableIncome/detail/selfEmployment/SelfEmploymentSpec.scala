@@ -16,18 +16,29 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
-import play.api.libs.json.{ JsError, JsSuccess, Json }
+import play.api.libs.json.{ JsSuccess, Json }
 import support.UnitSpec
 import v1.fixtures.taxableIncome.detail.selfEmployments.SelfEmploymentBusinessFixtures._
+import v1.fixtures.taxableIncome.detail.selfEmployments.SelfEmploymentJson._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment._
 
 class SelfEmploymentSpec extends UnitSpec {
 
-  "SelfEmployment: sequence" when {
+  "SelfEmploymentBusiness: singular" when {
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(selfEmploymentBusinessDefaultResponse) shouldBe selfEmploymentDetailDefaultWrittenJsonSingular
+      }
+    }
+  }
+
+  "SelfEmploymentBusiness: sequence" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
         selfEmploymentBusinessDefaultDesJsonSequence.validate[Seq[SelfEmployment]] shouldBe a[JsSuccess[_]]
       }
-      "containing the expected SelfEmployment object" in {
+      "containing the expected SelfEmploymentBusiness object" in {
         selfEmploymentBusinessDefaultDesJsonSequence.as[Seq[SelfEmployment]] shouldBe Seq(selfEmploymentBusinessDefaultResponse)
       }
     }
@@ -39,18 +50,28 @@ class SelfEmploymentSpec extends UnitSpec {
     }
 
     "read from Json with multiple selfEmployments" should {
-      "return the expected sequence of SelfEmployment" in {
+      "return the expected sequence of SelfEmployments" in {
         summariesDesJson.as[Seq[SelfEmployment]] shouldBe selfEmployments
       }
     }
 
-
-    //Prove filter
+    "read from a complex Json scenario" should {
+      "return the expected sequence of SelfEmployments" in {
+        complexSelfEmploymentCaseDesJson.as[Seq[SelfEmployment]] shouldBe complexSelfEmploymentCaseResponse
+      }
+    }
 
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(Seq(selfEmploymentBusinessDefaultResponse)) shouldBe selfEmploymentDetailDefaultWrittenJsonSequence
       }
     }
+
+    "written from a complex selfEmployment object" should {
+      "return the expected JsObject" in {
+        Json.toJson(complexSelfEmploymentCaseResponse) shouldBe complexSelfEmploymentCaseWrittenJson
+      }
+    }
   }
+
 }
