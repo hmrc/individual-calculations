@@ -16,7 +16,7 @@
 
 package v1.fixtures.taxableIncome.detail.selfEmployments.detail
 
-import play.api.libs.json.{ JsObject, JsValue, Json }
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.taxableIncome.detail.selfEmployments.detail.CarriedForwardLossFixtures._
 import v1.fixtures.taxableIncome.detail.selfEmployments.detail.ClaimNotAppliedFixtures._
 import v1.fixtures.taxableIncome.detail.selfEmployments.detail.LossBroughtForwardFixtures._

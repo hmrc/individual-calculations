@@ -17,7 +17,6 @@
 package v1.fixtures.taxableIncome.detail
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures.{businessProfitAndLoss, ukPropertyFhlObject, ukPropertyNonFhlObject}
 import v1.fixtures.taxableIncome.detail.DividendsFixtures._
 import v1.fixtures.taxableIncome.detail.PayPensionsProfitFixtures._
 import v1.fixtures.taxableIncome.detail.SavingsAndGainsFixtures._

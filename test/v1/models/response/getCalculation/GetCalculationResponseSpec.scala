@@ -18,11 +18,11 @@ package v1.models.response.getCalculation
 
 import play.api.libs.json._
 import support.UnitSpec
-import v1.models.domain.{ CalculationReason, CalculationRequestor, CalculationType }
-import v1.models.response.common.{ Message, Messages, Metadata }
+import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.response.common.{Message, Messages, Metadata}
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
-import v1.models.response.getCalculation.incomeTaxAndNics.detail.{ CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown }
-import v1.models.response.getCalculation.incomeTaxAndNics.summary.{ CalculationSummary, IncomeTaxSummary }
+import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
+import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
 class GetCalculationResponseSpec extends UnitSpec {

@@ -18,7 +18,6 @@ package v1.fixtures.taxableIncome.detail.selfEmployments
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.des.LossType
-import v1.models.domain.TypeOfLoss
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{LossBroughtForward, LossClaimsDetail}
 

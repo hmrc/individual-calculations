@@ -17,12 +17,10 @@
 package v1.models.response.getCalculation
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
-import v1.models.response.common.{ Messages, Metadata }
+import play.api.libs.json.{JsPath, Json, OWrites, Reads, _}
+import v1.models.response.common.{Messages, Metadata}
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
-
-import play.api.libs.json._
 
 case class GetCalculationResponse(
     metadata: Metadata,

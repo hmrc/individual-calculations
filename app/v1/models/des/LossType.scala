@@ -17,19 +17,12 @@
 package v1.models.des
 
 import play.api.libs.json._
-import v1.models.domain.TypeOfLoss
 
-sealed trait LossType {
-  def toTypeOfLoss: TypeOfLoss
-}
+sealed trait LossType
 
 object LossType {
-  case object INCOME extends LossType {
-    override def toTypeOfLoss: TypeOfLoss = TypeOfLoss.`self-employment`
-  }
-  case object CLASS4NICS extends LossType {
-    override def toTypeOfLoss: TypeOfLoss = TypeOfLoss.`self-employment-class4`
-  }
+  case object INCOME extends LossType
+  case object CLASS4NICS extends LossType
 
   implicit val reads: Reads[LossType] = implicitly[Reads[String]].collect(JsonValidationError("error.expected.lossType")){
     case "income" => INCOME

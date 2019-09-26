@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ Json, OWrites, Reads, _ }
+import play.api.libs.json.{Json, OWrites, Reads, _}
 
 case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
                              broughtForwardIncomeTaxLossesUsed: Option[BigInt],

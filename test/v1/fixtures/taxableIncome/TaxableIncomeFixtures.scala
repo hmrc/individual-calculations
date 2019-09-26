@@ -16,13 +16,10 @@
 
 package v1.fixtures.taxableIncome
 
-import play.api.libs.json
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.taxableIncome.detail.CalculationDetailFixtures._
-import v1.fixtures.taxableIncome.summary.CalculationSummaryFixtures._
 import v1.models.des.LossType
 import v1.models.des.LossType.INCOME
-import v1.models.domain.{TypeOfClaim, TypeOfLoss}
+import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 import v1.models.response.getCalculation.taxableIncome.detail._
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
@@ -32,10 +29,9 @@ import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPr
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss => FHLDefaultCarriedForwardLoss, LossBroughtForward => FHLLossBroughtForward, LossClaimsDetail => FHLLossClaimsDetail, ResultOfClaimApplied => FHLResultOfClaimApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.{LossClaimsSummary => FHLLossClaimsSummary}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied, ClaimNotApplied => NonFHLClaimNotApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary.{LossClaimsSummary => NonFHLLossClaimsSummary}
 import v1.models.response.getCalculation.taxableIncome.summary.CalculationSummary
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{ClaimNotApplied => NonFHLClaimNotApplied}
 
 object TaxableIncomeFixtures {
 

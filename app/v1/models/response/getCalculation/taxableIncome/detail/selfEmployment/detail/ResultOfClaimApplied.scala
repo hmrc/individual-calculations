@@ -18,8 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import v1.models.des.{ LossType, ReliefClaimed }
-import v1.models.domain.{ TypeOfClaim, TypeOfLoss }
+import v1.models.des.{LossType, ReliefClaimed}
+import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
 
 case class ResultOfClaimApplied(

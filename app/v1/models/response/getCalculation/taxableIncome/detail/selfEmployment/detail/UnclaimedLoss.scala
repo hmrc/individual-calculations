@@ -19,7 +19,6 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import v1.models.des.LossType
-import v1.models.domain.TypeOfLoss
 import v1.models.request.DesTaxYear
 
 case class UnclaimedLoss(
