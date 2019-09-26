@@ -19,7 +19,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import v1.models.des.{ LossType, ReliefClaimed }
-import v1.models.domain.TypeOfClaim
+import v1.models.domain.{ TypeOfClaim, TypeOfLoss }
 import v1.models.request.DesTaxYear
 
 case class CarriedForwardLoss(
@@ -28,7 +28,7 @@ case class CarriedForwardLoss(
     taxYearClaimMade: Option[String],
     taxYearLossIncurred: String,
     currentLossValue: BigInt,
-    lossType: LossType,
+    lossType: TypeOfLoss,
     incomeSourceId: String
 )
 
@@ -52,7 +52,7 @@ object CarriedForwardLoss {
       (JsPath \ "taxYearClaimMade").readNullable[Int].map(_.map(DesTaxYear.fromDesIntToString)) and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
-      (JsPath \ "lossType").read[LossType] and
+      (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss) and
       (JsPath \ "incomeSourceId").read[String]
   )(CarriedForwardLoss.apply _)
 

@@ -49,7 +49,7 @@ object TaxableIncomeFixtures {
             Some(SELossClaimsDetail(Some(List(SELossBroughtForward(TypeOfLoss.`self-employment`,"2017-18",10101, mtdLoss = true,"AaIS12345678910"))),
               Some(List(SEResultOfClaimApplied(Some("CCIS12345678901"),"2017-18",TypeOfClaim.`carry-forward`, mtdLoss = true, "2017-18",10101,10201,
                 TypeOfLoss.`self-employment`, "AaIS12345678910"))),Some(List(UnclaimedLoss("2017-18",1001, "2019-20",TypeOfLoss.`self-employment`,"AaIS12345678910"))),
-              Some(List(CarriedForwardLoss(Some("CCIS12345678901"),TypeOfClaim.`carry-forward`, Some("2018-19"), "2017-18",1001,INCOME, "AaIS12345678910"))),
+              Some(List(CarriedForwardLoss(Some("CCIS12345678901"),TypeOfClaim.`carry-forward`, Some("2018-19"), "2017-18",1001,TypeOfLoss.`self-employment`, "AaIS12345678910"))),
               Some(List(ClaimNotApplied("CCIS12345678921","2017-18",TypeOfClaim.`carry-forward`, "AaIS12345678910")))))),
             SelfEmployment("AbIS12345678910",Some(100102.22),Some(100202.22),Some(100302.22),Some(100402.22),Some(101502),Some(100502.22),Some(100602.22),
               Some(100702.22),Some(100902),Some(100802),Some(101302),Some(SELossClaimsSummary(Some(101002),Some(101202),Some(101402),Some(101602),Some(101702),
@@ -57,7 +57,7 @@ object TaxableIncomeFixtures {
                 10102, mtdLoss = true,"AbIS12345678910"))),Some(List(SEResultOfClaimApplied(Some("CCIS12345678902"),"2017-18",
                 TypeOfClaim.`carry-sideways`, mtdLoss = true,"2017-18",10102,10202,TypeOfLoss.`self-employment`, "AbIS12345678910"))),
                 Some(List(UnclaimedLoss("2017-18",1002, "2019-20", TypeOfLoss.`self-employment`, "AbIS12345678910"))),
-                Some(List(CarriedForwardLoss(Some("CCIS12345678902"),TypeOfClaim.`carry-forward`,Some("2018-19"),"2017-18",1002,INCOME,"AbIS12345678910"))),
+                Some(List(CarriedForwardLoss(Some("CCIS12345678902"),TypeOfClaim.`carry-forward`,Some("2018-19"),"2017-18",1002,TypeOfLoss.`self-employment`,"AbIS12345678910"))),
                 Some(List(ClaimNotApplied("CCIS12345678922","2017-18",TypeOfClaim.`carry-sideways`, "AbIS12345678910")))))))),
           Some(UkPropertyFhl(Some(4001.11),Some(4002.11),Some(4003.11),Some(4004.11),Some(4005.11),Some(4006.11),Some(4007.11),Some(4009),Some(4008),
             Some(4013),Some(FHLLossClaimsSummary(Some(4011),Some(4010),Some(4012),Some(4014))),Some(FHLLossClaimsDetail(
@@ -139,7 +139,7 @@ object TaxableIncomeFixtures {
       |							"taxYearClaimMade": "2018-19",
       |							"taxYearLossIncurred": "2017-18",
       |							"currentLossValue": 1001,
-      |							"lossType": "income"
+      |							"lossType": "self-employment"
       |						}],
       |						"claimsNotApplied": [{
       |							"claimId": "CCIS12345678921",
@@ -198,7 +198,7 @@ object TaxableIncomeFixtures {
       |							"taxYearClaimMade": "2018-19",
       |							"taxYearLossIncurred": "2017-18",
       |							"currentLossValue": 1002,
-      |							"lossType": "income"
+      |							"lossType": "self-employment"
       |						}],
       |						"claimsNotApplied": [{
       |							"claimId": "CCIS12345678922",

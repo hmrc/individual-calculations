@@ -18,7 +18,7 @@ package v1.fixtures.taxableIncome.detail.selfEmployments.detail
 
 import play.api.libs.json.{JsValue, Json}
 import v1.models.des.LossType
-import v1.models.domain.TypeOfClaim
+import v1.models.domain.{TypeOfClaim, TypeOfLoss}
 import v1.models.request.DesTaxYear
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.CarriedForwardLoss
 
@@ -33,6 +33,7 @@ object CarriedForwardLossFixtures {
   val taxYearLossIncurred: Int      = 2045
   val currentLossValue: BigInt      = 49177438626L
   val lossType: String              = "income"
+  val typeOfLoss = TypeOfLoss.`self-employment`
 
   val carriedForwardLossResponse: CarriedForwardLoss = CarriedForwardLoss(
     claimId,
@@ -40,7 +41,7 @@ object CarriedForwardLossFixtures {
     taxYearClaimMade.map(taxYear => DesTaxYear.fromDesIntToString(taxYear)),
     DesTaxYear.fromDesIntToString(taxYearLossIncurred),
     currentLossValue,
-    LossType.INCOME,
+    typeOfLoss,
     incomeSourceId
   )
 
@@ -86,14 +87,14 @@ object CarriedForwardLossFixtures {
       |    "taxYearClaimMade": "${DesTaxYear.fromDesIntToString(taxYearClaimMade.get)}",
       |    "taxYearLossIncurred": "${DesTaxYear.fromDesIntToString(taxYearLossIncurred)}",
       |    "currentLossValue": $currentLossValue,
-      |    "lossType": "$lossType"
+      |    "lossType": "$typeOfLoss"
       |}""".stripMargin)
 
   val carriedForwardLossWrittenJsonWithoutOptionals: JsValue = Json.parse(f"""{
       |    "claimType": "carry-forward",
       |    "taxYearLossIncurred": "${DesTaxYear.fromDesIntToString(taxYearLossIncurred)}",
       |    "currentLossValue": $currentLossValue,
-      |    "lossType": "$lossType"
+      |    "lossType": "$typeOfLoss"
       |}""".stripMargin)
 
   val carriedForwardLossInvalidJson: JsValue = Json.parse(f"""{
