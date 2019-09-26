@@ -54,7 +54,7 @@ object ResultOfClaimApplied {
     (JsPath \ "claimId").readNullable[String] and
       (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
-      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
+      (JsPath \ "mtdLoss").readWithDefault(true) and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "lossAmountUsed").read[BigInt] and
       (JsPath \ "remainingLossValue").read[BigInt] and
