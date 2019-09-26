@@ -30,7 +30,7 @@ case class ResultOfClaimApplied(
     taxYearLossIncurred: String,
     lossAmountUsed: BigInt,
     remainingLossValue: BigInt,
-    lossType: TypeOfLoss,
+    lossType: LossType,
     incomeSourceId: String
 )
 
@@ -58,7 +58,7 @@ object ResultOfClaimApplied {
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "lossAmountUsed").read[BigInt] and
       (JsPath \ "remainingLossValue").read[BigInt] and
-      (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss) and
+      (JsPath \ "lossType").read[LossType] and
       (JsPath \ "incomeSourceId").read[String]
   )(ResultOfClaimApplied.apply _)
 

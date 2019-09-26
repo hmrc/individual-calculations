@@ -17,6 +17,7 @@
 package v1.fixtures.taxableIncome.detail.selfEmployments.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.des.LossType
 import v1.models.domain.{TypeOfClaim, TypeOfLoss}
 import v1.models.request.DesTaxYear
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.ResultOfClaimApplied
@@ -34,7 +35,7 @@ object ResultOfClaimAppliedFixtures {
   val lossAmountUsed: Long       = 64613077921L
   val remainingLossValue: Long   = 72548288090L
   val lossType: String           = "income"
-  val mtdLossType: String        = "self-employment"
+  val mtdLossType: String        = "income"
 
   val resultOfClaimAppliedResponse: ResultOfClaimApplied = ResultOfClaimApplied(
     claimId,
@@ -44,7 +45,7 @@ object ResultOfClaimAppliedFixtures {
     DesTaxYear.fromDesIntToString(taxYearLossIncurred),
     lossAmountUsed,
     remainingLossValue,
-    TypeOfLoss.`self-employment`,
+    LossType.INCOME,
     incomeSourceId
   )
 

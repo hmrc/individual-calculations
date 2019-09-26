@@ -17,6 +17,7 @@
 package v1.fixtures.taxableIncome.detail.selfEmployments.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v1.models.des.LossType
 import v1.models.domain.TypeOfLoss
 import v1.models.request.DesTaxYear
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.UnclaimedLoss
@@ -27,7 +28,7 @@ object UnclaimedLossFixtures {
   val incomeSourceType: String = "01"
   val taxYearLossIncurred: Int = 2051
   val lossType: String         = "income"
-  val typeOfLoss: String       = "self-employment"
+  val typeOfLoss: String       = "income"
   val currentLossValue: BigInt = 71438847594L
   val expires: Int             = 2079
 
@@ -35,7 +36,7 @@ object UnclaimedLossFixtures {
     DesTaxYear.fromDesIntToString(taxYearLossIncurred),
     currentLossValue,
     DesTaxYear.fromDesIntToString(expires),
-    TypeOfLoss.`self-employment`,
+    LossType.INCOME,
     incomeSourceId
   )
 

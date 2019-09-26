@@ -16,10 +16,11 @@
 
 package v1.fixtures.taxableIncome.detail.selfEmployments
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
+import v1.models.des.LossType
 import v1.models.domain.TypeOfLoss
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{ LossBroughtForward, LossClaimsDetail }
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{LossBroughtForward, LossClaimsDetail}
 
 object SelfEmploymentJson {
 
@@ -94,12 +95,12 @@ object SelfEmploymentJson {
       |	      "selfEmploymentId": "a",
       |	      "lossClaimsDetail": {
       |	      	"lossesBroughtForward": [{
-      |		      	"lossType": "self-employment",
+      |		      	"lossType": "income",
       |		      	"taxYearLossIncurred": "2017-18",
       |		      	"currentLossValue": 100,
       |		      	"mtdLoss": false
       |	      	}, {
-      |		      	"lossType": "self-employment",
+      |		      	"lossType": "income",
       |		      	"taxYearLossIncurred": "2017-18",
       |		      	"currentLossValue": 200,
       |		      	"mtdLoss": false
@@ -109,7 +110,7 @@ object SelfEmploymentJson {
       |	      "selfEmploymentId": "b",
       |	      "lossClaimsDetail": {
       |		      "lossesBroughtForward": [{
-      |		      	"lossType": "self-employment",
+      |		      	"lossType": "income",
       |		      	"taxYearLossIncurred": "2017-18",
       |		      	"currentLossValue": 300,
       |		      	"mtdLoss": false
@@ -119,7 +120,7 @@ object SelfEmploymentJson {
       |	      "selfEmploymentId": "c",
       |	      "lossClaimsDetail": {
       |	      	"lossesBroughtForward": [{
-      |		      	"lossType": "self-employment",
+      |		      	"lossType": "income",
       |		      	"taxYearLossIncurred": "2017-18",
       |		      	"currentLossValue": 400,
       |		      	"mtdLoss": false
@@ -129,11 +130,11 @@ object SelfEmploymentJson {
       |	      "selfEmploymentId": "d"
       |}]""".stripMargin)
 
-  val lbf1 = LossBroughtForward(TypeOfLoss.`self-employment`, "2017-18", 100, false, "a")
-  val lbf2 = LossBroughtForward(TypeOfLoss.`self-employment`, "2017-18", 200, false, "a")
-  val lbf3 = LossBroughtForward(TypeOfLoss.`self-employment`, "2017-18", 300, false, "b")
-  val lbf4 = LossBroughtForward(TypeOfLoss.`self-employment`, "2017-18", 400, false, "c")
-  val lbf5 = LossBroughtForward(TypeOfLoss.`self-employment`, "2017-18", 500, false, "e")
+  val lbf1 = LossBroughtForward(LossType.INCOME, "2017-18", 100, false, "a")
+  val lbf2 = LossBroughtForward(LossType.INCOME, "2017-18", 200, false, "a")
+  val lbf3 = LossBroughtForward(LossType.INCOME, "2017-18", 300, false, "b")
+  val lbf4 = LossBroughtForward(LossType.INCOME, "2017-18", 400, false, "c")
+  val lbf5 = LossBroughtForward(LossType.INCOME, "2017-18", 500, false, "e")
 
   val lcd1 = LossClaimsDetail(Some(Seq(lbf1, lbf2)), None, None, None, None)
   val lcd2 = LossClaimsDetail(Some(Seq(lbf3)), None, None, None, None)

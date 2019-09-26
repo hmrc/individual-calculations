@@ -26,7 +26,7 @@ case class UnclaimedLoss(
     taxYearLossIncurred: String,
     currentLossValue: BigInt,
     expires: String,
-    lossType: TypeOfLoss,
+    lossType: LossType,
     incomeSourceId: String
 )
 
@@ -46,7 +46,7 @@ object UnclaimedLoss {
     (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "expires").read[Int].map(DesTaxYear.fromDesIntToString) and
-      (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss) and
+      (JsPath \ "lossType").read[LossType] and
       (JsPath \ "incomeSourceId").read[String]
   )(UnclaimedLoss.apply _)
 
