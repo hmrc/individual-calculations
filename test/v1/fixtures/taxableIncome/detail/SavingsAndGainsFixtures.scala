@@ -29,6 +29,7 @@ object SavingsAndGainsFixtures {
   val savingsAndGainsResponseWithoutSavings: SavingsAndGains = savingsAndGainsResponse.copy(savings = None)
 
   val savingsAndGainsDesJson: JsValue = Json.parse(s"""{
+       |"calculation": {
        |   "taxCalculation" : {
        |     "incomeTax" : {
        |       "savingsAndGains": {
@@ -63,9 +64,11 @@ object SavingsAndGainsFixtures {
        |     "taxDeducted": ${taxDeducted.get + 100}
        |     }
        |     ]
+       |  }
        |}""".stripMargin)
 
   val savingsAndGainsDesJsonWithoutSavings: JsValue = Json.parse(s"""{
+       |"calculation": {
        |   "taxCalculation" : {
        |     "incomeTax" : {
        |       "savingsAndGains" :{
@@ -74,6 +77,7 @@ object SavingsAndGainsFixtures {
        |       }
        |     }
        |   }
+       |  }
        |}""".stripMargin)
 
   val savingsAndGainsWrittenJson: JsValue = Json.parse(s"""{
@@ -103,6 +107,7 @@ object SavingsAndGainsFixtures {
        |}""".stripMargin)
 
   val savingsAndGainsInvalidJson: JsValue = Json.parse(s"""{
+       |"calculation": {
        |   "taxCalculation" : {
        |     "incomeTax" : {
        |       "savingsAndGains" : {
@@ -110,6 +115,7 @@ object SavingsAndGainsFixtures {
        |       }
        |     }
        |   }
+       | }
        |}""".stripMargin)
 
 }
