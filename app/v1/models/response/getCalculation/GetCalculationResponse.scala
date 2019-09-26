@@ -18,6 +18,7 @@ package v1.models.response.getCalculation
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads, _}
+import utils.NestedJsonReads
 import v1.models.response.common.{Messages, Metadata}
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
@@ -29,13 +30,10 @@ case class GetCalculationResponse(
     taxableIncome: Option[TaxableIncome] = None
 )
 
-object GetCalculationResponse {
+object GetCalculationResponse extends NestedJsonReads {
   implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
-  implicit val reads: Reads[GetCalculationResponse] = {
-    def emptyIfNotPresent[A: Reads](path: JsPath): Reads[Option[A]] =
-      (path.readNullable[JsObject].filter(_.isEmpty).map(_ => None) or JsPath.readNullable[A])
-
+  implicit val reads: Reads[GetCalculationResponse] =
     (
       JsPath.read[Metadata] and
         (emptyIfNotPresent[IncomeTax](__ \ "calculation")) and
@@ -45,5 +43,4 @@ object GetCalculationResponse {
         } and
         (emptyIfNotPresent[TaxableIncome](__ \ "calculation"))
     )(GetCalculationResponse.apply _)
-  }
 }

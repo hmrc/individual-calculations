@@ -25,8 +25,8 @@ case class SavingsAndGains(incomeReceived: BigInt, taxableIncome: BigInt, saving
 object SavingsAndGains extends NestedJsonReads{
   implicit val writes: OWrites[SavingsAndGains] = Json.writes[SavingsAndGains]
   implicit val reads: Reads[SavingsAndGains] = (
-    (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "incomeReceived").read[BigInt] and
-      (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "taxableIncome").read[BigInt] and
-      (JsPath \ "savingsAndGainsIncome").readNullable[Seq[Savings]](filteredArrayReads("incomeSourceType", "09"))
+    (JsPath \"calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "incomeReceived").read[BigInt] and
+      (JsPath \"calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "taxableIncome").read[BigInt] and
+      (JsPath \"calculation" \ "savingsAndGainsIncome").readNullable[Seq[Savings]](filteredArrayReads("incomeSourceType", "09"))
   )(SavingsAndGains.apply _)
 }
