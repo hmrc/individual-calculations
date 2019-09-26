@@ -18,12 +18,13 @@ package v1.models.response.getCalculation
 
 import play.api.libs.json._
 import support.UnitSpec
-import v1.models.domain.{ CalculationReason, CalculationRequestor, CalculationType }
-import v1.models.response.common.{ Message, Messages, Metadata }
+import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.response.common.{Message, Messages, Metadata}
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
-import v1.models.response.getCalculation.incomeTaxAndNics.detail.{ CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown }
-import v1.models.response.getCalculation.incomeTaxAndNics.summary.{ CalculationSummary, IncomeTaxSummary }
+import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
+import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
+import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
 
 class GetCalculationResponseSpec extends UnitSpec {
 
@@ -57,7 +58,9 @@ class GetCalculationResponseSpec extends UnitSpec {
                  |       "totalTaxableIncome": 234,
                  |       "payPensionsProfit" : {
                  |           "allowancesAllocated" : 300.25,
-                 |           "incomeTaxAmount": 400.25
+                 |           "incomeTaxAmount": 400.25,
+                 |           "incomeReceived" : 500,
+                 |           "taxableIncome": 600
                  |        }
                  |     },
                  |     "totalIncomeTaxAndNicsDue" : 200.25
@@ -115,7 +118,12 @@ class GetCalculationResponseSpec extends UnitSpec {
       |      "totalIncomeReceivedFromAllSources": 123,
       |      "totalTaxableIncome": 234
       |    },
-      |    "detail": {}
+      |    "detail": {
+      |     "payPensionsProfit": {
+      |       "incomeReceived":500,
+      |       "taxableIncome":600
+      |       }
+      |    }
       |  }
       |}
       |""".stripMargin)
@@ -140,7 +148,7 @@ class GetCalculationResponseSpec extends UnitSpec {
 
   val taxableIncomeModel = TaxableIncome(
     taxableIncome.summary.CalculationSummary(123, 234),
-    taxableIncome.detail.CalculationDetail(None, None, None)
+    taxableIncome.detail.CalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
   val calculationResponse         = GetCalculationResponse(metadata, messages = Some(messages))
   val calculationResponseAllParts = GetCalculationResponse(metadata, Some(incomeTax), Some(messages), Some(taxableIncomeModel))

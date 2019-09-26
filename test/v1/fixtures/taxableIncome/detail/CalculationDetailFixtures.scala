@@ -17,7 +17,6 @@
 package v1.fixtures.taxableIncome.detail
 
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures.{businessProfitAndLoss, ukPropertyFhlObject, ukPropertyNonFhlObject}
 import v1.fixtures.taxableIncome.detail.DividendsFixtures._
 import v1.fixtures.taxableIncome.detail.PayPensionsProfitFixtures._
 import v1.fixtures.taxableIncome.detail.SavingsAndGainsFixtures._
@@ -52,16 +51,16 @@ object CalculationDetailFixtures {
     Json.obj("calculation" -> Json.obj("taxCalculation" -> Json.obj("incomeTax" -> Json.obj("dividends" -> dividendsDesJson))))
 
   val detailDesJson: JsValue =
-    payPensionsProfitDesJson.as[JsObject].deepMerge(Json.obj("calculation" -> savingsAndGainsDesJson).deepMerge(dividendsDesJsonWithFullPath))
+    payPensionsProfitDesJson.as[JsObject].deepMerge(savingsAndGainsDesJson.as[JsObject]).deepMerge(dividendsDesJsonWithFullPath)
 
   val detailDesJsonWithoutPPP: JsValue =
-    Json.obj("calculation" -> savingsAndGainsDesJson).deepMerge(dividendsDesJsonWithFullPath)
+    savingsAndGainsDesJson.as[JsObject].deepMerge(dividendsDesJsonWithFullPath)
 
   val detailDesJsonWithoutSAG: JsValue =
     payPensionsProfitDesJson.as[JsObject].deepMerge(dividendsDesJsonWithFullPath)
 
   val detailDesJsonWithoutDiv: JsValue =
-    payPensionsProfitDesJson.as[JsObject].deepMerge(Json.obj("calculation" -> savingsAndGainsDesJson))
+    payPensionsProfitDesJson.as[JsObject].deepMerge(savingsAndGainsDesJson.as[JsObject])
 
   val dividendsJsonComponent: JsObject         = Json.obj("dividends"         -> dividendsWrittenJson)
   val savingsAndGainsJsonComponent: JsObject   = Json.obj("savingsAndGains"   -> savingsAndGainsWrittenJson)

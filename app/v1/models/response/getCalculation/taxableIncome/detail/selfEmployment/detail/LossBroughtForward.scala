@@ -46,7 +46,7 @@ object LossBroughtForward {
     (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss) and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
-      (JsPath \ "mtdLoss").read[Boolean].orElse(Reads.pure(true)) and
+      (JsPath \ "mtdLoss").readWithDefault(true) and
       (JsPath \ "incomeSourceId").read[String]
   )(LossBroughtForward.apply _)
 
