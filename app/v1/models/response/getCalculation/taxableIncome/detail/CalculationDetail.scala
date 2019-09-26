@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
+import play.api.libs.json._
 import utils.NestedJsonReads
 
 case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit], savingsAndGains: Option[SavingsAndGains], dividends: Option[Dividends])
@@ -25,7 +25,7 @@ case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit], savin
 object CalculationDetail extends NestedJsonReads {
   implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
   implicit val reads: Reads[CalculationDetail] = (
-    JsPath.readNullable[PayPensionsProfit].orElse(Reads.pure(None)) and
+    emptyIfNotPresent[PayPensionsProfit](__ \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit") and
       (JsPath \ "calculation").readNullable[SavingsAndGains].orElse(Reads.pure(None)) and
       (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "dividends").readNestedNullable[Dividends].orElse(Reads.pure(None))
   )(CalculationDetail.apply _)
