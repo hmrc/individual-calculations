@@ -74,7 +74,245 @@ object TaxableIncomeFixtures {
 
   val taxableIncomeWrittenJson: JsValue = Json.parse(
     """
-      |{"summary":{"totalIncomeReceivedFromAllSources":7001,"totalTaxableIncome":100},"detail":{"payPensionsProfit":{"incomeReceived":7004,"taxableIncome":7006,"totalSelfEmploymentProfit":6001,"totalPropertyProfit":6002,"totalFHLPropertyProfit":6003,"totalUKOtherPropertyProfit":6004,"businessProfitAndLoss":{"selfEmployments":[{"selfEmploymentId":"AaIS12345678910","totalIncome":100101.11,"totalExpenses":100201.11,"netProfit":100301.11,"netLoss":100401.11,"class4Loss":101501,"totalAdditions":100501.11,"totalDeductions":100601.11,"accountingAdjustments":100701.11,"adjustedIncomeTaxLoss":100901,"taxableProfit":100801,"taxableProfitAfterIncomeTaxLossesDeduction":101301,"lossClaimsSummary":{"totalBroughtForwardIncomeTaxLosses":101001,"broughtForwardIncomeTaxLossesUsed":101201,"totalIncomeTaxLossesCarriedForward":101401,"totalBroughtForwardClass4Losses":101601,"broughtForwardClass4LossesUsed":101701,"carrySidewaysClass4LossesUsed":101801,"totalClass4LossesCarriedForward":101901},"lossClaimsDetail":{"lossesBroughtForward":[{"lossType":"self-employment","taxYearLossIncurred":"2017-18","currentLossValue":10101,"mtdLoss":true}],"resultOfClaimsApplied":[{"claimId":"CCIS12345678901","taxYearClaimMade":"2017-18","claimType":"carry-forward","mtdLoss":true,"taxYearLossIncurred":"2017-18","lossAmountUsed":10101,"remainingLossValue":10201,"lossType":"self-employment"}],"unclaimedLosses":[{"taxYearLossIncurred":"2017-18","currentLossValue":1001,"expires":"2019-20","lossType":"self-employment"}],"carriedForwardLosses":[{"claimId":"CCIS12345678901","claimType":"carry-forward","taxYearClaimMade":"2018-19","taxYearLossIncurred":"2017-18","currentLossValue":1001,"lossType":"income"}],"claimsNotApplied":[{"claimId":"CCIS12345678921","taxYearClaimMade":"2017-18","claimType":"carry-forward"}]}},{"selfEmploymentId":"AbIS12345678910","totalIncome":100102.22,"totalExpenses":100202.22,"netProfit":100302.22,"netLoss":100402.22,"class4Loss":101502,"totalAdditions":100502.22,"totalDeductions":100602.22,"accountingAdjustments":100702.22,"adjustedIncomeTaxLoss":100902,"taxableProfit":100802,"taxableProfitAfterIncomeTaxLossesDeduction":101302,"lossClaimsSummary":{"totalBroughtForwardIncomeTaxLosses":101002,"broughtForwardIncomeTaxLossesUsed":101202,"totalIncomeTaxLossesCarriedForward":101402,"totalBroughtForwardClass4Losses":101602,"broughtForwardClass4LossesUsed":101702,"carrySidewaysClass4LossesUsed":101802,"totalClass4LossesCarriedForward":101902},"lossClaimsDetail":{"lossesBroughtForward":[{"lossType":"self-employment","taxYearLossIncurred":"2017-18","currentLossValue":10102,"mtdLoss":true}],"resultOfClaimsApplied":[{"claimId":"CCIS12345678902","taxYearClaimMade":"2017-18","claimType":"carry-sideways","mtdLoss":true,"taxYearLossIncurred":"2017-18","lossAmountUsed":10102,"remainingLossValue":10202,"lossType":"self-employment"}],"unclaimedLosses":[{"taxYearLossIncurred":"2017-18","currentLossValue":1002,"expires":"2019-20","lossType":"self-employment"}],"carriedForwardLosses":[{"claimId":"CCIS12345678902","claimType":"carry-forward","taxYearClaimMade":"2018-19","taxYearLossIncurred":"2017-18","currentLossValue":1002,"lossType":"income"}],"claimsNotApplied":[{"claimId":"CCIS12345678922","taxYearClaimMade":"2017-18","claimType":"carry-sideways"}]}}],"ukPropertyFhl":{"totalIncome":4001.11,"totalExpenses":4002.11,"netProfit":4003.11,"netLoss":4004.11,"totalAdditions":4005.11,"totalDeductions":4006.11,"accountingAdjustments":4007.11,"adjustedIncomeTaxLoss":4009,"taxableProfit":4008,"taxableProfitAfterIncomeTaxLossesDeduction":4013,"lossClaimsSummary":{"lossForCSFHL":4011,"totalBroughtForwardIncomeTaxLosses":4010,"broughtForwardIncomeTaxLossesUsed":4012,"totalIncomeTaxLossesCarriedForward":4014},"lossClaimsDetail":{"lossesBroughtForward":[{"taxYearLossIncurred":"2017-18","currentLossValue":40101,"mtdLoss":true}],"resultOfClaimsApplied":[{"claimId":"CCIS12345678904","taxYearClaimMade":"2017-18","claimType":"carry-forward-to-carry-sideways","mtdLoss":true,"taxYearLossIncurred":"2017-18","lossAmountUsed":40101,"remainingLossValue":40201}],"carriedForwardLosses":[{"taxYearLossIncurred":"2017-18","currentLossValue":401}]}},"ukPropertyNonFhl":{"totalIncome":2001.11,"totalExpenses":2002.11,"netProfit":2003.11,"netLoss":2004.11,"totalAdditions":2005.11,"totalDeductions":2006.11,"accountingAdjustments":2007.11,"adjustedIncomeTaxLoss":2009,"taxableProfit":2008,"taxableProfitAfterIncomeTaxLossesDeduction":2013,"lossClaimsSummary":{"totalBroughtForwardIncomeTaxLosses":2010,"broughtForwardIncomeTaxLossesUsed":2012,"totalIncomeTaxLossesCarriedForward":2014},"lossClaimsDetail":{"lossesBroughtForward":[{"taxYearLossIncurred":"2017-18","currentLossValue":20101,"mtdLoss":true}],"resultOfClaimsApplied":[{"claimId":"CCIS12345678903","originatingClaimId":"000000000000213","taxYearClaimMade":"2017-18","claimType":"carry-sideways-fhl","mtdLoss":true,"taxYearLossIncurred":"2017-18","lossAmountUsed":20101,"remainingLossValue":20201}],"defaultCarriedForwardLosses":[{"taxYearLossIncurred":"2017-18","currentLossValue":201}],"claimsNotApplied":[{"claimId":"CCIS12345678923","taxYearClaimMade":"2017-18","claimType":"carry-sideways-fhl"}]}}}},"savingsAndGains":{"incomeReceived":7012,"taxableIncome":7014,"savings":[{"savingsAccountId":"SAVKB1UVwUTBQGJ","savingsAccountName":"UK Savings Account ONE","grossIncome":90101.11,"netIncome":90201.11,"taxDeducted":90301.11},{"savingsAccountId":"SAVKB2UVwUTBQGJ","savingsAccountName":"UK Savings Account TWO","grossIncome":90102.11,"netIncome":90202.11,"taxDeducted":90302.11}]},"dividends":{"incomeReceived":7020,"taxableIncome":7022}}}
+      |{
+      |	"summary": {
+      |		"totalIncomeReceivedFromAllSources": 7001,
+      |		"totalTaxableIncome": 100
+      |	},
+      |	"detail": {
+      |		"payPensionsProfit": {
+      |			"incomeReceived": 7004,
+      |			"taxableIncome": 7006,
+      |			"totalSelfEmploymentProfit": 6001,
+      |			"totalPropertyProfit": 6002,
+      |			"totalFHLPropertyProfit": 6003,
+      |			"totalUKOtherPropertyProfit": 6004,
+      |			"businessProfitAndLoss": {
+      |				"selfEmployments": [{
+      |					"selfEmploymentId": "AaIS12345678910",
+      |					"totalIncome": 100101.11,
+      |					"totalExpenses": 100201.11,
+      |					"netProfit": 100301.11,
+      |					"netLoss": 100401.11,
+      |					"class4Loss": 101501,
+      |					"totalAdditions": 100501.11,
+      |					"totalDeductions": 100601.11,
+      |					"accountingAdjustments": 100701.11,
+      |					"adjustedIncomeTaxLoss": 100901,
+      |					"taxableProfit": 100801,
+      |					"taxableProfitAfterIncomeTaxLossesDeduction": 101301,
+      |					"lossClaimsSummary": {
+      |						"totalBroughtForwardIncomeTaxLosses": 101001,
+      |						"broughtForwardIncomeTaxLossesUsed": 101201,
+      |						"totalIncomeTaxLossesCarriedForward": 101401,
+      |						"totalBroughtForwardClass4Losses": 101601,
+      |						"broughtForwardClass4LossesUsed": 101701,
+      |						"carrySidewaysClass4LossesUsed": 101801,
+      |						"totalClass4LossesCarriedForward": 101901
+      |					},
+      |					"lossClaimsDetail": {
+      |						"lossesBroughtForward": [{
+      |							"lossType": "self-employment",
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 10101,
+      |							"mtdLoss": true
+      |						}],
+      |						"resultOfClaimsApplied": [{
+      |							"claimId": "CCIS12345678901",
+      |							"taxYearClaimMade": "2017-18",
+      |							"claimType": "carry-forward",
+      |							"mtdLoss": true,
+      |							"taxYearLossIncurred": "2017-18",
+      |							"lossAmountUsed": 10101,
+      |							"remainingLossValue": 10201,
+      |							"lossType": "self-employment"
+      |						}],
+      |						"unclaimedLosses": [{
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 1001,
+      |							"expires": "2019-20",
+      |							"lossType": "self-employment"
+      |						}],
+      |						"carriedForwardLosses": [{
+      |							"claimId": "CCIS12345678901",
+      |							"claimType": "carry-forward",
+      |							"taxYearClaimMade": "2018-19",
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 1001,
+      |							"lossType": "income"
+      |						}],
+      |						"claimsNotApplied": [{
+      |							"claimId": "CCIS12345678921",
+      |							"taxYearClaimMade": "2017-18",
+      |							"claimType": "carry-forward"
+      |						}]
+      |					}
+      |				}, {
+      |					"selfEmploymentId": "AbIS12345678910",
+      |					"totalIncome": 100102.22,
+      |					"totalExpenses": 100202.22,
+      |					"netProfit": 100302.22,
+      |					"netLoss": 100402.22,
+      |					"class4Loss": 101502,
+      |					"totalAdditions": 100502.22,
+      |					"totalDeductions": 100602.22,
+      |					"accountingAdjustments": 100702.22,
+      |					"adjustedIncomeTaxLoss": 100902,
+      |					"taxableProfit": 100802,
+      |					"taxableProfitAfterIncomeTaxLossesDeduction": 101302,
+      |					"lossClaimsSummary": {
+      |						"totalBroughtForwardIncomeTaxLosses": 101002,
+      |						"broughtForwardIncomeTaxLossesUsed": 101202,
+      |						"totalIncomeTaxLossesCarriedForward": 101402,
+      |						"totalBroughtForwardClass4Losses": 101602,
+      |						"broughtForwardClass4LossesUsed": 101702,
+      |						"carrySidewaysClass4LossesUsed": 101802,
+      |						"totalClass4LossesCarriedForward": 101902
+      |					},
+      |					"lossClaimsDetail": {
+      |						"lossesBroughtForward": [{
+      |							"lossType": "self-employment",
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 10102,
+      |							"mtdLoss": true
+      |						}],
+      |						"resultOfClaimsApplied": [{
+      |							"claimId": "CCIS12345678902",
+      |							"taxYearClaimMade": "2017-18",
+      |							"claimType": "carry-sideways",
+      |							"mtdLoss": true,
+      |							"taxYearLossIncurred": "2017-18",
+      |							"lossAmountUsed": 10102,
+      |							"remainingLossValue": 10202,
+      |							"lossType": "self-employment"
+      |						}],
+      |						"unclaimedLosses": [{
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 1002,
+      |							"expires": "2019-20",
+      |							"lossType": "self-employment"
+      |						}],
+      |						"carriedForwardLosses": [{
+      |							"claimId": "CCIS12345678902",
+      |							"claimType": "carry-forward",
+      |							"taxYearClaimMade": "2018-19",
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 1002,
+      |							"lossType": "income"
+      |						}],
+      |						"claimsNotApplied": [{
+      |							"claimId": "CCIS12345678922",
+      |							"taxYearClaimMade": "2017-18",
+      |							"claimType": "carry-sideways"
+      |						}]
+      |					}
+      |				}],
+      |				"ukPropertyFhl": {
+      |					"totalIncome": 4001.11,
+      |					"totalExpenses": 4002.11,
+      |					"netProfit": 4003.11,
+      |					"netLoss": 4004.11,
+      |					"totalAdditions": 4005.11,
+      |					"totalDeductions": 4006.11,
+      |					"accountingAdjustments": 4007.11,
+      |					"adjustedIncomeTaxLoss": 4009,
+      |					"taxableProfit": 4008,
+      |					"taxableProfitAfterIncomeTaxLossesDeduction": 4013,
+      |					"lossClaimsSummary": {
+      |						"lossForCSFHL": 4011,
+      |						"totalBroughtForwardIncomeTaxLosses": 4010,
+      |						"broughtForwardIncomeTaxLossesUsed": 4012,
+      |						"totalIncomeTaxLossesCarriedForward": 4014
+      |					},
+      |					"lossClaimsDetail": {
+      |						"lossesBroughtForward": [{
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 40101,
+      |							"mtdLoss": true
+      |						}],
+      |						"resultOfClaimsApplied": [{
+      |							"claimId": "CCIS12345678904",
+      |							"taxYearClaimMade": "2017-18",
+      |							"claimType": "carry-forward-to-carry-sideways",
+      |							"mtdLoss": true,
+      |							"taxYearLossIncurred": "2017-18",
+      |							"lossAmountUsed": 40101,
+      |							"remainingLossValue": 40201
+      |						}],
+      |						"defaultCarriedForwardLosses": [{
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 401
+      |						}]
+      |					}
+      |				},
+      |				"ukPropertyNonFhl": {
+      |					"totalIncome": 2001.11,
+      |					"totalExpenses": 2002.11,
+      |					"netProfit": 2003.11,
+      |					"netLoss": 2004.11,
+      |					"totalAdditions": 2005.11,
+      |					"totalDeductions": 2006.11,
+      |					"accountingAdjustments": 2007.11,
+      |					"adjustedIncomeTaxLoss": 2009,
+      |					"taxableProfit": 2008,
+      |					"taxableProfitAfterIncomeTaxLossesDeduction": 2013,
+      |					"lossClaimsSummary": {
+      |						"totalBroughtForwardIncomeTaxLosses": 2010,
+      |						"broughtForwardIncomeTaxLossesUsed": 2012,
+      |						"totalIncomeTaxLossesCarriedForward": 2014
+      |					},
+      |					"lossClaimsDetail": {
+      |						"lossesBroughtForward": [{
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 20101,
+      |							"mtdLoss": true
+      |						}],
+      |						"resultOfClaimsApplied": [{
+      |							"claimId": "CCIS12345678903",
+      |							"originatingClaimId": "000000000000213",
+      |							"taxYearClaimMade": "2017-18",
+      |							"claimType": "carry-sideways-fhl",
+      |							"mtdLoss": true,
+      |							"taxYearLossIncurred": "2017-18",
+      |							"lossAmountUsed": 20101,
+      |							"remainingLossValue": 20201
+      |						}],
+      |						"defaultCarriedForwardLosses": [{
+      |							"taxYearLossIncurred": "2017-18",
+      |							"currentLossValue": 201
+      |						}],
+      |						"claimsNotApplied": [{
+      |							"claimId": "CCIS12345678923",
+      |							"taxYearClaimMade": "2017-18",
+      |							"claimType": "carry-sideways-fhl"
+      |						}]
+      |					}
+      |				}
+      |			}
+      |		},
+      |		"savingsAndGains": {
+      |			"incomeReceived": 7012,
+      |			"taxableIncome": 7014,
+      |			"savings": [{
+      |				"savingsAccountId": "SAVKB1UVwUTBQGJ",
+      |				"savingsAccountName": "UK Savings Account ONE",
+      |				"grossIncome": 90101.11,
+      |				"netIncome": 90201.11,
+      |				"taxDeducted": 90301.11
+      |			}, {
+      |				"savingsAccountId": "SAVKB2UVwUTBQGJ",
+      |				"savingsAccountName": "UK Savings Account TWO",
+      |				"grossIncome": 90102.11,
+      |				"netIncome": 90202.11,
+      |				"taxDeducted": 90302.11
+      |			}]
+      |		},
+      |		"dividends": {
+      |			"incomeReceived": 7020,
+      |			"taxableIncome": 7022
+      |		}
+      |	}
+      |}
       |""".stripMargin)
 
   val emptyJson: JsObject = JsObject.empty
