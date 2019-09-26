@@ -19,8 +19,7 @@ package v1.models.domain
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import v1.models.domain.CalculationRequestor.{agent, customer, hmrc}
-import v1.models.domain.CalculationRequestor._
+import v1.models.domain.CalculationRequestor.{agent, customer, hmrc, _}
 
 class CalculationRequestorSpec extends UnitSpec with EnumJsonSpecSupport {
 

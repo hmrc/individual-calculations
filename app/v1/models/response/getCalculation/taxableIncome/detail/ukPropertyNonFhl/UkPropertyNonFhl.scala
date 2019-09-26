@@ -16,8 +16,8 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl
 
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.LossClaimsDetail
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary.LossClaimsSummary

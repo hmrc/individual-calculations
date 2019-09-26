@@ -19,7 +19,7 @@ package v1.models.des
 import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
-import LossType._
+import v1.models.des.LossType._
 
 class LossTypeSpec  extends UnitSpec with EnumJsonSpecSupport {
 

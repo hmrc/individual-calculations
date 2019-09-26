@@ -16,12 +16,10 @@
 
 package v1.fixtures.taxableIncome
 
-import play.api.libs.json
 import play.api.libs.json.{JsObject, JsValue, Json}
-import v1.fixtures.taxableIncome.detail.CalculationDetailFixtures._
-import v1.fixtures.taxableIncome.summary.CalculationSummaryFixtures._
+import v1.models.des.LossType
 import v1.models.des.LossType.INCOME
-import v1.models.domain.{TypeOfClaim, TypeOfLoss}
+import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 import v1.models.response.getCalculation.taxableIncome.detail._
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
@@ -31,10 +29,9 @@ import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPr
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss => FHLDefaultCarriedForwardLoss, LossBroughtForward => FHLLossBroughtForward, LossClaimsDetail => FHLLossClaimsDetail, ResultOfClaimApplied => FHLResultOfClaimApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.{LossClaimsSummary => FHLLossClaimsSummary}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied, ClaimNotApplied => NonFHLClaimNotApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary.{LossClaimsSummary => NonFHLLossClaimsSummary}
 import v1.models.response.getCalculation.taxableIncome.summary.CalculationSummary
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{ClaimNotApplied => NonFHLClaimNotApplied}
 
 object TaxableIncomeFixtures {
 
@@ -46,17 +43,17 @@ object TaxableIncomeFixtures {
           Some(List(SelfEmployment("AaIS12345678910",Some(100101.11),Some(100201.11),Some(100301.11),Some(100401.11),
             Some(101501),Some(100501.11),Some(100601.11),Some(100701.11),Some(100901),Some(100801),Some(101301),
             Some(SELossClaimsSummary(Some(101001),Some(101201),Some(101401),Some(101601),Some(101701),Some(101801),Some(101901))),
-            Some(SELossClaimsDetail(Some(List(SELossBroughtForward(TypeOfLoss.`self-employment`,"2017-18",10101, mtdLoss = true,"AaIS12345678910"))),
+            Some(SELossClaimsDetail(Some(List(SELossBroughtForward(LossType.INCOME,"2017-18",10101, mtdLoss = true,"AaIS12345678910"))),
               Some(List(SEResultOfClaimApplied(Some("CCIS12345678901"),"2017-18",TypeOfClaim.`carry-forward`, mtdLoss = true, "2017-18",10101,10201,
-                TypeOfLoss.`self-employment`, "AaIS12345678910"))),Some(List(UnclaimedLoss("2017-18",1001, "2019-20",TypeOfLoss.`self-employment`,"AaIS12345678910"))),
+                LossType.INCOME, "AaIS12345678910"))),Some(List(UnclaimedLoss("2017-18",1001, "2019-20",LossType.INCOME,"AaIS12345678910"))),
               Some(List(CarriedForwardLoss(Some("CCIS12345678901"),TypeOfClaim.`carry-forward`, Some("2018-19"), "2017-18",1001,INCOME, "AaIS12345678910"))),
               Some(List(ClaimNotApplied("CCIS12345678921","2017-18",TypeOfClaim.`carry-forward`, "AaIS12345678910")))))),
             SelfEmployment("AbIS12345678910",Some(100102.22),Some(100202.22),Some(100302.22),Some(100402.22),Some(101502),Some(100502.22),Some(100602.22),
               Some(100702.22),Some(100902),Some(100802),Some(101302),Some(SELossClaimsSummary(Some(101002),Some(101202),Some(101402),Some(101602),Some(101702),
-                Some(101802),Some(101902))),Some(SELossClaimsDetail(Some(List(SELossBroughtForward(TypeOfLoss.`self-employment`, "2017-18",
+                Some(101802),Some(101902))),Some(SELossClaimsDetail(Some(List(SELossBroughtForward(LossType.INCOME, "2017-18",
                 10102, mtdLoss = true,"AbIS12345678910"))),Some(List(SEResultOfClaimApplied(Some("CCIS12345678902"),"2017-18",
-                TypeOfClaim.`carry-sideways`, mtdLoss = true,"2017-18",10102,10202,TypeOfLoss.`self-employment`, "AbIS12345678910"))),
-                Some(List(UnclaimedLoss("2017-18",1002, "2019-20", TypeOfLoss.`self-employment`, "AbIS12345678910"))),
+                TypeOfClaim.`carry-sideways`, mtdLoss = true,"2017-18",10102,10202,LossType.INCOME, "AbIS12345678910"))),
+                Some(List(UnclaimedLoss("2017-18",1002, "2019-20", LossType.INCOME, "AbIS12345678910"))),
                 Some(List(CarriedForwardLoss(Some("CCIS12345678902"),TypeOfClaim.`carry-forward`,Some("2018-19"),"2017-18",1002,INCOME,"AbIS12345678910"))),
                 Some(List(ClaimNotApplied("CCIS12345678922","2017-18",TypeOfClaim.`carry-sideways`, "AbIS12345678910")))))))),
           Some(UkPropertyFhl(Some(4001.11),Some(4002.11),Some(4003.11),Some(4004.11),Some(4005.11),Some(4006.11),Some(4007.11),Some(4009),Some(4008),
@@ -112,7 +109,7 @@ object TaxableIncomeFixtures {
       |					},
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
-      |							"lossType": "self-employment",
+      |							"lossType": "income",
       |							"taxYearLossIncurred": "2017-18",
       |							"currentLossValue": 10101,
       |							"mtdLoss": true
@@ -125,13 +122,13 @@ object TaxableIncomeFixtures {
       |							"taxYearLossIncurred": "2017-18",
       |							"lossAmountUsed": 10101,
       |							"remainingLossValue": 10201,
-      |							"lossType": "self-employment"
+      |							"lossType": "income"
       |						}],
       |						"unclaimedLosses": [{
       |							"taxYearLossIncurred": "2017-18",
       |							"currentLossValue": 1001,
       |							"expires": "2019-20",
-      |							"lossType": "self-employment"
+      |							"lossType": "income"
       |						}],
       |						"carriedForwardLosses": [{
       |							"claimId": "CCIS12345678901",
@@ -171,7 +168,7 @@ object TaxableIncomeFixtures {
       |					},
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
-      |							"lossType": "self-employment",
+      |							"lossType": "income",
       |							"taxYearLossIncurred": "2017-18",
       |							"currentLossValue": 10102,
       |							"mtdLoss": true
@@ -184,13 +181,13 @@ object TaxableIncomeFixtures {
       |							"taxYearLossIncurred": "2017-18",
       |							"lossAmountUsed": 10102,
       |							"remainingLossValue": 10202,
-      |							"lossType": "self-employment"
+      |							"lossType": "income"
       |						}],
       |						"unclaimedLosses": [{
       |							"taxYearLossIncurred": "2017-18",
       |							"currentLossValue": 1002,
       |							"expires": "2019-20",
-      |							"lossType": "self-employment"
+      |							"lossType": "income"
       |						}],
       |						"carriedForwardLosses": [{
       |							"claimId": "CCIS12345678902",

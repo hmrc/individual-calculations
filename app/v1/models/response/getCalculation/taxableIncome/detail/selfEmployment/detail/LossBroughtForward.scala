@@ -19,11 +19,10 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import v1.models.des.LossType
-import v1.models.domain.TypeOfLoss
 import v1.models.request.DesTaxYear
 
 case class LossBroughtForward(
-    lossType: TypeOfLoss,
+    lossType: LossType,
     taxYearLossIncurred: String,
     currentLossValue: BigInt,
     mtdLoss: Boolean,
@@ -43,7 +42,7 @@ object LossBroughtForward {
   }
 
   implicit val reads: Reads[LossBroughtForward] = (
-    (JsPath \ "lossType").read[LossType].map(_.toTypeOfLoss) and
+    (JsPath \ "lossType").read[LossType] and
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "mtdLoss").readWithDefault(true) and

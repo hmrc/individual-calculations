@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads, Writes}
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class Savings(savingsAccountId: String,
                    savingsAccountName: String,
