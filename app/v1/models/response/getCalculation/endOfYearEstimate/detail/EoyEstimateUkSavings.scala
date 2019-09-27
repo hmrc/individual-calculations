@@ -16,4 +16,4 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-case class EoyEstimateUkSavings()
+case class EoyEstimateUkSavings(savingsAccountId: String, savingsAccountName: String, taxableIncome: BigInt)

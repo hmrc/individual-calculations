@@ -16,4 +16,8 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-case class EoyEstimateDetail()
+case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployments]],
+                             ukPropertyFHL: Option[EoyEstimateUkPropertyFHL],
+                             ukPropertyNonFHL: Option[EoyEstimateUkPropertyNonFHL],
+                             ukSavings: Option[Seq[EoyEstimateUkSavings]],
+                             ukDividends: Option[EoyEstimateUkDividends])

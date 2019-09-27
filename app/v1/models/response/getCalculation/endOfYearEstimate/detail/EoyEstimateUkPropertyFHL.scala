@@ -16,4 +16,4 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-case class EoyEstimateUkPropertyFHL()
+case class EoyEstimateUkPropertyFHL(taxableIncome: BigInt, finalised: Option[Boolean])

@@ -16,4 +16,4 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-case class EoyEstimateUkDividends()
+case class EoyEstimateUkDividends(taxableIncome: BigInt)
