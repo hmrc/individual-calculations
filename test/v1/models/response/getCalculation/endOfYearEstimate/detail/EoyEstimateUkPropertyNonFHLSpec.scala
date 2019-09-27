@@ -16,6 +16,46 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
+import play.api.libs.json.{ JsError, JsObject, JsSuccess, Json }
 import support.UnitSpec
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyNonFHLFixtures._
 
-class EoyEstimateUkPropertyNonFHLSpec extends UnitSpec
+class EoyEstimateUkPropertyNonFHLSpec extends UnitSpec {
+
+  "EoyEstimateUkPropertyNonFHL" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        eoyEstimateUkPropertyNonFHLDesJson.validate[EoyEstimateUkPropertyNonFHL] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected EoyEstimateUkPropertyNonFHL object" in {
+        eoyEstimateUkPropertyNonFHLDesJson.as[EoyEstimateUkPropertyNonFHL] shouldBe eoyEstimateUkPropertyNonFHLResponse
+      }
+    }
+
+    "read from Json with missing optional fields" should {
+      "return the expected EoyEstimateUkPropertyNonFHL object" in {
+        eoyEstimateUkPropertyNonFHLDesJsonMissingFields.as[EoyEstimateUkPropertyNonFHL] shouldBe eoyEstimateUkPropertyNonFHLResponseFactory(
+          finalised = None)
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        JsObject.empty.validate[EoyEstimateUkPropertyNonFHL] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(eoyEstimateUkPropertyNonFHLResponse) shouldBe eoyEstimateUkPropertyNonFHLWrittenJson
+      }
+    }
+
+    "written to Json with missing optional fields" should {
+      "return the expected JsObject" in {
+        Json.toJson(eoyEstimateUkPropertyNonFHLResponseFactory(finalised = None)) shouldBe eoyEstimateUkPropertyNonFHLWrittenJsonMissingFields
+      }
+    }
+
+  }
+}

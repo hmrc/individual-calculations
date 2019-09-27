@@ -34,8 +34,7 @@ class EoyEstimateUkPropertyFHLSpec extends UnitSpec {
 
     "read from Json with missing optional fields" should {
       "return the expected EoyEstimateUkPropertyFHL object" in {
-        eoyEstimateUkPropertyFHLDesJsonMissingFields.as[EoyEstimateUkPropertyFHL] shouldBe eoyEstimateUkPropertyFHLResponseFactory(
-          finalised = None)
+        eoyEstimateUkPropertyFHLDesJsonMissingFields.as[EoyEstimateUkPropertyFHL] shouldBe eoyEstimateUkPropertyFHLResponseFactory(finalised = None)
       }
     }
 
