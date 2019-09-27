@@ -19,6 +19,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
+import utils.FilterTools.filterByIncomeSourceType
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
@@ -62,7 +63,7 @@ object SelfEmployment extends NestedJsonReads {
 
   implicit val seqReads: Reads[Seq[SelfEmployment]] = ((JsPath \ "calculation" \ "businessProfitAndLoss")
     .readNestedNullable[Seq[JsValue]]
-    .map(_.getOrElse(Seq.empty).flatMap(js => LossClaimsDetail.filterByIncomeSourceType(js).asOpt[SelfEmployment]))
+    .map(_.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js).asOpt[SelfEmployment]))
     .map(x => Some(x)) and
     JsPath.readNullable[LossClaimsDetail])(buildSelfEmployments(_, _))
 
