@@ -16,4 +16,7 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate
 
-case class EoyEstimate()
+import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail
+import v1.models.response.getCalculation.endOfYearEstimate.summary.EoyEstimateSummary
+
+case class EoyEstimate(summary: EoyEstimateSummary, detail: EoyEstimateDetail)

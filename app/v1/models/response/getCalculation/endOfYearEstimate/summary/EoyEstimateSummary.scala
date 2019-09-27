@@ -16,4 +16,10 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.summary
 
-case class EoyEstimateSummary ()
+case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
+                              totalTaxableIncome: Option[BigInt],
+                              incomeTaxAmount: Option[BigDecimal],
+                              nic2: Option[BigDecimal],
+                              nic4: Option[BigDecimal],
+                              totalNicAmount: Option[BigDecimal],
+                              incomeTaxNicAmount: Option[BigDecimal])
