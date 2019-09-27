@@ -16,6 +16,45 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
+import play.api.libs.json.{JsError, JsObject, JsSuccess, Json}
 import support.UnitSpec
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateSelfEmploymentsFixtures._
 
-class EoyEstimateSelfEmploymentsSpec extends UnitSpec
+class EoyEstimateSelfEmploymentsSpec extends UnitSpec {
+
+  "EoyEstimateSelfEmployments" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        eoyEstimateSelfEmploymentsDesJson.validate[EoyEstimateSelfEmployments] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected EoyEstimateSelfEmployments object" in {
+        eoyEstimateSelfEmploymentsDesJson.as[EoyEstimateSelfEmployments] shouldBe eoyEstimateSelfEmploymentsResponse
+      }
+    }
+
+    "read from Json with missing optional fields" should {
+      "return the expected EoyEstimateSelfEmployments object" in {
+        eoyEstimateSelfEmploymentsDesJsonMissingFields.as[EoyEstimateSelfEmployments] shouldBe eoyEstimateSelfEmploymentsResponseFactory(finalised = None)
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        JsObject.empty.validate[EoyEstimateSelfEmployments] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(eoyEstimateSelfEmploymentsResponse) shouldBe eoyEstimateSelfEmploymentsWrittenJson
+      }
+    }
+
+    "written to Json with missing optional fields" should {
+      "return the expected JsObject" in {
+        Json.toJson(eoyEstimateSelfEmploymentsResponseFactory(finalised = None)) shouldBe eoyEstimateSelfEmploymentsWrittenJsonMissingFields
+      }
+    }
+
+  }
+}
