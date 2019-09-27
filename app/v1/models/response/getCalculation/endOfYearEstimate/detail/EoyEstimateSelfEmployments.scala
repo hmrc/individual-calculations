@@ -16,16 +16,16 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 
 case class EoyEstimateSelfEmployments(selfEmploymentID: String, taxableIncome: BigInt, finalised: Option[Boolean])
 
-object EoyEstimateSelfEmployments{
-  implicit val writes: Writes[EoyEstimateSelfEmployments] = Json.writes[EoyEstimateSelfEmployments]
+object EoyEstimateSelfEmployments {
+  implicit val writes: OWrites[EoyEstimateSelfEmployments] = Json.writes[EoyEstimateSelfEmployments]
   implicit val reads: Reads[EoyEstimateSelfEmployments] = (
     (JsPath \ "incomeSourceId").read[String] and
       (JsPath \ "taxableIncome").read[BigInt] and
       (JsPath \ "finalised").readNullable[Boolean]
-    )(EoyEstimateSelfEmployments.apply _)
+  )(EoyEstimateSelfEmployments.apply _)
 }

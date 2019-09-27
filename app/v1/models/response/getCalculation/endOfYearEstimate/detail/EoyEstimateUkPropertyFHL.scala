@@ -16,15 +16,10 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, Reads, Writes }
+import play.api.libs.json.{ Json, OFormat }
 
 case class EoyEstimateUkPropertyFHL(taxableIncome: BigInt, finalised: Option[Boolean])
 
 object EoyEstimateUkPropertyFHL {
-  implicit val writes: Writes[EoyEstimateUkPropertyFHL] = Json.writes[EoyEstimateUkPropertyFHL]
-  implicit val reads: Reads[EoyEstimateUkPropertyFHL] = (
-    (JsPath \ "taxableIncome").read[BigInt] and
-      (JsPath \ "finalised").readNullable[Boolean]
-  )(EoyEstimateUkPropertyFHL.apply _)
+  implicit val formats: OFormat[EoyEstimateUkPropertyFHL] = Json.format[EoyEstimateUkPropertyFHL]
 }
