@@ -16,6 +16,52 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.summary
 
+import play.api.libs.json.{ JsError, JsObject, JsSuccess, Json }
 import support.UnitSpec
+import v1.fixtures.endOfYearEstimate.summary.EoyEstimateSummaryFixtures._
 
-class EoyEstimateSummarySpec extends UnitSpec
+class EoyEstimateSummarySpec extends UnitSpec {
+
+  "EoyEstimateSummary" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        eoyEstimateSummaryDesJson.validate[EoyEstimateSummary] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected EoyEstimateSummary object" in {
+        eoyEstimateSummaryDesJson.as[EoyEstimateSummary] shouldBe eoyEstimateSummaryResponse
+      }
+    }
+
+    "read from Json with missing optional fields" should {
+      "return the expected EoyEstimateSummary object" in {
+        eoyEstimateSummaryDesJsonMissingFields.as[EoyEstimateSummary] shouldBe eoyEstimateSummaryResponseFactory(totalNicAmount = None,
+                                                                                                                 incomeTaxNicAmount = None)
+      }
+    }
+
+    "read from empty Json" should {
+      "return an empty EoyEstimateSummary object" in {
+        JsObject.empty.as[EoyEstimateSummary] shouldBe EoyEstimateSummary()
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        eoyEstimateSummaryInvalidJson.validate[EoyEstimateSummary] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(eoyEstimateSummaryResponse) shouldBe eoyEstimateSummaryWrittenJson
+      }
+    }
+
+    "written to Json with missing optional fields" should {
+      "return the expected JsObject" in {
+        Json.toJson(eoyEstimateSummaryResponseFactory(totalNicAmount = None, incomeTaxNicAmount = None)) shouldBe eoyEstimateSummaryWrittenJsonMissingFields
+      }
+    }
+  }
+
+}
