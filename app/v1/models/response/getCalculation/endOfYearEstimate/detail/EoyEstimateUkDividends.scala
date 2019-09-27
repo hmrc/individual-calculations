@@ -16,4 +16,10 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
+import play.api.libs.json.{Json, OFormat}
+
 case class EoyEstimateUkDividends(taxableIncome: BigInt)
+
+object EoyEstimateUkDividends {
+  implicit val formats: OFormat[EoyEstimateUkDividends] = Json.format[EoyEstimateUkDividends]
+}

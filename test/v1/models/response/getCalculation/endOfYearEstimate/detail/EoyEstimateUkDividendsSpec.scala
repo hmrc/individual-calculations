@@ -16,6 +16,33 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import support.UnitSpec
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkDividendsFixtures._
 
-class EoyEstimateUkDividendsSpec extends UnitSpec
+class EoyEstimateUkDividendsSpec extends UnitSpec {
+
+  "EoyEstimateUkDividends" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        eoyEstimateUkDividendsDesJson.validate[EoyEstimateUkDividends] shouldBe a[JsSuccess[_]]
+      }
+      "with the expected EoyEstimateUkDividends object" in {
+        eoyEstimateUkDividendsDesJson.as[EoyEstimateUkDividends] shouldBe eoyEstimateUkDividendsResponse
+      }
+    }
+
+    "read from invalid Json" should {
+      "return a JsError" in {
+        eoyEstimateUkDividendsInvalidJson.validate[EoyEstimateUkDividends] shouldBe a[JsError]
+      }
+    }
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(eoyEstimateUkDividendsResponse) shouldBe eoyEstimateUkDividendsWrittenJson
+      }
+    }
+  }
+
+}

@@ -16,4 +16,38 @@
 
 package v1.fixtures.endOfYearEstimate.detail
 
-object EoyEstimateUkDividendsFixtures
+import play.api.libs.json.{ JsValue, Json }
+import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateUkDividends
+
+object EoyEstimateUkDividendsFixtures {
+
+  val taxableIncome: BigInt = 1021
+
+  val eoyEstimateUkDividendsResponse: EoyEstimateUkDividends =
+    EoyEstimateUkDividends(taxableIncome)
+
+  val eoyEstimateUkDividendsDesJson: JsValue = Json.parse(s"""{
+      |  "taxableIncome": $taxableIncome
+      |}""".stripMargin)
+
+  val eoyEstimateUkDividendsDesJsonMissingFields: JsValue = Json.parse(s"""{
+      |  "taxableIncome": $taxableIncome
+      |}""".stripMargin)
+
+  val eoyEstimateUkDividendsDesJsonTopLevel: JsValue =
+    Json.obj("calculation" -> Json.obj("endOfYearEstimate" -> Json.obj("incomeSourceId" -> Seq(eoyEstimateUkDividendsDesJson))))
+
+  val eoyEstimateUkDividendsWrittenJson: JsValue = Json.parse(s"""{
+      |  "taxableIncome": $taxableIncome
+      |}""".stripMargin)
+
+  val eoyEstimateUkDividendsWrittenJsonObject: JsValue = Json.obj("ukDividends" -> eoyEstimateUkDividendsWrittenJson)
+
+  val eoyEstimateUkDividendsInvalidJson: JsValue = Json.parse(s"""{
+      |  "taxableIncome": "notANumericValue"
+      |}""".stripMargin)
+
+  def eoyEstimateUkDividendsResponseFactory(totalEstimatedIncome: BigInt = taxableIncome): EoyEstimateUkDividends =
+    EoyEstimateUkDividends(totalEstimatedIncome)
+
+}
