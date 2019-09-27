@@ -17,5 +17,10 @@
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import support.UnitSpec
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateDetailFixtures._
 
-class EoyEstimateDetailSpec extends UnitSpec
+class EoyEstimateDetailSpec extends UnitSpec{
+  "" in {
+    EoyEstimateDetailDesJson.as[EoyEstimateDetail] shouldBe EoyEstimateDetailResponse
+  }
+}

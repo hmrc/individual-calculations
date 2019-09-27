@@ -16,7 +16,7 @@
 
 package v1.fixtures.endOfYearEstimate.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{ JsObject, JsValue, Json }
 import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateUkPropertyFHL
 
 object EoyEstimateUkPropertyFHLFixtures {
@@ -29,15 +29,14 @@ object EoyEstimateUkPropertyFHLFixtures {
 
   val eoyEstimateUkPropertyFHLDesJson: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,
-      |  "finalised": ${finalised.get}
+      |  "finalised": ${finalised.get},
+      |  "incomeSourceType" : "04"
       |}""".stripMargin)
 
   val eoyEstimateUkPropertyFHLDesJsonMissingFields: JsValue = Json.parse(s"""{
-      |  "taxableIncome": $taxableIncome
+      |  "taxableIncome": $taxableIncome,
+      |  "incomeSourceType" : "04"
       |}""".stripMargin)
-
-  val eoyEstimateUkPropertyFHLDesJsonTopLevel: JsValue =
-    Json.obj("calculation" -> Json.obj("endOfYearEstimate" -> Json.obj("incomeSource" -> Seq(eoyEstimateUkPropertyFHLDesJson))))
 
   val eoyEstimateUkPropertyFHLWrittenJson: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,

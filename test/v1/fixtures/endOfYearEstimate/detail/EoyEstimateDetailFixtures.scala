@@ -16,4 +16,33 @@
 
 package v1.fixtures.endOfYearEstimate.detail
 
-object EoyEstimateDetailFixtures
+import play.api.libs.json.{ JsValue, Json }
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateSelfEmploymentFixtures._
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkDividendsFixtures._
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyFHLFixtures._
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyNonFHLFixtures._
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkSavingFixtures._
+import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail
+
+object EoyEstimateDetailFixtures {
+
+  val EoyEstimateDetailResponse: EoyEstimateDetail = EoyEstimateDetail(
+    Some(Seq(eoyEstimateSelfEmploymentResponse)),
+    Some(eoyEstimateUkPropertyFHLResponse),
+    Some(eoyEstimateUkPropertyNonFHLResponse),
+    Some(Seq(eoyEstimateUkSavingResponse)),
+    Some(eoyEstimateUkDividendsResponse)
+  )
+
+  val EoyEstimateDetailDesJson: JsValue =
+    Json.obj(
+      "incomeSource" ->
+        Seq(
+          eoyEstimateSelfEmploymentDesJson,
+          eoyEstimateUkPropertyFHLDesJson,
+          eoyEstimateUkPropertyNonFHLDesJson,
+          eoyEstimateUkSavingDesJson,
+          eoyEstimateUkDividendsDesJson
+        ))
+
+}

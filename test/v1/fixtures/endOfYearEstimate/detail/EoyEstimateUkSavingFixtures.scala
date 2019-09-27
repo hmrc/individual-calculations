@@ -16,7 +16,7 @@
 
 package v1.fixtures.endOfYearEstimate.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{ JsObject, JsValue, Json }
 import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateUkSaving
 
 object EoyEstimateUkSavingFixtures {
@@ -31,17 +31,16 @@ object EoyEstimateUkSavingFixtures {
   val eoyEstimateUkSavingDesJson: JsValue = Json.parse(s"""{
       |  "savingsAccountId": "$savingsAccountId",
       |  "savingsAccountName": "$savingsAccountName",
-      |  "taxableIncome" : $taxableIncome
+      |  "taxableIncome" : $taxableIncome,
+      |  "incomeSourceType" : "09"
       |}""".stripMargin)
 
   val eoyEstimateUkSavingDesJsonMissingFields: JsValue = Json.parse(s"""{
       |  "savingsAccountId": "$savingsAccountId",
       |  "savingsAccountName": "$savingsAccountName",
-      |  "taxableIncome" : $taxableIncome
+      |  "taxableIncome" : $taxableIncome,
+      |  "incomeSourceType" : "09"
       |}""".stripMargin)
-
-  val eoyEstimateUkSavingDesJsonTopLevel: JsValue =
-    Json.obj("calculation" -> Json.obj("endOfYearEstimate" -> Json.obj("incomeSource" -> Seq(eoyEstimateUkSavingDesJson))))
 
   val eoyEstimateUkSavingWrittenJson: JsValue = Json.parse(s"""{
       |  "savingsAccountId": "$savingsAccountId",

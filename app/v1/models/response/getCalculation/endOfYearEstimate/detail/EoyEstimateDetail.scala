@@ -30,10 +30,10 @@ case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployme
 object EoyEstimateDetail extends NestedJsonReads{
   implicit val writes: OWrites[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
   implicit val reads: Reads[EoyEstimateDetail] = (
-    readSequenceAndMapToType[EoyEstimateSelfEmployment](JsPath) and
-      readSequenceAndMapToType[EoyEstimateUkPropertyFHL](JsPath, "04").map(_.getOrElse(Seq.empty).headOption) and
-      readSequenceAndMapToType[EoyEstimateUkPropertyNonFHL](JsPath, "02").map(_.getOrElse(Seq.empty).headOption) and
-      readSequenceAndMapToType[EoyEstimateUkSaving] (JsPath, "09") and
-      readSequenceAndMapToType[EoyEstimateUkDividends] (JsPath, "10").map(_.getOrElse(Seq.empty).headOption)
+    readSequenceAndMapToType[EoyEstimateSelfEmployment](JsPath \ "incomeSource") and
+      readSequenceAndMapToType[EoyEstimateUkPropertyFHL](JsPath \ "incomeSource", "04").map(_.getOrElse(Seq.empty).headOption) and
+      readSequenceAndMapToType[EoyEstimateUkPropertyNonFHL](JsPath \ "incomeSource", "02").map(_.getOrElse(Seq.empty).headOption) and
+      readSequenceAndMapToType[EoyEstimateUkSaving] (JsPath \ "incomeSource", "09") and
+      readSequenceAndMapToType[EoyEstimateUkDividends] (JsPath \ "incomeSource", "10").map(_.getOrElse(Seq.empty).headOption)
     )(EoyEstimateDetail.apply _)
 }

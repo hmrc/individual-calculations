@@ -16,7 +16,7 @@
 
 package v1.fixtures.endOfYearEstimate.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{ JsObject, JsValue, Json }
 import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateSelfEmployment
 
 object EoyEstimateSelfEmploymentFixtures {
@@ -31,16 +31,15 @@ object EoyEstimateSelfEmploymentFixtures {
   val eoyEstimateSelfEmploymentDesJson: JsValue = Json.parse(s"""{
       |  "incomeSourceId": "$selfEmploymentID",
       |  "taxableIncome": $taxableIncome,
-      |  "finalised": ${finalised.get}
+      |  "finalised": ${finalised.get},
+      |  "incomeSourceType" : "01"
       |}""".stripMargin)
 
   val eoyEstimateSelfEmploymentDesJsonMissingFields: JsValue = Json.parse(s"""{
       |  "incomeSourceId": "$selfEmploymentID",
-      |  "taxableIncome": $taxableIncome
+      |  "taxableIncome": $taxableIncome,
+      |  "incomeSourceType" : "01"
       |}""".stripMargin)
-
-  val eoyEstimateSelfEmploymentDesJsonTopLevel: JsValue =
-    Json.obj("calculation" -> Json.obj("endOfYearEstimate" -> Json.obj("incomeSource" -> Seq(eoyEstimateSelfEmploymentDesJson))))
 
   val eoyEstimateSelfEmploymentWrittenJson: JsValue = Json.parse(s"""{
       |  "selfEmploymentID": "$selfEmploymentID",
@@ -62,8 +61,8 @@ object EoyEstimateSelfEmploymentFixtures {
       |}""".stripMargin)
 
   def eoyEstimateSelfEmploymentResponseFactory(selfEmploymentID: String = selfEmploymentID,
-                                                taxableIncome: BigInt = taxableIncome,
-                                                finalised: Option[Boolean] = finalised): EoyEstimateSelfEmployment =
+                                               taxableIncome: BigInt = taxableIncome,
+                                               finalised: Option[Boolean] = finalised): EoyEstimateSelfEmployment =
     EoyEstimateSelfEmployment(selfEmploymentID, taxableIncome, finalised)
 
 }
