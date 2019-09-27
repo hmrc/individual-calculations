@@ -16,4 +16,16 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-case class EoyEstimateUkSavings(savingsAccountId: String, savingsAccountName: String, taxableIncome: BigInt)
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
+
+case class EoyEstimateSelfEmployment(selfEmploymentID: String, taxableIncome: BigInt, finalised: Option[Boolean])
+
+object EoyEstimateSelfEmployment {
+  implicit val writes: OWrites[EoyEstimateSelfEmployment] = Json.writes[EoyEstimateSelfEmployment]
+  implicit val reads: Reads[EoyEstimateSelfEmployment] = (
+    (JsPath \ "incomeSourceId").read[String] and
+      (JsPath \ "taxableIncome").read[BigInt] and
+      (JsPath \ "finalised").readNullable[Boolean]
+  )(EoyEstimateSelfEmployment.apply _)
+}

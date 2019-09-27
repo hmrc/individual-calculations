@@ -18,41 +18,41 @@ package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.json.{JsError, JsObject, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.endOfYearEstimate.detail.EoyEstimateSelfEmploymentsFixtures._
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateSelfEmploymentFixtures._
 
-class EoyEstimateSelfEmploymentsSpec extends UnitSpec {
+class EoyEstimateSelfEmploymentSpec extends UnitSpec {
 
-  "EoyEstimateSelfEmployments" when {
+  "EoyEstimateSelfEmployment" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        eoyEstimateSelfEmploymentsDesJson.validate[EoyEstimateSelfEmployments] shouldBe a[JsSuccess[_]]
+        eoyEstimateSelfEmploymentDesJson.validate[EoyEstimateSelfEmployment] shouldBe a[JsSuccess[_]]
       }
-      "with the expected EoyEstimateSelfEmployments object" in {
-        eoyEstimateSelfEmploymentsDesJson.as[EoyEstimateSelfEmployments] shouldBe eoyEstimateSelfEmploymentsResponse
+      "with the expected EoyEstimateSelfEmployment object" in {
+        eoyEstimateSelfEmploymentDesJson.as[EoyEstimateSelfEmployment] shouldBe eoyEstimateSelfEmploymentResponse
       }
     }
 
     "read from Json with missing optional fields" should {
-      "return the expected EoyEstimateSelfEmployments object" in {
-        eoyEstimateSelfEmploymentsDesJsonMissingFields.as[EoyEstimateSelfEmployments] shouldBe eoyEstimateSelfEmploymentsResponseFactory(finalised = None)
+      "return the expected EoyEstimateSelfEmployment object" in {
+        eoyEstimateSelfEmploymentDesJsonMissingFields.as[EoyEstimateSelfEmployment] shouldBe eoyEstimateSelfEmploymentResponseFactory(finalised = None)
       }
     }
 
     "read from invalid Json" should {
       "return a JsError" in {
-        JsObject.empty.validate[EoyEstimateSelfEmployments] shouldBe a[JsError]
+        JsObject.empty.validate[EoyEstimateSelfEmployment] shouldBe a[JsError]
       }
     }
 
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(eoyEstimateSelfEmploymentsResponse) shouldBe eoyEstimateSelfEmploymentsWrittenJson
+        Json.toJson(eoyEstimateSelfEmploymentResponse) shouldBe eoyEstimateSelfEmploymentWrittenJson
       }
     }
 
     "written to Json with missing optional fields" should {
       "return the expected JsObject" in {
-        Json.toJson(eoyEstimateSelfEmploymentsResponseFactory(finalised = None)) shouldBe eoyEstimateSelfEmploymentsWrittenJsonMissingFields
+        Json.toJson(eoyEstimateSelfEmploymentResponseFactory(finalised = None)) shouldBe eoyEstimateSelfEmploymentWrittenJsonMissingFields
       }
     }
 

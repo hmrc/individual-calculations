@@ -35,7 +35,7 @@ object EoyEstimateUkDividendsFixtures {
       |}""".stripMargin)
 
   val eoyEstimateUkDividendsDesJsonTopLevel: JsValue =
-    Json.obj("calculation" -> Json.obj("endOfYearEstimate" -> Json.obj("incomeSourceId" -> Seq(eoyEstimateUkDividendsDesJson))))
+    Json.obj("calculation" -> Json.obj("endOfYearEstimate" -> Json.obj("incomeSource" -> Seq(eoyEstimateUkDividendsDesJson))))
 
   val eoyEstimateUkDividendsWrittenJson: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
-package v1.fixtures.endOfYearEstimate.detail
+package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-object EoyEstimateUkSavingsFixtures
+import play.api.libs.json.{ Json, OFormat }
+
+case class EoyEstimateUkSaving(savingsAccountId: String, savingsAccountName: String, taxableIncome: BigInt)
+
+object EoyEstimateUkSaving {
+  implicit val formats: OFormat[EoyEstimateUkSaving] = Json.format[EoyEstimateUkSaving]
+}
