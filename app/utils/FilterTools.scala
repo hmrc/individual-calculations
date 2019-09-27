@@ -24,13 +24,13 @@ object FilterTools extends NestedJsonReads {
   }
 
   def mapOptionalSequenceToType[A](optJsSeq: Option[Seq[JsValue]], sourceType: String = "01")(implicit reads: Reads[A]): Option[Seq[A]] = {
-    val mappedSequence = optJsSeq.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType[A](js, sourceType))
+    val mappedSequence = optJsSeq.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js, sourceType).asOpt[A])
     if (mappedSequence.isEmpty) None else Some(mappedSequence)
   }
 
-  def filterByIncomeSourceType[A](js: JsValue, sourceType: String = "01")(implicit reads: Reads[A]): Option[A] = js.asOpt[FilterWrapper] match {
-    case Some(FilterWrapper(incomeSourceType)) if incomeSourceType == sourceType => Some(js.as[A])
-    case _ => None
+  def filterByIncomeSourceType(js: JsValue, sourceType: String = "01"): JsValue = js.asOpt[FilterWrapper] match {
+    case Some(FilterWrapper(incomeSourceType)) if incomeSourceType == sourceType => js
+    case _ => Json.toJson("")
   }
 
   case class FilterWrapper(incomeSourceType: String)

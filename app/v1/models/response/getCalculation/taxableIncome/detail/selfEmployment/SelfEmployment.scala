@@ -63,7 +63,7 @@ object SelfEmployment extends NestedJsonReads {
 
   implicit val seqReads: Reads[Seq[SelfEmployment]] = ((JsPath \ "calculation" \ "businessProfitAndLoss")
     .readNestedNullable[Seq[JsValue]]
-    .map(_.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType[SelfEmployment](js)))
+    .map(_.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js).asOpt[SelfEmployment]))
     .map(x => Some(x)) and
     JsPath.readNullable[LossClaimsDetail])(buildSelfEmployments(_, _))
 
