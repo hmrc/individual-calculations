@@ -44,6 +44,7 @@ class GetCalculationServiceSpec extends UnitSpec {
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
     calculationErrorCount = Some(1)
   )
 

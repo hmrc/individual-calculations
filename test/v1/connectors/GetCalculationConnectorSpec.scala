@@ -42,6 +42,7 @@ class GetCalculationConnectorSpec extends ConnectorSpec {
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
     calculationErrorCount = Some(1)
   )
 
