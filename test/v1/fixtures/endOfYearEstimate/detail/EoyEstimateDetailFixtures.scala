@@ -16,7 +16,7 @@
 
 package v1.fixtures.endOfYearEstimate.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.endOfYearEstimate.detail.EoyEstimateSelfEmploymentFixtures._
 import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkDividendsFixtures._
 import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyFHLFixtures._
@@ -34,9 +34,12 @@ object EoyEstimateDetailFixtures {
     Some(eoyEstimateUkDividendsResponse)
   )
 
-  val eoyEstimateDetailResponseReduced: EoyEstimateDetail = eoyEstimateDetailResponse.copy(ukPropertyFHL = None, ukPropertyNonFHL = None, ukDividends = None)
+  val eoyEstimateDetailResponseReduced: EoyEstimateDetail = EoyEstimateDetail(
+    selfEmployments = Some(Seq(eoyEstimateSelfEmploymentResponse)),
+    ukSavings = Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse))
+  )
 
-  val eoyEstimateDetailDesJson: JsValue =
+  val eoyEstimateDetailDesJson: JsObject =
     Json.obj(
       "incomeSource" ->
         Seq(
@@ -86,6 +89,8 @@ object EoyEstimateDetailFixtures {
       .deepMerge(eoyEstimateUkPropertyNonFHLWrittenJsonObject)
       .deepMerge(eoyEstimateUkSavingWrittenJsonObject)
       .deepMerge(eoyEstimateUkDividendsWrittenJsonObject)
+
+  val eoyEstimateDetailWrittenJsonObject: JsObject = Json.obj("detail" -> eoyEstimateDetailWrittenJson)
 
   val eoyEstimateDetailWrittenJsonMissingOptionals: JsValue =
     eoyEstimateSelfEmploymentWrittenJsonObject

@@ -25,6 +25,7 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDet
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
+import v1.fixtures.endOfYearEstimate.EoyEstimateFixtures._
 
 class GetCalculationResponseSpec extends UnitSpec {
 
@@ -51,6 +52,49 @@ class GetCalculationResponseSpec extends UnitSpec {
     Json.parse("""
                  |{
                  | "calculation" : {
+                 | "endOfYearEstimate" : {
+                 |	  "incomeTaxAmount": 1003.1,
+                 |	  "totalNicAmount": 1005.1,
+                 |	  "totalEstimatedIncome": 1001,
+                 |	  "totalTaxableIncome": 1002,
+                 |	  "incomeTaxNicAmount": 1006.1,
+                 |	  "nic2": 1004.1,
+                 |	  "incomeSource": [
+                 |     {
+                 |		    "incomeSourceId": "AA123456789",
+                 |		    "taxableIncome": 1011,
+                 |		    "finalised": false,
+                 |		    "incomeSourceType": "01"
+                 |	    },
+                 |     {
+                 |		    "taxableIncome": 1011,
+                 |		    "finalised": false,
+                 |		    "incomeSourceType": "04"
+                 |	    },
+                 |      {
+                 |		    "taxableIncome": 1011,
+                 |	    	"finalised": false,
+                 |		    "incomeSourceType": "02"
+                 |	    },
+                 |     {
+                 |	    	"savingsAccountId": "AA123456789",
+                 |	    	"savingsAccountName": "AA123456789",
+                 |	    	"taxableIncome": 1031,
+                 |	    	"incomeSourceType": "09"
+                 |	    },
+                 |     {
+                 |	      "savingsAccountId": "AA123456789",
+                 |	    	"savingsAccountName": "AA123456789",
+                 |		    "taxableIncome": 1031,
+                 |		    "incomeSourceType": "09"
+                 |	    },
+                 |     {
+                 |		    "taxableIncome": 1021,
+                 |		    "incomeSourceType": "10"
+                 |	    }
+                 |     ],
+                 |	  "nic4": 1005.1
+                 |    },
                  |   "taxCalculation" : {
                  |     "incomeTax" : {
                  |       "incomeTaxCharged" : 100.25,
@@ -124,9 +168,74 @@ class GetCalculationResponseSpec extends UnitSpec {
       |       "taxableIncome":600
       |       }
       |    }
-      |  }
+      |  },
+      |  "endOfYearEstimate" : {
+      |	    "summary": {
+      |	    	"totalEstimatedIncome": 1001,
+      |		    "totalTaxableIncome": 1002,
+      |		    "incomeTaxAmount": 1003.1,
+      |		    "nic2": 1004.1,
+      |		    "nic4": 1005.1,
+      |		    "totalNicAmount": 1005.1,
+      |		    "incomeTaxNicAmount": 1006.1
+      |	    },
+      |	    "detail": {
+      |		    "selfEmployments": [{
+      |		    	"selfEmploymentID": "AA123456789",
+      |		    	"taxableIncome": 1011,
+      |		    	"finalised": false
+      |		    }
+      |      ],
+      |		  "ukPropertyFHL": {
+      |			    "taxableIncome": 1011,
+      |			    "finalised": false
+      |	  	},
+      |		  "ukPropertyNonFHL": {
+      |		    	"taxableIncome": 1011,
+      |			    "finalised": false
+      |		  },
+      |		  "ukSavings": [{
+      |			    "savingsAccountId": "AA123456789",
+      |			    "savingsAccountName": "AA123456789",
+      |			    "taxableIncome": 1031
+      |		    },
+      |       {
+      |			    "savingsAccountId": "AA123456789",
+      |		    	"savingsAccountName": "AA123456789",
+      |			    "taxableIncome": 1031
+      |		    }
+      |      ],
+      |	  	"ukDividends": {
+      |			    "taxableIncome": 1021
+      |		  }
+      |	  }
+      | }
       |}
       |""".stripMargin)
+
+  val writtenJsonWithoutOptionalParts: JsValue = Json.parse("""
+      |{
+      |  "metadata": {
+      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |    "taxYear": "2018-19",
+      |    "requestedBy": "customer",
+      |    "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |    "calculationReason": "customerRequest",
+      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |    "calculationType": "inYear",
+      |    "intentToCrystallise": false,
+      |    "crystallised": false,
+      |    "calculationErrorCount": 1
+      |  },
+      |  "messages": {
+      |    "errors": [
+      |      {
+      |        "id": "id1",
+      |        "text": "text1"
+      |      }
+      |    ]
+      |  }
+      |}""".stripMargin)
 
   val metadata = Metadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -151,7 +260,7 @@ class GetCalculationResponseSpec extends UnitSpec {
     taxableIncome.detail.CalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
   val calculationResponse         = GetCalculationResponse(metadata, messages = Some(messages))
-  val calculationResponseAllParts = GetCalculationResponse(metadata, Some(incomeTax), Some(messages), Some(taxableIncomeModel))
+  val calculationResponseAllParts = GetCalculationResponse(metadata, Some(incomeTax), Some(messages), Some(taxableIncomeModel),  Some(eoyEstimateResponse))
 
   "GetCalculationResponse" should {
 
@@ -250,7 +359,10 @@ class GetCalculationResponseSpec extends UnitSpec {
     }
 
     "write correctly to json" when {
-      "using a model with only metadata" in {
+      "using a model with only metadata and messages" in {
+        Json.toJson(calculationResponse) shouldBe writtenJsonWithoutOptionalParts
+      }
+      "using a model with all parts" in {
         Json.toJson(calculationResponseAllParts) shouldBe writtenJson
       }
     }

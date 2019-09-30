@@ -16,7 +16,7 @@
 
 package v1.fixtures.endOfYearEstimate.summary
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.models.response.getCalculation.endOfYearEstimate.summary.EoyEstimateSummary
 
 object EoyEstimateSummaryFixtures {
@@ -50,8 +50,6 @@ object EoyEstimateSummaryFixtures {
       |  "nic4": ${nic4.get}
       |}""".stripMargin)
 
-  val eoyEstimateSummaryDesJsonTopLevel: JsValue = Json.obj("calculation" -> Json.obj("endOfYearEstimate" -> eoyEstimateSummaryDesJson))
-
   val eoyEstimateSummaryWrittenJson: JsValue = Json.parse(s"""{
       |  "totalEstimatedIncome": ${totalEstimatedIncome.get},
       |  "totalTaxableIncome": ${totalTaxableIncome.get},
@@ -70,7 +68,7 @@ object EoyEstimateSummaryFixtures {
       |  "nic4": ${nic4.get}
       |}""".stripMargin)
 
-  val eoyEstimateSummaryWrittenJsonObject: JsValue = Json.obj("summary" -> eoyEstimateSummaryWrittenJson)
+  val eoyEstimateSummaryWrittenJsonObject: JsObject = Json.obj("summary" -> eoyEstimateSummaryWrittenJson)
 
   val eoyEstimateSummaryInvalidJson: JsValue = Json.parse(s"""{
       |  "totalEstimatedIncome": "notANumericValue",

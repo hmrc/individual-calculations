@@ -24,8 +24,13 @@ case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt] = None,
                               nic2: Option[BigDecimal] = None,
                               nic4: Option[BigDecimal] = None,
                               totalNicAmount: Option[BigDecimal] = None,
-                              incomeTaxNicAmount: Option[BigDecimal] = None)
+                              incomeTaxNicAmount: Option[BigDecimal] = None){
+
+  val isEmpty: Boolean = this == EoyEstimateSummary.emptyEoyEstimateSummary
+
+}
 
 object EoyEstimateSummary {
+  val emptyEoyEstimateSummary: EoyEstimateSummary = EoyEstimateSummary()
   implicit val formats: OFormat[EoyEstimateSummary] = Json.format[EoyEstimateSummary]
 }

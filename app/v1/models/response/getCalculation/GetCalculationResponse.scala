@@ -20,6 +20,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads, _}
 import utils.NestedJsonReads
 import v1.models.response.common.{Messages, Metadata}
+import v1.models.response.getCalculation.endOfYearEstimate.EoyEstimate
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
@@ -27,7 +28,8 @@ case class GetCalculationResponse(
     metadata: Metadata,
     incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
     messages: Option[Messages] = None,
-    taxableIncome: Option[TaxableIncome] = None
+    taxableIncome: Option[TaxableIncome] = None,
+    endOfYearEstimate: Option[EoyEstimate] = None
 )
 
 object GetCalculationResponse extends NestedJsonReads {
@@ -36,11 +38,12 @@ object GetCalculationResponse extends NestedJsonReads {
   implicit val reads: Reads[GetCalculationResponse] =
     (
       JsPath.read[Metadata] and
-        (emptyIfNotPresent[IncomeTax](__ \ "calculation")) and
+        emptyIfNotPresent[IncomeTax](__ \ "calculation") and
         JsPath.readNullable[Messages].map {
           case Some(messages) if messages.hasMessages => Some(messages)
           case _                                      => None
         } and
-        (emptyIfNotPresent[TaxableIncome](__ \ "calculation"))
+        emptyIfNotPresent[TaxableIncome](__ \ "calculation") and
+        (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate]
     )(GetCalculationResponse.apply _)
 }

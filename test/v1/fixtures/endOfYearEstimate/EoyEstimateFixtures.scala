@@ -16,4 +16,22 @@
 
 package v1.fixtures.endOfYearEstimate
 
-object EoyEstimateFixtures
+import play.api.libs.json.{ JsObject, JsValue, Json }
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateDetailFixtures._
+import v1.fixtures.endOfYearEstimate.summary.EoyEstimateSummaryFixtures._
+import v1.models.response.getCalculation.endOfYearEstimate.EoyEstimate
+
+object EoyEstimateFixtures {
+
+  val eoyEstimateResponse: EoyEstimate           = EoyEstimate(eoyEstimateSummaryResponse, eoyEstimateDetailResponse)
+
+  val eoyEstimateDesJson: JsValue                = eoyEstimateDetailDesJson.deepMerge(eoyEstimateSummaryDesJson.as[JsObject])
+
+  val eoyEstimateSummaryDesJsonTopLevel: JsValue = Json.obj("calculation" -> Json.obj("endOfYearEstimate" -> eoyEstimateDesJson))
+
+  val eoyEstimateWrittenJson: JsObject           = eoyEstimateSummaryWrittenJsonObject.deepMerge(eoyEstimateDetailWrittenJsonObject)
+
+  val eoyEstimateWrittenJsonEmpty: JsObject      = Json.obj("summary" -> JsObject.empty).deepMerge(Json.obj("detail" -> JsObject.empty))
+
+  val eoyEstimateInvalidJson: JsValue            = eoyEstimateDetailInvalidJson.as[JsObject].deepMerge(eoyEstimateSummaryInvalidJson.as[JsObject])
+}

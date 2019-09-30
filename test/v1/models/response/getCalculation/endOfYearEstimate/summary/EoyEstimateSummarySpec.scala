@@ -34,14 +34,14 @@ class EoyEstimateSummarySpec extends UnitSpec {
 
     "read from Json with missing optional fields" should {
       "return the expected EoyEstimateSummary object" in {
-        eoyEstimateSummaryDesJsonMissingFields.as[EoyEstimateSummary] shouldBe eoyEstimateSummaryResponseFactory(totalNicAmount = None,
-                                                                                                                 incomeTaxNicAmount = None)
+        eoyEstimateSummaryDesJsonMissingFields.as[EoyEstimateSummary] shouldBe
+          eoyEstimateSummaryResponseFactory(totalNicAmount = None, incomeTaxNicAmount = None)
       }
     }
 
     "read from empty Json" should {
       "return an empty EoyEstimateSummary object" in {
-        JsObject.empty.as[EoyEstimateSummary] shouldBe EoyEstimateSummary()
+        JsObject.empty.as[EoyEstimateSummary].isEmpty shouldBe true
       }
     }
 

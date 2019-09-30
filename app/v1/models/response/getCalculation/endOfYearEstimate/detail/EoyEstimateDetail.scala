@@ -16,31 +16,31 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import play.api.libs.functional.syntax._
-import utils.NestedJsonReads
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 import utils.FilterTools.readSequenceAndMapToType
+import utils.NestedJsonReads
 
-case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployment]],
-                             ukPropertyFHL: Option[EoyEstimateUkPropertyFHL],
-                             ukPropertyNonFHL: Option[EoyEstimateUkPropertyNonFHL],
-                             ukSavings: Option[Seq[EoyEstimateUkSaving]],
-                             ukDividends: Option[EoyEstimateUkDividends]) {
+case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployment]] = None,
+                             ukPropertyFHL: Option[EoyEstimateUkPropertyFHL] = None,
+                             ukPropertyNonFHL: Option[EoyEstimateUkPropertyNonFHL] = None,
+                             ukSavings: Option[Seq[EoyEstimateUkSaving]] = None,
+                             ukDividends: Option[EoyEstimateUkDividends] = None) {
 
   val isEmpty: Boolean = this == EoyEstimateDetail.emptyEoyEstimateDetail
 
 }
 
-object EoyEstimateDetail extends NestedJsonReads{
+object EoyEstimateDetail extends NestedJsonReads {
 
-  val emptyEoyEstimateDetail: EoyEstimateDetail = EoyEstimateDetail(None,None,None,None,None)
+  val emptyEoyEstimateDetail: EoyEstimateDetail = EoyEstimateDetail()
 
   implicit val writes: OWrites[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
   implicit val reads: Reads[EoyEstimateDetail] = (
     readSequenceAndMapToType[EoyEstimateSelfEmployment](JsPath \ "incomeSource") and
       readSequenceAndMapToType[EoyEstimateUkPropertyFHL](JsPath \ "incomeSource", "04").map(_.getOrElse(Seq.empty).headOption) and
       readSequenceAndMapToType[EoyEstimateUkPropertyNonFHL](JsPath \ "incomeSource", "02").map(_.getOrElse(Seq.empty).headOption) and
-      readSequenceAndMapToType[EoyEstimateUkSaving] (JsPath \ "incomeSource", "09") and
-      readSequenceAndMapToType[EoyEstimateUkDividends] (JsPath \ "incomeSource", "10").map(_.getOrElse(Seq.empty).headOption)
-    )(EoyEstimateDetail.apply _)
+      readSequenceAndMapToType[EoyEstimateUkSaving](JsPath \ "incomeSource", "09") and
+      readSequenceAndMapToType[EoyEstimateUkDividends](JsPath \ "incomeSource", "10").map(_.getOrElse(Seq.empty).headOption)
+  )(EoyEstimateDetail.apply _)
 }

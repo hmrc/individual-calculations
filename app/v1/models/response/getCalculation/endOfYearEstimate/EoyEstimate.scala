@@ -16,7 +16,18 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate
 
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail
 import v1.models.response.getCalculation.endOfYearEstimate.summary.EoyEstimateSummary
 
-case class EoyEstimate(summary: EoyEstimateSummary, detail: EoyEstimateDetail)
+case class EoyEstimate(summary: EoyEstimateSummary = EoyEstimateSummary.emptyEoyEstimateSummary,
+                       detail: EoyEstimateDetail = EoyEstimateDetail.emptyEoyEstimateDetail)
+
+object EoyEstimate {
+  implicit val writes: OWrites[EoyEstimate] = Json.writes[EoyEstimate]
+  implicit val reads: Reads[EoyEstimate] = (
+    JsPath.read[EoyEstimateSummary] and
+      JsPath.read[EoyEstimateDetail]
+  )(EoyEstimate.apply _)
+}
