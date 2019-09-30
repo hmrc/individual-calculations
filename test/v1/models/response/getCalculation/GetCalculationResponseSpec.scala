@@ -86,6 +86,7 @@ class GetCalculationResponseSpec extends UnitSpec {
       |    "calculationType": "inYear",
       |    "intentToCrystallise": false,
       |    "crystallised": false,
+      |    "totalIncomeTaxAndNicsDue": 200.25,
       |    "calculationErrorCount": 1
       |  },
       |  "incomeTaxAndNicsCalculated": {
@@ -138,6 +139,7 @@ class GetCalculationResponseSpec extends UnitSpec {
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
     calculationErrorCount = Some(1)
   )
 
@@ -151,7 +153,7 @@ class GetCalculationResponseSpec extends UnitSpec {
     taxableIncome.detail.CalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
   val calculationResponse         = GetCalculationResponse(metadata, messages = Some(messages))
-  val calculationResponseAllParts = GetCalculationResponse(metadata, Some(incomeTax), Some(messages), Some(taxableIncomeModel))
+  val calculationResponseAllParts = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = Some(200.25)), Some(incomeTax), Some(messages), Some(taxableIncomeModel))
 
   "GetCalculationResponse" should {
 
