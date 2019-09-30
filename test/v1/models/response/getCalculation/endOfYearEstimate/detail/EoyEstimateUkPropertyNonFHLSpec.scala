@@ -18,29 +18,29 @@ package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkSavingFixtures._
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyNonFHLFixtures._
 
-class EoyEstimateUkSavingSpec extends UnitSpec {
+class EoyEstimateUkPropertyNonFHLSpec extends UnitSpec {
 
-  "EoyEstimateUkSavings" when {
+  "EoyEstimateUkPropertyNonFHL" when {
     "read from valid Json" should {
       "return a JsSuccess" in {
-        eoyEstimateUkSavingDesJson.validate[EoyEstimateUkSaving] shouldBe a[JsSuccess[_]]
+        eoyEstimateUkPropertyNonFHLDesJson.validate[EoyEstimateUkPropertyNonFHL] shouldBe a[JsSuccess[_]]
       }
-      "with the expected EoyEstimateUkSavings object" in {
-        eoyEstimateUkSavingDesJson.as[EoyEstimateUkSaving] shouldBe eoyEstimateUkSavingResponse
+      "with the expected EoyEstimateUkDividends object" in {
+        eoyEstimateUkPropertyNonFHLDesJson.as[EoyEstimateUkPropertyNonFHL] shouldBe eoyEstimateUkPropertyNonFHLResponse
       }
     }
 
     "read from invalid Json" should {
       "return a JsError" in {
-        eoyEstimateUkSavingInvalidJson.validate[EoyEstimateUkSaving] shouldBe a[JsError]
+        eoyEstimateUkPropertyNonFHLInvalidJson.validate[EoyEstimateUkPropertyNonFHL] shouldBe a[JsError]
       }
     }
 
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(eoyEstimateUkSavingResponse) shouldBe eoyEstimateUkSavingWrittenJson
+        Json.toJson(eoyEstimateUkPropertyNonFHLResponse) shouldBe eoyEstimateUkPropertyNonFHLWrittenJson
       }
     }
   }
