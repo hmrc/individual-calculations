@@ -35,6 +35,13 @@ object EoyEstimateSelfEmploymentFixtures {
       |  "incomeSourceType" : "01"
       |}""".stripMargin)
 
+  val eoyEstimateSelfEmploymentDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
+      |  "incomeSourceId": "$selfEmploymentID",
+      |  "taxableIncome": $taxableIncome,
+      |  "finalised": ${finalised.get},
+      |  "incomeSourceType" : "wrong"
+      |}""".stripMargin)
+
   val eoyEstimateSelfEmploymentDesJsonMissingFields: JsValue = Json.parse(s"""{
       |  "incomeSourceId": "$selfEmploymentID",
       |  "taxableIncome": $taxableIncome,
@@ -52,12 +59,11 @@ object EoyEstimateSelfEmploymentFixtures {
       |  "taxableIncome": $taxableIncome
       |}""".stripMargin)
 
-  val eoyEstimateSelfEmploymentWrittenJsonObject: JsValue = Json.obj("selfEmployment" -> Seq(eoyEstimateSelfEmploymentWrittenJson))
+  val eoyEstimateSelfEmploymentWrittenJsonObject: JsObject = Json.obj("selfEmployments" -> Seq(eoyEstimateSelfEmploymentWrittenJson))
 
   val eoyEstimateSelfEmploymentInvalidJson: JsValue = Json.parse(s"""{
-      |  "selfEmploymentID": "$selfEmploymentID",
       |  "taxableIncome": $taxableIncome,
-      |  "finalised": "notABoolean"
+      |  "incomeSourceType" : "01"
       |}""".stripMargin)
 
   def eoyEstimateSelfEmploymentResponseFactory(selfEmploymentID: String = selfEmploymentID,

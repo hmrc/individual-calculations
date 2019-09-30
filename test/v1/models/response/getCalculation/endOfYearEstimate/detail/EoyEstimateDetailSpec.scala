@@ -16,11 +16,72 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
+import play.api.libs.json.{JsObject, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.endOfYearEstimate.detail.EoyEstimateDetailFixtures._
 
-class EoyEstimateDetailSpec extends UnitSpec{
-  "" in {
-    EoyEstimateDetailDesJson.as[EoyEstimateDetail] shouldBe EoyEstimateDetailResponse
+class EoyEstimateDetailSpec extends UnitSpec {
+
+  "EoyEstimateDetail" when {
+    "read from valid Json" should {
+      "return a JsSuccess" in {
+        eoyEstimateDetailDesJson.validate[EoyEstimateDetail] shouldBe a[JsSuccess[_]]
+      }
+      "containing the expected EoyEstimateDetail object" in {
+        eoyEstimateDetailDesJson.as[EoyEstimateDetail] shouldBe eoyEstimateDetailResponse
+      }
+    }
+
+    "read from Json with missing optional fields" should {
+      "return the expected EoyEstimateDetail object" in {
+        eoyEstimateDetailDesJsonMissingOptionals.as[EoyEstimateDetail] shouldBe eoyEstimateDetailResponseReduced
+      }
+    }
+
+    "read from empty Json" should {
+      "return an empty EoyEstimateDetail object" in {
+        JsObject.empty.as[EoyEstimateDetail].isEmpty shouldBe true
+      }
+    }
+
+    "read from Json where some objects have an invalid income source type" should {
+      "not read those objects" in {
+        eoyEstimateDetailDesJsonSomeWrongIncomeSourceTypes.as[EoyEstimateDetail] shouldBe eoyEstimateDetailResponseReduced
+      }
+    }
+
+    "read from Json where all objects have an invalid income source type" should {
+      "return an empty EoyEstimateDetail object" in {
+        eoyEstimateDetailDesJsonAllWrongIncomeSourceTypes.as[EoyEstimateDetail].isEmpty shouldBe true
+      }
+    }
+
+    /*
+    //TODO: Implement behaviour change for filter to surface read errors
+    "read from invalid Json" should {
+      "return a JsError" in {
+        eoyEstimateDetailInvalidJson.validate[EoyEstimateDetail] shouldBe false
+      }
+    }
+     */
+
+    "written to Json" should {
+      "return the expected JsObject" in {
+        Json.toJson(eoyEstimateDetailResponse) shouldBe eoyEstimateDetailWrittenJson
+      }
+    }
+
+    "written from an EoyEstimateDetail object with missing optional fields" should {
+      "return an empty JsObject" in {
+        Json.toJson(eoyEstimateDetailResponseReduced) shouldBe eoyEstimateDetailWrittenJsonMissingOptionals
+      }
+    }
+
+    "written from an empty EoyEstimateDetail object" should {
+      "return an empty JsObject" in {
+        Json.toJson(EoyEstimateDetail.emptyEoyEstimateDetail) shouldBe JsObject.empty
+      }
+    }
+
   }
 }

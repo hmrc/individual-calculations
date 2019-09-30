@@ -31,6 +31,12 @@ object EoyEstimateUkDividendsFixtures {
       |  "incomeSourceType" : "10"
       |}""".stripMargin)
 
+  val eoyEstimateUkDividendsDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
+      |  "taxableIncome": $taxableIncome,
+      |  "incomeSourceType" : "wrong"
+      |}""".stripMargin)
+
+
   val eoyEstimateUkDividendsDesJsonMissingFields: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,
       |  "incomeSourceType" : "10"
@@ -40,7 +46,7 @@ object EoyEstimateUkDividendsFixtures {
       |  "taxableIncome": $taxableIncome
       |}""".stripMargin)
 
-  val eoyEstimateUkDividendsWrittenJsonObject: JsValue = Json.obj("ukDividends" -> eoyEstimateUkDividendsWrittenJson)
+  val eoyEstimateUkDividendsWrittenJsonObject: JsObject = Json.obj("ukDividends" -> eoyEstimateUkDividendsWrittenJson)
 
   val eoyEstimateUkDividendsInvalidJson: JsValue = Json.parse(s"""{
       |  "taxableIncome": "notANumericValue"

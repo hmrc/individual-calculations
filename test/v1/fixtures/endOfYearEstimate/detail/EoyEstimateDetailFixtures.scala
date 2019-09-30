@@ -26,15 +26,17 @@ import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDet
 
 object EoyEstimateDetailFixtures {
 
-  val EoyEstimateDetailResponse: EoyEstimateDetail = EoyEstimateDetail(
+  val eoyEstimateDetailResponse: EoyEstimateDetail = EoyEstimateDetail(
     Some(Seq(eoyEstimateSelfEmploymentResponse)),
     Some(eoyEstimateUkPropertyFHLResponse),
     Some(eoyEstimateUkPropertyNonFHLResponse),
-    Some(Seq(eoyEstimateUkSavingResponse)),
+    Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse)),
     Some(eoyEstimateUkDividendsResponse)
   )
 
-  val EoyEstimateDetailDesJson: JsValue =
+  val eoyEstimateDetailResponseReduced: EoyEstimateDetail = eoyEstimateDetailResponse.copy(ukPropertyFHL = None, ukPropertyNonFHL = None, ukDividends = None)
+
+  val eoyEstimateDetailDesJson: JsValue =
     Json.obj(
       "incomeSource" ->
         Seq(
@@ -42,7 +44,61 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkPropertyFHLDesJson,
           eoyEstimateUkPropertyNonFHLDesJson,
           eoyEstimateUkSavingDesJson,
+          eoyEstimateUkSavingDesJson,
           eoyEstimateUkDividendsDesJson
         ))
 
+  val eoyEstimateDetailDesJsonMissingOptionals: JsValue =
+    Json.obj(
+      "incomeSource" ->
+        Seq(
+          eoyEstimateSelfEmploymentDesJson,
+          eoyEstimateUkSavingDesJson,
+          eoyEstimateUkSavingDesJson
+        ))
+
+  val eoyEstimateDetailDesJsonSomeWrongIncomeSourceTypes: JsValue =
+    Json.obj(
+      "incomeSource" ->
+        Seq(
+          eoyEstimateSelfEmploymentDesJson,
+          eoyEstimateUkPropertyFHLDesJsonWrongIncomeSourceType,
+          eoyEstimateUkPropertyNonFHLDesJsonWrongIncomeSourceType,
+          eoyEstimateUkSavingDesJson,
+          eoyEstimateUkSavingDesJson,
+          eoyEstimateUkDividendsDesJsonWrongIncomeSourceType
+        ))
+
+  val eoyEstimateDetailDesJsonAllWrongIncomeSourceTypes: JsValue =
+    Json.obj(
+      "incomeSource" ->
+        Seq(
+          eoyEstimateSelfEmploymentDesJsonWrongIncomeSourceType,
+          eoyEstimateUkPropertyFHLDesJsonWrongIncomeSourceType,
+          eoyEstimateUkPropertyNonFHLDesJsonWrongIncomeSourceType,
+          eoyEstimateUkSavingDesJsonWrongIncomeSourceType,
+          eoyEstimateUkDividendsDesJsonWrongIncomeSourceType
+        ))
+
+  val eoyEstimateDetailWrittenJson: JsValue =
+    eoyEstimateSelfEmploymentWrittenJsonObject
+      .deepMerge(eoyEstimateUkPropertyFHLWrittenJsonObject)
+      .deepMerge(eoyEstimateUkPropertyNonFHLWrittenJsonObject)
+      .deepMerge(eoyEstimateUkSavingWrittenJsonObject)
+      .deepMerge(eoyEstimateUkDividendsWrittenJsonObject)
+
+  val eoyEstimateDetailWrittenJsonMissingOptionals: JsValue =
+    eoyEstimateSelfEmploymentWrittenJsonObject
+      .deepMerge(eoyEstimateUkSavingWrittenJsonObject)
+
+  val eoyEstimateDetailInvalidJson: JsValue =
+    Json.obj(
+      "incomeSource" ->
+        Seq(
+          eoyEstimateSelfEmploymentInvalidJson,
+          eoyEstimateUkPropertyFHLDesJson,
+          eoyEstimateUkPropertyNonFHLDesJson,
+          eoyEstimateUkSavingDesJson,
+          eoyEstimateUkDividendsDesJson
+        ))
 }

@@ -33,6 +33,12 @@ object EoyEstimateUkPropertyFHLFixtures {
       |  "incomeSourceType" : "04"
       |}""".stripMargin)
 
+  val eoyEstimateUkPropertyFHLDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
+      |  "taxableIncome": $taxableIncome,
+      |  "finalised": ${finalised.get},
+      |  "incomeSourceType" : "wrong"
+      |}""".stripMargin)
+
   val eoyEstimateUkPropertyFHLDesJsonMissingFields: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,
       |  "incomeSourceType" : "04"
@@ -47,7 +53,7 @@ object EoyEstimateUkPropertyFHLFixtures {
       |  "taxableIncome": $taxableIncome
       |}""".stripMargin)
 
-  val eoyEstimateUkPropertyFHLWrittenJsonObject: JsValue = Json.obj("ukPropertyFHL" -> Seq(eoyEstimateUkPropertyFHLWrittenJson))
+  val eoyEstimateUkPropertyFHLWrittenJsonObject: JsObject = Json.obj("ukPropertyFHL" -> eoyEstimateUkPropertyFHLWrittenJson)
 
   val eoyEstimateUkPropertyFHLInvalidJson: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,

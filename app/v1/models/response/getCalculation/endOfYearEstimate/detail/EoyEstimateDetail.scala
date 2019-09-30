@@ -25,9 +25,16 @@ case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployme
                              ukPropertyFHL: Option[EoyEstimateUkPropertyFHL],
                              ukPropertyNonFHL: Option[EoyEstimateUkPropertyNonFHL],
                              ukSavings: Option[Seq[EoyEstimateUkSaving]],
-                             ukDividends: Option[EoyEstimateUkDividends])
+                             ukDividends: Option[EoyEstimateUkDividends]) {
+
+  val isEmpty: Boolean = this == EoyEstimateDetail.emptyEoyEstimateDetail
+
+}
 
 object EoyEstimateDetail extends NestedJsonReads{
+
+  val emptyEoyEstimateDetail: EoyEstimateDetail = EoyEstimateDetail(None,None,None,None,None)
+
   implicit val writes: OWrites[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
   implicit val reads: Reads[EoyEstimateDetail] = (
     readSequenceAndMapToType[EoyEstimateSelfEmployment](JsPath \ "incomeSource") and
