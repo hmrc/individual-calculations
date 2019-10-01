@@ -20,11 +20,14 @@ import play.api.libs.json._
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.response.common.{Message, Messages, Metadata}
+import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
+import v1.models.response.getCalculation.allowancesAndDeductions.summary.{CalculationSummary => ADRCalculationSummary}
+import v1.models.response.getCalculation.allowancesAndDeductions.detail.{CalculationDetail => ADRCalculationDetail}
 
 class GetCalculationResponseSpec extends UnitSpec {
 
@@ -153,7 +156,8 @@ class GetCalculationResponseSpec extends UnitSpec {
     taxableIncome.detail.CalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
   val calculationResponse         = GetCalculationResponse(metadata, messages = Some(messages))
-  val calculationResponseAllParts = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = Some(200.25)), Some(incomeTax), Some(messages), Some(taxableIncomeModel))
+  val calculationResponseAllParts = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = Some(200.25)), Some(incomeTax), Some(messages), Some(taxableIncomeModel),
+  Some(AllowancesDeductionsAndReliefs(ADRCalculationSummary(None,None),ADRCalculationDetail(None,None))))
 
   "GetCalculationResponse" should {
 
