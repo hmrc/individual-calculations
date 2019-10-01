@@ -50,37 +50,15 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
 }
 
 object LossClaimsDetail extends NestedJsonReads {
+  val emptyLossClaimsDetail: LossClaimsDetail = LossClaimsDetail(None, None, None, None, None)
 
   def toNoneIfEmpty[A](seq: Seq[A]): Option[Seq[A]] = if (seq.nonEmpty) Some(seq) else None
 
-  val emptyLossClaimsDetail: LossClaimsDetail = LossClaimsDetail(None, None, None, None, None)
-
   implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
-  implicit val reads: Reads[LossClaimsDetail] = (readSequenceAndMapToType[LossBroughtForward](JsPath \ "inputs" \ "lossesBroughtForward") and
-    readSequenceAndMapToType[ResultOfClaimApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied") and
-    readSequenceAndMapToType[UnclaimedLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses") and
-    readSequenceAndMapToType[CarriedForwardLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses") and
-    readSequenceAndMapToType[ClaimNotApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied"))(LossClaimsDetail.apply _)
-
-  def readSequenceAndMapToType[A](path: JsPath)(implicit reads: Reads[A]): Reads[Option[Seq[A]]] = {
-    path.readNestedNullable[Seq[JsValue]].map(optJsSeq => mapOptionalSequenceToType[A](optJsSeq))
-  }
-
-  def mapOptionalSequenceToType[A](optJsSeq: Option[Seq[JsValue]])(implicit reads: Reads[A]): Option[Seq[A]] = {
-    val mappedSequence = optJsSeq.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js).asOpt[A])
-    if (mappedSequence.isEmpty) None else Some(mappedSequence)
-  }
-
-  def filterByIncomeSourceType(js: JsValue): JsValue = js.asOpt[FilterWrapper] match {
-    case Some(FilterWrapper(incomeSourceType)) if incomeSourceType == "01" => js
-    case _                                                                 => Json.toJson(None)
-  }
-
-  case class FilterWrapper(incomeSourceType: String)
-
-  object FilterWrapper {
-    implicit val formats: OFormat[FilterWrapper] = Json.format[FilterWrapper]
-  }
-
+  implicit val reads: Reads[LossClaimsDetail] = ((JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable(filteredArrayReads[LossBroughtForward]("incomeSourceType", "01")).map(emptySeqToNone) and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").readNestedNullable(filteredArrayReads[ResultOfClaimApplied]("incomeSourceType", "01")).map(emptySeqToNone) and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses").readNestedNullable(filteredArrayReads[UnclaimedLoss]("incomeSourceType", "01")).map(emptySeqToNone) and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable(filteredArrayReads[CarriedForwardLoss]("incomeSourceType", "01")).map(emptySeqToNone) and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied").readNestedNullable(filteredArrayReads[ClaimNotApplied]("incomeSourceType", "01")).map(emptySeqToNone))(LossClaimsDetail.apply _)
 }

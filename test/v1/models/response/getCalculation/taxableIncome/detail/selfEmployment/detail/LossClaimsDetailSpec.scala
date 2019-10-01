@@ -62,7 +62,7 @@ class LossClaimsDetailSpec extends UnitSpec {
     }
   }
 
-  "readSequenceAndMapToType" when {
+  "filteredArrayReads" when {
     "reading in a sequence of lossBroughtForward" must {
       "not include where incomeSourceType is not 01" in {
         lossClaimsDetailDesJsonFactory(lossesBroughtForward = Seq(lossBroughtForwardDesJsonWithWrongIncomeSourceType))

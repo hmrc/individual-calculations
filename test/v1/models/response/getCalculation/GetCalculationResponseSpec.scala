@@ -26,6 +26,7 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDet
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
+import v1.fixtures.endOfYearEstimate.EoyEstimateFixtures._
 import v1.models.response.getCalculation.allowancesAndDeductions.summary.{CalculationSummary => ADRCalculationSummary}
 import v1.models.response.getCalculation.allowancesAndDeductions.detail.{AllowancesAndDeductions, Reliefs, ResidentialFinanceCosts, CalculationDetail => ADRCalculationDetail}
 
@@ -54,6 +55,49 @@ class GetCalculationResponseSpec extends UnitSpec {
     Json.parse("""
                  |{
                  | "calculation" : {
+                 | "endOfYearEstimate" : {
+                 |	  "incomeTaxAmount": 1003.1,
+                 |	  "totalNicAmount": 1005.1,
+                 |	  "totalEstimatedIncome": 1001,
+                 |	  "totalTaxableIncome": 1002,
+                 |	  "incomeTaxNicAmount": 1006.1,
+                 |	  "nic2": 1004.1,
+                 |	  "incomeSource": [
+                 |     {
+                 |		    "incomeSourceId": "AB123456789",
+                 |		    "taxableIncome": 1011,
+                 |		    "finalised": false,
+                 |		    "incomeSourceType": "01"
+                 |	    },
+                 |     {
+                 |		    "taxableIncome": 1031,
+                 |		    "finalised": false,
+                 |		    "incomeSourceType": "04"
+                 |	    },
+                 |      {
+                 |		    "taxableIncome": 1041,
+                 |	    	"finalised": false,
+                 |		    "incomeSourceType": "02"
+                 |	    },
+                 |     {
+                 |	    	"savingsAccountId": "AA123456789",
+                 |	    	"savingsAccountName": "An Account Name",
+                 |	    	"taxableIncome": 1051,
+                 |	    	"incomeSourceType": "09"
+                 |	    },
+                 |     {
+                 |	      "savingsAccountId": "AA123456789",
+                 |	    	"savingsAccountName": "An Account Name",
+                 |		    "taxableIncome": 1051,
+                 |		    "incomeSourceType": "09"
+                 |	    },
+                 |     {
+                 |		    "taxableIncome": 1021,
+                 |		    "incomeSourceType": "10"
+                 |	    }
+                 |     ],
+                 |	  "nic4": 1005.1
+                 |    },
                  |       "allowancesAndDeductions": {
                  |            "personalAllowance": 1000,
                  |            "reducedPersonalAllowance": 1000,
@@ -95,80 +139,145 @@ class GetCalculationResponseSpec extends UnitSpec {
       """.stripMargin).as[JsObject]
 
   val writtenJson: JsValue = Json.parse("""
+                                          |{
+                                          |	"metadata": {
+                                          |		"id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                          |		"taxYear": "2018-19",
+                                          |		"requestedBy": "customer",
+                                          |		"requestedTimestamp": "2019-11-15T09:25:15.094Z",
+                                          |		"calculationReason": "customerRequest",
+                                          |		"calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                                          |		"calculationType": "inYear",
+                                          |		"intentToCrystallise": false,
+                                          |		"crystallised": false,
+                                          |		"totalIncomeTaxAndNicsDue": 200.25,
+                                          |		"calculationErrorCount": 1
+                                          |	},
+                                          |	"incomeTaxAndNicsCalculated": {
+                                          |		"summary": {
+                                          |			"incomeTax": {
+                                          |				"incomeTaxCharged": 100.25
+                                          |			},
+                                          |			"totalIncomeTaxAndNicsDue": 200.25,
+                                          |			"taxRegime": "UK"
+                                          |		},
+                                          |		"detail": {
+                                          |			"incomeTax": {
+                                          |				"payPensionsProfit": {
+                                          |					"allowancesAllocated": 300.25,
+                                          |					"incomeTaxAmount": 400.25
+                                          |				}
+                                          |			}
+                                          |		}
+                                          |	},
+                                          |	"messages": {
+                                          |		"errors": [{
+                                          |			"id": "id1",
+                                          |			"text": "text1"
+                                          |		}]
+                                          |	},
+                                          |	"taxableIncome": {
+                                          |		"summary": {
+                                          |			"totalIncomeReceivedFromAllSources": 123,
+                                          |			"totalTaxableIncome": 234
+                                          |		},
+                                          |		"detail": {
+                                          |			"payPensionsProfit": {
+                                          |				"incomeReceived": 500,
+                                          |				"taxableIncome": 600
+                                          |			}
+                                          |		}
+                                          |	},
+                                          |	"endOfYearEstimate": {
+                                          |		"summary": {
+                                          |			"totalEstimatedIncome": 1001,
+                                          |			"totalTaxableIncome": 1002,
+                                          |			"incomeTaxAmount": 1003.1,
+                                          |			"nic2": 1004.1,
+                                          |			"nic4": 1005.1,
+                                          |			"totalNicAmount": 1005.1,
+                                          |			"incomeTaxNicAmount": 1006.1
+                                          |		},
+                                          |		"detail": {
+                                          |			"selfEmployments": [{
+                                          |				"selfEmploymentId": "AB123456789",
+                                          |				"taxableIncome": 1011,
+                                          |				"finalised": false
+                                          |			}],
+                                          |			"ukPropertyFHL": {
+                                          |				"taxableIncome": 1031,
+                                          |				"finalised": false
+                                          |			},
+                                          |			"ukPropertyNonFHL": {
+                                          |				"taxableIncome": 1041,
+                                          |				"finalised": false
+                                          |			},
+                                          |			"ukSavings": [{
+                                          |					"savingsAccountId": "AA123456789",
+                                          |					"savingsAccountName": "An Account Name",
+                                          |					"taxableIncome": 1051
+                                          |				},
+                                          |				{
+                                          |					"savingsAccountId": "AA123456789",
+                                          |					"savingsAccountName": "An Account Name",
+                                          |					"taxableIncome": 1051
+                                          |				}
+                                          |			],
+                                          |			"ukDividends": {
+                                          |				"taxableIncome": 1021
+                                          |			}
+                                          |		}
+                                          |	},
+                                          |	"allowancesDeductionsAndReliefs": {
+                                          |		"summary": {
+                                          |			"totalAllowancesAndDeductions": 1000,
+                                          |			"totalReliefs": 1000
+                                          |		},
+                                          |		"detail": {
+                                          |			"allowancesAndDeductions": {
+                                          |				"personalAllowance": 1000,
+                                          |				"reducedPersonalAllowance": 1000,
+                                          |				"giftOfInvestmentsAndPropertyToCharity": 1000,
+                                          |				"blindPersonsAllowance": 1000,
+                                          |				"lossesAppliedToGeneralIncome": 1000
+                                          |			},
+                                          |			"reliefs": {
+                                          |				"residentialFinanceCosts": {
+                                          |					"amountClaimed": 1000,
+                                          |					"allowableAmount": 1000,
+                                          |					"rate": 2,
+                                          |					"propertyFinanceRelief": 1000
+                                          |				}
+                                          |			}
+                                          |		}
+                                          |	}
+                                          |
+                                          |}
+                                          |""".stripMargin)
+
+  val writtenJsonWithoutOptionalParts: JsValue = Json.parse("""
       |{
-      |	"metadata": {
-      |		"id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |		"taxYear": "2018-19",
-      |		"requestedBy": "customer",
-      |		"requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |		"calculationReason": "customerRequest",
-      |		"calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |		"calculationType": "inYear",
-      |		"intentToCrystallise": false,
-      |		"crystallised": false,
-      |		"totalIncomeTaxAndNicsDue": 200.25,
-      |		"calculationErrorCount": 1
-      |	},
-      |	"incomeTaxAndNicsCalculated": {
-      |		"summary": {
-      |			"incomeTax": {
-      |				"incomeTaxCharged": 100.25
-      |			},
-      |			"totalIncomeTaxAndNicsDue": 200.25,
-      |			"taxRegime": "UK"
-      |		},
-      |		"detail": {
-      |			"incomeTax": {
-      |				"payPensionsProfit": {
-      |					"allowancesAllocated": 300.25,
-      |					"incomeTaxAmount": 400.25
-      |				}
-      |			}
-      |		}
-      |	},
-      |	"messages": {
-      |		"errors": [{
-      |			"id": "id1",
-      |			"text": "text1"
-      |		}]
-      |	},
-      |	"taxableIncome": {
-      |		"summary": {
-      |			"totalIncomeReceivedFromAllSources": 123,
-      |			"totalTaxableIncome": 234
-      |		},
-      |		"detail": {
-      |			"payPensionsProfit": {
-      |				"incomeReceived": 500,
-      |				"taxableIncome": 600
-      |			}
-      |		}
-      |	},
-      |	"allowancesDeductionsAndReliefs": {
-      |		"summary": {
-      |			"totalAllowancesAndDeductions": 1000,
-      |			"totalReliefs": 1000
-      |		},
-      |		"detail": {
-      |			"allowancesAndDeductions": {
-      |				"personalAllowance": 1000,
-      |				"reducedPersonalAllowance": 1000,
-      |				"giftOfInvestmentsAndPropertyToCharity": 1000,
-      |				"blindPersonsAllowance": 1000,
-      |				"lossesAppliedToGeneralIncome": 1000
-      |			},
-      |			"reliefs": {
-      |				"residentialFinanceCosts": {
-      |					"amountClaimed": 1000,
-      |					"allowableAmount": 1000,
-      |					"rate": 2,
-      |					"propertyFinanceRelief": 1000
-      |				}
-      |			}
-      |		}
-      |	}
-      |}
-      |""".stripMargin)
+      |  "metadata": {
+      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |    "taxYear": "2018-19",
+      |    "requestedBy": "customer",
+      |    "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |    "calculationReason": "customerRequest",
+      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |    "calculationType": "inYear",
+      |    "intentToCrystallise": false,
+      |    "crystallised": false,
+      |    "calculationErrorCount": 1
+      |  },
+      |  "messages": {
+      |    "errors": [
+      |      {
+      |        "id": "id1",
+      |        "text": "text1"
+      |      }
+      |    ]
+      |  }
+      |}""".stripMargin)
 
   val metadata = Metadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -180,7 +289,7 @@ class GetCalculationResponseSpec extends UnitSpec {
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,
-    totalIncomeTaxAndNicsDue = None,
+    totalIncomeTaxAndNicsDue = Some(200.25),
     calculationErrorCount = Some(1)
   )
 
@@ -193,14 +302,14 @@ class GetCalculationResponseSpec extends UnitSpec {
     taxableIncome.summary.CalculationSummary(123, 234),
     taxableIncome.detail.CalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
-  val calculationResponse         = GetCalculationResponse(metadata, messages = Some(messages))
+  val calculationResponse         = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages))
 
   val allowancesDeductionsAndReliefs = AllowancesDeductionsAndReliefs(ADRCalculationSummary(Some(1000),Some(1000)),
     ADRCalculationDetail(Some(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000),Some(1000),Some(1000))),
       Some(Reliefs(Some(ResidentialFinanceCosts(1000, Some(1000), 2, 1000))))))
 
   val calculationResponseAllParts = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = Some(200.25)), Some(incomeTax), Some(messages), Some(taxableIncomeModel),
-  Some(allowancesDeductionsAndReliefs))
+    Some(eoyEstimateResponse), Some(allowancesDeductionsAndReliefs))
 
   "GetCalculationResponse" should {
 
@@ -299,7 +408,10 @@ class GetCalculationResponseSpec extends UnitSpec {
     }
 
     "write correctly to json" when {
-      "using a model with only metadata" in {
+      "using a model with only metadata and messages" in {
+        Json.toJson(calculationResponse) shouldBe writtenJsonWithoutOptionalParts
+      }
+      "using a model with all parts" in {
         Json.toJson(calculationResponseAllParts) shouldBe writtenJson
       }
     }
