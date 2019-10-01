@@ -29,21 +29,21 @@ object EoyEstimateUkSavingFixtures {
     EoyEstimateUkSaving(savingsAccountId, savingsAccountName, taxableIncome)
 
   val eoyEstimateUkSavingDesJson: JsValue = Json.parse(s"""{
-      |  "savingsAccountId": "$savingsAccountId",
+      |  "incomeSourceId": "$savingsAccountId",
       |  "savingsAccountName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "09"
       |}""".stripMargin)
 
   val eoyEstimateUkSavingDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
-      |  "savingsAccountId": "$savingsAccountId",
+      |  "incomeSourceId": "$savingsAccountId",
       |  "savingsAccountName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "wrong"
       |}""".stripMargin)
 
   val eoyEstimateUkSavingDesJsonMissingFields: JsValue = Json.parse(s"""{
-      |  "savingsAccountId": "$savingsAccountId",
+      |  "incomeSourceId": "$savingsAccountId",
       |  "savingsAccountName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "09"
@@ -58,7 +58,7 @@ object EoyEstimateUkSavingFixtures {
   val eoyEstimateUkSavingWrittenJsonObject: JsObject = Json.obj("ukSavings" -> Seq(eoyEstimateUkSavingWrittenJson,eoyEstimateUkSavingWrittenJson))
 
   val eoyEstimateUkSavingInvalidJson: JsValue = Json.parse(s"""{
-      |  "savingsAccountId": "$savingsAccountId",
+      |  "incomeSourceId": "$savingsAccountId",
       |  "savingsAccountName": "$savingsAccountName",
       |  "taxableIncome" : "notANumericValue"
       |}""".stripMargin)

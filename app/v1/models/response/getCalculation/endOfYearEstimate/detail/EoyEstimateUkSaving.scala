@@ -16,10 +16,16 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-import play.api.libs.json.{ Json, OFormat }
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 
 case class EoyEstimateUkSaving(savingsAccountId: String, savingsAccountName: String, taxableIncome: BigInt)
 
 object EoyEstimateUkSaving {
-  implicit val formats: OFormat[EoyEstimateUkSaving] = Json.format[EoyEstimateUkSaving]
+  implicit val writes: OWrites[EoyEstimateUkSaving] = Json.writes[EoyEstimateUkSaving]
+  implicit val reads: Reads[EoyEstimateUkSaving] = (
+    (JsPath \ "incomeSourceId").read[String] and
+      (JsPath \ "savingsAccountName").read[String] and
+      (JsPath \ "taxableIncome").read[BigInt]
+  )(EoyEstimateUkSaving.apply _)
 }
