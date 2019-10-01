@@ -130,6 +130,7 @@ class GetCalculationResponseSpec extends UnitSpec {
       |    "calculationType": "inYear",
       |    "intentToCrystallise": false,
       |    "crystallised": false,
+      |    "totalIncomeTaxAndNicsDue": 200.25,
       |    "calculationErrorCount": 1
       |  },
       |  "incomeTaxAndNicsCalculated": {
@@ -247,6 +248,7 @@ class GetCalculationResponseSpec extends UnitSpec {
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,
+    totalIncomeTaxAndNicsDue = None,
     calculationErrorCount = Some(1)
   )
 

@@ -31,6 +31,7 @@ case class Metadata(id: String,
                     calculationType: CalculationType,
                     intentToCrystallise: Boolean,
                     crystallised: Boolean,
+                    totalIncomeTaxAndNicsDue: Option[BigDecimal],
                     calculationErrorCount: Option[Int])
 
 
@@ -46,6 +47,7 @@ object Metadata extends NestedJsonReads {
     (JsPath \"metadata" \ "calculationType").read[CalculationType] and
     (JsPath \"metadata" \ "intentToCrystallise").readWithDefault[Boolean](false) and
     (JsPath \"metadata" \ "crystallised").readWithDefault[Boolean](false) and
+    (JsPath \"calculation" \ "taxCalculation" \ "totalIncomeTaxAndNicsDue").readNestedNullable[BigDecimal] and
     (__ \"messages" \ "errors").readNestedNullable[Seq[Message]].map {
       case Some(errs) if errs.nonEmpty => Some(errs.length)
       case _ => None
