@@ -20,6 +20,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads, _}
 import utils.NestedJsonReads
 import v1.models.response.common.{Messages, Metadata}
+import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
@@ -27,7 +28,8 @@ case class GetCalculationResponse(
     metadata: Metadata,
     incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
     messages: Option[Messages] = None,
-    taxableIncome: Option[TaxableIncome] = None
+    taxableIncome: Option[TaxableIncome] = None,
+    allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None
 )
 
 object GetCalculationResponse extends NestedJsonReads {
@@ -41,6 +43,7 @@ object GetCalculationResponse extends NestedJsonReads {
           case Some(messages) if messages.hasMessages => Some(messages)
           case _                                      => None
         } and
-        (emptyIfNotPresent[TaxableIncome](__ \ "calculation"))
+        (emptyIfNotPresent[TaxableIncome](__ \ "calculation")) and
+        (emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation"))
     )(GetCalculationResponse.apply _)
 }
