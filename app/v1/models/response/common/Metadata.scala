@@ -27,7 +27,7 @@ case class Metadata(id: String,
                     requestedBy: CalculationRequestor,
                     requestedTimestamp: Option[String],
                     calculationReason: CalculationReason,
-                    calculationTimestamp: String,
+                    calculationTimestamp: Option[String],
                     calculationType: CalculationType,
                     intentToCrystallise: Boolean,
                     crystallised: Boolean,
@@ -43,7 +43,7 @@ object Metadata extends NestedJsonReads {
     (JsPath \"metadata" \ "requestedBy").read[CalculationRequestor] and
     (JsPath \"metadata" \ "requestedTimestamp").readNullable[String] and
     (JsPath \"metadata" \ "calculationReason").read[CalculationReason] and
-    (JsPath \"metadata" \ "calculationTimestamp").read[String] and
+    (JsPath \"metadata" \ "calculationTimestamp").readNullable[String] and
     (JsPath \"metadata" \ "calculationType").read[CalculationType] and
     (JsPath \"metadata" \ "intentToCrystallise").readWithDefault[Boolean](false) and
     (JsPath \"metadata" \ "crystallised").readWithDefault[Boolean](false) and
