@@ -26,6 +26,7 @@ import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSu
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
 import v1.fixtures.endOfYearEstimate.EoyEstimateFixtures._
+import v1.fixtures.GetCalculationResponseFixtures.allowancesDeductionsAnsReliefsTemp
 
 class GetCalculationResponseSpec extends UnitSpec {
 
@@ -210,7 +211,8 @@ class GetCalculationResponseSpec extends UnitSpec {
       |			    "taxableIncome": 1021
       |		  }
       |	  }
-      | }
+      | },
+      | "allowancesDeductionsAndReliefs":{"summary":{},"detail":{}}
       |}
       |""".stripMargin)
 
@@ -262,7 +264,7 @@ class GetCalculationResponseSpec extends UnitSpec {
     taxableIncome.detail.CalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
   val calculationResponse         = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages))
-  val calculationResponseAllParts = GetCalculationResponse(metadata, Some(incomeTax), Some(messages), Some(taxableIncomeModel),  Some(eoyEstimateResponse))
+  val calculationResponseAllParts = GetCalculationResponse(metadata, Some(incomeTax), Some(messages), Some(taxableIncomeModel),  Some(eoyEstimateResponse), Some(allowancesDeductionsAnsReliefsTemp))
 
   "GetCalculationResponse" should {
 
