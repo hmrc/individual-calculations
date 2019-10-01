@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-import play.api.libs.json.{JsObject, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsObject, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.endOfYearEstimate.detail.EoyEstimateDetailFixtures._
 
@@ -56,14 +56,11 @@ class EoyEstimateDetailSpec extends UnitSpec {
       }
     }
 
-    /*
-    //TODO: Implement behaviour change for filter to surface read errors
     "read from invalid Json" should {
       "return a JsError" in {
-        eoyEstimateDetailInvalidJson.validate[EoyEstimateDetail] shouldBe false
+        eoyEstimateDetailInvalidJson.validate[EoyEstimateDetail] shouldBe a[JsError]
       }
     }
-     */
 
     "written to Json" should {
       "return the expected JsObject" in {

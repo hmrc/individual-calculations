@@ -21,41 +21,41 @@ import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateSel
 
 object EoyEstimateSelfEmploymentFixtures {
 
-  val selfEmploymentID: String   = "AA123456789"
+  val selfEmploymentId: String   = "AA123456789"
   val taxableIncome: BigInt      = 1011
   val finalised: Option[Boolean] = Some(false)
 
   val eoyEstimateSelfEmploymentResponse: EoyEstimateSelfEmployment =
-    EoyEstimateSelfEmployment(selfEmploymentID, taxableIncome, finalised)
+    EoyEstimateSelfEmployment(selfEmploymentId, taxableIncome, finalised)
 
   val eoyEstimateSelfEmploymentDesJson: JsValue = Json.parse(s"""{
-      |  "incomeSourceId": "$selfEmploymentID",
+      |  "incomeSourceId": "$selfEmploymentId",
       |  "taxableIncome": $taxableIncome,
       |  "finalised": ${finalised.get},
       |  "incomeSourceType" : "01"
       |}""".stripMargin)
 
   val eoyEstimateSelfEmploymentDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
-      |  "incomeSourceId": "$selfEmploymentID",
+      |  "incomeSourceId": "$selfEmploymentId",
       |  "taxableIncome": $taxableIncome,
       |  "finalised": ${finalised.get},
       |  "incomeSourceType" : "wrong"
       |}""".stripMargin)
 
   val eoyEstimateSelfEmploymentDesJsonMissingFields: JsValue = Json.parse(s"""{
-      |  "incomeSourceId": "$selfEmploymentID",
+      |  "incomeSourceId": "$selfEmploymentId",
       |  "taxableIncome": $taxableIncome,
       |  "incomeSourceType" : "01"
       |}""".stripMargin)
 
   val eoyEstimateSelfEmploymentWrittenJson: JsValue = Json.parse(s"""{
-      |  "selfEmploymentID": "$selfEmploymentID",
+      |  "selfEmploymentId": "$selfEmploymentId",
       |  "taxableIncome": $taxableIncome,
       |  "finalised": ${finalised.get}
       |}""".stripMargin)
 
   val eoyEstimateSelfEmploymentWrittenJsonMissingFields: JsValue = Json.parse(s"""{
-      |  "selfEmploymentID": "$selfEmploymentID",
+      |  "selfEmploymentId": "$selfEmploymentId",
       |  "taxableIncome": $taxableIncome
       |}""".stripMargin)
 
@@ -66,9 +66,9 @@ object EoyEstimateSelfEmploymentFixtures {
       |  "incomeSourceType" : "01"
       |}""".stripMargin)
 
-  def eoyEstimateSelfEmploymentResponseFactory(selfEmploymentID: String = selfEmploymentID,
+  def eoyEstimateSelfEmploymentResponseFactory(selfEmploymentId: String = selfEmploymentId,
                                                taxableIncome: BigInt = taxableIncome,
                                                finalised: Option[Boolean] = finalised): EoyEstimateSelfEmployment =
-    EoyEstimateSelfEmployment(selfEmploymentID, taxableIncome, finalised)
+    EoyEstimateSelfEmployment(selfEmploymentId, taxableIncome, finalised)
 
 }

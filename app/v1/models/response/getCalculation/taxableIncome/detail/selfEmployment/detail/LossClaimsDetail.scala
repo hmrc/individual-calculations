@@ -19,7 +19,6 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import utils.FilterTools.readSequenceAndMapToType
 
 case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],
                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
@@ -57,9 +56,9 @@ object LossClaimsDetail extends NestedJsonReads {
 
   implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
-  implicit val reads: Reads[LossClaimsDetail] = (readSequenceAndMapToType[LossBroughtForward](JsPath \ "inputs" \ "lossesBroughtForward") and
-    readSequenceAndMapToType[ResultOfClaimApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied") and
-    readSequenceAndMapToType[UnclaimedLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses") and
-    readSequenceAndMapToType[CarriedForwardLoss](JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses") and
-    readSequenceAndMapToType[ClaimNotApplied](JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied"))(LossClaimsDetail.apply _)
+  implicit val reads: Reads[LossClaimsDetail] = ((JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable(filteredArrayReads[LossBroughtForward]("incomeSourceType", "01")).map(emptySeqToNone) and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").readNestedNullable(filteredArrayReads[ResultOfClaimApplied]("incomeSourceType", "01")).map(emptySeqToNone) and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses").readNestedNullable(filteredArrayReads[UnclaimedLoss]("incomeSourceType", "01")).map(emptySeqToNone) and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable(filteredArrayReads[CarriedForwardLoss]("incomeSourceType", "01")).map(emptySeqToNone) and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied").readNestedNullable(filteredArrayReads[ClaimNotApplied]("incomeSourceType", "01")).map(emptySeqToNone))(LossClaimsDetail.apply _)
 }

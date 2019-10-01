@@ -18,7 +18,6 @@ package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
-import utils.FilterTools.readSequenceAndMapToType
 import utils.NestedJsonReads
 
 case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployment]] = None,
@@ -37,10 +36,10 @@ object EoyEstimateDetail extends NestedJsonReads {
 
   implicit val writes: OWrites[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
   implicit val reads: Reads[EoyEstimateDetail] = (
-    readSequenceAndMapToType[EoyEstimateSelfEmployment](JsPath \ "incomeSource") and
-      readSequenceAndMapToType[EoyEstimateUkPropertyFHL](JsPath \ "incomeSource", "04").map(_.getOrElse(Seq.empty).headOption) and
-      readSequenceAndMapToType[EoyEstimateUkPropertyNonFHL](JsPath \ "incomeSource", "02").map(_.getOrElse(Seq.empty).headOption) and
-      readSequenceAndMapToType[EoyEstimateUkSaving](JsPath \ "incomeSource", "09") and
-      readSequenceAndMapToType[EoyEstimateUkDividends](JsPath \ "incomeSource", "10").map(_.getOrElse(Seq.empty).headOption)
+    (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateSelfEmployment]("incomeSourceType", "01")).map(emptySeqToNone) and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkPropertyFHL]("incomeSourceType", "04")).map(emptySeqToNone(_).getOrElse(Seq.empty).headOption) and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkPropertyNonFHL]("incomeSourceType", "02")).map(emptySeqToNone(_).getOrElse(Seq.empty).headOption) and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkSaving]("incomeSourceType", "09")).map(emptySeqToNone) and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkDividends]("incomeSourceType", "10")).map(emptySeqToNone(_).getOrElse(Seq.empty).headOption)
   )(EoyEstimateDetail.apply _)
 }

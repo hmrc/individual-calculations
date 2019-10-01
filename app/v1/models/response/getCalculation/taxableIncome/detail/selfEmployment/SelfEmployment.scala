@@ -19,7 +19,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import utils.FilterTools.filterByIncomeSourceType
+import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail.emptySeqToNone
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
@@ -62,8 +62,8 @@ object SelfEmployment extends NestedJsonReads {
     } and Reads.pure(None))(SelfEmployment.apply _)
 
   implicit val seqReads: Reads[Seq[SelfEmployment]] = ((JsPath \ "calculation" \ "businessProfitAndLoss")
-    .readNestedNullable[Seq[JsValue]]
-    .map(_.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js).asOpt[SelfEmployment]))
+    .readNestedNullable[Seq[JsValue]].map(emptySeqToNone)
+    .map(_.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js)))
     .map(x => Some(x)) and
     JsPath.readNullable[LossClaimsDetail])(buildSelfEmployments(_, _))
 
@@ -71,6 +71,17 @@ object SelfEmployment extends NestedJsonReads {
     val seqSelfEmploys    = seqSelfEmploysOpt.getOrElse(Seq.empty)
     val details = detailsOpt.getOrElse(LossClaimsDetail.emptyLossClaimsDetail)
     seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId)))
+  }
+
+  def filterByIncomeSourceType(js: JsValue, sourceType: String = "01"): Option[SelfEmployment] = js.as[FilterWrapper] match {
+    case FilterWrapper(incomeSourceType) if incomeSourceType == sourceType => Some(js.as[SelfEmployment])
+    case _ => None
+  }
+
+  case class FilterWrapper(incomeSourceType: String)
+
+  object FilterWrapper {
+    implicit val formats: OFormat[FilterWrapper] = Json.format[FilterWrapper]
   }
 
 }

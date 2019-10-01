@@ -181,7 +181,7 @@ class GetCalculationResponseSpec extends UnitSpec {
       |	    },
       |	    "detail": {
       |		    "selfEmployments": [{
-      |		    	"selfEmploymentID": "AA123456789",
+      |		    	"selfEmploymentId": "AA123456789",
       |		    	"taxableIncome": 1011,
       |		    	"finalised": false
       |		    }
