@@ -40,7 +40,7 @@ class GetCalculationServiceSpec extends UnitSpec {
     requestedBy = CalculationRequestor.customer,
     requestedTimestamp = Some("2019-11-15T09:25:15.094Z"),
     calculationReason = CalculationReason.customerRequest,
-    calculationTimestamp = "2019-11-15T09:35:15.094Z",
+    calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,
