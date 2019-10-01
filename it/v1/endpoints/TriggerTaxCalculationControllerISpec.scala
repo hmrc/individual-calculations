@@ -124,9 +124,9 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
 
             val response: WSResponse = await(request().post(body))
 
-            print(response)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
@@ -155,6 +155,7 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request().post(requestJson))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 

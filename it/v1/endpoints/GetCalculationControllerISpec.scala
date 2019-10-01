@@ -136,6 +136,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
         val response: WSResponse = await(request.get)
         response.status shouldBe  NOT_FOUND
         response.json shouldBe Json.toJson(NotFoundError)
+        response.header("Content-Type") shouldBe Some("application/json")
       }
     }
 
@@ -157,6 +158,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
@@ -183,6 +185,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
