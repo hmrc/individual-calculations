@@ -20,11 +20,14 @@ import play.api.libs.json._
 import support.UnitSpec
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.response.common.{Message, Messages, Metadata}
+import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
+import v1.models.response.getCalculation.allowancesAndDeductions.summary.{CalculationSummary => ADRCalculationSummary}
+import v1.models.response.getCalculation.allowancesAndDeductions.detail.{AllowancesAndDeductions, Reliefs, ResidentialFinanceCosts, CalculationDetail => ADRCalculationDetail}
 
 class GetCalculationResponseSpec extends UnitSpec {
 
@@ -51,10 +54,27 @@ class GetCalculationResponseSpec extends UnitSpec {
     Json.parse("""
                  |{
                  | "calculation" : {
+                 |       "allowancesAndDeductions": {
+                 |            "personalAllowance": 1000,
+                 |            "reducedPersonalAllowance": 1000,
+                 |            "giftOfInvestmentsAndPropertyToCharity": 1000,
+                 |            "blindPersonsAllowance": 1000,
+                 |            "lossesAppliedToGeneralIncome": 1000
+                 |        },
+                 |        "reliefs": {
+                 |            "residentialFinanceCosts": {
+                 |                "amountClaimed": 1000,
+                 |                "allowableAmount": 1000,
+                 |                "rate": 2,
+                 |                "propertyFinanceRelief": 1000
+                 |            }
+                 |        },
                  |   "taxCalculation" : {
                  |     "incomeTax" : {
                  |       "incomeTaxCharged" : 100.25,
+                 |       "totalAllowancesAndDeductions": 1000,
                  |       "totalIncomeReceivedFromAllSources": 123,
+                 |       "totalReliefs": 1000,
                  |       "totalTaxableIncome": 234,
                  |       "payPensionsProfit" : {
                  |           "allowancesAllocated" : 300.25,
@@ -76,56 +96,77 @@ class GetCalculationResponseSpec extends UnitSpec {
 
   val writtenJson: JsValue = Json.parse("""
       |{
-      |  "metadata": {
-      |    "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |    "taxYear": "2018-19",
-      |    "requestedBy": "customer",
-      |    "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |    "calculationReason": "customerRequest",
-      |    "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |    "calculationType": "inYear",
-      |    "intentToCrystallise": false,
-      |    "crystallised": false,
-      |    "totalIncomeTaxAndNicsDue": 200.25,
-      |    "calculationErrorCount": 1
-      |  },
-      |  "incomeTaxAndNicsCalculated": {
-      |    "summary": {
-      |      "incomeTax": {
-      |        "incomeTaxCharged": 100.25
-      |      },
-      |      "totalIncomeTaxAndNicsDue": 200.25,
-      |      "taxRegime": "UK"
-      |    },
-      |    "detail": {
-      |      "incomeTax": {
-      |        "payPensionsProfit": {
-      |          "allowancesAllocated": 300.25,
-      |          "incomeTaxAmount": 400.25
-      |        }
-      |      }
-      |    }
-      |  },
-      |  "messages": {
-      |    "errors": [
-      |      {
-      |        "id": "id1",
-      |        "text": "text1"
-      |      }
-      |    ]
-      |  },
-      |  "taxableIncome": {
-      |    "summary": {
-      |      "totalIncomeReceivedFromAllSources": 123,
-      |      "totalTaxableIncome": 234
-      |    },
-      |    "detail": {
-      |     "payPensionsProfit": {
-      |       "incomeReceived":500,
-      |       "taxableIncome":600
-      |       }
-      |    }
-      |  }
+      |	"metadata": {
+      |		"id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |		"taxYear": "2018-19",
+      |		"requestedBy": "customer",
+      |		"requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |		"calculationReason": "customerRequest",
+      |		"calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |		"calculationType": "inYear",
+      |		"intentToCrystallise": false,
+      |		"crystallised": false,
+      |		"totalIncomeTaxAndNicsDue": 200.25,
+      |		"calculationErrorCount": 1
+      |	},
+      |	"incomeTaxAndNicsCalculated": {
+      |		"summary": {
+      |			"incomeTax": {
+      |				"incomeTaxCharged": 100.25
+      |			},
+      |			"totalIncomeTaxAndNicsDue": 200.25,
+      |			"taxRegime": "UK"
+      |		},
+      |		"detail": {
+      |			"incomeTax": {
+      |				"payPensionsProfit": {
+      |					"allowancesAllocated": 300.25,
+      |					"incomeTaxAmount": 400.25
+      |				}
+      |			}
+      |		}
+      |	},
+      |	"messages": {
+      |		"errors": [{
+      |			"id": "id1",
+      |			"text": "text1"
+      |		}]
+      |	},
+      |	"taxableIncome": {
+      |		"summary": {
+      |			"totalIncomeReceivedFromAllSources": 123,
+      |			"totalTaxableIncome": 234
+      |		},
+      |		"detail": {
+      |			"payPensionsProfit": {
+      |				"incomeReceived": 500,
+      |				"taxableIncome": 600
+      |			}
+      |		}
+      |	},
+      |	"allowancesDeductionsAndReliefs": {
+      |		"summary": {
+      |			"totalAllowancesAndDeductions": 1000,
+      |			"totalReliefs": 1000
+      |		},
+      |		"detail": {
+      |			"allowancesAndDeductions": {
+      |				"personalAllowance": 1000,
+      |				"reducedPersonalAllowance": 1000,
+      |				"giftOfInvestmentsAndPropertyToCharity": 1000,
+      |				"blindPersonsAllowance": 1000,
+      |				"lossesAppliedToGeneralIncome": 1000
+      |			},
+      |			"reliefs": {
+      |				"residentialFinanceCosts": {
+      |					"amountClaimed": 1000,
+      |					"allowableAmount": 1000,
+      |					"rate": 2,
+      |					"propertyFinanceRelief": 1000
+      |				}
+      |			}
+      |		}
+      |	}
       |}
       |""".stripMargin)
 
@@ -153,7 +194,13 @@ class GetCalculationResponseSpec extends UnitSpec {
     taxableIncome.detail.CalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
   val calculationResponse         = GetCalculationResponse(metadata, messages = Some(messages))
-  val calculationResponseAllParts = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = Some(200.25)), Some(incomeTax), Some(messages), Some(taxableIncomeModel))
+
+  val allowancesDeductionsAndReliefs = AllowancesDeductionsAndReliefs(ADRCalculationSummary(Some(1000),Some(1000)),
+    ADRCalculationDetail(Some(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000),Some(1000),Some(1000))),
+      Some(Reliefs(Some(ResidentialFinanceCosts(1000, Some(1000), 2, 1000))))))
+
+  val calculationResponseAllParts = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = Some(200.25)), Some(incomeTax), Some(messages), Some(taxableIncomeModel),
+  Some(allowancesDeductionsAndReliefs))
 
   "GetCalculationResponse" should {
 
