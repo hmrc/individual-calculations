@@ -123,12 +123,6 @@ class MetadataSpec extends UnitSpec {
       }
     }
 
-    "messages are not present" should {
-      "read the calculationErrorCount as None" in {
-        desJson.as[Metadata] shouldBe metadataResponse
-      }
-    }
-
     "errors are not present" should {
       "read the calculationErrorCount as None" in {
         (desJson ++ Json.parse("""{
