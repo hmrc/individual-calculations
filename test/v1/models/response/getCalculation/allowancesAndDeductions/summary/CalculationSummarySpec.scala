@@ -84,7 +84,7 @@ class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
     }
 
     "return an empty summary object" when {
-      "json has no sumarry details" in {
+      "json has no summary details" in {
         desJsonWithNoAllowancesAndDeductionsDetails.as[CalculationSummary] shouldBe CalculationSummary(None, None)
       }
     }
