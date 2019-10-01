@@ -22,8 +22,8 @@ import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateUkS
 object EoyEstimateUkSavingFixtures {
 
   val savingsAccountId: String   = "AA123456789"
-  val savingsAccountName: String = "AA123456789"
-  val taxableIncome: BigInt      = 1031
+  val savingsAccountName: String = "An Account Name"
+  val taxableIncome: BigInt      = 1051
 
   val eoyEstimateUkSavingResponse: EoyEstimateUkSaving =
     EoyEstimateUkSaving(savingsAccountId, savingsAccountName, taxableIncome)

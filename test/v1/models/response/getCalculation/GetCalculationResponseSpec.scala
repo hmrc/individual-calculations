@@ -61,31 +61,31 @@ class GetCalculationResponseSpec extends UnitSpec {
                  |	  "nic2": 1004.1,
                  |	  "incomeSource": [
                  |     {
-                 |		    "incomeSourceId": "AA123456789",
+                 |		    "incomeSourceId": "AB123456789",
                  |		    "taxableIncome": 1011,
                  |		    "finalised": false,
                  |		    "incomeSourceType": "01"
                  |	    },
                  |     {
-                 |		    "taxableIncome": 1011,
+                 |		    "taxableIncome": 1031,
                  |		    "finalised": false,
                  |		    "incomeSourceType": "04"
                  |	    },
                  |      {
-                 |		    "taxableIncome": 1011,
+                 |		    "taxableIncome": 1041,
                  |	    	"finalised": false,
                  |		    "incomeSourceType": "02"
                  |	    },
                  |     {
                  |	    	"savingsAccountId": "AA123456789",
-                 |	    	"savingsAccountName": "AA123456789",
-                 |	    	"taxableIncome": 1031,
+                 |	    	"savingsAccountName": "An Account Name",
+                 |	    	"taxableIncome": 1051,
                  |	    	"incomeSourceType": "09"
                  |	    },
                  |     {
                  |	      "savingsAccountId": "AA123456789",
-                 |	    	"savingsAccountName": "AA123456789",
-                 |		    "taxableIncome": 1031,
+                 |	    	"savingsAccountName": "An Account Name",
+                 |		    "taxableIncome": 1051,
                  |		    "incomeSourceType": "09"
                  |	    },
                  |     {
@@ -181,28 +181,28 @@ class GetCalculationResponseSpec extends UnitSpec {
       |	    },
       |	    "detail": {
       |		    "selfEmployments": [{
-      |		    	"selfEmploymentId": "AA123456789",
+      |		    	"selfEmploymentId": "AB123456789",
       |		    	"taxableIncome": 1011,
       |		    	"finalised": false
       |		    }
       |      ],
       |		  "ukPropertyFHL": {
-      |			    "taxableIncome": 1011,
+      |			    "taxableIncome": 1031,
       |			    "finalised": false
       |	  	},
       |		  "ukPropertyNonFHL": {
-      |		    	"taxableIncome": 1011,
+      |		    	"taxableIncome": 1041,
       |			    "finalised": false
       |		  },
       |		  "ukSavings": [{
       |			    "savingsAccountId": "AA123456789",
-      |			    "savingsAccountName": "AA123456789",
-      |			    "taxableIncome": 1031
+      |			    "savingsAccountName": "An Account Name",
+      |			    "taxableIncome": 1051
       |		    },
       |       {
       |			    "savingsAccountId": "AA123456789",
-      |		    	"savingsAccountName": "AA123456789",
-      |			    "taxableIncome": 1031
+      |		    	"savingsAccountName": "An Account Name",
+      |			    "taxableIncome": 1051
       |		    }
       |      ],
       |	  	"ukDividends": {

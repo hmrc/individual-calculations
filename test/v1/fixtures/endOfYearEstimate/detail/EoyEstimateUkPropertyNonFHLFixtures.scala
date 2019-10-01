@@ -21,7 +21,7 @@ import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateUkP
 
 object EoyEstimateUkPropertyNonFHLFixtures {
 
-  val taxableIncome: BigInt      = 1011
+  val taxableIncome: BigInt      = 1041
   val finalised: Option[Boolean] = Some(false)
 
   val eoyEstimateUkPropertyNonFHLResponse: EoyEstimateUkPropertyNonFHL =

@@ -21,7 +21,7 @@ import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateSel
 
 object EoyEstimateSelfEmploymentFixtures {
 
-  val selfEmploymentId: String   = "AA123456789"
+  val selfEmploymentId: String   = "AB123456789"
   val taxableIncome: BigInt      = 1011
   val finalised: Option[Boolean] = Some(false)
 
