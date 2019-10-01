@@ -32,9 +32,15 @@ class EoyEstimateDetailSpec extends UnitSpec {
       }
     }
 
-    "read from Json with missing optional fields" should {
+    "read from Json with some missing optional fields" should {
       "return the expected EoyEstimateDetail object" in {
-        eoyEstimateDetailDesJsonMissingOptionals.as[EoyEstimateDetail] shouldBe eoyEstimateDetailResponseReduced
+        eoyEstimateDetailDesJsonSomeMissingOptionals.as[EoyEstimateDetail] shouldBe eoyEstimateDetailResponseReduced
+      }
+    }
+
+    "read from Json with all missing optional fields" should {
+      "return the expected EoyEstimateDetail object" in {
+        eoyEstimateDetailDesJsonAllMissingOptionals.as[EoyEstimateDetail] shouldBe EoyEstimateDetail.emptyEoyEstimateDetail
       }
     }
 

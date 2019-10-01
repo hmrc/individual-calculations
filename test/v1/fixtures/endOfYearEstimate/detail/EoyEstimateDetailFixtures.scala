@@ -51,7 +51,7 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkDividendsDesJson
         ))
 
-  val eoyEstimateDetailDesJsonMissingOptionals: JsValue =
+  val eoyEstimateDetailDesJsonSomeMissingOptionals: JsValue =
     Json.obj(
       "incomeSource" ->
         Seq(
@@ -59,6 +59,11 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkSavingDesJson
         ))
+
+  val eoyEstimateDetailDesJsonAllMissingOptionals: JsValue =
+    Json.obj(
+      "incomeSource" ->
+        Seq.empty[JsValue])
 
   val eoyEstimateDetailDesJsonSomeWrongIncomeSourceTypes: JsValue =
     Json.obj(
