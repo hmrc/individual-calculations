@@ -46,7 +46,7 @@ object GetCalculationResponse extends NestedJsonReads {
           case _                                      => None
         } and
         emptyIfNotPresent[TaxableIncome](__ \ "calculation") and
-        (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate] and
-        (emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation"))
+        emptyIfNotPresent[EoyEstimate](__ \ "calculation" \ "endOfYearEstimate") and
+        emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation")
     )(GetCalculationResponse.apply _)
 }
