@@ -17,13 +17,13 @@
 package v1.connectors
 
 import uk.gov.hmrc.domain.Nino
+import v1.fixtures.MessageFixtures._
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRequest
-import v1.models.response.common.{Message, Messages, Metadata}
+import v1.models.response.common.{Messages, Metadata}
 import v1.models.response.getCalculation.GetCalculationResponse
-import v1.fixtures.MessageFixtures._
 
 import scala.concurrent.Future
 
@@ -38,7 +38,7 @@ class GetCalculationConnectorSpec extends ConnectorSpec {
     requestedBy = CalculationRequestor.customer,
     requestedTimestamp = Some("2019-11-15T09:25:15.094Z"),
     calculationReason = CalculationReason.customerRequest,
-    calculationTimestamp = "2019-11-15T09:35:15.094Z",
+    calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
     calculationType = CalculationType.inYear,
     intentToCrystallise = false,
     crystallised = false,

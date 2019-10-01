@@ -21,6 +21,7 @@ import play.api.libs.json.{JsPath, Json, OWrites, Reads, _}
 import utils.NestedJsonReads
 import v1.models.response.common.{Messages, Metadata}
 import v1.models.response.getCalculation.endOfYearEstimate.EoyEstimate
+import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
@@ -29,7 +30,8 @@ case class GetCalculationResponse(
     incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
     messages: Option[Messages] = None,
     taxableIncome: Option[TaxableIncome] = None,
-    endOfYearEstimate: Option[EoyEstimate] = None
+    endOfYearEstimate: Option[EoyEstimate] = None,
+    allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None
 )
 
 object GetCalculationResponse extends NestedJsonReads {
@@ -44,6 +46,7 @@ object GetCalculationResponse extends NestedJsonReads {
           case _                                      => None
         } and
         emptyIfNotPresent[TaxableIncome](__ \ "calculation") and
-        (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate]
+        (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate] and
+        (emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation"))
     )(GetCalculationResponse.apply _)
 }
