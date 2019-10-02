@@ -26,25 +26,25 @@ object EoyEstimateUkSavingFixtures {
   val taxableIncome: BigInt      = 1051
 
   val eoyEstimateUkSavingResponse: EoyEstimateUkSaving =
-    EoyEstimateUkSaving(savingsAccountId, savingsAccountName, taxableIncome)
+    EoyEstimateUkSaving(savingsAccountId, Some(savingsAccountName), taxableIncome)
 
   val eoyEstimateUkSavingDesJson: JsValue = Json.parse(s"""{
-      |  "savingsAccountId": "$savingsAccountId",
-      |  "savingsAccountName": "$savingsAccountName",
+      |  "incomeSourceId": "$savingsAccountId",
+      |  "incomeSourceName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "09"
       |}""".stripMargin)
 
   val eoyEstimateUkSavingDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
-      |  "savingsAccountId": "$savingsAccountId",
-      |  "savingsAccountName": "$savingsAccountName",
+      |  "incomeSourceId": "$savingsAccountId",
+      |  "incomeSourceName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "wrong"
       |}""".stripMargin)
 
   val eoyEstimateUkSavingDesJsonMissingFields: JsValue = Json.parse(s"""{
-      |  "savingsAccountId": "$savingsAccountId",
-      |  "savingsAccountName": "$savingsAccountName",
+      |  "incomeSourceId": "$savingsAccountId",
+      |  "incomeSourceName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "09"
       |}""".stripMargin)
@@ -58,7 +58,7 @@ object EoyEstimateUkSavingFixtures {
   val eoyEstimateUkSavingWrittenJsonObject: JsObject = Json.obj("ukSavings" -> Seq(eoyEstimateUkSavingWrittenJson,eoyEstimateUkSavingWrittenJson))
 
   val eoyEstimateUkSavingInvalidJson: JsValue = Json.parse(s"""{
-      |  "savingsAccountId": "$savingsAccountId",
+      |  "incomeSourceId": "$savingsAccountId",
       |  "savingsAccountName": "$savingsAccountName",
       |  "taxableIncome" : "notANumericValue"
       |}""".stripMargin)
@@ -66,6 +66,6 @@ object EoyEstimateUkSavingFixtures {
   def eoyEstimateUkSavingResponseFactory(savingsAccountId: String = savingsAccountId,
                                          savingsAccountName: String = savingsAccountName,
                                          taxableIncome: BigInt = taxableIncome): EoyEstimateUkSaving =
-    EoyEstimateUkSaving(savingsAccountId, savingsAccountName, taxableIncome)
+    EoyEstimateUkSaving(savingsAccountId, Some(savingsAccountName), taxableIncome)
 
 }
