@@ -147,6 +147,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
@@ -181,6 +182,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
             val response: WSResponse = await(request.get)
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
           }
         }
 
