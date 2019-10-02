@@ -30,21 +30,21 @@ object EoyEstimateUkSavingFixtures {
 
   val eoyEstimateUkSavingDesJson: JsValue = Json.parse(s"""{
       |  "incomeSourceId": "$savingsAccountId",
-      |  "savingsAccountName": "$savingsAccountName",
+      |  "incomeSourceName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "09"
       |}""".stripMargin)
 
   val eoyEstimateUkSavingDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
       |  "incomeSourceId": "$savingsAccountId",
-      |  "savingsAccountName": "$savingsAccountName",
+      |  "incomeSourceName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "wrong"
       |}""".stripMargin)
 
   val eoyEstimateUkSavingDesJsonMissingFields: JsValue = Json.parse(s"""{
       |  "incomeSourceId": "$savingsAccountId",
-      |  "savingsAccountName": "$savingsAccountName",
+      |  "incomeSourceName": "$savingsAccountName",
       |  "taxableIncome" : $taxableIncome,
       |  "incomeSourceType" : "09"
       |}""".stripMargin)

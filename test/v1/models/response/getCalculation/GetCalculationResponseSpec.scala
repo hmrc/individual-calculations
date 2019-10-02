@@ -81,13 +81,13 @@ class GetCalculationResponseSpec extends UnitSpec {
                  |	    },
                  |     {
                  |	    	"incomeSourceId": "AA123456789",
-                 |	    	"savingsAccountName": "An Account Name",
+                 |	    	"incomeSourceName": "An Account Name",
                  |	    	"taxableIncome": 1051,
                  |	    	"incomeSourceType": "09"
                  |	    },
                  |     {
                  |	      "incomeSourceId": "AA123456789",
-                 |	    	"savingsAccountName": "An Account Name",
+                 |	    	"incomeSourceName": "An Account Name",
                  |		    "taxableIncome": 1051,
                  |		    "incomeSourceType": "09"
                  |	    },

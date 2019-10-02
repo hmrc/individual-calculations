@@ -25,7 +25,7 @@ object EoyEstimateUkSaving {
   implicit val writes: OWrites[EoyEstimateUkSaving] = Json.writes[EoyEstimateUkSaving]
   implicit val reads: Reads[EoyEstimateUkSaving] = (
     (JsPath \ "incomeSourceId").read[String] and
-      (JsPath \ "savingsAccountName").read[String] and
+      (JsPath \ "incomeSourceName").read[String] and
       (JsPath \ "taxableIncome").read[BigInt]
   )(EoyEstimateUkSaving.apply _)
 }
