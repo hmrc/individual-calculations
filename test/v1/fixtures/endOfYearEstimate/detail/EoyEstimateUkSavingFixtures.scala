@@ -26,7 +26,7 @@ object EoyEstimateUkSavingFixtures {
   val taxableIncome: BigInt      = 1051
 
   val eoyEstimateUkSavingResponse: EoyEstimateUkSaving =
-    EoyEstimateUkSaving(savingsAccountId, savingsAccountName, taxableIncome)
+    EoyEstimateUkSaving(savingsAccountId, Some(savingsAccountName), taxableIncome)
 
   val eoyEstimateUkSavingDesJson: JsValue = Json.parse(s"""{
       |  "incomeSourceId": "$savingsAccountId",
@@ -66,6 +66,6 @@ object EoyEstimateUkSavingFixtures {
   def eoyEstimateUkSavingResponseFactory(savingsAccountId: String = savingsAccountId,
                                          savingsAccountName: String = savingsAccountName,
                                          taxableIncome: BigInt = taxableIncome): EoyEstimateUkSaving =
-    EoyEstimateUkSaving(savingsAccountId, savingsAccountName, taxableIncome)
+    EoyEstimateUkSaving(savingsAccountId, Some(savingsAccountName), taxableIncome)
 
 }
