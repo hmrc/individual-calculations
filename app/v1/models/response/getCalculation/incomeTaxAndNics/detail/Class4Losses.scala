@@ -16,20 +16,15 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import utils.NestedJsonReads
+import play.api.libs.json.{Json, OFormat}
 
-case class NicDetail(class2Nics: Option[Class2NicDetail], class4Nics: Option[Class4NicDetail])
-
-object NicDetail extends NestedJsonReads{
-  implicit val writes: OWrites[NicDetail] = Json.writes[NicDetail]
-
-  implicit val reads: Reads[NicDetail] = (
-    (JsPath \ "class2Nics").readNullable[Class2NicDetail] and
-      (JsPath \ "class4Nics").readNullable[Class4NicDetail].map{
-        case Some(Class4NicDetail.emptyClass4NicDetail) => None
-        case notEmpty => notEmpty
-      }
-  )(NicDetail.apply _)
+case class Class4Losses(totalClass4LossesAvailable: Option[BigInt], totalClass4LossesUsed: Option[BigInt]){
+  val isEmpty: Boolean = this == Class4Losses.emptyClass4Losses
 }
+
+object Class4Losses {
+  val emptyClass4Losses: Class4Losses = Class4Losses(None,None)
+  implicit val formats: OFormat[Class4Losses] = Json.format[Class4Losses]
+}
+
+

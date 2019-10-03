@@ -16,20 +16,26 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import utils.NestedJsonReads
+import play.api.libs.json.{JsSuccess, JsValue, Json}
+import support.UnitSpec
 
-case class NicDetail(class2Nics: Option[Class2NicDetail], class4Nics: Option[Class4NicDetail])
+class Class4LossesSpec extends UnitSpec {
 
-object NicDetail extends NestedJsonReads{
-  implicit val writes: OWrites[NicDetail] = Json.writes[NicDetail]
+  val model: Class4Losses = Class4Losses(Some(3001), Some(3002))
 
-  implicit val reads: Reads[NicDetail] = (
-    (JsPath \ "class2Nics").readNullable[Class2NicDetail] and
-      (JsPath \ "class4Nics").readNullable[Class4NicDetail].map{
-        case Some(Class4NicDetail.emptyClass4NicDetail) => None
-        case notEmpty => notEmpty
-      }
-  )(NicDetail.apply _)
+  val json: JsValue = Json.parse("""{
+      | "totalClass4LossesAvailable" : 3001,
+      | "totalClass4LossesUsed" : 3002
+      |}""".stripMargin)
+
+  "Class4L" should {
+
+    "write correctly to json" in {
+      Json.toJson(model) shouldBe json
+    }
+
+    "read correctly from json" in {
+      json.validate[Class4Losses] shouldBe JsSuccess(model)
+    }
+  }
 }
