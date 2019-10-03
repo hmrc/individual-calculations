@@ -19,8 +19,8 @@ package v1.fixtures.endOfYearEstimate.detail
 import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.endOfYearEstimate.detail.EoyEstimateSelfEmploymentFixtures._
 import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkDividendsFixtures._
-import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyFHLFixtures._
-import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyNonFHLFixtures._
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyFhlFixtures._
+import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkPropertyNonFhlFixtures._
 import v1.fixtures.endOfYearEstimate.detail.EoyEstimateUkSavingFixtures._
 import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail
 
@@ -28,8 +28,8 @@ object EoyEstimateDetailFixtures {
 
   val eoyEstimateDetailResponse: EoyEstimateDetail = EoyEstimateDetail(
     Some(Seq(eoyEstimateSelfEmploymentResponse)),
-    Some(eoyEstimateUkPropertyFHLResponse),
-    Some(eoyEstimateUkPropertyNonFHLResponse),
+    Some(eoyEstimateUkPropertyFhlResponse),
+    Some(eoyEstimateUkPropertyNonFhlResponse),
     Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse)),
     Some(eoyEstimateUkDividendsResponse)
   )
@@ -44,8 +44,8 @@ object EoyEstimateDetailFixtures {
       "incomeSource" ->
         Seq(
           eoyEstimateSelfEmploymentDesJson,
-          eoyEstimateUkPropertyFHLDesJson,
-          eoyEstimateUkPropertyNonFHLDesJson,
+          eoyEstimateUkPropertyFhlDesJson,
+          eoyEstimateUkPropertyNonFhlDesJson,
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkDividendsDesJson
@@ -70,8 +70,8 @@ object EoyEstimateDetailFixtures {
       "incomeSource" ->
         Seq(
           eoyEstimateSelfEmploymentDesJson,
-          eoyEstimateUkPropertyFHLDesJsonWrongIncomeSourceType,
-          eoyEstimateUkPropertyNonFHLDesJsonWrongIncomeSourceType,
+          eoyEstimateUkPropertyFhlDesJsonWrongIncomeSourceType,
+          eoyEstimateUkPropertyNonFhlDesJsonWrongIncomeSourceType,
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkDividendsDesJsonWrongIncomeSourceType
@@ -82,16 +82,16 @@ object EoyEstimateDetailFixtures {
       "incomeSource" ->
         Seq(
           eoyEstimateSelfEmploymentDesJsonWrongIncomeSourceType,
-          eoyEstimateUkPropertyFHLDesJsonWrongIncomeSourceType,
-          eoyEstimateUkPropertyNonFHLDesJsonWrongIncomeSourceType,
+          eoyEstimateUkPropertyFhlDesJsonWrongIncomeSourceType,
+          eoyEstimateUkPropertyNonFhlDesJsonWrongIncomeSourceType,
           eoyEstimateUkSavingDesJsonWrongIncomeSourceType,
           eoyEstimateUkDividendsDesJsonWrongIncomeSourceType
         ))
 
   val eoyEstimateDetailWrittenJson: JsValue =
     eoyEstimateSelfEmploymentWrittenJsonObject
-      .deepMerge(eoyEstimateUkPropertyFHLWrittenJsonObject)
-      .deepMerge(eoyEstimateUkPropertyNonFHLWrittenJsonObject)
+      .deepMerge(eoyEstimateUkPropertyFhlWrittenJsonObject)
+      .deepMerge(eoyEstimateUkPropertyNonFhlWrittenJsonObject)
       .deepMerge(eoyEstimateUkSavingWrittenJsonObject)
       .deepMerge(eoyEstimateUkDividendsWrittenJsonObject)
 
@@ -106,8 +106,8 @@ object EoyEstimateDetailFixtures {
       "incomeSource" ->
         Seq(
           eoyEstimateSelfEmploymentInvalidJson,
-          eoyEstimateUkPropertyFHLDesJson,
-          eoyEstimateUkPropertyNonFHLDesJson,
+          eoyEstimateUkPropertyFhlDesJson,
+          eoyEstimateUkPropertyNonFhlDesJson,
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkDividendsDesJson
         ))

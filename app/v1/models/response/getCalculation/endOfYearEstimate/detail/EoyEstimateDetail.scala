@@ -21,8 +21,8 @@ import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 import utils.NestedJsonReads
 
 case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployment]] = None,
-                             ukPropertyFHL: Option[EoyEstimateUkPropertyFHL] = None,
-                             ukPropertyNonFHL: Option[EoyEstimateUkPropertyNonFHL] = None,
+                             ukPropertyFhl: Option[EoyEstimateUkPropertyFhl] = None,
+                             ukPropertyNonFhl: Option[EoyEstimateUkPropertyNonFhl] = None,
                              ukSavings: Option[Seq[EoyEstimateUkSaving]] = None,
                              ukDividends: Option[EoyEstimateUkDividends] = None) {
 
@@ -37,8 +37,8 @@ object EoyEstimateDetail extends NestedJsonReads {
   implicit val writes: OWrites[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
   implicit val reads: Reads[EoyEstimateDetail] = (
     (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateSelfEmployment]("incomeSourceType", "01")).map(emptySeqToNone) and
-      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkPropertyFHL]("incomeSourceType", "04")).map(emptySeqToNone(_).getOrElse(Seq.empty).headOption) and
-      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkPropertyNonFHL]("incomeSourceType", "02")).map(emptySeqToNone(_).getOrElse(Seq.empty).headOption) and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkPropertyFhl]("incomeSourceType", "04")).map(emptySeqToNone(_).getOrElse(Seq.empty).headOption) and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkPropertyNonFhl]("incomeSourceType", "02")).map(emptySeqToNone(_).getOrElse(Seq.empty).headOption) and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkSaving]("incomeSourceType", "09")).map(emptySeqToNone) and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkDividends]("incomeSourceType", "10")).map(emptySeqToNone(_).getOrElse(Seq.empty).headOption)
   )(EoyEstimateDetail.apply _)
