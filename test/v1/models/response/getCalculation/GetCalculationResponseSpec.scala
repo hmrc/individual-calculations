@@ -204,11 +204,11 @@ class GetCalculationResponseSpec extends UnitSpec {
                                           |				"taxableIncome": 1011,
                                           |				"finalised": false
                                           |			}],
-                                          |			"ukPropertyFHL": {
+                                          |			"ukPropertyFhl": {
                                           |				"taxableIncome": 1031,
                                           |				"finalised": false
                                           |			},
-                                          |			"ukPropertyNonFHL": {
+                                          |			"ukPropertyNonFhl": {
                                           |				"taxableIncome": 1041,
                                           |				"finalised": false
                                           |			},

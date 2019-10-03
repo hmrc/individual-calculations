@@ -17,51 +17,46 @@
 package v1.fixtures.endOfYearEstimate.detail
 
 import play.api.libs.json.{ JsObject, JsValue, Json }
-import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateUkPropertyFHL
+import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateUkPropertyFhl
 
-object EoyEstimateUkPropertyFHLFixtures {
+object EoyEstimateUkPropertyFhlFixtures {
 
   val taxableIncome: BigInt      = 1031
   val finalised: Option[Boolean] = Some(false)
 
-  val eoyEstimateUkPropertyFHLResponse: EoyEstimateUkPropertyFHL =
-    EoyEstimateUkPropertyFHL(taxableIncome, finalised)
+  val eoyEstimateUkPropertyFhlResponse: EoyEstimateUkPropertyFhl =
+    EoyEstimateUkPropertyFhl(taxableIncome, finalised)
 
-  val eoyEstimateUkPropertyFHLDesJson: JsValue = Json.parse(s"""{
+  val eoyEstimateUkPropertyFhlDesJson: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,
       |  "finalised": ${finalised.get},
       |  "incomeSourceType" : "04"
       |}""".stripMargin)
 
-  val eoyEstimateUkPropertyFHLDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
+  val eoyEstimateUkPropertyFhlDesJsonWrongIncomeSourceType: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,
       |  "finalised": ${finalised.get},
       |  "incomeSourceType" : "wrong"
       |}""".stripMargin)
 
-  val eoyEstimateUkPropertyFHLDesJsonMissingFields: JsValue = Json.parse(s"""{
+  val eoyEstimateUkPropertyFhlDesJsonMissingFields: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,
       |  "incomeSourceType" : "04"
       |}""".stripMargin)
 
-  val eoyEstimateUkPropertyFHLWrittenJson: JsValue = Json.parse(s"""{
+  val eoyEstimateUkPropertyFhlWrittenJson: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,
       |  "finalised": ${finalised.get}
       |}""".stripMargin)
 
-  val eoyEstimateUkPropertyFHLWrittenJsonMissingFields: JsValue = Json.parse(s"""{
+  val eoyEstimateUkPropertyFhlWrittenJsonMissingFields: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome
       |}""".stripMargin)
 
-  val eoyEstimateUkPropertyFHLWrittenJsonObject: JsObject = Json.obj("ukPropertyFHL" -> eoyEstimateUkPropertyFHLWrittenJson)
+  val eoyEstimateUkPropertyFhlWrittenJsonObject: JsObject = Json.obj("ukPropertyFhl" -> eoyEstimateUkPropertyFhlWrittenJson)
 
-  val eoyEstimateUkPropertyFHLInvalidJson: JsValue = Json.parse(s"""{
+  val eoyEstimateUkPropertyFhlInvalidJson: JsValue = Json.parse(s"""{
       |  "taxableIncome": $taxableIncome,
       |  "finalised": "notABoolean"
       |}""".stripMargin)
-
-  def eoyEstimateUkPropertyFHLResponseFactory(taxableIncome: BigInt = taxableIncome,
-                                              finalised: Option[Boolean] = finalised): EoyEstimateUkPropertyFHL =
-    EoyEstimateUkPropertyFHL(taxableIncome, finalised)
-
 }
