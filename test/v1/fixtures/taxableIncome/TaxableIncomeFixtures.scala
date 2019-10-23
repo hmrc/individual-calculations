@@ -290,7 +290,7 @@ object TaxableIncomeFixtures {
       |		"savingsAndGains": {
       |			"incomeReceived": 7012,
       |			"taxableIncome": 7014,
-      |			"savings": [{
+      |			"ukSavings": [{
       |				"savingsAccountId": "SAVKB1UVwUTBQGJ",
       |				"savingsAccountName": "UK Savings Account ONE",
       |				"grossIncome": 90101.11,
