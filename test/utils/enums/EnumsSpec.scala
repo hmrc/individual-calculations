@@ -18,7 +18,7 @@ package utils.enums
 
 import cats.Show
 import org.scalacheck.{Arbitrary, Gen}
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
 import play.api.libs.json._
 import support.UnitSpec
 
@@ -38,7 +38,7 @@ object Foo {
   implicit def fmts[A: Format]: Format[Foo[A]] = Json.format[Foo[A]]
 }
 
-class EnumsSpec extends UnitSpec with GeneratorDrivenPropertyChecks {
+class EnumsSpec extends UnitSpec with ScalaCheckDrivenPropertyChecks {
 
   import Enum._
 
