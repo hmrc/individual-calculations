@@ -39,13 +39,13 @@ class LossClaimsDetailSpec extends UnitSpec {
 
     "read from Json with no provided field arrays" should {
       "return an empty LossClaimsDetail object" in {
-        lossClaimsDetailDesJsonFactory().as[LossClaimsDetail].isEmpty shouldBe true
+        lossClaimsDetailDesJsonFactory().as[LossClaimsDetail] shouldBe LossClaimsDetail.empty
       }
     }
 
     "read from empty Json" should {
       "return an empty LossClaimsDetail object" in {
-        emptyJson.as[LossClaimsDetail].isEmpty shouldBe true
+        emptyJson.as[LossClaimsDetail] shouldBe LossClaimsDetail.empty
       }
     }
 
@@ -57,7 +57,7 @@ class LossClaimsDetailSpec extends UnitSpec {
 
     "written to Json from an empty lossClaimsDetail object" should {
       "return an empty JsObject" in {
-        Json.toJson(LossClaimsDetail.emptyLossClaimsDetail) shouldBe emptyJson
+        Json.toJson(LossClaimsDetail.empty) shouldBe emptyJson
       }
     }
   }
@@ -66,8 +66,7 @@ class LossClaimsDetailSpec extends UnitSpec {
     "reading in a sequence of lossBroughtForward" must {
       "not include where incomeSourceType is not 01" in {
         lossClaimsDetailDesJsonFactory(lossesBroughtForward = Seq(lossBroughtForwardDesJsonWithWrongIncomeSourceType))
-          .as[LossClaimsDetail]
-          .isEmpty shouldBe true
+          .as[LossClaimsDetail] shouldBe LossClaimsDetail.empty
       }
       "include multiple matching items" in {
         val lossesBroughtForwardDes =
@@ -82,8 +81,7 @@ class LossClaimsDetailSpec extends UnitSpec {
     "reading in a sequence of resultOfClaimApplied" must {
       "not include where incomeSourceType is not 01" in {
         lossClaimsDetailDesJsonFactory(resultOfClaimsApplied = Seq(resultOfClaimAppliedDesJsonWithWrongIncomeSourceType))
-          .as[LossClaimsDetail]
-          .isEmpty shouldBe true
+          .as[LossClaimsDetail] shouldBe LossClaimsDetail.empty
       }
       "include multiple matching items" in {
         val resultOfClaimsAppliedDes =
@@ -98,8 +96,7 @@ class LossClaimsDetailSpec extends UnitSpec {
     "reading in a sequence of unclaimedLoss" must {
       "not include where incomeSourceType is not 01" in {
         lossClaimsDetailDesJsonFactory(unclaimedLosses = Seq(unclaimedLossDesJsonWithWrongIncomeSourceType))
-          .as[LossClaimsDetail]
-          .isEmpty shouldBe true
+          .as[LossClaimsDetail] shouldBe LossClaimsDetail.empty
       }
       "include multiple matching items" in {
         val unclaimedLossesDes =
@@ -114,8 +111,7 @@ class LossClaimsDetailSpec extends UnitSpec {
     "reading in a sequence of carriedForwardLoss" must {
       "not include where incomeSourceType is not 01" in {
         lossClaimsDetailDesJsonFactory(carriedForwardLosses = Seq(carriedForwardLossDesJsonWithWrongIncomeSourceType))
-          .as[LossClaimsDetail]
-          .isEmpty shouldBe true
+          .as[LossClaimsDetail] shouldBe LossClaimsDetail.empty
       }
       "include multiple matching items" in {
         val carriedForwardLossDes =
@@ -130,8 +126,7 @@ class LossClaimsDetailSpec extends UnitSpec {
     "reading in a sequence of claimNotApplied" must {
       "not include where incomeSourceType is not 01" in {
         lossClaimsDetailDesJsonFactory(claimsNotApplied = Seq(claimNotAppliedDesJsonWithWrongIncomeSourceType))
-          .as[LossClaimsDetail]
-          .isEmpty shouldBe true
+          .as[LossClaimsDetail] shouldBe LossClaimsDetail.empty
       }
       "include multiple matching items" in {
         val claimNotAppliedDes =

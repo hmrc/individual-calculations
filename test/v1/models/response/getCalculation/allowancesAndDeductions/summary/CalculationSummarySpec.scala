@@ -99,7 +99,7 @@ class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
 
     "return an empty json" when {
       "summary object has no data" in {
-        Json.toJson(CalculationSummary(None, None)) shouldBe JsObject.empty
+        Json.toJson(CalculationSummary.empty) shouldBe JsObject.empty
       }
     }
   }

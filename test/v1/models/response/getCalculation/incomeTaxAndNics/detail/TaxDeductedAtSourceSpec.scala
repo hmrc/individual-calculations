@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import support.UnitSpec
 
 class TaxDeductedAtSourceSpec extends UnitSpec {
@@ -42,7 +42,11 @@ class TaxDeductedAtSourceSpec extends UnitSpec {
   "TaxDeductedAtSource" should {
 
     "read correctly from json" in {
-      json.validate[TaxDeductedAtSource] shouldBe JsSuccess(model)
+      json.as[TaxDeductedAtSource] shouldBe model
+    }
+
+    "read empty json as empty objecty" in {
+      JsObject.empty.as[TaxDeductedAtSource] shouldBe TaxDeductedAtSource.empty
     }
 
     "write correctly to json" in {

@@ -40,13 +40,13 @@ class EoyEstimateDetailSpec extends UnitSpec {
 
     "read from Json with all missing optional fields" should {
       "return the expected EoyEstimateDetail object" in {
-        eoyEstimateDetailDesJsonAllMissingOptionals.as[EoyEstimateDetail] shouldBe EoyEstimateDetail.emptyEoyEstimateDetail
+        eoyEstimateDetailDesJsonAllMissingOptionals.as[EoyEstimateDetail] shouldBe EoyEstimateDetail.empty
       }
     }
 
     "read from empty Json" should {
       "return an empty EoyEstimateDetail object" in {
-        JsObject.empty.as[EoyEstimateDetail].isEmpty shouldBe true
+        JsObject.empty.as[EoyEstimateDetail] shouldBe EoyEstimateDetail.empty
       }
     }
 
@@ -58,7 +58,7 @@ class EoyEstimateDetailSpec extends UnitSpec {
 
     "read from Json where all objects have an invalid income source type" should {
       "return an empty EoyEstimateDetail object" in {
-        eoyEstimateDetailDesJsonAllWrongIncomeSourceTypes.as[EoyEstimateDetail].isEmpty shouldBe true
+        eoyEstimateDetailDesJsonAllWrongIncomeSourceTypes.as[EoyEstimateDetail] shouldBe EoyEstimateDetail.empty
       }
     }
 
@@ -82,7 +82,7 @@ class EoyEstimateDetailSpec extends UnitSpec {
 
     "written from an empty EoyEstimateDetail object" should {
       "return an empty JsObject" in {
-        Json.toJson(EoyEstimateDetail.emptyEoyEstimateDetail) shouldBe JsObject.empty
+        Json.toJson(EoyEstimateDetail.empty) shouldBe JsObject.empty
       }
     }
 

@@ -22,6 +22,8 @@ import utils.NestedJsonReads
 case class Reliefs (residentialFinanceCosts: Option[ResidentialFinanceCosts])
 
 object Reliefs extends NestedJsonReads{
+  val empty = Reliefs(None)
+
   implicit val writes: OWrites[Reliefs] = Json.writes[Reliefs]
 
   implicit val reads: Reads[Reliefs] =

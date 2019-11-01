@@ -102,7 +102,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators{
 
     "return an empty summary object" when {
       "json has no AllowancesAndDeductions details" in {
-        desJsonWithNoAllowancesAndDeductionsDetails.as[AllowancesAndDeductions] shouldBe AllowancesAndDeductions(None, None, None, None, None)
+        desJsonWithNoAllowancesAndDeductionsDetails.as[AllowancesAndDeductions] shouldBe AllowancesAndDeductions.empty
       }
     }
   }
@@ -116,7 +116,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators{
 
     "return an empty json" when {
       "AllowancesAndDeductions object has no data" in {
-        Json.toJson(AllowancesAndDeductions(None, None, None, None, None)) shouldBe JsObject.empty
+        Json.toJson(AllowancesAndDeductions.empty) shouldBe JsObject.empty
       }
     }
   }

@@ -23,6 +23,8 @@ import utils.NestedJsonReads
 case class CalculationSummary(totalAllowancesAndDeductions: Option[BigInt], totalReliefs: Option[BigInt])
 
 object CalculationSummary extends NestedJsonReads{
+  val empty = CalculationSummary(None, None)
+
   implicit val writes: Writes[CalculationSummary] = Json.writes[CalculationSummary]
   implicit val reads: Reads[CalculationSummary] = (
     (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "totalAllowancesAndDeductions").readNestedNullable[BigInt] and

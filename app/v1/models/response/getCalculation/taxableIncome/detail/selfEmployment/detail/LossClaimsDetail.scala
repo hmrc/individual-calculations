@@ -26,8 +26,6 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
                             carriedForwardLosses: Option[Seq[CarriedForwardLoss]],
                             claimsNotApplied: Option[Seq[ClaimNotApplied]]) {
 
-  val isEmpty: Boolean = this == LossClaimsDetail.emptyLossClaimsDetail
-
   def filterById(id: String): Option[LossClaimsDetail] = {
 
     val lossesBroughtForward  = this.lossesBroughtForward.getOrElse(Seq.empty).filter(lbf => lbf.incomeSourceId == id)
@@ -44,21 +42,21 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
       LossClaimsDetail.toNoneIfEmpty(claimsNotApplied)
     )
 
-    if (filteredDetail.isEmpty) None else Some(filteredDetail)
+    if (filteredDetail == LossClaimsDetail.empty) None else Some(filteredDetail)
   }
 
 }
 
 object LossClaimsDetail extends NestedJsonReads {
-  val emptyLossClaimsDetail: LossClaimsDetail = LossClaimsDetail(None, None, None, None, None)
+  val empty = LossClaimsDetail(None, None, None, None, None)
 
   def toNoneIfEmpty[A](seq: Seq[A]): Option[Seq[A]] = if (seq.nonEmpty) Some(seq) else None
 
   implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
-  implicit val reads: Reads[LossClaimsDetail] = ((JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable(filteredArrayReads[LossBroughtForward]("incomeSourceType", "01")).map(emptySeqToNone) and
-    (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").readNestedNullable(filteredArrayReads[ResultOfClaimApplied]("incomeSourceType", "01")).map(emptySeqToNone) and
-    (JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses").readNestedNullable(filteredArrayReads[UnclaimedLoss]("incomeSourceType", "01")).map(emptySeqToNone) and
-    (JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable(filteredArrayReads[CarriedForwardLoss]("incomeSourceType", "01")).map(emptySeqToNone) and
-    (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied").readNestedNullable(filteredArrayReads[ClaimNotApplied]("incomeSourceType", "01")).map(emptySeqToNone))(LossClaimsDetail.apply _)
+  implicit val reads: Reads[LossClaimsDetail] = ((JsPath \ "inputs" \ "lossesBroughtForward").readNestedNullable(filteredArrayReads[LossBroughtForward]("incomeSourceType", "01")).mapEmptySeqToNone and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").readNestedNullable(filteredArrayReads[ResultOfClaimApplied]("incomeSourceType", "01")).mapEmptySeqToNone and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses").readNestedNullable(filteredArrayReads[UnclaimedLoss]("incomeSourceType", "01")).mapEmptySeqToNone and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable(filteredArrayReads[CarriedForwardLoss]("incomeSourceType", "01")).mapEmptySeqToNone and
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied").readNestedNullable(filteredArrayReads[ClaimNotApplied]("incomeSourceType", "01")).mapEmptySeqToNone)(LossClaimsDetail.apply _)
 }

@@ -26,6 +26,8 @@ case class IncomeTaxDetail(payPensionsProfit: Option[IncomeTypeBreakdown],
                            giftAid: Option[GiftAid])
 
 object IncomeTaxDetail extends NestedJsonReads {
+  val empty = IncomeTaxDetail(None, None, None, None)
+
   implicit val writes: OWrites[IncomeTaxDetail] = Json.writes[IncomeTaxDetail]
 
   implicit val reads: Reads[IncomeTaxDetail] = (

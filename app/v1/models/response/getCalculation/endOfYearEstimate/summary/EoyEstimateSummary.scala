@@ -18,19 +18,16 @@ package v1.models.response.getCalculation.endOfYearEstimate.summary
 
 import play.api.libs.json.{ Json, OFormat }
 
-case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt] = None,
-                              totalTaxableIncome: Option[BigInt] = None,
-                              incomeTaxAmount: Option[BigDecimal] = None,
-                              nic2: Option[BigDecimal] = None,
-                              nic4: Option[BigDecimal] = None,
-                              totalNicAmount: Option[BigDecimal] = None,
-                              incomeTaxNicAmount: Option[BigDecimal] = None){
-
-  val isEmpty: Boolean = this == EoyEstimateSummary.emptyEoyEstimateSummary
-
-}
+case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
+                              totalTaxableIncome: Option[BigInt],
+                              incomeTaxAmount: Option[BigDecimal],
+                              nic2: Option[BigDecimal],
+                              nic4: Option[BigDecimal],
+                              totalNicAmount: Option[BigDecimal],
+                              incomeTaxNicAmount: Option[BigDecimal])
 
 object EoyEstimateSummary {
-  val emptyEoyEstimateSummary: EoyEstimateSummary = EoyEstimateSummary()
+  val empty = EoyEstimateSummary(None, None, None, None, None, None, None)
+
   implicit val formats: OFormat[EoyEstimateSummary] = Json.format[EoyEstimateSummary]
 }

@@ -19,7 +19,6 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail.emptySeqToNone
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
@@ -56,20 +55,20 @@ object SelfEmployment extends NestedJsonReads {
     (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
     (JsPath \ "taxableProfit").readNullable[BigDecimal] and
     (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
-    JsPath.readNullable[LossClaimsSummary].map(_.getOrElse(LossClaimsSummary.emptyLossClaimsSummary)).map{
-      case LossClaimsSummary.emptyLossClaimsSummary => None
-      case lossClaimSummary: LossClaimsSummary => Some(lossClaimSummary)
+    JsPath.readNullable[LossClaimsSummary].map{
+      case Some(LossClaimsSummary.empty) => None
+      case other => other
     } and Reads.pure(None))(SelfEmployment.apply _)
 
   implicit val seqReads: Reads[Seq[SelfEmployment]] = ((JsPath \ "calculation" \ "businessProfitAndLoss")
-    .readNestedNullable[Seq[JsValue]].map(emptySeqToNone)
+    .readNestedNullable[Seq[JsValue]].mapEmptySeqToNone
     .map(_.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js)))
     .map(x => Some(x)) and
     JsPath.readNullable[LossClaimsDetail])(buildSelfEmployments(_, _))
 
   def buildSelfEmployments(seqSelfEmploysOpt: Option[Seq[SelfEmployment]], detailsOpt: Option[LossClaimsDetail]): Seq[SelfEmployment] = {
     val seqSelfEmploys    = seqSelfEmploysOpt.getOrElse(Seq.empty)
-    val details = detailsOpt.getOrElse(LossClaimsDetail.emptyLossClaimsDetail)
+    val details = detailsOpt.getOrElse(LossClaimsDetail.empty)
     seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId)))
   }
 

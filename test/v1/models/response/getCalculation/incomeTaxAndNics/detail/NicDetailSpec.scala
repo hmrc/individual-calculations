@@ -72,7 +72,6 @@ class NicDetailSpec extends UnitSpec {
       |}
     """.stripMargin)
 
-  val emptyModel = NicDetail(None, None)
   val filledModel = NicDetail(Some(class2), Some(class4))
 
   "NicDetail" should {
@@ -80,22 +79,22 @@ class NicDetailSpec extends UnitSpec {
     "read from json correctly" when {
 
       "provided with empty json" in {
-        emptyJson.validate[NicDetail] shouldBe JsSuccess(emptyModel)
+        emptyJson.as[NicDetail] shouldBe NicDetail.empty
       }
 
       "provided with empty models in the json" in {
-        inputJsonWithEmptyModels.validate[NicDetail] shouldBe JsSuccess(emptyModel)
+        inputJsonWithEmptyModels.as[NicDetail] shouldBe NicDetail.empty
       }
 
       "provided with filled json" in {
-        filledJson.validate[NicDetail] shouldBe JsSuccess(filledModel)
+        filledJson.as[NicDetail] shouldBe filledModel
       }
     }
 
     "write to json correctly" when {
 
       "provided with an empty model" in {
-        Json.toJson(emptyModel) shouldBe emptyJson
+        Json.toJson(NicDetail.empty) shouldBe emptyJson
       }
 
       "provided with a filled model" in {

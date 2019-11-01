@@ -26,15 +26,17 @@ case class LossClaimsDetail(
                              defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]]
                            )
 
-object LossClaimsDetail extends NestedJsonReads{
+object LossClaimsDetail extends NestedJsonReads {
+  val empty = LossClaimsDetail(None, None, None)
+
   implicit val writes: OWrites[LossClaimsDetail] = Json.writes[LossClaimsDetail]
 
   implicit val reads: Reads[LossClaimsDetail] = (
     (JsPath \ "inputs" \ "lossesBroughtForward")
-      .readNestedNullable[Seq[LossBroughtForward]](filteredArrayReads("incomeSourceType", "04")).map(emptySeqToNone) and
+      .readNestedNullable[Seq[LossBroughtForward]](filteredArrayReads("incomeSourceType", "04")).mapEmptySeqToNone and
       (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").
-        readNestedNullable[Seq[ResultOfClaimApplied]](filteredArrayReads("incomeSourceType", "04")).map(emptySeqToNone) and
+        readNestedNullable[Seq[ResultOfClaimApplied]](filteredArrayReads("incomeSourceType", "04")).mapEmptySeqToNone and
       (JsPath \ "calculation" \ "lossesAndClaims" \ "defaultCarriedForwardLosses").
-        readNestedNullable[Seq[DefaultCarriedForwardLoss]](filteredArrayReads("incomeSourceType", "04")).map(emptySeqToNone)
+        readNestedNullable[Seq[DefaultCarriedForwardLoss]](filteredArrayReads("incomeSourceType", "04")).mapEmptySeqToNone
   )(LossClaimsDetail.apply _)
 }

@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 
 class NicSummarySpec extends UnitSpec {
@@ -55,7 +55,6 @@ class NicSummarySpec extends UnitSpec {
 
   val emptyJson: JsValue = Json.obj()
 
-  val emptyModel = NicSummary(None, None, None)
   val filledModel = NicSummary(Some(100.25), Some(200.25), Some(300.25))
 
   "NicSummary" should {
@@ -63,22 +62,22 @@ class NicSummarySpec extends UnitSpec {
     "read correctly from json" when {
 
       "provided with empty json" in {
-        emptyJson.validate[NicSummary] shouldBe JsSuccess(emptyModel)
+        emptyJson.as[NicSummary] shouldBe NicSummary.empty
       }
 
       "provided with json with empty models" in {
-        emptyModelJson.validate[NicSummary] shouldBe JsSuccess(emptyModel)
+        emptyModelJson.as[NicSummary] shouldBe NicSummary.empty
       }
 
       "provided with filled json" in {
-        filledJson.validate[NicSummary] shouldBe JsSuccess(filledModel)
+        filledJson.as[NicSummary] shouldBe filledModel
       }
     }
 
     "write correctly to json" when {
 
       "provided with an empty model" in {
-        Json.toJson(emptyModel) shouldBe emptyJson
+        Json.toJson(NicSummary.empty) shouldBe emptyJson
       }
 
       "provided with a filled model" in {

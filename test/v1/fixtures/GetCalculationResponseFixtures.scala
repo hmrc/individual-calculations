@@ -25,13 +25,9 @@ object GetCalculationResponseFixtures {
     Some(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000))),
     Some(Reliefs(Some(ResidentialFinanceCosts(1000, Some(1000), 2, 1000)))))
 
-  val adrCalculationDetailTemp = CalculationDetail(None,None)
-
   val adrCalculationSummary = CalculationSummary(Some(1000), Some(1000))
 
-  val adrCalculationSummaryTemp = CalculationSummary(None,None)
-
   val allowancesDeductionsAnsReliefs = AllowancesDeductionsAndReliefs(adrCalculationSummary, adrCalculationDetail)
-  val allowancesDeductionsAnsReliefsTemp = AllowancesDeductionsAndReliefs(adrCalculationSummaryTemp, adrCalculationDetailTemp)
+  val allowancesDeductionsAnsReliefsTemp = AllowancesDeductionsAndReliefs(CalculationSummary.empty, CalculationDetail.empty)
 
 }

@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsObject, JsSuccess, JsValue, Json}
 import support.UnitSpec
 
 class Class4LossesSpec extends UnitSpec {
@@ -35,7 +35,11 @@ class Class4LossesSpec extends UnitSpec {
     }
 
     "read correctly from json" in {
-      json.validate[Class4Losses] shouldBe JsSuccess(model)
+      json.as[Class4Losses] shouldBe model
+    }
+
+    "read empty json to an empty object" in {
+      JsObject.empty.as[Class4Losses] shouldBe Class4Losses.empty
     }
   }
 }

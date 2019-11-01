@@ -35,19 +35,19 @@ class UkPropertyNonFhlSpec extends UnitSpec {
       "provided with valid json with all optional values and only invalid types" in {
         val result = UkPropertyNonFhlFixtures.ukPropertyNonFhlDesJsonWithoutValidTypes.validate[UkPropertyNonFhl]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe UkPropertyNonFhlFixtures.emptyUkPropertyNonFhlModel
+        result.get shouldBe UkPropertyNonFhl.empty
       }
 
       "provided with valid json without optional values" in {
         val result = UkPropertyNonFhlFixtures.ukPropertyNonFhlDesJsonWithoutOptionals.validate[UkPropertyNonFhl]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe UkPropertyNonFhlFixtures.emptyUkPropertyNonFhlModel
+        result.get shouldBe UkPropertyNonFhl.empty
       }
 
       "provided with empty json" in {
         val result = UkPropertyNonFhlFixtures.emptyJson.validate[UkPropertyNonFhl]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe UkPropertyNonFhlFixtures.emptyUkPropertyNonFhlModel
+        result.get shouldBe UkPropertyNonFhl.empty
       }
     }
 
@@ -58,7 +58,7 @@ class UkPropertyNonFhlSpec extends UnitSpec {
       }
 
       "provided with a valid model with no optional values" in {
-        Json.toJson(UkPropertyNonFhlFixtures.emptyUkPropertyNonFhlModel) shouldBe UkPropertyNonFhlFixtures.emptyJson
+        Json.toJson(UkPropertyNonFhl.empty) shouldBe UkPropertyNonFhlFixtures.emptyJson
       }
     }
   }

@@ -23,16 +23,18 @@ case class CalculationDetail(allowancesAndDeductions: Option[AllowancesAndDeduct
                         reliefs: Option[Reliefs])
 
 object CalculationDetail {
+  val empty = CalculationDetail(None, None)
+
   implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
 
   implicit val reads: Reads[CalculationDetail] = (
-    JsPath.readNullable[AllowancesAndDeductions].map(_.flatMap {
-      case AllowancesAndDeductions(None,None,None, None, None) => None
-      case x => Some(x)
-    }) and
-    JsPath.readNullable[Reliefs].map(_.flatMap {
-      case Reliefs(None) => None
-      case x => Some(x)
-    })
+    JsPath.readNullable[AllowancesAndDeductions].map {
+      case Some(AllowancesAndDeductions.empty) => None
+      case other => other
+    } and
+    JsPath.readNullable[Reliefs].map{
+      case Some(Reliefs.empty) => None
+      case other => other
+    }
   )(CalculationDetail.apply _)
 }

@@ -23,6 +23,8 @@ import utils.NestedJsonReads
 case class NicSummary(class2NicsAmount: Option[BigDecimal], class4NicsAmount: Option[BigDecimal], totalNic: Option[BigDecimal])
 
 object NicSummary extends NestedJsonReads {
+  val empty = NicSummary(None, None ,None)
+
   implicit val writes: OWrites[NicSummary] = Json.writes[NicSummary]
 
   implicit val reads: Reads[NicSummary] = (

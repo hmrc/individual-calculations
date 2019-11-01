@@ -80,7 +80,7 @@ class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "json has no fields" in {
-        JsObject.empty.as[CalculationDetail] shouldBe CalculationDetail(None,None)
+        JsObject.empty.as[CalculationDetail] shouldBe CalculationDetail.empty
       }
     }
   }

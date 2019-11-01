@@ -43,8 +43,8 @@ object GetCalculationResponse extends NestedJsonReads {
       JsPath.read[Metadata] and
         emptyIfNotPresent[IncomeTax](__ \ "calculation") and
         JsPath.readNullable[Messages].map {
-          case Some(messages) if messages.hasMessages => Some(messages)
-          case _                                      => None
+          case Some(Messages.empty) => None
+          case other => other
         } and
         emptyIfNotPresent[TaxableIncome](__ \ "calculation") and
         (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate] and

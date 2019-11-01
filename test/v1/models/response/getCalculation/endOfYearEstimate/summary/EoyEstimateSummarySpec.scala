@@ -41,7 +41,7 @@ class EoyEstimateSummarySpec extends UnitSpec {
 
     "read from empty Json" should {
       "return an empty EoyEstimateSummary object" in {
-        JsObject.empty.as[EoyEstimateSummary].isEmpty shouldBe true
+        JsObject.empty.as[EoyEstimateSummary] shouldBe EoyEstimateSummary.empty
       }
     }
 

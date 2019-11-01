@@ -27,6 +27,8 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    lossesAppliedToGeneralIncome: Option[BigInt])
 
 object AllowancesAndDeductions extends NestedJsonReads{
+  val empty = AllowancesAndDeductions(None, None, None, None, None)
+
   implicit val writes: OWrites[AllowancesAndDeductions] = Json.writes[AllowancesAndDeductions]
 
   implicit val reads: Reads[AllowancesAndDeductions] = (

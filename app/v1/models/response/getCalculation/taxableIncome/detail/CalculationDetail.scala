@@ -23,6 +23,8 @@ import utils.NestedJsonReads
 case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit], savingsAndGains: Option[SavingsAndGains], dividends: Option[Dividends])
 
 object CalculationDetail extends NestedJsonReads {
+  val empty = CalculationDetail(None, None, None)
+
   implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
   implicit val reads: Reads[CalculationDetail] = (
     emptyIfNotPresent[PayPensionsProfit](__ \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit") and

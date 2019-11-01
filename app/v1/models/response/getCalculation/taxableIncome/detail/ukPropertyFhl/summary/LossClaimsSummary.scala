@@ -27,6 +27,8 @@ case class LossClaimsSummary(
                             )
 
 object LossClaimsSummary {
+  val empty = LossClaimsSummary(None, None, None, None)
+
   implicit val writes: OWrites[LossClaimsSummary] = Json.writes[LossClaimsSummary]
 
   implicit val reads: Reads[LossClaimsSummary] = (

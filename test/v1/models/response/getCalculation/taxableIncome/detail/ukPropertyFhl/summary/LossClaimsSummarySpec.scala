@@ -25,9 +25,6 @@ class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
 
 
   "LossClaimSummary" when {
-
-    val emptyLossClaimSummary = LossClaimsSummary(None,None,None,None)
-
     "read from valid Json" should {
 
       testPropertyType[LossClaimsSummary](lossClaimSummaryDesJson)(
@@ -61,7 +58,7 @@ class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
 
     "read from empty Json" should {
       "return a JsSuccess" in {
-        emptyJson.as[LossClaimsSummary] shouldBe emptyLossClaimSummary
+        emptyJson.as[LossClaimsSummary] shouldBe LossClaimsSummary.empty
       }
       "with the expected LossClaimSummary object" in {
         lossClaimSummaryDesJson.as[LossClaimsSummary] shouldBe lossClaimsSummaryResponse
@@ -76,7 +73,7 @@ class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
 
     "written from empty JSON" should {
       "return an empty JsObject" in {
-        Json.toJson(emptyLossClaimSummary) shouldBe emptyJson
+        Json.toJson(LossClaimsSummary.empty) shouldBe emptyJson
       }
     }
   }
