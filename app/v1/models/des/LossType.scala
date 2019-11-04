@@ -16,7 +16,9 @@
 
 package v1.models.des
 
+import cats.Show
 import play.api.libs.json._
+import utils.enums.Enums
 
 sealed trait LossType
 
@@ -24,10 +26,7 @@ object LossType {
   case object INCOME extends LossType
   case object CLASS4NICS extends LossType
 
-  implicit val reads: Reads[LossType] = implicitly[Reads[String]].collect(JsonValidationError("error.expected.lossType")){
-    case "income" => INCOME
-    case "class4nics" => CLASS4NICS
-  }
+  implicit val show : Show[LossType] = Show.show(_.toString.toLowerCase)
 
-  implicit val writes: Writes[LossType] = Writes[LossType](ts => JsString(ts.toString.toLowerCase()))
+  implicit val format : Format[LossType] = Enums.format[LossType]
 }

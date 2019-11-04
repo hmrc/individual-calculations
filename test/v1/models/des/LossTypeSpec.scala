@@ -23,8 +23,6 @@ import v1.models.des.LossType._
 
 class LossTypeSpec  extends UnitSpec with EnumJsonSpecSupport {
 
-  val desJson: JsValue = Json.toJson("")
-
   testRoundTrip[LossType](
     ("income", INCOME),
     ("class4nics", CLASS4NICS))

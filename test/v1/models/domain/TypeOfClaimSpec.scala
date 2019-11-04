@@ -17,18 +17,15 @@
 package v1.models.domain
 
 import support.UnitSpec
-import v1.models.des.ReliefClaimed
+import utils.enums.EnumJsonSpecSupport
 import v1.models.domain.TypeOfClaim._
 
-class TypeOfClaimSpec extends UnitSpec {
-  "TypeOfClaim" when {
-    "getting DES reliefClaimed" must {
-      "work" in {
-        `carry-forward`.toReliefClaimed shouldBe ReliefClaimed.`CF`
-        `carry-sideways`.toReliefClaimed shouldBe ReliefClaimed.`CSGI`
-        `carry-forward-to-carry-sideways`.toReliefClaimed shouldBe ReliefClaimed.`CFCSGI`
-        `carry-sideways-fhl`.toReliefClaimed shouldBe ReliefClaimed.`CSFHL`
-      }
-    }
-  }
+class TypeOfClaimSpec extends UnitSpec with EnumJsonSpecSupport {
+
+  testRoundTrip[TypeOfClaim](
+    "carry-forward"                   -> `carry-forward`,
+    "carry-sideways"                  -> `carry-sideways`,
+    "carry-forward-to-carry-sideways" -> `carry-forward-to-carry-sideways`,
+    "carry-sideways-fhl"              -> `carry-sideways-fhl`
+  )
 }
