@@ -47,7 +47,7 @@ class UkPropertyFhlSpec extends UnitSpec {
       }
 
       "return a empty json with empty UkPropertyFhl object" in {
-        Json.toJson(emptyUkPropertyFhl) shouldBe
+        Json.toJson(UkPropertyFhl.empty) shouldBe
           JsObject.empty
       }
     }

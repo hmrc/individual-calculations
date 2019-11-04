@@ -18,12 +18,11 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class Class4Losses(totalClass4LossesAvailable: Option[BigInt], totalClass4LossesUsed: Option[BigInt]){
-  val isEmpty: Boolean = this == Class4Losses.emptyClass4Losses
-}
+case class Class4Losses(totalClass4LossesAvailable: Option[BigInt], totalClass4LossesUsed: Option[BigInt])
 
 object Class4Losses {
-  val emptyClass4Losses: Class4Losses = Class4Losses(None,None)
+  val empty = Class4Losses(None, None)
+
   implicit val formats: OFormat[Class4Losses] = Json.format[Class4Losses]
 }
 

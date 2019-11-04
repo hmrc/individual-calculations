@@ -66,7 +66,7 @@ class CalculationDetailSpec extends UnitSpec {
         emptyJson.validate[CalculationDetail] shouldBe a[JsSuccess[_]]
       }
       "with the expected Detail object" in {
-        emptyJson.as[CalculationDetail] shouldBe emptyDetailResponse
+        emptyJson.as[CalculationDetail] shouldBe CalculationDetail.empty
       }
     }
 

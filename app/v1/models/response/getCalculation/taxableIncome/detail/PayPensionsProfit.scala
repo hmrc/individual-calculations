@@ -37,9 +37,9 @@ object PayPensionsProfit extends NestedJsonReads{
       (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalPropertyProfit").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalFHLPropertyProfit").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalUKOtherPropertyProfit").readNestedNullable[BigInt] and
-      __.readNullable[BusinessProfitAndLoss].map(_.flatMap {
-        case BusinessProfitAndLoss(None,None,None) => None
-        case x => Some(x)
-      })
+      __.readNullable[BusinessProfitAndLoss].map {
+        case Some(BusinessProfitAndLoss.empty) => None
+        case other => other
+      }
   )(PayPensionsProfit.apply _)
 }

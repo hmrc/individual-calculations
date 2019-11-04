@@ -36,7 +36,10 @@ object EoyEstimateDetailFixtures {
 
   val eoyEstimateDetailResponseReduced: EoyEstimateDetail = EoyEstimateDetail(
     selfEmployments = Some(Seq(eoyEstimateSelfEmploymentResponse)),
-    ukSavings = Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse))
+    ukPropertyFhl = None,
+    ukPropertyNonFhl = None,
+    ukSavings = Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse)),
+    ukDividends = None
   )
 
   val eoyEstimateDetailDesJson: JsObject =

@@ -345,8 +345,6 @@ object UkPropertyFhlFixtures {
     Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),
     Some(LossClaimsSummary(Some(1000),None,None,None)),None)
 
-  val emptyUkPropertyFhl = UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None)
-
   val mtdUkPropertyFhlObj: JsValue = Json.parse(
     """
       |{

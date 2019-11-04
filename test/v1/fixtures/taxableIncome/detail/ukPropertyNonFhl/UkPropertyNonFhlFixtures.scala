@@ -106,6 +106,4 @@ object UkPropertyNonFhlFixtures {
     Some(LossClaimsSummaryFixtures.lossClaimsSummaryModel),
     Some(LossClaimsDetailFixtures.lossClaimsDetailModel)
   )
-
-  val emptyUkPropertyNonFhlModel = UkPropertyNonFhl(None, None, None, None, None, None, None, None, None, None, None, None)
 }

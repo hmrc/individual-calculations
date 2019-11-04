@@ -20,7 +20,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import support.UnitSpec
 
-class NestedJsonReadsSpec extends UnitSpec {
+class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
 
   case class Foo(foo1: String, foo2: String)
 
@@ -122,6 +122,38 @@ class NestedJsonReadsSpec extends UnitSpec {
                        |""".stripMargin).validate[Bar] shouldBe a[JsError]
         }
       }
+    }
+  }
+
+  "mapEmptySeqToNone" must {
+    val reads = (__).readNullable[Seq[String]].mapEmptySeqToNone
+
+    "map non-empty sequence to Some(non-empty sequence)" in {
+      JsArray(Seq(JsString("value0"), JsString("value1"))).as(reads) shouldBe Some(Seq("value0", "value1"))
+    }
+
+    "map empty sequence to None" in {
+      JsArray.empty.as(reads) shouldBe None
+    }
+
+    "map None to None" in {
+      JsNull.as(reads) shouldBe None
+    }
+  }
+
+  "mapHeadOption" must {
+    val reads = (__).readNullable[Seq[String]].mapHeadOption
+
+    "map non-empty sequence to Some(1st element)" in {
+      JsArray(Seq(JsString("value0"), JsString("value1"))).as(reads) shouldBe Some("value0")
+    }
+
+    "map empty sequence to None" in {
+      JsArray.empty.as(reads) shouldBe None
+    }
+
+    "map None to None" in {
+      JsNull.as(reads) shouldBe None
     }
   }
 }

@@ -35,19 +35,19 @@ class LossClaimsDetailSpec extends UnitSpec {
       "provided with json with all optional values and only invalid income sources" in {
         val result = LossClaimsDetailFixtures.lossClaimsDetailDesJsonWithoutValidTypes.validate[LossClaimsDetail]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe LossClaimsDetailFixtures.emptyLossClaimsDetailModel
+        result.get shouldBe LossClaimsDetail.empty
       }
 
       "provided with json without optional values" in {
         val result = LossClaimsDetailFixtures.lossClaimsDetailDesJsonWithoutOptionals.validate[LossClaimsDetail]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe LossClaimsDetailFixtures.emptyLossClaimsDetailModel
+        result.get shouldBe LossClaimsDetail.empty
       }
 
       "provided with empty json" in {
         val result = LossClaimsDetailFixtures.emptyJson.validate[LossClaimsDetail]
         result shouldBe a[JsSuccess[_]]
-        result.get shouldBe LossClaimsDetailFixtures.emptyLossClaimsDetailModel
+        result.get shouldBe LossClaimsDetail.empty
       }
     }
 
@@ -58,7 +58,7 @@ class LossClaimsDetailSpec extends UnitSpec {
       }
 
       "provided with a model with no optional fields" in {
-        Json.toJson(LossClaimsDetailFixtures.emptyLossClaimsDetailModel) shouldBe LossClaimsDetailFixtures.emptyJson
+        Json.toJson(LossClaimsDetail.empty) shouldBe LossClaimsDetailFixtures.emptyJson
       }
     }
   }

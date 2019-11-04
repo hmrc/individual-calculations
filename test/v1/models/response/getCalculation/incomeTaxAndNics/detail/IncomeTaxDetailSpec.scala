@@ -87,7 +87,6 @@ class IncomeTaxDetailSpec extends UnitSpec{
 
   def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, None)
 
-  val emptyModel = IncomeTaxDetail(None, None, None, None)
   val filledModel = detail.IncomeTaxDetail(Some(incomeTypeBreakdown(100)),
     Some(incomeTypeBreakdown(200)),
     Some(incomeTypeBreakdown(300)),
@@ -99,11 +98,11 @@ class IncomeTaxDetailSpec extends UnitSpec{
     "read correctly from Json" when {
 
       "provided with empty json" in {
-        emptyJson.validate[IncomeTaxDetail] shouldBe JsSuccess(emptyModel)
+        emptyJson.validate[IncomeTaxDetail] shouldBe JsSuccess(IncomeTaxDetail.empty)
       }
 
       "provided with json containing empty models" in {
-        emptyModelJson.validate[IncomeTaxDetail] shouldBe JsSuccess(emptyModel)
+        emptyModelJson.validate[IncomeTaxDetail] shouldBe JsSuccess(IncomeTaxDetail.empty)
       }
 
       "provided with filled json" in {
@@ -114,7 +113,7 @@ class IncomeTaxDetailSpec extends UnitSpec{
     "write to json correctly" when {
 
       "provided with an empty model" in {
-        Json.toJson(emptyModel) shouldBe emptyJson
+        Json.toJson(IncomeTaxDetail.empty) shouldBe emptyJson
       }
 
       "provided with a filled model" in {

@@ -76,7 +76,7 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "json has no fields" in {
-        JsObject.empty.as[Reliefs] shouldBe Reliefs(None)
+        JsObject.empty.as[Reliefs] shouldBe Reliefs.empty
       }
     }
   }

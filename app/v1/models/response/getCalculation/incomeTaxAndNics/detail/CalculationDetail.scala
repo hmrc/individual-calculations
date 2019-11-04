@@ -28,16 +28,12 @@ object CalculationDetail extends NestedJsonReads {
   implicit val reads: Reads[CalculationDetail] = (
     (JsPath \ "calculation").read[IncomeTaxDetail] and
       (JsPath \ "calculation" \ "taxCalculation" \ "nics").readNestedNullable[NicDetail].map {
-        _.flatMap {
-          case NicDetail(None, None) => None
-          case other => Some(other)
-        }
+        case Some(NicDetail.empty) => None
+        case other => other
       } and
       (JsPath \ "calculation" \ "taxDeductedAtSource").readNestedNullable[TaxDeductedAtSource].map {
-        _.flatMap {
-          case TaxDeductedAtSource(None, None) => None
-          case other => Some(other)
-        }
+        case Some(TaxDeductedAtSource.empty) => None
+        case other => other
       }
   )(CalculationDetail.apply _)
 }

@@ -26,15 +26,11 @@ object Message {
   implicit val format: OFormat[Message] = Json.format[Message]
 }
 
-
-case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]]){
-  def hasMessages: Boolean = this match{
-    case Messages(None,None,None) => false
-    case _ => true
-  }
-}
+case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]])
 
 object Messages {
+  val empty = Messages(None, None, None)
+
   implicit val writes: OWrites[Messages] = Json.writes[Messages]
   implicit val reads: Reads[Messages] = (
     (__ \ "messages" \ "info").readNestedNullable[Seq[Message]].map {

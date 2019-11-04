@@ -21,8 +21,8 @@ import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail
 import v1.models.response.getCalculation.endOfYearEstimate.summary.EoyEstimateSummary
 
-case class EoyEstimate(summary: EoyEstimateSummary = EoyEstimateSummary.emptyEoyEstimateSummary,
-                       detail: EoyEstimateDetail = EoyEstimateDetail.emptyEoyEstimateDetail)
+case class EoyEstimate(summary: EoyEstimateSummary = EoyEstimateSummary.empty,
+                       detail: EoyEstimateDetail = EoyEstimateDetail.empty)
 
 object EoyEstimate {
   implicit val writes: OWrites[EoyEstimate] = Json.writes[EoyEstimate]

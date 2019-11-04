@@ -34,7 +34,7 @@ class LossClaimsSummarySpec extends UnitSpec {
 
     "read from empty Json" should {
       "return an empty LossClaimsSummary object" in {
-        emptyJson.as[LossClaimsSummary].isEmpty shouldBe true
+        emptyJson.as[LossClaimsSummary] shouldBe LossClaimsSummary.empty
       }
     }
 
@@ -52,7 +52,7 @@ class LossClaimsSummarySpec extends UnitSpec {
 
     "written from an empty LossClaimsSummary object" should {
       "return an empty JsObject" in {
-        Json.toJson(LossClaimsSummary.emptyLossClaimsSummary) shouldBe emptyJson
+        Json.toJson(LossClaimsSummary.empty) shouldBe emptyJson
       }
     }
   }

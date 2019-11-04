@@ -23,13 +23,15 @@ import utils.NestedJsonReads
 case class NicDetail(class2Nics: Option[Class2NicDetail], class4Nics: Option[Class4NicDetail])
 
 object NicDetail extends NestedJsonReads{
+  val empty = NicDetail(None, None)
+
   implicit val writes: OWrites[NicDetail] = Json.writes[NicDetail]
 
   implicit val reads: Reads[NicDetail] = (
     (JsPath \ "class2Nics").readNullable[Class2NicDetail] and
-      (JsPath \ "class4Nics").readNullable[Class4NicDetail].map{
-        case Some(Class4NicDetail.emptyClass4NicDetail) => None
-        case notEmpty => notEmpty
+      (JsPath \ "class4Nics").readNullable[Class4NicDetail].map {
+        case Some(Class4NicDetail.empty) => None
+        case other => other
       }
   )(NicDetail.apply _)
 }

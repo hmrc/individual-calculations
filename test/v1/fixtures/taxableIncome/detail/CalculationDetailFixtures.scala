@@ -70,7 +70,4 @@ object CalculationDetailFixtures {
   val detailWrittenJsonWithoutPPP: JsValue = dividendsJsonComponent.deepMerge(savingsAndGainsJsonComponent)
   val detailWrittenJsonWithoutSAG: JsValue = dividendsJsonComponent.deepMerge(payPensionsProfitJsonComponent)
   val detailWrittenJsonWithoutDiv: JsValue = savingsAndGainsJsonComponent.deepMerge(payPensionsProfitJsonComponent)
-
-  val emptyDetailResponse = CalculationDetail(None, None, None)
-
 }

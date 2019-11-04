@@ -29,22 +29,23 @@ case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmployment]],
                                  ukPropertyNonFhl: Option[UkPropertyNonFhl])
 
 object BusinessProfitAndLoss extends NestedJsonReads {
-  implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
+  val empty = BusinessProfitAndLoss(None, None, None)
 
+  implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
 
   implicit val reads: Reads[BusinessProfitAndLoss] = (
     __.readNullable[Seq[SelfEmployment]](SelfEmployment.seqReads).map(_.flatMap {
       case Nil => None
       case x => Some(x)
     }) and
-    __.readNullable[UkPropertyFhl].map(_.flatMap {
-        case UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None) => None
-        case x => Some(x)
-      }) and
-      __.readNullable[UkPropertyNonFhl].map(_.flatMap {
-        case UkPropertyNonFhl(None, None, None, None, None, None, None, None, None, None, None, None) => None
-        case x => Some(x)
-      })
+      __.readNullable[UkPropertyFhl].map {
+        case Some(UkPropertyFhl.empty) => None
+        case other => other
+      } and
+      __.readNullable[UkPropertyNonFhl].map {
+        case Some(UkPropertyNonFhl.empty) => None
+        case other => other
+      }
     )(BusinessProfitAndLoss.apply _)
 
 }

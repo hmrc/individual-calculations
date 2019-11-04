@@ -122,7 +122,6 @@ class MessagesSpec extends UnitSpec {
 
   val messagesResponse = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
   val messagesResponseWithoutErrors = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), None)
-  val emptyMessageResponse = Messages(None, None, None)
 
   "Messages" when {
     "read from a valid JSON" should {
@@ -156,34 +155,34 @@ class MessagesSpec extends UnitSpec {
     }
 
     "errors is present, but is empty" should {
-      "read the calculationErrorCount as None" in{
+      "read the calculationErrorCount as None" in {
         desJsonWithEmptyErrors.as[Messages] shouldBe messagesResponseWithoutErrors
       }
     }
 
     "messages are not present" should {
       "read the calculationErrorCount as None" in {
-        desJsonWithoutMessages.as[Messages] shouldBe emptyMessageResponse
+        desJsonWithoutMessages.as[Messages] shouldBe Messages.empty
       }
     }
   }
 
   "Message" when {
-    "read from valid JSON" should{
-      "return a JsSuccess" in{
+    "read from valid JSON" should {
+      "return a JsSuccess" in {
         validMessageJson.validate[Message] shouldBe a[JsSuccess[_]]
       }
-      "with the expected Message object" in{
+      "with the expected Message object" in {
         validMessageJson.as[Message] shouldBe err1
       }
     }
-    "read from invalid JSON" should{
-      "return a JsError" in{
+    "read from invalid JSON" should {
+      "return a JsError" in {
         invalidMessageJson.validate[Message] shouldBe a[JsError]
       }
     }
-    "written to JSON" should{
-      "return the expected JsObject" in{
+    "written to JSON" should {
+      "return the expected JsObject" in {
         Json.toJson(err1) shouldBe validMessageJson
       }
     }

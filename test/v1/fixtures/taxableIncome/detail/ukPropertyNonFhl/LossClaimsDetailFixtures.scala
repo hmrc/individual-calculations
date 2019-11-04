@@ -119,6 +119,4 @@ object LossClaimsDetailFixtures extends UnitSpec {
     Some(Seq(DefaultCarriedForwardLossFixtures.defaultCarriedForwardLossModel)),
     Some(Seq(ClaimNotAppliedFixtures.claimNotAppliedModel))
   )
-
-  val emptyLossClaimsDetailModel = LossClaimsDetail(None, None, None, None)
 }

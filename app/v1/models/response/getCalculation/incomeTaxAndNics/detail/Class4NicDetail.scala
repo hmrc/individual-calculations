@@ -16,27 +16,26 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import play.api.libs.functional.syntax._
-import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail.emptySeqToNone
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import utils.NestedJsonReads
 
 case class Class4NicDetail(class4Losses: Option[Class4Losses],
                            totalIncomeLiableToClass4Charge: Option[BigInt],
                            totalIncomeChargeableToClass4: Option[BigInt],
-                           class4NicBands: Option[Seq[NicBand]]){
-  val isEmpty: Boolean = this == Class4NicDetail.emptyClass4NicDetail
-}
+                           class4NicBands: Option[Seq[NicBand]])
 
-object Class4NicDetail{
-  val emptyClass4NicDetail: Class4NicDetail = Class4NicDetail(None, None, None, None)
+object Class4NicDetail extends NestedJsonReads {
+  val empty = Class4NicDetail(None, None, None, None)
+
   implicit val writes: OWrites[Class4NicDetail] = Json.writes[Class4NicDetail]
   implicit val reads: Reads[Class4NicDetail] = (
     JsPath.readNullable[Class4Losses].map{
-      case Some(Class4Losses.emptyClass4Losses) => None
-      case notEmpty => notEmpty
+      case Some(Class4Losses.empty) => None
+      case other => other
     } and
       (JsPath \ "totalIncomeLiableToClass4Charge").readNullable[BigInt] and
       (JsPath \ "totalIncomeChargeableToClass4").readNullable[BigInt] and
-      (JsPath \ "nic4Bands").readNullable[Seq[NicBand]].map(emptySeqToNone)
+      (JsPath \ "nic4Bands").readNullable[Seq[NicBand]].mapEmptySeqToNone
     )(Class4NicDetail.apply _)
 }

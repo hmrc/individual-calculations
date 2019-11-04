@@ -25,15 +25,11 @@ case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
                              totalBroughtForwardClass4Losses: Option[BigInt],
                              broughtForwardClass4LossesUsed: Option[BigInt],
                              carrySidewaysClass4LossesUsed: Option[BigInt],
-                             totalClass4LossesCarriedForward: Option[BigInt]) {
-
-  val isEmpty: Boolean = this == LossClaimsSummary.emptyLossClaimsSummary
-
-}
+                             totalClass4LossesCarriedForward: Option[BigInt])
 
 object LossClaimsSummary {
 
-  val emptyLossClaimsSummary: LossClaimsSummary = LossClaimsSummary(None, None, None, None, None, None, None)
+  val empty = LossClaimsSummary(None, None, None, None, None, None, None)
 
   implicit val writes: OWrites[LossClaimsSummary] = Json.writes[LossClaimsSummary]
 
