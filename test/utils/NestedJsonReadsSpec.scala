@@ -145,27 +145,6 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
     }
   }
 
-  "emptySeqToNone" should {
-
-    "return a None" when {
-
-      "provided with an empty array" in {
-        NestedJsonReads.emptySeqToNone(Some(Seq())) shouldBe None
-      }
-
-      "provided with a None array" in {
-        NestedJsonReads.emptySeqToNone(None) shouldBe None
-      }
-    }
-
-    "return a sequence" when {
-
-      "provided with a non-empty array" in {
-        NestedJsonReads.emptySeqToNone(Some(Seq("test"))) shouldBe Some(Seq("test"))
-      }
-    }
-  }
-
   "filteredArrayValueReads" should {
     val json = Json.parse(
       """
