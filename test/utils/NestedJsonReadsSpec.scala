@@ -17,7 +17,7 @@
 package utils
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.json.{KeyPathNode, _}
 import support.UnitSpec
 
 class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
@@ -45,7 +45,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
     implicit val formats: OFormat[MatchClass] = Json.format[MatchClass]
   }
 
-  case class NameClass(name: String, firstName: String, lastName: String)
+  case class NameClass(fullName: String, firstName: String, lastName: String)
 
   object NameClass {
     implicit val formats: OFormat[NameClass] = Json.format[NameClass]
@@ -152,34 +152,42 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
         |   {
         |     "id" : "1",
         |     "name" : {
-        |       "name": "firstName",
-        |       "firstName" : "first",
-        |       "lastName": "name"
+        |       "fullName": "John Doe",
+        |       "firstName" : "John",
+        |       "lastName": "Doe"
         |     }
         |   },
         |   {
         |     "id" : "2",
         |     "name" : {
-        |       "name": "secondName",
-        |       "firstName" : "second",
-        |       "lastName": "name"
+        |       "fullName": "Jane Doe",
+        |       "firstName" : "Jane",
+        |       "lastName": "Doe"
+        |     }
+        |   },
+        |   {
+        |     "id" : "2",
+        |     "name" : {
+        |       "fullName": "John Doe",
+        |       "firstName" : "John",
+        |       "lastName": "Doe"
         |     }
         |   },
         |   {
         |     "id" : "3",
         |     "name" : {
-        |       "name": "secondName",
-        |       "firstName" : "second",
-        |       "lastName": "name"
+        |       "fullName": "Jane Doe",
+        |       "firstName" : "Jane",
+        |       "lastName": "Doe"
         |     }
         |   },
         |   {
         |     "id" : "4",
-        |     "invalidName" : "fourthName"
+        |     "invalidName" : "John Smith"
         |   },
         |   {
         |     "invalidId" : 5,
-        |     "name" : "fifthName"
+        |     "name" : "John Smith"
         |   }
         |]
       """.stripMargin)
@@ -190,7 +198,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
 
         "provided with a matching parameter without a field name" in {
           NestedJsonReads.filteredArrayValueReads[MatchClass](None, "id", "2")
-            .reads(json).get shouldBe Some(MatchClass("2", NameClass("secondName", "second", "name")))
+            .reads(json).get shouldBe Some(MatchClass("2", NameClass("Jane Doe", "Jane", "Doe")))
         }
       }
 
@@ -198,7 +206,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
 
         "provided with a matching parameter with a field name" in {
           NestedJsonReads.filteredArrayValueReads[NameClass](Some("name"), "id", "2")
-            .reads(json).get shouldBe Some(NameClass("secondName", "second", "name"))
+            .reads(json).get shouldBe Some(NameClass("Jane Doe", "Jane", "Doe"))
         }
       }
 
@@ -239,34 +247,34 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
         |   {
         |     "id" : "1",
         |     "name" : {
-        |       "name": "firstName",
-        |       "firstName" : "first",
-        |       "lastName": "name"
+        |       "fullName": "John Doe",
+        |       "firstName" : "John",
+        |       "lastName": "Doe"
         |     }
         |   },
         |   {
         |     "id" : "1",
         |     "name" : {
-        |       "name": "secondName",
-        |       "firstName" : "second",
-        |       "lastName": "name"
+        |       "fullName": "John Smith",
+        |       "firstName" : "John",
+        |       "lastName": "Smith"
         |     }
         |   },
         |   {
         |     "id" : "3",
         |     "name" : {
-        |       "name": "secondName",
-        |       "firstName" : "second",
-        |       "lastName": "name"
+        |       "fullName": "John Smith",
+        |       "firstName" : "Jane",
+        |       "lastName": "Doe"
         |     }
         |   },
         |   {
         |     "id" : "4",
-        |     "invalidName" : "fourthName"
+        |     "invalidName" : "Fake Name"
         |   },
         |   {
         |     "invalidId" : 5,
-        |     "name" : "fifthName"
+        |     "name" : "John Doe"
         |   }
         |]
       """.stripMargin)
@@ -276,8 +284,8 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
       "provided with a matching parameter for multiple values" in {
         NestedJsonReads.filteredArrayReads[MatchClass]("id", "1")
           .reads(json).get shouldBe Seq(
-          MatchClass("1", NameClass("firstName", "first", "name")),
-          MatchClass("1", NameClass("secondName", "second", "name"))
+          MatchClass("1", NameClass("John Doe", "John", "Doe")),
+          MatchClass("1", NameClass("John Smith", "John", "Smith"))
         )
       }
 
@@ -302,62 +310,6 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
     }
   }
 
-  "applyTillLastNested" should {
-    val json = Json.parse(
-      """
-        |{
-        | "topLevel" : {
-        |   "midLevel" : {
-        |     "bottomLevel": {
-        |       "data" : "data"
-        |     }
-        |   }
-        | }
-        |}
-      """.stripMargin)
-
-    val jsPath = JsPath(List(
-      KeyPathNode("topLevel"),
-      KeyPathNode("midLevel"),
-      KeyPathNode("bottomLevel")
-    ))
-
-    "return the correct JsError" when {
-
-      "provided with json with a missing topLevel" in {
-        NestedJsonReads.JsPathOps(jsPath).applyTillLastNested(Json.obj()) shouldBe Right(JsError(Seq(jsPath -> Seq(JsonValidationError("error.path.missing")))))
-      }
-
-      "provided with json with a missing bottomLevel" in {
-        val missingJson = Json.parse(
-          """
-            |{
-            | "topLevel" : {
-            |   "midLevel" : {
-            |
-            |   }
-            | }
-            |}
-          """.stripMargin)
-
-        NestedJsonReads.JsPathOps(jsPath).applyTillLastNested(missingJson) shouldBe
-          Right(JsError(Seq(jsPath -> Seq(JsonValidationError("error.path.missing")))))
-      }
-
-      "provided with an empty JsPath" in {
-        NestedJsonReads.JsPathOps(JsPath(List())).applyTillLastNested(json) shouldBe
-          Left(JsError(Seq(JsPath(List()) -> Seq(JsonValidationError("error.path.empty")))))
-      }
-    }
-
-    "return a JsSuccess" when {
-
-      "provided with a path to valid data" in {
-        NestedJsonReads.JsPathOps(jsPath).applyTillLastNested(json) shouldBe Right(JsSuccess(Json.parse("""{"data" : "data"}""")))
-      }
-    }
-  }
-
   "readNestedNullableOpt" should {
 
     implicit val reads: Reads[NestedDataClass] = (
@@ -371,7 +323,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
         Json.parse("""{"data" : "data"}""").as[NestedDataClass] shouldBe NestedDataClass("data", None)
       }
 
-      "provided with invalid data" in {
+      "provided with an incomplete path" in {
         val json = Json.parse(
           """
             |{
@@ -403,9 +355,9 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
             |       {
             |         "id" : "1",
             |         "name" : {
-            |           "name": "firstName",
-            |           "firstName" : "first",
-            |           "lastName": "name"
+            |           "fullName": "John Doe",
+            |           "firstName" : "John",
+            |           "lastName": "Doe"
             |         }
             |       }
             |     ]
@@ -414,7 +366,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
             |}
           """.stripMargin)
 
-        json.as[NestedDataClass] shouldBe NestedDataClass("data", Some(MatchClass("1", NameClass("firstName", "first", "name"))))
+        json.as[NestedDataClass] shouldBe NestedDataClass("data", Some(MatchClass("1", NameClass("John Doe", "John", "Doe"))))
       }
     }
 
@@ -431,8 +383,8 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
             |       {
             |         "id" : "1",
             |         "name" : {
-            |           "firstName" : "first",
-            |           "lastName": "name"
+            |           "firstName" : "John",
+            |           "lastName": "Doe"
             |         }
             |       }
             |     ]
@@ -441,7 +393,15 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
             |}
           """.stripMargin)
 
-        json.validate[NestedDataClass] shouldBe a[JsError]
+        val result = json.validate[NestedDataClass]
+        result shouldBe a[JsError]
+        result.asInstanceOf[JsError].errors.head._1 shouldBe JsPath(List(
+          KeyPathNode("topLevel"),
+          KeyPathNode("midLevel"),
+          KeyPathNode("bottomLevel"),
+          KeyPathNode("name"),
+          KeyPathNode("fullName")
+        ))
       }
     }
   }
@@ -466,9 +426,9 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
             |       {
             |         "id" : "1",
             |         "name" : {
-            |           "name": "firstName",
-            |           "firstName" : "first",
-            |           "lastName": "name"
+            |           "fullName": "John Doe",
+            |           "firstName" : "John",
+            |           "lastName": "Doe"
             |         }
             |       }
             |   }
@@ -476,7 +436,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
             |}
           """.stripMargin)
 
-        json.as[NestedDataClass] shouldBe NestedDataClass("data", Some(MatchClass("1", NameClass("firstName", "first", "name"))))
+        json.as[NestedDataClass] shouldBe NestedDataClass("data", Some(MatchClass("1", NameClass("John Doe", "John", "Doe"))))
       }
     }
 
@@ -512,8 +472,8 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
             |       {
             |         "id" : "1",
             |         "name" : {
-            |           "firstName" : "first",
-            |           "lastName": "name"
+            |           "firstName" : "John",
+            |           "lastName": "Doe"
             |         }
             |       }
             |   }
@@ -521,7 +481,15 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
             |}
           """.stripMargin)
 
-        json.validate[NestedDataClass] shouldBe a[JsError]
+        val result = json.validate[NestedDataClass]
+        result shouldBe a[JsError]
+        result.asInstanceOf[JsError].errors.head._1 shouldBe JsPath(List(
+          KeyPathNode("topLevel"),
+          KeyPathNode("midLevel"),
+          KeyPathNode("bottomLevel"),
+          KeyPathNode("name"),
+          KeyPathNode("fullName")
+        ))
       }
     }
   }

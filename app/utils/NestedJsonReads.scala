@@ -56,7 +56,7 @@ trait NestedJsonReads {
       )
     }
 
-    def applyTillLastNested(json: JsValue): Either[JsError, JsResult[JsValue]] = {
+    private def applyTillLastNested(json: JsValue): Either[JsError, JsResult[JsValue]] = {
       def singleJsError(msg: String) = JsError(Seq(jsPath -> Seq(JsonValidationError(msg))))
       @tailrec
       def step(pathNodes: List[PathNode], json: JsValue): Either[JsError, JsResult[JsValue]] = pathNodes match {
