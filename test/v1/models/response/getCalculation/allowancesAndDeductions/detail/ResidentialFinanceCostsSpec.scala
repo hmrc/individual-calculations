@@ -20,52 +20,31 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import support.UnitSpec
 import v1.models.utils.JsonErrorValidators
 
+import v1.fixtures.allowancesAndDeductions.ResidentialFinanceCostsFixture._
+
 class ResidentialFinanceCostsSpec extends UnitSpec with JsonErrorValidators {
 
-  val desJson: JsValue = Json.parse(
-    """{
-      |
-      |  "amountClaimed": 1000,
-      |  "allowableAmount": 1000,
-      |  "rate": 2,
-      |  "propertyFinanceRelief": 1000
-      |
-      |}""".stripMargin)
-
-  val desJsonWithNoData: JsValue = Json.parse(
-    """{
-      |   "amountClaimed": 1000,
-      |   "rate": 2,
-      |   "propertyFinanceRelief": 1000
-      |
-      |}""".stripMargin)
-
-  val mtdJson: JsValue = Json.parse(
-    """{
-      |"amountClaimed":1000,"allowableAmount":1000,"rate":2,"propertyFinanceRelief":1000
-      |}
-    """.stripMargin)
 
   "reads" should {
     "return a valid object" when {
 
-      testPropertyType[ResidentialFinanceCosts](desJson)(
+      testPropertyType[ResidentialFinanceCosts](residentialFinanceCostsDesJson)(
         path = "/allowableAmount",
         replacement = "TEST".toJson,
         expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
-      testMandatoryProperty[ResidentialFinanceCosts](desJson)("/amountClaimed")
+      testMandatoryProperty[ResidentialFinanceCosts](residentialFinanceCostsDesJson)("/amountClaimed")
 
-      testMandatoryProperty[ResidentialFinanceCosts](desJson)("/rate")
+      testMandatoryProperty[ResidentialFinanceCosts](residentialFinanceCostsDesJson)("/rate")
 
-      testMandatoryProperty[ResidentialFinanceCosts](desJson)("/propertyFinanceRelief")
-      
+      testMandatoryProperty[ResidentialFinanceCosts](residentialFinanceCostsDesJson)("/propertyFinanceRelief")
+
       "valid json is passed" in {
-        desJson.as[ResidentialFinanceCosts] shouldBe ResidentialFinanceCosts(1000, Some(1000), 2, 1000)
+        residentialFinanceCostsDesJson.as[ResidentialFinanceCosts] shouldBe ResidentialFinanceCosts(1000, Some(1000), 2, 1000)
       }
 
       "json has only mandatory fields" in {
-        desJsonWithNoData.as[ResidentialFinanceCosts] shouldBe ResidentialFinanceCosts(1000,None,2,1000)
+        residentialFinanceCostsNoDataDesJson.as[ResidentialFinanceCosts] shouldBe ResidentialFinanceCosts(1000,None,2,1000)
       }
     }
   }
@@ -73,7 +52,7 @@ class ResidentialFinanceCostsSpec extends UnitSpec with JsonErrorValidators {
   "writes" should {
     "return a valid json" when {
       "ResidentialFinanceCosts object has data" in {
-        Json.toJson(ResidentialFinanceCosts(1000, Some(1000), 2, 1000)) shouldBe mtdJson
+        Json.toJson(ResidentialFinanceCosts(1000, Some(1000), 2, 1000)) shouldBe residentialFinanceCostsMtdJson
       }
     }
   }
