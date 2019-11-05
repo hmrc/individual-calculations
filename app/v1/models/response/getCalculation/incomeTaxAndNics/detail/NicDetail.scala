@@ -29,9 +29,6 @@ object NicDetail extends NestedJsonReads{
 
   implicit val reads: Reads[NicDetail] = (
     (JsPath \ "class2Nics").readNullable[Class2NicDetail] and
-      (JsPath \ "class4Nics").readNullable[Class4NicDetail].map {
-        case Some(Class4NicDetail.empty) => None
-        case other => other
-      }
+      (JsPath \ "class4Nics").readNullable[Class4NicDetail].mapEmptyToNone(Class4NicDetail.empty)
   )(NicDetail.apply _)
 }

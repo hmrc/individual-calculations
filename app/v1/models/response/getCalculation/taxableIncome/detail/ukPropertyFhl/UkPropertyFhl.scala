@@ -95,10 +95,7 @@ object UkPropertyFhl extends NestedJsonReads{
   implicit val reads: Reads[UkPropertyFhl] = (
     (JsPath \ "calculation" \ "businessProfitAndLoss")
       .readNestedNullableOpt[TopLevelElements](filteredArrayValueReads(None, "incomeSourceType", "04")) and
-     __.readNullable[LossClaimsDetail].map{
-       case Some(LossClaimsDetail.empty) => None
-       case other => other
-     }
+     __.readNullable[LossClaimsDetail].mapEmptyToNone(LossClaimsDetail.empty)
     )(UkPropertyFhl.readsApply _)
 
 

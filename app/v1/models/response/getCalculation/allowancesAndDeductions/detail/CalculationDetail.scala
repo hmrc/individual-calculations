@@ -28,13 +28,7 @@ object CalculationDetail {
   implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
 
   implicit val reads: Reads[CalculationDetail] = (
-    JsPath.readNullable[AllowancesAndDeductions].map {
-      case Some(AllowancesAndDeductions.empty) => None
-      case other => other
-    } and
-    JsPath.readNullable[Reliefs].map{
-      case Some(Reliefs.empty) => None
-      case other => other
-    }
+    JsPath.readNullable[AllowancesAndDeductions].mapEmptyToNone(AllowancesAndDeductions.empty) and
+    JsPath.readNullable[Reliefs].mapEmptyToNone(Reliefs.empty)
   )(CalculationDetail.apply _)
 }

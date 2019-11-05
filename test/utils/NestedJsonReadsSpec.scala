@@ -494,8 +494,24 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
     }
   }
 
+  "mapEmptyToNone" must {
+    val reads = __.readNullable[String].mapEmptyToNone("empty")
+
+    "map non-empty values to Some(value)" in {
+      JsString("value").as(reads) shouldBe Some("value")
+    }
+
+    "map missing to None" in {
+      JsNull.as(reads) shouldBe None
+    }
+
+    "map the 'empty' value to None" in {
+      JsString("empty").as(reads) shouldBe None
+    }
+  }
+
   "mapEmptySeqToNone" must {
-    val reads = (__).readNullable[Seq[String]].mapEmptySeqToNone
+    val reads = __.readNullable[Seq[String]].mapEmptySeqToNone
 
     "map non-empty sequence to Some(non-empty sequence)" in {
       JsArray(Seq(JsString("value0"), JsString("value1"))).as(reads) shouldBe Some(Seq("value0", "value1"))
@@ -511,7 +527,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
   }
 
   "mapHeadOption" must {
-    val reads = (__).readNullable[Seq[String]].mapHeadOption
+    val reads = __.readNullable[Seq[String]].mapHeadOption
 
     "map non-empty sequence to Some(1st element)" in {
       JsArray(Seq(JsString("value0"), JsString("value1"))).as(reads) shouldBe Some("value0")

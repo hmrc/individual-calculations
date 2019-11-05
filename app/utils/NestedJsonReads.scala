@@ -80,17 +80,24 @@ trait NestedJsonReads {
   }
 
   /**
-    * Extension methods for reads of a optional sequence
+    * Extension methods for reads of an optional
+    */
+  implicit class OptReadsOps[A](reads: Reads[Option[A]]) {
+    def mapEmptyToNone(empty: A): Reads[Option[A]] = reads.map {
+      case Some(`empty`) => None
+      case other => other
+    }
+  }
+
+  /**
+    * Extension methods for reads of an optional sequence
     */
   implicit class OptSeqReadsOps[A](reads: Reads[Option[Seq[A]]]) {
     /**
       * Returns a Reads that maps the sequence to itself unless it is empty
       */
     def mapEmptySeqToNone: Reads[Option[Seq[A]]] =
-      reads.map {
-        case Some(Nil) => None
-        case other => other
-      }
+      reads.mapEmptyToNone(Nil)
 
     /**
       * Returns a Reads that maps the sequence to its head unless it is empty

@@ -27,13 +27,7 @@ object CalculationDetail extends NestedJsonReads {
 
   implicit val reads: Reads[CalculationDetail] = (
     (JsPath \ "calculation").read[IncomeTaxDetail] and
-      (JsPath \ "calculation" \ "taxCalculation" \ "nics").readNestedNullable[NicDetail].map {
-        case Some(NicDetail.empty) => None
-        case other => other
-      } and
-      (JsPath \ "calculation" \ "taxDeductedAtSource").readNestedNullable[TaxDeductedAtSource].map {
-        case Some(TaxDeductedAtSource.empty) => None
-        case other => other
-      }
+      (JsPath \ "calculation" \ "taxCalculation" \ "nics").readNestedNullable[NicDetail].mapEmptyToNone(NicDetail.empty) and
+      (JsPath \ "calculation" \ "taxDeductedAtSource").readNestedNullable[TaxDeductedAtSource].mapEmptyToNone(TaxDeductedAtSource.empty)
   )(CalculationDetail.apply _)
 }
