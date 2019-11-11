@@ -23,7 +23,7 @@ class NicDetailSpec extends UnitSpec {
 
   val class2 = Class2NicDetail(Some(100.25), Some(200.25), Some(300.25), Some(400.25), underSmallProfitThreshold = true, Some(false))
   val class4 = Class4NicDetail(
-    Some(Class4Losses(Some(3001), Some(3002))),
+    Some(Class4Losses(Some(3001), Some(3002), Some(3003))),
     Some(3003),
     Some(3004),
     Some(
@@ -52,6 +52,7 @@ class NicDetailSpec extends UnitSpec {
       | "class4Nics" : {
       |  "totalClass4LossesAvailable" : 3001,
       | "totalClass4LossesUsed" : 3002,
+      | "totalClass4LossesCarriedForward" : 3003,
       | "totalIncomeLiableToClass4Charge" : 3003,
       | "totalIncomeChargeableToClass4" :3004,
       |	"nic4Bands": [{
