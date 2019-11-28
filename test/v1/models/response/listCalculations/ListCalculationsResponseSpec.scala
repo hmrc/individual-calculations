@@ -18,98 +18,18 @@ package v1.models.response.listCalculations
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.models.domain.{CalculationRequestor, CalculationType}
+import v1.fixtures.ListCalculationsFixtures._
 
 class ListCalculationsResponseSpec extends UnitSpec {
 
   "JSON writes" must {
-    val mtdJson = Json.parse(
-      """{
-        |  "calculations": [
-        |    {
-        |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |      "calculationTimestamp": "2019-03-17T09:22:59Z",
-        |      "type": "inYear",
-        |      "requestedBy": "hmrc"
-        |    },
-        |    {
-        |      "id": "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
-        |      "calculationTimestamp": "2019-06-17T18:45:59Z",
-        |      "type": "crystallisation"
-        |    }
-        |  ]
-        |}""".stripMargin)
-
-    val response = ListCalculationsResponse(
-      Seq(
-        CalculationListItem(
-          id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-          calculationTimestamp = "2019-03-17T09:22:59Z",
-          `type` = CalculationType.inYear,
-          requestedBy = Some(CalculationRequestor.hmrc)
-        ),
-        CalculationListItem(
-          id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
-          calculationTimestamp = "2019-06-17T18:45:59Z",
-          `type` = CalculationType.crystallisation,
-          requestedBy = None
-        )
-      ))
-
     "align with response to front end" in {
       Json.toJson(response) shouldBe mtdJson
     }
   }
 
   "JSON reads" must {
-    // Note: with and without optional requestedBy...
-    val desJson = Json.parse(
-      """[
-        |	{
-        |		"calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |		"calculationTimestamp": "2019-03-17T09:22:59Z",
-        |		"calculationType": "inYear",
-        |		"requestedBy": "hmrc",
-        |		"year": 2016,
-        |		"fromDate": "2018-01-01",
-        |		"toDate": "2019-01-01",
-        |		"totalIncomeTaxAndNicsDue": 99999999999.99,
-        |		"intentToCrystallise": true,
-        |		"crystallised": true,
-        |		"crystallisationTimestamp": "2019-07-13T07:51:43Z"
-        |	},
-        |	{
-        |		"calculationId": "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
-        |		"calculationTimestamp": "2019-06-17T18:45:59Z",
-        |		"calculationType": "crystallisation",
-        |		"year": 2016,
-        |		"fromDate": "2019-01-01",
-        |		"toDate": "2020-01-01",
-        |		"totalIncomeTaxAndNicsDue": -99999999999.99,
-        |		"intentToCrystallise": true,
-        |		"crystallised": true,
-        |		"crystallisationTimestamp": "2019-07-13T07:51:43Z"
-        |	}
-        |]
-        |""".stripMargin)
-
-    val response = ListCalculationsResponse(
-      Seq(
-        CalculationListItem(
-          id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-          calculationTimestamp = "2019-03-17T09:22:59Z",
-          `type` = CalculationType.inYear,
-          requestedBy = Some(CalculationRequestor.hmrc)
-        ),
-        CalculationListItem(
-          id = "cf63c46a-1a4f-3c56-b9ea-9a82551d27bb",
-          calculationTimestamp = "2019-06-17T18:45:59Z",
-          `type` = CalculationType.crystallisation,
-          requestedBy = None
-        )
-      ))
-
-
+    // Note: with and without optional requestedBy
     "align with des spec" in {
       desJson.as[ListCalculationsResponse] shouldBe response
     }

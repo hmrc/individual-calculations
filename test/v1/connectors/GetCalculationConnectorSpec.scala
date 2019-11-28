@@ -17,7 +17,7 @@
 package v1.connectors
 
 import uk.gov.hmrc.domain.Nino
-import v1.fixtures.MessageFixtures._
+import v1.fixtures.common.MessageFixtures._
 import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.outcomes.ResponseWrapper

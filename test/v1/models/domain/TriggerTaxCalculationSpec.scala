@@ -16,22 +16,15 @@
 
 package v1.models.domain
 
-import play.api.libs.json._
+
 import support.UnitSpec
 import v1.models.request.triggerCalculation.TriggerTaxCalculation
 import v1.models.utils.JsonErrorValidators
+import v1.fixtures.TriggerTaxCalculationFixtures.inputJson
 
 class TriggerTaxCalculationSpec extends UnitSpec with JsonErrorValidators {
   "reads" when {
     "passed valid JSON" should {
-      val inputJson = Json.parse(
-        """
-          |{
-          |   "taxYear": "2017-18"
-          |}
-        """.stripMargin
-      )
-
       "return a valid model" in {
         TriggerTaxCalculation("2017-18") shouldBe inputJson.as[TriggerTaxCalculation]
       }

@@ -16,19 +16,13 @@
 
 package v1.models.response.triggerCalculation
 
-import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.TriggerTaxCalculationFixtures.{responseJson, responseModel}
 
 class TriggerCalculationResponseSpec extends UnitSpec {
   "Json reads" should {
     "use specified format" in {
-      val json = Json.parse(
-        """
-          |{
-          |  "id": "00000000-0000-1000-8000-000000000000"
-          |}""".stripMargin)
-
-      json.as[TriggerCalculationResponse] shouldBe TriggerCalculationResponse("00000000-0000-1000-8000-000000000000")
+      responseJson.as[TriggerCalculationResponse] shouldBe responseModel
     }
   }
 }

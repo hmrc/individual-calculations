@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.taxableIncome.detail.BusinessProfitAndLossFixtures._
+import v1.fixtures.getCalculation.taxableIncome.detail.BusinessProfitAndLossFixtures._
 
 class BusinessProfitAndLossSpec extends UnitSpec {
 

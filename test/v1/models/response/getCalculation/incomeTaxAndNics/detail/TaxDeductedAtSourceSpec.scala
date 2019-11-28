@@ -16,28 +16,11 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsObject, Json}
 import support.UnitSpec
+import v1.fixtures.getCalculation.incomeTaxAndNics.detail.TaxDeductedAtSourceFixtures._
 
 class TaxDeductedAtSourceSpec extends UnitSpec {
-
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "ukLandAndProperty" : 100.25,
-      | "bbsi" : 200.25
-      |}
-    """.stripMargin)
-
-  val outputJson: JsValue = Json.parse(
-    """
-      |{
-      | "ukLandAndProperty" : 100.25,
-      | "savings" : 200.25
-      |}
-    """.stripMargin)
-
-  val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
 
   "TaxDeductedAtSource" should {
 

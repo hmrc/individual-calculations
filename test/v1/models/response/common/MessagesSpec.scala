@@ -16,112 +16,14 @@
 
 package v1.models.response.common
 
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.MessageFixtures._
+import v1.fixtures.common.MessageFixtures._
 
 class MessagesSpec extends UnitSpec {
 
-  val desJson: JsValue = Json.parse("""{
-	      |     "messages" :{
-	      |        "errors":[
-	      |          {"id":"err1", "text":"text1"},
-	      |          {"id":"err2", "text":"text2"}
-	      |        ],
-	      |        "info":[
-	      |          {"id":"info1", "text":"text1"},
-	      |          {"id":"info2", "text":"text2"}
-	      |        ],
-	      |        "warnings":[
-	      |          {"id":"warn1", "text":"text1"},
-	      |          {"id":"warn2", "text":"text2"}
-	      |        ]
-	      |     }
-	      |}""".stripMargin)
-
-  val writtenJson: JsValue = Json.parse("""{
-	      |        "info":[
-	      |          {"id":"info1", "text":"text1"},
-	      |          {"id":"info2", "text":"text2"}
-	      |        ],
-	      |        "warnings":[
-	      |          {"id":"warn1", "text":"text1"},
-	      |          {"id":"warn2", "text":"text2"}
-	      |        ],
-	      |        "errors":[
-	      |          {"id":"err1", "text":"text1"},
-	      |          {"id":"err2", "text":"text2"}
-	      |        ]
-	      |}""".stripMargin)
-
-  val desJsonWithEmptyErrors: JsValue = Json.parse("""{
-	      |     "messages" :{
-	      |        "errors":[
-	      |        ],
-	      |        "info":[
-	      |          {"id":"info1", "text":"text1"},
-	      |          {"id":"info2", "text":"text2"}
-	      |        ],
-	      |        "warnings":[
-	      |          {"id":"warn1", "text":"text1"},
-	      |          {"id":"warn2", "text":"text2"}
-	      |        ]
-	      |     }
-	      |}""".stripMargin)
-
-  val desJsonWithoutErrors: JsValue = Json.parse("""{
-	      |     "messages" :{
-	      |        "info":[
-	      |          {"id":"info1", "text":"text1"},
-	      |          {"id":"info2", "text":"text2"}
-	      |        ],
-	      |        "warnings":[
-	      |          {"id":"warn1", "text":"text1"},
-	      |          {"id":"warn2", "text":"text2"}
-	      |        ]
-	      |     }
-	      |}""".stripMargin)
-
-  val writtenJsonWithoutErrors: JsValue = Json.parse("""{
-	      |        "info":[
-	      |          {"id":"info1", "text":"text1"},
-	      |          {"id":"info2", "text":"text2"}
-	      |        ],
-	      |        "warnings":[
-	      |          {"id":"warn1", "text":"text1"},
-	      |          {"id":"warn2", "text":"text2"}
-	      |        ]
-	      |}""".stripMargin)
-
-  val desJsonWithoutMessages: JsValue = Json.parse("""{
-	      |     "filler" :"json"
-	      |}""".stripMargin)
-
-  val invalidDesJson: JsValue = Json.parse("""{
-	      |     "messages" :{
-	      |        "info":[
-	      |          {"id":"info1"}
-	      |        ],
-	      |        "warnings":[
-	      |          {"id":"warn1", "text":"text1"},
-	      |          {"id":"warn2", "text":"text2"}
-	      |        ]
-	      |     }
-	      |}""".stripMargin)
-
-  val validMessageJson: JsValue = Json.parse("""{
-	      |        "id":"err1",
-	      |        "text": "text1"
-	      |}""".stripMargin)
-
-  val invalidMessageJson: JsValue = Json.parse("""{
-	      |        "id":1,
-	      |        "text": "text1"
-	      |}""".stripMargin)
-
-
-  val messagesResponse = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
-  val messagesResponseWithoutErrors = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), None)
+  val messagesResponse              = Messages(Some(Seq(info1, info2)), Some(Seq(warn1, warn2)), Some(Seq(err1, err2)))
+  val messagesResponseWithoutErrors = Messages(Some(Seq(info1, info2)), Some(Seq(warn1, warn2)), None)
 
   "Messages" when {
     "read from a valid JSON" should {

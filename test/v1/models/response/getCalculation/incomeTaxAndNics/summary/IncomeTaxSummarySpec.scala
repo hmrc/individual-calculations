@@ -16,21 +16,11 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getCalculation.incomeTaxAndNics.summary.IncomeTaxSummaryFixtures._
 
 class IncomeTaxSummarySpec extends UnitSpec {
-
-  val json: JsValue = Json.parse(
-    """
-      |{
-      | "incomeTaxCharged" : 2000.00,
-      | "incomeTaxDueAfterReliefs" : 1525.22,
-      | "incomeTaxDueAfterGiftAid" : 120.10
-      |}
-    """.stripMargin)
-
-  val model = IncomeTaxSummary(2000.00, Some(1525.22), Some(120.10))
 
   "IncomeTaxSummary" should {
 

@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.json.{JsError, JsObject, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.endOfYearEstimate.detail.EoyEstimateSelfEmploymentFixtures._
+import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateSelfEmploymentFixtures._
 
 class EoyEstimateSelfEmploymentSpec extends UnitSpec {
 
