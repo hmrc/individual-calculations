@@ -16,67 +16,23 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.summary
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{ JsObject, Json }
 import support.UnitSpec
+import v1.fixtures.getCalculation.allowancesAndDeductions.summary.CalculationSummaryFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
 
-  val desJson: JsValue = Json.parse(
-    """{
-      |    "calculation": {
-      |        "taxCalculation": {
-      |            "incomeTax": {
-      |                "totalIncomeReceivedFromAllSources": 2108191510,
-      |                "totalAllowancesAndDeductions": 1000,
-      |                "totalTaxableIncome": 68088189411,
-      |                "incomeTaxCharged": 16364761452,
-      |                "totalReliefs": 1000,
-      |                "incomeTaxDueAfterReliefs": -99999999999.99,
-      |                "incomeTaxDueAfterGiftAid": 69148904014
-      |            },
-      |            "totalIncomeTaxNicsCharged": 65062942055,
-      |            "totalTaxDeducted": 49524197674,
-      |            "totalIncomeTaxAndNicsDue": -99999999999.99
-      |        }
-      |    }
-      |}""".stripMargin)
-
-  val desJsonWithNoAllowancesAndDeductionsDetails: JsValue = Json.parse(
-    """{
-      |    "calculation": {
-      |        "taxCalculation": {
-      |            "incomeTax": {
-      |                "totalIncomeReceivedFromAllSources": 2108191510,
-      |                "totalTaxableIncome": 68088189411,
-      |                "incomeTaxCharged": 16364761452,
-      |                "incomeTaxDueAfterReliefs": -99999999999.99,
-      |                "incomeTaxDueAfterGiftAid": 69148904014
-      |            },
-      |            "totalIncomeTaxNicsCharged": 65062942055,
-      |            "totalTaxDeducted": 49524197674,
-      |            "totalIncomeTaxAndNicsDue": -99999999999.99
-      |        }
-      |    }
-      |}""".stripMargin)
-
-  val mtdJson: JsValue = Json.parse(
-    """
-      |{"totalAllowancesAndDeductions":1000,"totalReliefs":1000}
-    """.stripMargin)
-
   "reads" should {
     "return a valid Calculation Summary" when {
 
-      testPropertyType[CalculationSummary](desJson)(
-        path = "/calculation/taxCalculation/incomeTax/totalAllowancesAndDeductions",
-        replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
+      testPropertyType[CalculationSummary](desJson)(path = "/calculation/taxCalculation/incomeTax/totalAllowancesAndDeductions",
+                                                    replacement = "TEST".toJson,
+                                                    expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
-      testPropertyType[CalculationSummary](desJson)(
-        path = "/calculation/taxCalculation/incomeTax/totalReliefs",
-        replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
+      testPropertyType[CalculationSummary](desJson)(path = "/calculation/taxCalculation/incomeTax/totalReliefs",
+                                                    replacement = "TEST".toJson,
+                                                    expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
       "a valid json is received" in {
         desJson.as[CalculationSummary] shouldBe CalculationSummary(Some(1000), Some(1000))

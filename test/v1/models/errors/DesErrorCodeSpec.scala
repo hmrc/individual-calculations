@@ -16,23 +16,14 @@
 
 package v1.models.errors
 
-import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.ErrorFixtures.DesError
 
 class DesErrorCodeSpec extends UnitSpec {
 
   "reads" should {
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "CODE",
-        |   "reason": "ignored"
-        |}
-      """.stripMargin
-    )
-
     "generate the correct error code" in {
-      json.as[DesErrorCode] shouldBe DesErrorCode("CODE")
+      DesError.json.as[DesErrorCode] shouldBe DesError.model
     }
   }
 }

@@ -16,84 +16,37 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsObject, Json}
 import support.UnitSpec
+import v1.fixtures.getCalculation.allowancesAndDeductions.detail.AllowancesAndDeductionsFixtures._
 import v1.models.utils.JsonErrorValidators
 
-class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators{
-
-  val desJson: JsValue = Json.parse(
-    """{
-      |    "calculation": {
-      |        "allowancesAndDeductions": {
-      |            "personalAllowance": 1000,
-      |            "reducedPersonalAllowance": 1000,
-      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
-      |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000
-      |        },
-      |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 6282356308,
-      |                "allowableAmount": 56668463807,
-      |                "rate": 2,
-      |                "propertyFinanceRelief": 67923591034
-      |            }
-      |        }
-      |    }
-      |}""".stripMargin)
-
-  val desJsonWithNoAllowancesAndDeductionsDetails: JsValue = Json.parse(
-    """{
-      |    "calculation": {
-      |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 6282356308,
-      |                "allowableAmount": 56668463807,
-      |                "rate": 2,
-      |                "propertyFinanceRelief": 67923591034
-      |            }
-      |        }
-      |    }
-      |}""".stripMargin)
-
-  val mtdJson: JsValue = Json.parse(
-    """{
-      |            "personalAllowance": 1000,
-      |            "reducedPersonalAllowance": 1000,
-      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
-      |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000
-      |}""".stripMargin)
-
+class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
 
   "reads" should {
     "return a valid AllowancesAndDeductions object" when {
 
-      testPropertyType[AllowancesAndDeductions](desJson)(
-        path = "/calculation/allowancesAndDeductions/personalAllowance",
-        replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
+      testPropertyType[AllowancesAndDeductions](desJson)(path = "/calculation/allowancesAndDeductions/personalAllowance",
+                                                         replacement = "TEST".toJson,
+                                                         expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
-      testPropertyType[AllowancesAndDeductions](desJson)(
-        path = "/calculation/allowancesAndDeductions/reducedPersonalAllowance",
-        replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
+      testPropertyType[AllowancesAndDeductions](desJson)(path = "/calculation/allowancesAndDeductions/reducedPersonalAllowance",
+                                                         replacement = "TEST".toJson,
+                                                         expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
       testPropertyType[AllowancesAndDeductions](desJson)(
         path = "/calculation/allowancesAndDeductions/giftOfInvestmentsAndPropertyToCharity",
         replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
+        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION
+      )
 
-      testPropertyType[AllowancesAndDeductions](desJson)(
-        path = "/calculation/allowancesAndDeductions/blindPersonsAllowance",
-        replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
+      testPropertyType[AllowancesAndDeductions](desJson)(path = "/calculation/allowancesAndDeductions/blindPersonsAllowance",
+                                                         replacement = "TEST".toJson,
+                                                         expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
-      testPropertyType[AllowancesAndDeductions](desJson)(
-        path = "/calculation/allowancesAndDeductions/lossesAppliedToGeneralIncome",
-        replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
+      testPropertyType[AllowancesAndDeductions](desJson)(path = "/calculation/allowancesAndDeductions/lossesAppliedToGeneralIncome",
+                                                         replacement = "TEST".toJson,
+                                                         expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
       "a valid json is received" in {
         desJson.as[AllowancesAndDeductions] shouldBe AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000))
@@ -121,5 +74,3 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators{
     }
   }
 }
-
-

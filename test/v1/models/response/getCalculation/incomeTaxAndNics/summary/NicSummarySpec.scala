@@ -16,46 +16,11 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getCalculation.incomeTaxAndNics.summary.NicSummaryFixtures._
 
 class NicSummarySpec extends UnitSpec {
-
-  val filledJson: JsValue = Json.parse(
-    """
-      |{
-      | "class2Nics" : {
-      |   "amount" : 100.25
-      | },
-      | "class4Nics" : {
-      |   "totalAmount" : 200.25
-      | },
-      | "totalNic" : 300.25
-      |}
-    """.stripMargin)
-
-  val emptyModelJson: JsValue = Json.parse(
-    """
-      |{
-      | "class2Nics" : {
-      | },
-      | "class4Nics" : {
-      | }
-      |}
-    """.stripMargin)
-
-  val outputJson: JsValue = Json.parse(
-    """
-      |{
-      | "class2NicsAmount" : 100.25,
-      | "class4NicsAmount" : 200.25,
-      | "totalNic" : 300.25
-      |}
-    """.stripMargin)
-
-  val emptyJson: JsValue = Json.obj()
-
-  val filledModel = NicSummary(Some(100.25), Some(200.25), Some(300.25))
 
   "NicSummary" should {
 

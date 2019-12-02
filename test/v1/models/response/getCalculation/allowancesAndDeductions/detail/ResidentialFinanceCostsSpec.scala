@@ -16,56 +16,32 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getCalculation.allowancesAndDeductions.detail.ResidentialFinanceCostsFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class ResidentialFinanceCostsSpec extends UnitSpec with JsonErrorValidators {
 
-  val desJson: JsValue = Json.parse(
-    """{
-      |
-      |  "amountClaimed": 1000,
-      |  "allowableAmount": 1000,
-      |  "rate": 2,
-      |  "propertyFinanceRelief": 1000
-      |
-      |}""".stripMargin)
-
-  val desJsonWithNoData: JsValue = Json.parse(
-    """{
-      |   "amountClaimed": 1000,
-      |   "rate": 2,
-      |   "propertyFinanceRelief": 1000
-      |
-      |}""".stripMargin)
-
-  val mtdJson: JsValue = Json.parse(
-    """{
-      |"amountClaimed":1000,"allowableAmount":1000,"rate":2,"propertyFinanceRelief":1000
-      |}
-    """.stripMargin)
-
   "reads" should {
     "return a valid object" when {
 
-      testPropertyType[ResidentialFinanceCosts](desJson)(
-        path = "/allowableAmount",
-        replacement = "TEST".toJson,
-        expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
+      testPropertyType[ResidentialFinanceCosts](desJson)(path = "/allowableAmount",
+                                                         replacement = "TEST".toJson,
+                                                         expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
       testMandatoryProperty[ResidentialFinanceCosts](desJson)("/amountClaimed")
 
       testMandatoryProperty[ResidentialFinanceCosts](desJson)("/rate")
 
       testMandatoryProperty[ResidentialFinanceCosts](desJson)("/propertyFinanceRelief")
-      
+
       "valid json is passed" in {
         desJson.as[ResidentialFinanceCosts] shouldBe ResidentialFinanceCosts(1000, Some(1000), 2, 1000)
       }
 
       "json has only mandatory fields" in {
-        desJsonWithNoData.as[ResidentialFinanceCosts] shouldBe ResidentialFinanceCosts(1000,None,2,1000)
+        desJsonWithNoData.as[ResidentialFinanceCosts] shouldBe ResidentialFinanceCosts(1000, None, 2, 1000)
       }
     }
   }

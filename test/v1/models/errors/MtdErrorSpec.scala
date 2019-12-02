@@ -18,19 +18,13 @@ package v1.models.errors
 
 import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.ErrorFixtures.SingleError
 
 class MtdErrorSpec extends UnitSpec {
 
   "writes" should {
     "generate the correct JSON" in {
-      Json.toJson(MtdError("CODE", "some message")) shouldBe Json.parse(
-        """
-          |{
-          |   "code": "CODE",
-          |   "message": "some message"
-          |}
-        """.stripMargin
-      )
+      Json.toJson(SingleError.model) shouldBe Json.parse(SingleError.jsonAsString)
     }
   }
 }

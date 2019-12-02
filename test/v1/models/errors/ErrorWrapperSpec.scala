@@ -18,76 +18,27 @@ package v1.models.errors
 
 import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.ErrorFixtures.{SingleError, MultipleErrors}
 
 class ErrorWrapperSpec extends UnitSpec {
 
-  val correlationId = "X-123"
-
   "Rendering a error response with one error" should {
-    val error = ErrorWrapper(None, NinoFormatError, Some(Seq.empty))
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "FORMAT_NINO",
-        |   "message": "The provided NINO is invalid"
-        |}
-      """.stripMargin
-    )
-
     "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
+      Json.toJson(SingleError.model) shouldBe SingleError.json
     }
   }
 
   "Rendering a error response with one error and an empty sequence of errors" should {
-    val error = ErrorWrapper(None, NinoFormatError, Some(Seq.empty))
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "FORMAT_NINO",
-        |   "message": "The provided NINO is invalid"
-        |}
-      """.stripMargin
-    )
-
     "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
+      Json.toJson(SingleError.modelWithEmptySeq) shouldBe SingleError.json
     }
   }
 
   "Rendering a error response with two errors" should {
-    val error = ErrorWrapper(None, BadRequestError,
-      Some (
-        Seq(
-          NinoFormatError,
-          TaxYearFormatError
-        )
-      )
-    )
-
-    val json = Json.parse(
-      """
-        |{
-        |   "code": "INVALID_REQUEST",
-        |   "message": "Invalid request",
-        |   "errors": [
-        |       {
-        |         "code": "FORMAT_NINO",
-        |         "message": "The provided NINO is invalid"
-        |       },
-        |       {
-        |         "code": "FORMAT_TAX_YEAR",
-        |         "message": "The provided tax year is invalid"
-        |       }
-        |   ]
-        |}
-      """.stripMargin
-    )
+    val error =
 
     "generate the correct JSON" in {
-      Json.toJson(error) shouldBe json
+      Json.toJson(MultipleErrors.model) shouldBe MultipleErrors.json
     }
   }
 

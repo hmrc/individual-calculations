@@ -27,7 +27,7 @@ import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRequest
 import v1.models.response.common.{Message, Messages, Metadata}
 import v1.models.response.getCalculation.GetCalculationResponse
-import v1.fixtures.MessageFixtures._
+import v1.fixtures.common.MessageFixtures._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

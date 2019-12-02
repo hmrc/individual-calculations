@@ -16,60 +16,11 @@
 
 package v1.models.response.common
 
-import play.api.libs.json.{ JsError, JsObject, JsValue, Json }
+import play.api.libs.json.{JsError, JsObject, Json}
 import support.UnitSpec
-import v1.models.domain.{ CalculationReason, CalculationRequestor, CalculationType }
+import v1.fixtures.common.MetadataFixtures._
 
 class MetadataSpec extends UnitSpec {
-
-  val desJson: JsObject = Json.parse("""{
-        |    "metadata":{
-        |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-        |       "taxYear": 2019,
-        |       "requestedBy": "customer",
-        |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-        |       "calculationReason": "customerRequest",
-        |       "calculationTimestamp": "2019-11-16T09:35:15.094Z",
-        |       "calculationType": "inYear",
-        |       "intentToCrystallise": true,
-        |       "crystallised": true,
-        |       "periodFrom": "1-2018",
-        |       "periodTo": "1-2019"
-        |    },
-        |    "calculation": {
-        |      "taxCalculation": {
-        |        "totalIncomeTaxAndNicsDue": 123.45
-        |      }
-        |    }
-        |}""".stripMargin).as[JsObject]
-
-  val writtenJson = Json.parse("""
-       |{
-       |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-       |       "taxYear": "2018-19",
-       |       "requestedBy": "customer",
-       |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-       |       "calculationReason": "customerRequest",
-       |       "calculationTimestamp": "2019-11-16T09:35:15.094Z",
-       |       "calculationType": "inYear",
-       |       "intentToCrystallise": true,
-       |       "crystallised": true,
-       |       "totalIncomeTaxAndNicsDue": 123.45
-       |}""".stripMargin)
-
-  val metadataResponse = Metadata(
-    id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-    taxYear = "2018-19",
-    requestedBy = CalculationRequestor.customer,
-    requestedTimestamp = Some("2019-11-15T09:25:15.094Z"),
-    calculationReason = CalculationReason.customerRequest,
-    calculationTimestamp = Some("2019-11-16T09:35:15.094Z"),
-    calculationType = CalculationType.inYear,
-    intentToCrystallise = true,
-    crystallised = true,
-    totalIncomeTaxAndNicsDue = Some(123.45),
-    calculationErrorCount = None
-  )
 
   "Metadata" when {
     "read from a valid JSON" should {
@@ -78,41 +29,12 @@ class MetadataSpec extends UnitSpec {
       }
 
       "read optional fields as None with optional booleans false" in {
-        val desJsonWithoutOptionals: JsValue = Json.parse("""{
-              |    "metadata":{
-              |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-              |       "taxYear": 2019,
-              |       "requestedBy": "customer",
-              |       "calculationReason": "customerRequest",
-              |       "calculationType": "inYear",
-              |       "periodFrom": "1-2018",
-              |       "periodTo": "1-2019"
-              |     }
-              |}""".stripMargin)
-
-        desJsonWithoutOptionals.as[Metadata] shouldBe
-          Metadata(
-            id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-            taxYear = "2018-19",
-            requestedBy = CalculationRequestor.customer,
-            requestedTimestamp = None,
-            calculationReason = CalculationReason.customerRequest,
-            calculationTimestamp = None,
-            calculationType = CalculationType.inYear,
-            intentToCrystallise = false,
-            crystallised = false,
-            totalIncomeTaxAndNicsDue = None,
-            calculationErrorCount = None
-          )
+        desJsonWithoutOptionals.as[Metadata] shouldBe desJsonWithoutOptionalsAsModel
       }
     }
 
     "read from an invalid JSON" should {
       "return a JsError" in {
-        val invalidDesJson: JsValue =
-          Json.parse("""{
-                         |    "metadata":{}
-                         |}""".stripMargin)
         invalidDesJson.validate[Metadata] shouldBe a[JsError]
       }
     }

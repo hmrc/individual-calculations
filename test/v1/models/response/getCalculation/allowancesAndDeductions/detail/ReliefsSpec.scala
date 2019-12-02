@@ -16,58 +16,12 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsObject, Json}
 import support.UnitSpec
+import v1.fixtures.getCalculation.allowancesAndDeductions.detail.ReliefFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class ReliefsSpec extends UnitSpec with JsonErrorValidators {
-
-  val desJson: JsValue = Json.parse(
-    """{
-      |    "calculation": {
-      |        "allowancesAndDeductions": {
-      |            "personalAllowance": 1000,
-      |            "reducedPersonalAllowance": 1000,
-      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
-      |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000
-      |        },
-      |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 1000,
-      |                "allowableAmount": 1000,
-      |                "rate": 2,
-      |                "propertyFinanceRelief": 1000
-      |            }
-      |        }
-      |    }
-      |}""".stripMargin)
-
-  val desJsonWithNoData: JsValue = Json.parse(
-    """{
-      |    "calculation": {
-      |        "allowancesAndDeductions": {
-      |            "personalAllowance": 1000,
-      |            "reducedPersonalAllowance": 1000,
-      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
-      |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000
-      |        },
-      |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 1000,
-      |                "rate": 2,
-      |                "propertyFinanceRelief": 1000
-      |            }
-      |        }
-      |    }
-      |}""".stripMargin)
-
-  val mtdJson: JsValue = Json.parse(
-    """{
-      |"residentialFinanceCosts":{"amountClaimed":1000,"allowableAmount":1000,"rate":2,"propertyFinanceRelief":1000}
-      |}
-    """.stripMargin)
 
   "reads" should {
     "return a valid object" when {

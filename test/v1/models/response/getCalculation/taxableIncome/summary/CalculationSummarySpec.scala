@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.taxableIncome.summary
 
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
-import v1.fixtures.taxableIncome.summary.CalculationSummaryFixtures._
+import v1.fixtures.getCalculation.taxableIncome.summary.CalculationSummaryFixtures._
 
 class CalculationSummarySpec extends UnitSpec {
 

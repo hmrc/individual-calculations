@@ -18,25 +18,10 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
+import v1.fixtures.getCalculation.incomeTaxAndNics.detail.Class2NicDetailFixtures._
 
 class Class2NicDetailSpec extends UnitSpec {
-
-  val model = Class2NicDetail(Some(100.25), Some(200.25), Some(300.25), Some(400.25), true, Some(false))
-
-  val json = Json.parse(
-    """
-      |{
-      | "weeklyRate" : 100.25,
-      | "weeks" : 200.25,
-      | "limit" : 300.25,
-      | "apportionedLimit" : 400.25,
-      | "underSmallProfitThreshold" : true,
-      | "actualClass2Nic" : false
-      |}
-    """.stripMargin)
-
   "Class2NicDetail" should {
-
     "write correctly to json" in {
       Json.toJson(model) shouldBe json
     }

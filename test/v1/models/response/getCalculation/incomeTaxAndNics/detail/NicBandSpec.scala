@@ -16,31 +16,11 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
+import v1.fixtures.getCalculation.incomeTaxAndNics.detail.NicBandFixtures._
 
 class NicBandSpec extends UnitSpec {
-
-  val json: JsValue = Json.parse(
-    s"""
-       |				{
-       |					"name": "name",
-       |					"rate": 100.25,
-       |					"threshold": 200,
-       |					"apportionedThreshold": 300,
-       |					"income": 400,
-       |					"amount": 500.25
-       |				}
-           """.stripMargin)
-
-  val model = NicBand(
-    name = "name",
-    rate = 100.25,
-    threshold = Some(200),
-    apportionedThreshold = Some(300),
-    income = 400,
-    amount = 500.25
-  )
 
   "NicBand" should {
 

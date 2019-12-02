@@ -16,82 +16,11 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
-import v1.models.response.getCalculation.incomeTaxAndNics.detail
+import v1.fixtures.getCalculation.incomeTaxAndNics.detail.IncomeTaxDetailFixtures._
 
-class IncomeTaxDetailSpec extends UnitSpec{
-
-  val emptyJson: JsValue = Json.obj()
-
-  val emptyModelJson: JsValue = Json.parse(
-    """
-      |{
-      | "taxCalculation" : {
-      |   "incomeTax" : {
-      |
-      |   }
-      | }
-      |}
-    """.stripMargin)
-
-  val filledModelJson: JsValue = Json.parse(
-    """
-      |{
-      | "taxCalculation" : {
-      |   "incomeTax" : {
-      |     "payPensionsProfit" : {
-      |       "allowancesAllocated": 100.25,
-      |       "incomeTaxAmount" :100.50
-      |     },
-      |     "savingsAndGains" : {
-      |       "allowancesAllocated": 200.25,
-      |       "incomeTaxAmount" :200.50
-      |     },
-      |     "dividends" : {
-      |       "allowancesAllocated": 300.25,
-      |       "incomeTaxAmount" :300.50
-      |     }
-      |   }
-      | },
-      | "giftAid" : {
-      |   "grossGiftAidPayments" : 400.25,
-      |   "rate" : 400.50,
-      |   "giftAidTax" : 400.75
-      | }
-      |}
-    """.stripMargin)
-
-  val outputJson: JsValue = Json.parse(
-    """
-      |{
-      | "payPensionsProfit" : {
-      |   "allowancesAllocated": 100.25,
-      |   "incomeTaxAmount" :100.50
-      | },
-      |   "savingsAndGains" : {
-      |   "allowancesAllocated": 200.25,
-      |   "incomeTaxAmount" :200.50
-      | },
-      | "dividends" : {
-      |   "allowancesAllocated": 300.25,
-      |   "incomeTaxAmount" :300.50
-      | },
-      | "giftAid" : {
-      |   "grossGiftAidPayments" : 400.25,
-      |   "rate" : 400.50,
-      |   "giftAidTax" : 400.75
-      | }
-      |}
-    """.stripMargin)
-
-  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, None)
-
-  val filledModel = detail.IncomeTaxDetail(Some(incomeTypeBreakdown(100)),
-    Some(incomeTypeBreakdown(200)),
-    Some(incomeTypeBreakdown(300)),
-    Some(GiftAid(400.25, 400.50, 400.75))
-  )
+class IncomeTaxDetailSpec extends UnitSpec {
 
   "IncomeTaxDetail" should {
 
