@@ -34,16 +34,16 @@ class ListCalculationsParserSpec extends UnitSpec {
   "parse" when {
     "valid input" should {
       "parse the request" in new Test {
-        val data = ListCalculationsRawData(nino, Some(taxYear))
+        val data = ListCalculationsRawData(nino, taxYear)
         MockValidator.validate(data).returns(Nil)
 
-        parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), Some(DesTaxYear("2018"))))
+        parser.parseRequest(data) shouldBe Right(ListCalculationsRequest(Nino(nino), DesTaxYear("2018")))
       }
     }
 
     "single validation error" should {
       "return the error" in new Test {
-        val data = ListCalculationsRawData(nino, Some(taxYear))
+        val data = ListCalculationsRawData(nino, taxYear)
         MockValidator.validate(data).returns(List(NinoFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError))
@@ -52,7 +52,7 @@ class ListCalculationsParserSpec extends UnitSpec {
 
     "multiple validation errors" should {
       "return the errors" in new Test {
-        val data = ListCalculationsRawData(nino, Some(taxYear))
+        val data = ListCalculationsRawData(nino, taxYear)
         MockValidator.validate(data).returns(List(NinoFormatError, TaxYearFormatError))
 
         parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError))))

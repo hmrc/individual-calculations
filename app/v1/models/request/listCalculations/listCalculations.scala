@@ -19,6 +19,6 @@ package v1.models.request.listCalculations
 import uk.gov.hmrc.domain.Nino
 import v1.models.request.{DesTaxYear, RawData}
 
-case class ListCalculationsRawData(nino: String, taxYear: Option[String]) extends RawData
+case class ListCalculationsRawData(nino: String, taxYear: String) extends RawData
 
-case class ListCalculationsRequest(nino: Nino, taxYear: Option[DesTaxYear])
+case class ListCalculationsRequest(nino: Nino, taxYear: DesTaxYear)
