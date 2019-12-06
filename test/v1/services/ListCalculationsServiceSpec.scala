@@ -37,7 +37,7 @@ class ListCalculationsServiceSpec extends UnitSpec {
   private val taxYear = "2017-18"
   private val correlationId = "X-123"
 
-  private val requestData = ListCalculationsRequest(Nino(nino), Some(DesTaxYear(taxYear)))
+  private val requestData = ListCalculationsRequest(Nino(nino), DesTaxYear(taxYear))
 
   trait Test extends MockTaxCalcConnector {
     implicit val hc: HeaderCarrier = HeaderCarrier()

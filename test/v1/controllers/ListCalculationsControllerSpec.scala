@@ -16,7 +16,7 @@
 
 package v1.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
@@ -55,11 +55,11 @@ class ListCalculationsControllerSpec
   }
 
   private val nino          = "AA123456A"
-  private val taxYear       =  Some("2017-18")
+  private val taxYear       =  "2017-18"
   private val correlationId = "X-123"
 
 
-  val responseBody = Json.parse(
+  val responseBody: JsValue = Json.parse(
     """{
       |  "calculations": [
       |    {
@@ -83,7 +83,7 @@ class ListCalculationsControllerSpec
 
 
   private val rawData     = ListCalculationsRawData(nino, taxYear)
-  private val requestData = ListCalculationsRequest(Nino(nino), Some(DesTaxYear("2018")))
+  private val requestData = ListCalculationsRequest(Nino(nino), DesTaxYear("2018"))
 
   "handleRequest" should {
     "return OK with list of calculations" when {

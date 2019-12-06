@@ -29,24 +29,20 @@ class ListCalculationsValidatorSpec extends UnitSpec {
   "running a validation" should {
     "return no errors" when {
       "a valid request is supplied" in {
-        validator.validate(ListCalculationsRawData(validNino, Some(validTaxYear))) shouldBe empty
-      }
-
-      "no taxYear is supplied" in {
-        validator.validate(ListCalculationsRawData(validNino, None)) shouldBe empty
+        validator.validate(ListCalculationsRawData(validNino, validTaxYear)) shouldBe empty
       }
     }
 
     "return NinoFormatError error" when {
       "an invalid nino is supplied" in {
-        validator.validate(ListCalculationsRawData("A12344A", Some(validTaxYear))) shouldBe
+        validator.validate(ListCalculationsRawData("A12344A", validTaxYear)) shouldBe
           List(NinoFormatError)
       }
     }
 
     "return TaxYearFormatError error" when {
       "an invalid tax year is supplied" in {
-        validator.validate(ListCalculationsRawData(validNino, Some("20178"))) shouldBe
+        validator.validate(ListCalculationsRawData(validNino, "20178")) shouldBe
           List(TaxYearFormatError)
       }
     }
@@ -54,14 +50,14 @@ class ListCalculationsValidatorSpec extends UnitSpec {
     "return RuleTaxYearNotSupportedError error" when {
       "an out of range tax year is supplied" in {
         validator.validate(
-          ListCalculationsRawData(validNino, Some("2016-17"))) shouldBe
+          ListCalculationsRawData(validNino, "2016-17")) shouldBe
           List(RuleTaxYearNotSupportedError)
       }
     }
 
     "return multiple errors" when {
       "request supplied has multiple errors" in {
-        validator.validate(ListCalculationsRawData("A12344A", Some("20178"))) shouldBe
+        validator.validate(ListCalculationsRawData("A12344A", "20178")) shouldBe
           List(NinoFormatError, TaxYearFormatError)
       }
     }

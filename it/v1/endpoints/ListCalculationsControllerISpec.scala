@@ -30,7 +30,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
   private trait Test {
 
     val nino                    = "AA123456A"
-    val taxYear: Option[String] = None
+    val taxYear: String         = "2018-19"
     val calcId                  = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
     val correlationId           = "X-123"
 
@@ -41,9 +41,7 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
-      val queryParams: Seq[(String, String)] =
-        Seq("taxYear" -> taxYear)
-          .collect { case (k, Some(v)) => (k, v) }
+      val queryParams: Seq[(String, String)] = Seq("taxYear" -> taxYear)
 
       setupStubs()
       buildRequest(uri)
@@ -97,7 +95,6 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
       |  ]""".stripMargin)
 
       "valid request is made with a tax year" in new Test {
-        override val taxYear = Some("2018-19")
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
@@ -112,31 +109,16 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
         response.header("Content-Type") shouldBe Some("application/json")
         response.json shouldBe successBody
       }
-
-      "valid request is made without a tax year" in new Test {
-
-        override def setupStubs(): StubMapping = {
-          AuditStub.audit()
-          AuthStub.authorised()
-          MtdIdLookupStub.ninoFound(nino)
-          DesStub.onSuccess(DesStub.GET, desUrl, OK, desSuccessBody)
-        }
-
-        val response: WSResponse = await(request.get)
-        response.status shouldBe OK
-        response.header("Content-Type") shouldBe Some("application/json")
-        response.json shouldBe successBody
-      }
     }
 
     "return error according to spec" when {
 
       "validation error" when {
-        def validationErrorTest(requestNino: String, requestTaxYear: Option[String], expectedStatus: Int, expectedBody: MtdError): Unit = {
+        def validationErrorTest(requestNino: String, requestTaxYear: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
           s"validation fails with ${expectedBody.code} error" in new Test {
 
             override val nino: String            = requestNino
-            override val taxYear: Option[String] = requestTaxYear
+            override val taxYear: String         = requestTaxYear
 
             override def setupStubs(): StubMapping = {
               AuditStub.audit()
@@ -152,10 +134,10 @@ class ListCalculationsControllerISpec extends IntegrationBaseSpec {
         }
 
         val input = Seq(
-          ("AA1123A", None, BAD_REQUEST, NinoFormatError),
-          ("AA123456A", Some("20177"), BAD_REQUEST, TaxYearFormatError),
-          ("AA123456A", Some("2015-16"), BAD_REQUEST, RuleTaxYearNotSupportedError),
-          ("AA123456A", Some("2020-22"), BAD_REQUEST, RuleTaxYearRangeExceededError)
+          ("AA1123A", "2019-20", BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "20177", BAD_REQUEST, TaxYearFormatError),
+          ("AA123456A", "2015-16", BAD_REQUEST, RuleTaxYearNotSupportedError),
+          ("AA123456A", "2020-22", BAD_REQUEST, RuleTaxYearRangeExceededError)
         )
 
         input.foreach(args => (validationErrorTest _).tupled(args))

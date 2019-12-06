@@ -28,13 +28,13 @@ class ListCalculationsValidator extends Validator[ListCalculationsRawData] with 
   private def parameterFormatValidation: ListCalculationsRawData => List[List[MtdError]] = { data =>
     List(
       NinoValidation.validate(data.nino),
-      data.taxYear.map(taxYear => TaxYearValidation.validate(taxYear)).getOrElse(Nil)
+      TaxYearValidation.validate(data.taxYear)
     )
   }
 
   private def parameterRuleValidation: ListCalculationsRawData => List[List[MtdError]] = { data =>
     List(
-      data.taxYear.map(taxYear => MinTaxYearValidation.validate(taxYear, minimumTaxYear)).getOrElse(Nil)
+     MinTaxYearValidation.validate(data.taxYear, minimumTaxYear)
     )
   }
 

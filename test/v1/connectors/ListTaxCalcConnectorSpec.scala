@@ -59,22 +59,7 @@ class ListTaxCalcConnectorSpec extends ConnectorSpec {
 
   "List tax calculations" when {
 
-    val request = ListCalculationsRequest(nino, None)
-    val taxYearRequest = ListCalculationsRequest(nino, Some(taxYear))
-
-    "a valid request is supplied with no query parameters" should {
-      "return a successful response with the correct correlationId" in new Test {
-
-        val expected = Right(ResponseWrapper(correlationId, listCalcResponse))
-
-        MockedHttpClient
-          .parameterGet(s"$baseUrl/income-tax/list-of-calculation-results/$nino", Seq(), desRequestHeaders: _*)
-          .returns(Future.successful(expected))
-
-        await(connector.listCalculations(request)) shouldBe expected
-
-      }
-    }
+    val taxYearRequest = ListCalculationsRequest(nino, taxYear)
 
     "a valid request is supplied with a tax year parameter" should {
       "return a successful response with the correct correlationId" in new Test {

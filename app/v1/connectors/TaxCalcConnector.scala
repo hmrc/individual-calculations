@@ -43,9 +43,7 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
     val nino = request.nino.nino
 
     val pathParameter =
-      Map("taxYear" -> request.taxYear.map(_.value)).collect {
-        case (key, Some(value)) => key -> value
-      }
+      Map("taxYear" -> request.taxYear.toString)
 
     get(
       DesUri[ListCalculationsResponse](s"income-tax/list-of-calculation-results/$nino"), pathParameter.toSeq

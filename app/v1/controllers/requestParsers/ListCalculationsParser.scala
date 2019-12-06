@@ -26,5 +26,5 @@ class ListCalculationsParser @Inject()(val validator: ListCalculationsValidator)
   extends RequestParser[ListCalculationsRawData, ListCalculationsRequest] {
 
   override protected def requestFor(data: ListCalculationsRawData): ListCalculationsRequest =
-    ListCalculationsRequest(Nino(data.nino), data.taxYear.map(DesTaxYear.fromMtd))
+    ListCalculationsRequest(Nino(data.nino), DesTaxYear.fromMtd(data.taxYear))
 }

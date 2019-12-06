@@ -30,7 +30,7 @@ class AuthISpec extends IntegrationBaseSpec {
   private trait Test {
 
     val nino                    = "AA123456A"
-    val taxYear: Option[String] = None
+    val taxYear: String         = "2018-19"
     val calcId                  = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
     val correlationId           = "X-123"
 
@@ -41,9 +41,7 @@ class AuthISpec extends IntegrationBaseSpec {
     def setupStubs(): StubMapping
 
     def request: WSRequest = {
-      val queryParams: Seq[(String, String)] =
-        Seq("taxYear" -> taxYear)
-          .collect { case (k, Some(v)) => (k, v) }
+      val queryParams: Seq[(String, String)] = Seq("taxYear" -> taxYear)
 
       setupStubs()
       buildRequest(uri)
@@ -114,8 +112,6 @@ class AuthISpec extends IntegrationBaseSpec {
           |  ]""".stripMargin)
 
       "return 200 " in new Test {
-
-        override val taxYear = Some("2018-19")
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()
