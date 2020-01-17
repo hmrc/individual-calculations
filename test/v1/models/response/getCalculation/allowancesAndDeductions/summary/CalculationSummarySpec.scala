@@ -35,7 +35,7 @@ class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
                                                     expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
       "a valid json is received" in {
-        desJson.as[CalculationSummary] shouldBe CalculationSummary(Some(1000), Some(1000))
+        desJson.as[CalculationSummary] shouldBe CalculationSummary(Some(1000), Some(1000.25))
       }
     }
 
@@ -49,7 +49,7 @@ class CalculationSummarySpec extends UnitSpec with JsonErrorValidators {
   "writes" should {
     "return a valid json" when {
       "summary object has allowances and deductions" in {
-        Json.toJson(CalculationSummary(Some(1000), Some(1000))) shouldBe mtdJson
+        Json.toJson(CalculationSummary(Some(1000), Some(1000.25))) shouldBe mtdJson
       }
     }
 

@@ -31,10 +31,10 @@ object ReliefFixtures {
       |        },
       |        "reliefs": {
       |            "residentialFinanceCosts": {
-      |                "amountClaimed": 1000,
-      |                "allowableAmount": 1000,
+      |                "amountClaimed": 1000.25,
+      |                "allowableAmount": 1000.25,
       |                "rate": 2,
-      |                "propertyFinanceRelief": 1000
+      |                "propertyFinanceRelief": 1000.25
       |            }
       |        }
       |    }
@@ -51,16 +51,16 @@ object ReliefFixtures {
       |        },
       |        "reliefs": {
       |            "residentialFinanceCosts": {
-      |                "amountClaimed": 1000,
+      |                "amountClaimed": 1000.25,
       |                "rate": 2,
-      |                "propertyFinanceRelief": 1000
+      |                "propertyFinanceRelief": 1000.25
       |            }
       |        }
       |    }
       |}""".stripMargin)
 
   val mtdJson: JsValue = Json.parse("""{
-      |"residentialFinanceCosts":{"amountClaimed":1000,"allowableAmount":1000,"rate":2,"propertyFinanceRelief":1000}
+      |"residentialFinanceCosts":{"amountClaimed":1000.25,"allowableAmount":1000.25,"rate":2,"propertyFinanceRelief":1000.25}
       |}
     """.stripMargin)
 
