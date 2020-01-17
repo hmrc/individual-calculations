@@ -20,7 +20,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
 import utils.NestedJsonReads
 
-case class CalculationSummary(totalAllowancesAndDeductions: Option[BigInt], totalReliefs: Option[BigInt])
+case class CalculationSummary(totalAllowancesAndDeductions: Option[BigInt], totalReliefs: Option[BigDecimal])
 
 object CalculationSummary extends NestedJsonReads{
   val empty = CalculationSummary(None, None)
@@ -28,6 +28,6 @@ object CalculationSummary extends NestedJsonReads{
   implicit val writes: Writes[CalculationSummary] = Json.writes[CalculationSummary]
   implicit val reads: Reads[CalculationSummary] = (
     (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "totalAllowancesAndDeductions").readNestedNullable[BigInt] and
-      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "totalReliefs").readNestedNullable[BigInt]
+      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "totalReliefs").readNestedNullable[BigDecimal]
     )(CalculationSummary.apply _)
 }

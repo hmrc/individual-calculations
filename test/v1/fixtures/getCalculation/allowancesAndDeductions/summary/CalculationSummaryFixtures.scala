@@ -28,7 +28,7 @@ object CalculationSummaryFixtures {
       |                "totalAllowancesAndDeductions": 1000,
       |                "totalTaxableIncome": 68088189411,
       |                "incomeTaxCharged": 16364761452,
-      |                "totalReliefs": 1000,
+      |                "totalReliefs": 1000.25,
       |                "incomeTaxDueAfterReliefs": -99999999999.99,
       |                "incomeTaxDueAfterGiftAid": 69148904014
       |            },
@@ -57,7 +57,7 @@ object CalculationSummaryFixtures {
       |}""".stripMargin)
 
   val mtdJson: JsValue = Json.parse("""
-      |{"totalAllowancesAndDeductions":1000,"totalReliefs":1000}
+      |{"totalAllowancesAndDeductions":1000,"totalReliefs":1000.25}
     """.stripMargin)
 
 }

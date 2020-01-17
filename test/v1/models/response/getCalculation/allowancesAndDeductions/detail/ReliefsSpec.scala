@@ -26,7 +26,7 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
   "reads" should {
     "return a valid object" when {
       "valid json is passed" in {
-        desJson.as[Reliefs] shouldBe Reliefs(Some(ResidentialFinanceCosts(1000, Some(1000), 2, 1000)))
+        desJson.as[Reliefs] shouldBe Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)))
       }
 
       "json has no fields" in {
@@ -38,7 +38,7 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
   "writes" should {
     "return a valid json" when {
       "ResidentialFinanceCosts object has data" in {
-        Json.toJson(Reliefs(Some(ResidentialFinanceCosts(1000, Some(1000), 2, 1000)))) shouldBe mtdJson
+        Json.toJson(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)))) shouldBe mtdJson
       }
     }
   }
