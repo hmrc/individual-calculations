@@ -25,7 +25,6 @@ class LossClaimsSummarySpec extends UnitSpec with JsonErrorValidators {
 
 
   "LossClaimSummary" when {
-
     "read from valid Json" should {
 
       testPropertyType[LossClaimsSummary](lossClaimSummaryDesJson)(

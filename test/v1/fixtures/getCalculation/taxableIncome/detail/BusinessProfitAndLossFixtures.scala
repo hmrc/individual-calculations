@@ -37,7 +37,7 @@ object BusinessProfitAndLossFixtures {
 
   val selfEmployments = Some(List(SelfEmployment("LLIS12345678908",Some(1000),Some(1000),Some(1000),Some(1000),None,
     Some(1000),Some(1000),Some(1000),None,Some(1000),Some(1000),Some(LossClaimsSummary(Some(1000),Some(1000),
-      Some(100),None,None,None,None)),None)))
+      Some(1000),Some(100),None,None,Some(1000),None)),None)))
 
   val ukPropertyFhlObject = Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
     Some(1000.00),Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),
@@ -51,10 +51,10 @@ object BusinessProfitAndLossFixtures {
     Some(FhlLossClaimsSummary(Some(1000),Some(1000),Some(1000),Some(100))),None))
 
   val ukPropertyNonFhlWithoutLossClaimsDetailObject = Some(UkPropertyNonFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-    Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),Some(NonFhlLossClaimsSummary(Some(1000),Some(1000),Some(100))),None))
+    Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),Some(NonFhlLossClaimsSummary(Some(1000),Some(1000),Some(100),Some(100))),None))
 
   val ukPropertyNonFhlObject = Some(UkPropertyNonFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-    Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),Some(NonFhlLossClaimsSummary(Some(1000),Some(1000),Some(100))),
+    Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),Some(NonFhlLossClaimsSummary(Some(1000),Some(1000),Some(1000), Some(100))),
     Some(NonFhlLossClaimsDetail(Some(List(NonFhlLossBroughtForward("2054-55",1000, mtdLoss = true))),
     Some(List(NonFhlResultOfClaimApplied(Some("CCIS12345678901"),Some("000000000000210"),"2038-39",TypeOfClaim.`carry-forward`,
       mtdLoss = true,"2050-51",1000,1000))),Some(List(NonFhlDefaultCarriedForwardLoss("2026-27",1000))),
@@ -109,10 +109,12 @@ object BusinessProfitAndLossFixtures {
          |                "totalBroughtForwardLosses": 1000.00,
          |                "lossForCSFHL": 1000.00,
          |                "broughtForwardLossesUsed": 1000.00,
+         |                "carrySidewaysClass4LossesUsed": 1000.00,
          |                "taxableProfitAfterIncomeTaxLossesDeduction": 1000.00,
          |                "totalLossesCarriedForward": 1000.00,
          |                "totalBroughtForwardIncomeTaxLosses": 1000.00,
          |                "broughtForwardIncomeTaxLossesUsed": 1000.00,
+         |                "carrySidewaysIncomeTaxLossesUsed": 1000.00,
          |                "totalIncomeTaxLossesCarriedForward":100.00
          |            }
     """.stripMargin)
@@ -227,7 +229,9 @@ object BusinessProfitAndLossFixtures {
       |		"lossClaimsSummary": {
       |			"totalBroughtForwardIncomeTaxLosses": 1000,
       |			"broughtForwardIncomeTaxLossesUsed": 1000,
-      |			"totalIncomeTaxLossesCarriedForward": 100
+      |     "carrySidewaysIncomeTaxLossesUsed": 1000,
+      |			"totalIncomeTaxLossesCarriedForward": 100,
+      |     "carrySidewaysClass4LossesUsed": 1000.00
       |		}
       |	}],
       |	"ukPropertyFhl": {
@@ -280,6 +284,7 @@ object BusinessProfitAndLossFixtures {
       |		"lossClaimsSummary": {
       |			"totalBroughtForwardIncomeTaxLosses": 1000,
       |			"broughtForwardIncomeTaxLossesUsed": 1000,
+      |     "carrySidewaysIncomeTaxLossesUsed": 1000,
       |			"totalIncomeTaxLossesCarriedForward": 100
       |		},
       |		"lossClaimsDetail": {

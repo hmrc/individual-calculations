@@ -42,7 +42,7 @@ object TaxableIncomeFixtures {
         Some(BusinessProfitAndLoss(
           Some(List(SelfEmployment("AaIS12345678910",Some(100101.11),Some(100201.11),Some(100301.11),Some(100401.11),
             Some(101501),Some(100501.11),Some(100601.11),Some(100701.11),Some(100901),Some(100801),Some(101301),
-            Some(SELossClaimsSummary(Some(101001),Some(101201),Some(101401),Some(101601),Some(101701),Some(101801),Some(101901))),
+            Some(SELossClaimsSummary(Some(101001),Some(101201),Some(101401),Some(101601),Some(101701),Some(101801),Some(101901), Some(101119))),
             Some(SELossClaimsDetail(Some(List(SELossBroughtForward(LossType.INCOME,"2017-18",10101, mtdLoss = true,"AaIS12345678910"))),
               Some(List(SEResultOfClaimApplied(Some("CCIS12345678901"),"2017-18",TypeOfClaim.`carry-forward`, mtdLoss = true, "2017-18",10101,10201,
                 LossType.INCOME, "AaIS12345678910"))),Some(List(UnclaimedLoss("2017-18",1001, "2019-20",LossType.INCOME,"AaIS12345678910"))),
@@ -50,7 +50,7 @@ object TaxableIncomeFixtures {
               Some(List(ClaimNotApplied("CCIS12345678921","2017-18",TypeOfClaim.`carry-forward`, "AaIS12345678910")))))),
             SelfEmployment("AbIS12345678910",Some(100102.22),Some(100202.22),Some(100302.22),Some(100402.22),Some(101502),Some(100502.22),Some(100602.22),
               Some(100702.22),Some(100902),Some(100802),Some(101302),Some(SELossClaimsSummary(Some(101002),Some(101202),Some(101402),Some(101602),Some(101702),
-                Some(101802),Some(101902))),Some(SELossClaimsDetail(Some(List(SELossBroughtForward(LossType.INCOME, "2017-18",
+                Some(101802),Some(101902), Some(101392))),Some(SELossClaimsDetail(Some(List(SELossBroughtForward(LossType.INCOME, "2017-18",
                 10102, mtdLoss = true,"AbIS12345678910"))),Some(List(SEResultOfClaimApplied(Some("CCIS12345678902"),"2017-18",
                 TypeOfClaim.`carry-sideways`, mtdLoss = true,"2017-18",10102,10202,LossType.INCOME, "AbIS12345678910"))),
                 Some(List(UnclaimedLoss("2017-18",1002, "2019-20", LossType.INCOME, "AbIS12345678910"))),
@@ -61,7 +61,7 @@ object TaxableIncomeFixtures {
               Some(List(FHLLossBroughtForward("2017-18",40101,mtdLoss = true))),Some(List(FHLResultOfClaimApplied(Some("CCIS12345678904"),"2017-18",
                 TypeOfClaim.`carry-forward-to-carry-sideways`,mtdLoss = true,"2017-18",40101,40201))),Some(List(FHLDefaultCarriedForwardLoss("2017-18",401))))))),
           Some(UkPropertyNonFhl(Some(2001.11),Some(2002.11),Some(2003.11),Some(2004.11),Some(2005.11),Some(2006.11),Some(2007.11),Some(2009),Some(2008),Some(2013),
-            Some(NonFHLLossClaimsSummary(Some(2010),Some(2012),Some(2014))),Some(LossClaimsDetail(
+            Some(NonFHLLossClaimsSummary(Some(2010),Some(2012),Some(2014), Some(2011))),Some(LossClaimsDetail(
               Some(List(LossBroughtForward("2017-18",20101,mtdLoss = true))),Some(List(ResultOfClaimApplied(Some("CCIS12345678903"),
                 Some("000000000000213"),"2017-18",TypeOfClaim.`carry-sideways-fhl`,mtdLoss = true, "2017-18",20101,20201))),
               Some(List(DefaultCarriedForwardLoss("2017-18",201))),Some(List(NonFHLClaimNotApplied("CCIS12345678923","2017-18",
@@ -101,11 +101,12 @@ object TaxableIncomeFixtures {
       |					"lossClaimsSummary": {
       |						"totalBroughtForwardIncomeTaxLosses": 101001,
       |						"broughtForwardIncomeTaxLossesUsed": 101201,
-      |						"totalIncomeTaxLossesCarriedForward": 101401,
-      |						"totalBroughtForwardClass4Losses": 101601,
-      |						"broughtForwardClass4LossesUsed": 101701,
-      |						"carrySidewaysClass4LossesUsed": 101801,
-      |						"totalClass4LossesCarriedForward": 101901
+      |           "carrySidewaysIncomeTaxLossesUsed": 101401,
+      |						"totalIncomeTaxLossesCarriedForward": 101601,
+      |						"totalBroughtForwardClass4Losses": 101701,
+      |						"broughtForwardClass4LossesUsed": 101801,
+      |						"carrySidewaysClass4LossesUsed": 101901,
+      |						"totalClass4LossesCarriedForward": 101119
       |					},
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
@@ -160,11 +161,12 @@ object TaxableIncomeFixtures {
       |					"lossClaimsSummary": {
       |						"totalBroughtForwardIncomeTaxLosses": 101002,
       |						"broughtForwardIncomeTaxLossesUsed": 101202,
-      |						"totalIncomeTaxLossesCarriedForward": 101402,
-      |						"totalBroughtForwardClass4Losses": 101602,
-      |						"broughtForwardClass4LossesUsed": 101702,
-      |						"carrySidewaysClass4LossesUsed": 101802,
-      |						"totalClass4LossesCarriedForward": 101902
+      |           "carrySidewaysIncomeTaxLossesUsed": 101402,
+      |						"totalIncomeTaxLossesCarriedForward": 101602,
+      |						"totalBroughtForwardClass4Losses": 101702,
+      |						"broughtForwardClass4LossesUsed": 101802,
+      |						"carrySidewaysClass4LossesUsed": 101902,
+      |						"totalClass4LossesCarriedForward": 101392
       |					},
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
@@ -256,7 +258,8 @@ object TaxableIncomeFixtures {
       |					"lossClaimsSummary": {
       |						"totalBroughtForwardIncomeTaxLosses": 2010,
       |						"broughtForwardIncomeTaxLossesUsed": 2012,
-      |						"totalIncomeTaxLossesCarriedForward": 2014
+      |           "carrySidewaysIncomeTaxLossesUsed": 2014,
+      |						"totalIncomeTaxLossesCarriedForward": 2011
       |					},
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
@@ -643,12 +646,13 @@ object TaxableIncomeFixtures {
       |            "lossForCSFHL": 101101,
       |            "broughtForwardIncomeTaxLossesUsed": 101201,
       |            "taxableProfitAfterIncomeTaxLossesDeduction": 101301,
-      |            "totalIncomeTaxLossesCarriedForward": 101401,
+      |            "totalIncomeTaxLossesCarriedForward": 101601,
       |            "class4Loss": 101501,
-      |            "totalBroughtForwardClass4Losses": 101601,
-      |            "broughtForwardClass4LossesUsed": 101701,
-      |            "carrySidewaysClass4LossesUsed": 101801,
-      |            "totalClass4LossesCarriedForward": 101901
+      |            "totalBroughtForwardClass4Losses": 101701,
+      |            "carrySidewaysIncomeTaxLossesUsed": 101401,
+      |            "broughtForwardClass4LossesUsed": 101801,
+      |            "carrySidewaysClass4LossesUsed": 101901,
+      |            "totalClass4LossesCarriedForward": 101119
       |          },
       |          {
       |            "incomeSourceId": "AbIS12345678910",
@@ -667,12 +671,13 @@ object TaxableIncomeFixtures {
       |            "lossForCSFHL": 101102,
       |            "broughtForwardIncomeTaxLossesUsed": 101202,
       |            "taxableProfitAfterIncomeTaxLossesDeduction": 101302,
-      |            "totalIncomeTaxLossesCarriedForward": 101402,
+      |            "totalIncomeTaxLossesCarriedForward": 101602,
       |            "class4Loss": 101502,
-      |            "totalBroughtForwardClass4Losses": 101602,
-      |            "broughtForwardClass4LossesUsed": 101702,
-      |            "carrySidewaysClass4LossesUsed": 101802,
-      |            "totalClass4LossesCarriedForward": 101902
+      |            "totalBroughtForwardClass4Losses": 101702,
+      |            "carrySidewaysIncomeTaxLossesUsed": 101402,
+      |            "broughtForwardClass4LossesUsed": 101802,
+      |            "carrySidewaysClass4LossesUsed": 101902,
+      |            "totalClass4LossesCarriedForward": 101392
       |          },
       |          {
       |            "incomeSourceId": "AcIS12345678910",
@@ -691,11 +696,11 @@ object TaxableIncomeFixtures {
       |            "lossForCSFHL": 2011,
       |            "broughtForwardIncomeTaxLossesUsed": 2012,
       |            "taxableProfitAfterIncomeTaxLossesDeduction": 2013,
-      |            "totalIncomeTaxLossesCarriedForward": 2014,
+      |            "totalIncomeTaxLossesCarriedForward": 2011,
       |            "class4Loss": 2015,
       |            "totalBroughtForwardClass4Losses": 2016,
       |            "broughtForwardClass4LossesUsed": 2017,
-      |            "carrySidewaysClass4LossesUsed": 2018,
+      |            "carrySidewaysIncomeTaxLossesUsed": 2014,
       |            "totalClass4LossesCarriedForward": 2019
       |          },
       |          {
