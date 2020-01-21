@@ -16,7 +16,6 @@
 
 package v1.models.des
 
-import play.api.libs.json.{JsValue, Json}
 import support.UnitSpec
 import utils.enums.EnumJsonSpecSupport
 import v1.models.des.LossType._
