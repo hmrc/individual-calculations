@@ -60,13 +60,13 @@ object TaxableIncomeFixtures {
           Some(UkPropertyFhl(Some(4001.11),Some(4002.11),Some(4003.11),Some(4004.11),Some(4005.11),Some(4006.11),Some(4007.11),Some(4009),Some(4008),
             Some(4013),Some(FHLLossClaimsSummary(Some(4011),Some(4010),Some(4012),Some(4014))),Some(FHLLossClaimsDetail(
               Some(List(FHLLossBroughtForward("2017-18",40101,mtdLoss = true))),Some(List(FHLResultOfClaimApplied(Some("CCIS12345678904"),"2017-18",
-                TypeOfClaim.`carry-forward-to-carry-sideways`,mtdLoss = true,"2017-18",40101,40201))),Some(List(FHLDefaultCarriedForwardLoss("2017-18",401))))))),
+                TypeOfClaim.`carry-forward-to-carry-sideways`,mtdLoss = true,"2017-18",40101,40201))),Some(List(FHLDefaultCarriedForwardLoss("2017-18",401))))), Some(fhlBsasResponse))),
           Some(UkPropertyNonFhl(Some(2001.11),Some(2002.11),Some(2003.11),Some(2004.11),Some(2005.11),Some(2006.11),Some(2007.11),Some(2009),Some(2008),Some(2013),
             Some(NonFHLLossClaimsSummary(Some(2010),Some(2012),Some(2014))),Some(LossClaimsDetail(
               Some(List(LossBroughtForward("2017-18",20101,mtdLoss = true))),Some(List(ResultOfClaimApplied(Some("CCIS12345678903"),
                 Some("000000000000213"),"2017-18",TypeOfClaim.`carry-sideways-fhl`,mtdLoss = true, "2017-18",20101,20201))),
               Some(List(DefaultCarriedForwardLoss("2017-18",201))),Some(List(NonFHLClaimNotApplied("CCIS12345678923","2017-18",
-                TypeOfClaim.`carry-sideways-fhl`))))), Some(fhlBsasResponse))))))),Some(SavingsAndGains(7012,7014,
+                TypeOfClaim.`carry-sideways-fhl`))))), Some(nonFhlBsasResponse))))))),Some(SavingsAndGains(7012,7014,
       Some(List(Savings("SAVKB1UVwUTBQGJ","UK Savings Account ONE",90101.11,Some(90201.11),Some(90301.11)),
         Savings("SAVKB2UVwUTBQGJ","UK Savings Account TWO",90102.11,Some(90202.11),Some(90302.11)))))),Some(Dividends(7020,7022))))
 
@@ -241,7 +241,11 @@ object TaxableIncomeFixtures {
       |							"taxYearLossIncurred": "2017-18",
       |							"currentLossValue": 401
       |						}]
-      |					}
+      |					},
+      |          "bsas" : {
+      |             "bsasId" : "AdIS12345678910",
+      |             "applied" : true
+      |           }
       |				},
       |				"ukPropertyNonFhl": {
       |					"totalIncome": 2001.11,
@@ -285,10 +289,10 @@ object TaxableIncomeFixtures {
       |							"claimType": "carry-sideways-fhl"
       |						}]
       |					},
-      |     "bsas" : {
-      |       "bsasId" : "AcIS12345678910",
-      |       "applied" : false
-      |     }
+      |        "bsas" : {
+      |          "bsasId" : "AcIS12345678910",
+      |          "applied" : false
+      |       }
       |				}
       |			}
       |		},
