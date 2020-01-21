@@ -18,7 +18,7 @@ package v1.models.errors
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v1.fixtures.ErrorFixtures.{SingleError, MultipleErrors}
+import v1.fixtures.ErrorFixtures.{MultipleErrors, SingleError}
 
 class ErrorWrapperSpec extends UnitSpec {
 
@@ -35,8 +35,6 @@ class ErrorWrapperSpec extends UnitSpec {
   }
 
   "Rendering a error response with two errors" should {
-    val error =
-
     "generate the correct JSON" in {
       Json.toJson(MultipleErrors.model) shouldBe MultipleErrors.json
     }
