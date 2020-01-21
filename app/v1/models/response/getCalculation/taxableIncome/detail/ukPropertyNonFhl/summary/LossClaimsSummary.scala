@@ -21,16 +21,18 @@ import play.api.libs.json._
 
 case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
                              broughtForwardIncomeTaxLossesUsed: Option[BigInt],
+                             carrySidewaysIncomeTaxLossesUsed: Option[BigInt],
                              totalIncomeTaxLossesCarriedForward: Option[BigInt])
 
 object LossClaimsSummary {
-  val empty = LossClaimsSummary(None, None, None)
+  val empty = LossClaimsSummary(None, None, None, None)
 
   implicit val writes: OWrites[LossClaimsSummary] = Json.writes[LossClaimsSummary]
 
   implicit val reads: Reads[LossClaimsSummary] = (
     (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigInt] and
       (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigInt] and
+      (JsPath \ "carrySidewaysIncomeTaxLossesUsed").readNullable[BigInt] and
       (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigInt]
     )(LossClaimsSummary.apply _)
 }
