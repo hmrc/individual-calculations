@@ -48,8 +48,18 @@ object LossClaimsDetailFixtures {
   val lossClaimsDetailResponseNoLossesBroughtForward: LossClaimsDetail =
     lossClaimsDetailDefaultResponse.copy(lossesBroughtForward = None)
 
+  val desBsasJson = Json.parse(
+    """{
+      |       "incomeSourceId": "AAIS12345678903",
+      |				"incomeSourceType": "01",
+      |				"ascId": "bsasId",
+      |				"receivedDateTime": "2019-07-17T08:15:28Z",
+      |				"applied": true
+      |}""".stripMargin)
+
   val lossClaimsDetailDefaultDesJson: JsValue = Json
     .obj("inputs" -> Json.obj("lossesBroughtForward" -> Seq(lossBroughtForwardDesJson)))
+    .deepMerge(Json.obj("inputs" -> Json.obj("annualAdjustments" -> Seq(desBsasJson))))
     .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("resultOfClaimsApplied" -> Seq(resultOfClaimAppliedDesJson)))))
     .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("unclaimedLosses" -> Seq(unclaimedLossDesJson)))))
     .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("carriedForwardLosses" -> Seq(carriedForwardLossDesJson)))))
