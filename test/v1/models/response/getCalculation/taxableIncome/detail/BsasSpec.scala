@@ -14,33 +14,30 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome
+package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
-import v1.fixtures.getCalculation.taxableIncome.TaxableIncomeFixtures._
+import v1.fixtures.getCalculation.taxableIncome.detail.BsasFixture._
 
-class TaxableIncomeSpec extends UnitSpec {
+class BsasSpec extends UnitSpec {
 
-  "Taxable income" when {
+  "Bsas" when {
     "read from valid Json" should {
-      "return a JsSuccess" in {
-        desJson.validate[TaxableIncome] shouldBe a[JsSuccess[_]]
-      }
-      "with the expected TaxableIncome object" in {
-        desJson.as[TaxableIncome] shouldBe taxableIncomeResponse
+      "with the expected Bsas object" in {
+        desJson.as[Bsas] shouldBe bsasResponse
       }
     }
 
     "read from invalid Json" should {
       "return a JsError" in {
-        emptyJson.validate[TaxableIncome] shouldBe a[JsError]
+        invalidDesJson.validate[Bsas] shouldBe a[JsError]
       }
     }
 
     "written to Json" should {
       "return the expected JsObject" in {
-        Json.toJson(taxableIncomeResponse) shouldBe taxableIncomeWrittenJson
+        Json.toJson(bsasResponse) shouldBe mtdJson
       }
     }
   }

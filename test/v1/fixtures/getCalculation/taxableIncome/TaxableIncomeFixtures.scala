@@ -28,6 +28,7 @@ import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.sum
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss => FHLDefaultCarriedForwardLoss, LossBroughtForward => FHLLossBroughtForward, LossClaimsDetail => FHLLossClaimsDetail, ResultOfClaimApplied => FHLResultOfClaimApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.{LossClaimsSummary => FHLLossClaimsSummary}
+import v1.fixtures.getCalculation.taxableIncome.detail.BsasFixture._
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied, ClaimNotApplied => NonFHLClaimNotApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary.{LossClaimsSummary => NonFHLLossClaimsSummary}
@@ -65,7 +66,7 @@ object TaxableIncomeFixtures {
               Some(List(LossBroughtForward("2017-18",20101,mtdLoss = true))),Some(List(ResultOfClaimApplied(Some("CCIS12345678903"),
                 Some("000000000000213"),"2017-18",TypeOfClaim.`carry-sideways-fhl`,mtdLoss = true, "2017-18",20101,20201))),
               Some(List(DefaultCarriedForwardLoss("2017-18",201))),Some(List(NonFHLClaimNotApplied("CCIS12345678923","2017-18",
-                TypeOfClaim.`carry-sideways-fhl`))))))))))),Some(SavingsAndGains(7012,7014,
+                TypeOfClaim.`carry-sideways-fhl`))))), Some(fhlBsasResponse))))))),Some(SavingsAndGains(7012,7014,
       Some(List(Savings("SAVKB1UVwUTBQGJ","UK Savings Account ONE",90101.11,Some(90201.11),Some(90301.11)),
         Savings("SAVKB2UVwUTBQGJ","UK Savings Account TWO",90102.11,Some(90202.11),Some(90302.11)))))),Some(Dividends(7020,7022))))
 
@@ -283,7 +284,11 @@ object TaxableIncomeFixtures {
       |							"taxYearClaimMade": "2017-18",
       |							"claimType": "carry-sideways-fhl"
       |						}]
-      |					}
+      |					},
+      |     "bsas" : {
+      |       "bsasId" : "AcIS12345678910",
+      |       "applied" : false
+      |     }
       |				}
       |			}
       |		},
