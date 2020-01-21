@@ -21,6 +21,7 @@ import v1.models.domain.TypeOfClaim
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.LossClaimsSummary
+import v1.fixtures.getCalculation.taxableIncome.detail.BsasFixture._
 
 object UkPropertyFhlFixtures {
 
@@ -71,11 +72,11 @@ object UkPropertyFhlFixtures {
       |        },
       |        "annualAdjustments": [
       |            {
-      |                "incomeSourceId": "AAIS12345678903",
+      |                "incomeSourceId": "AdIS12345678910",
       |                "incomeSourceType": "04",
       |                "bissId": "12345678",
       |                "receivedDateTime": "2019-07-17T08:15:28Z",
-      |                "applied": false
+      |                "applied": true
       |            }
       |        ],
       |        "lossesBroughtForward": [
@@ -338,12 +339,12 @@ object UkPropertyFhlFixtures {
     Some(LossClaimsDetail(Some(List(LossBroughtForward("2054-55",1000,mtdLoss = true))),
       Some(List(ResultOfClaimApplied(Some("CCIS12345678901"),"2038-39",
         TypeOfClaim.`carry-forward`,mtdLoss = true,"2050-51",1000,1000))),
-      Some(List(DefaultCarriedForwardLoss("2026-27",1000))))))
+      Some(List(DefaultCarriedForwardLoss("2026-27",1000))))), Some(fhlBsasResponse))
 
   val ukPropertyFhlWithOutLossClaimsDetailObject = UkPropertyFhl(Some(1000.00),
     Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
     Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),
-    Some(LossClaimsSummary(Some(1000),None,None,None)),None)
+    Some(LossClaimsSummary(Some(1000),None,None,None)),None, Some(fhlBsasResponse))
 
   val mtdUkPropertyFhlObj: JsValue = Json.parse(
     """
@@ -379,7 +380,11 @@ object UkPropertyFhlFixtures {
       |			"taxYearLossIncurred": "2026-27",
       |			"currentLossValue": 1000
       |		}]
-      |	}
+      |	},
+      | "bsas" : {
+      |   "bsasId" : "AdIS12345678910",
+      |   "applied" : true
+      |  }
       |}
     """.stripMargin)
 
@@ -397,7 +402,11 @@ object UkPropertyFhlFixtures {
       | "taxableProfitAfterIncomeTaxLossesDeduction": 1000,
       |	"lossClaimsSummary": {
       |		"lossForCSFHL": 1000
-      |	}
+      |	},
+      |  "bsas" : {
+      |   "bsasId" : "AdIS12345678910",
+      |   "applied" : true
+      |  }
       |}
     """.stripMargin)
 
@@ -447,13 +456,13 @@ object UkPropertyFhlFixtures {
       |            ]
       |        },
       |        "annualAdjustments": [
-      |            {
-      |                "incomeSourceId": "AAIS12345678903",
-      |                "incomeSourceType": "04",
-      |                "bissId": "12345678",
-      |                "receivedDateTime": "2019-07-17T08:15:28Z",
-      |                "applied": false
-      |            }
+      |          {
+      |            "incomeSourceId": "AdIS12345678910",
+      |            "incomeSourceType": "04",
+      |            "bissId": "10000004",
+      |            "receivedDateTime": "2019-07-17T08:15:28Z",
+      |            "applied": true
+      |          }
       |        ],
       |        "lossesBroughtForward": [
       |            {

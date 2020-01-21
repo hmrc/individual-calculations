@@ -46,7 +46,7 @@ object BsasFixture {
     """.stripMargin)
 
   val bsasResponse: Bsas = Bsas("anId", applied = true)
-  val fhlBsasResponse: Bsas = Bsas("AcIS12345678910", applied = false)
-  val nonFhlBsasResponse: Bsas = Bsas("anId", applied = true)
+  val fhlBsasResponse: Bsas = Bsas("AdIS12345678910", applied = true)
+  val nonFhlBsasResponse: Bsas = Bsas("AcIS12345678910", applied = false)
 
 }
