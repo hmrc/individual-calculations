@@ -104,6 +104,7 @@ object UkPropertyNonFhlFixtures {
     Some(2000),
     Some(2000),
     Some(LossClaimsSummaryFixtures.lossClaimsSummaryModel),
-    Some(LossClaimsDetailFixtures.lossClaimsDetailModel)
+    Some(LossClaimsDetailFixtures.lossClaimsDetailModel),
+    None
   )
 }
