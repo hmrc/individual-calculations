@@ -39,7 +39,6 @@ class SelfEmploymentSpec extends UnitSpec {
         selfEmploymentBusinessDefaultDesJsonSequence.validate[Seq[SelfEmployment]] shouldBe a[JsSuccess[_]]
       }
       "containing the expected SelfEmploymentBusiness object" in {
-        println(" ---------------------- "+ selfEmploymentBusinessDefaultDesJsonSequence)
         selfEmploymentBusinessDefaultDesJsonSequence.as[Seq[SelfEmployment]] shouldBe Seq(selfEmploymentBusinessDefaultResponse)
       }
     }

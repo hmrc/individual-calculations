@@ -59,18 +59,22 @@ object SelfEmployment extends NestedJsonReads {
     JsPath.readNullable[LossClaimsSummary].map{
       case Some(LossClaimsSummary.empty) => None
       case other => other
-    } and Reads.pure(None))(SelfEmployment.apply _)
+    } and Reads.pure(None) and Reads.pure(None))(SelfEmployment.apply _)
 
-  implicit val seqReads: Reads[Seq[SelfEmployment]] = ((JsPath \ "calculation" \ "businessProfitAndLoss")
+  implicit val seqReads: Reads[Seq[SelfEmployment]] =((JsPath \ "calculation" \ "businessProfitAndLoss")
     .readNestedNullable[Seq[JsValue]].mapEmptySeqToNone
     .map(_.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js)))
     .map(x => Some(x)) and
-    JsPath.readNullable[LossClaimsDetail])(buildSelfEmployments(_, _))
+    JsPath.readNullable[LossClaimsDetail] and
+    (JsPath \ "inputs" \ "annualAdjustments")
+      .readNestedNullableOpt(filteredArrayValueReads[BusinessSourceAdjustableSummary](None, "incomeSourceType", "01")))(buildSelfEmployments(_, _, _))
 
-  def buildSelfEmployments(seqSelfEmploysOpt: Option[Seq[SelfEmployment]], detailsOpt: Option[LossClaimsDetail]): Seq[SelfEmployment] = {
+  def buildSelfEmployments(seqSelfEmploysOpt: Option[Seq[SelfEmployment]],
+                           detailsOpt: Option[LossClaimsDetail], bsasOpt: Option[BusinessSourceAdjustableSummary]): Seq[SelfEmployment] = {
     val seqSelfEmploys    = seqSelfEmploysOpt.getOrElse(Seq.empty)
     val details = detailsOpt.getOrElse(LossClaimsDetail.empty)
-    seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId)))
+    val bsas = bsasOpt
+    seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId), bsas = bsas))
   }
 
   def filterByIncomeSourceType(js: JsValue, sourceType: String = "01"): Option[SelfEmployment] = js.as[FilterWrapper] match {

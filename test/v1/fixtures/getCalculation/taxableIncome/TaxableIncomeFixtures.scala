@@ -109,6 +109,10 @@ object TaxableIncomeFixtures {
       |						"carrySidewaysClass4LossesUsed": 101801,
       |						"totalClass4LossesCarriedForward": 101901
       |					},
+      |         "bsas":{
+      |           "bsasId":"bsasId",
+      |           "applied":true
+      |         },
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
       |							"lossType": "income",
@@ -168,6 +172,10 @@ object TaxableIncomeFixtures {
       |						"carrySidewaysClass4LossesUsed": 101802,
       |						"totalClass4LossesCarriedForward": 101902
       |					},
+      |         "bsas":{
+      |           "bsasId":"bsasId",
+      |           "applied":true
+      |         },
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
       |							"lossType": "income",
@@ -459,14 +467,14 @@ object TaxableIncomeFixtures {
       |          {
       |            "incomeSourceId": "AaIS12345678910",
       |            "incomeSourceType": "01",
-      |            "bissId": "10000001",
+      |            "ascId": "bsasId",
       |            "receivedDateTime": "2019-07-17T08:15:28Z",
-      |            "applied": false
+      |            "applied": true
       |          },
       |          {
       |            "incomeSourceId": "AbIS12345678910",
       |            "incomeSourceType": "01",
-      |            "bissId": "10000002",
+      |            "ascId": "10000002",
       |            "receivedDateTime": "2019-07-17T08:15:28Z",
       |            "applied": true
       |          },

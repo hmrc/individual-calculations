@@ -26,8 +26,9 @@ case class BusinessSourceAdjustableSummary(
 )
 
 object BusinessSourceAdjustableSummary extends NestedJsonReads{
+
   implicit val reads: Reads[BusinessSourceAdjustableSummary] = (
-    (JsPath \ "inputs" \ "annualAdjustments" \ "ascId").readNestedNullable[String] and
+    (JsPath \ "ascId").read[String] and
       (JsPath \ "applied").read[Boolean]
   )(BusinessSourceAdjustableSummary.apply _)
 

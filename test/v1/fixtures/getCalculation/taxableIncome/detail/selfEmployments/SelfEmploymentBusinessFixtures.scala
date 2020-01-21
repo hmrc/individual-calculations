@@ -146,7 +146,7 @@ object SelfEmploymentBusinessFixtures {
     taxableProfitAfterIncomeTaxLossesDeduction,
     Some(lossClaimsSummaryResponse),
     None,
-    Some(bsas)
+    None
   )
 
 }
