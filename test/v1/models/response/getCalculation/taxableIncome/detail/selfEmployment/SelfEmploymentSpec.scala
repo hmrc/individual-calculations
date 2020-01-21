@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+  package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.json.{JsSuccess, Json}
 import support.UnitSpec
@@ -39,6 +39,7 @@ class SelfEmploymentSpec extends UnitSpec {
         selfEmploymentBusinessDefaultDesJsonSequence.validate[Seq[SelfEmployment]] shouldBe a[JsSuccess[_]]
       }
       "containing the expected SelfEmploymentBusiness object" in {
+        println(" ---------------------- "+ selfEmploymentBusinessDefaultDesJsonSequence)
         selfEmploymentBusinessDefaultDesJsonSequence.as[Seq[SelfEmployment]] shouldBe Seq(selfEmploymentBusinessDefaultResponse)
       }
     }

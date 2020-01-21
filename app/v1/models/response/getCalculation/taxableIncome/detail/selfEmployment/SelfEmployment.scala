@@ -19,7 +19,7 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.LossClaimsDetail
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{BusinessSourceAdjustableSummary, LossClaimsDetail}
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
 case class SelfEmployment(
@@ -36,7 +36,8 @@ case class SelfEmployment(
     taxableProfit: Option[BigDecimal],
     taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
     lossClaimsSummary: Option[LossClaimsSummary],
-    lossClaimsDetail: Option[LossClaimsDetail]
+    lossClaimsDetail: Option[LossClaimsDetail],
+    bsas: Option[BusinessSourceAdjustableSummary]
 )
 
 object SelfEmployment extends NestedJsonReads {
