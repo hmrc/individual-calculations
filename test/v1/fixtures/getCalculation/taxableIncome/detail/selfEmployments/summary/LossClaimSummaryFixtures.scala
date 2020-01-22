@@ -43,10 +43,12 @@ object LossClaimSummaryFixtures {
   val broughtForwardClass4LossesUsed: Option[BigInt]     = Some(2)
   val carrySidewaysClass4LossesUsed: Option[BigInt]      = Some(2)
   val totalClass4LossesCarriedForward: Option[BigInt]    = Some(3)
+  val carrySidewaysIncomeTaxLossesUsed: Option[BigInt]    = Some(1)
 
   val lossClaimsSummaryResponse = LossClaimsSummary(
     totalBroughtForwardIncomeTaxLosses,
     broughtForwardIncomeTaxLossesUsed,
+    carrySidewaysIncomeTaxLossesUsed,
     totalIncomeTaxLossesCarriedForward,
     totalBroughtForwardClass4Losses,
     broughtForwardClass4LossesUsed,
@@ -70,6 +72,7 @@ object LossClaimSummaryFixtures {
       |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
       |    "lossForCSFHL": $lossForCSFHL,
       |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
+      |    "carrySidewaysIncomeTaxLossesUsed": ${carrySidewaysIncomeTaxLossesUsed.get},
       |    "taxableProfitAfterIncomeTaxLossesDeduction": $taxableProfitAfterIncomeTaxLossesDeduction,
       |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
       |    "class4Loss": $class4Loss,
@@ -100,6 +103,7 @@ object LossClaimSummaryFixtures {
   val lossClaimSummaryWrittenJson: JsValue = Json.parse(s"""{
       |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
       |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
+      |    "carrySidewaysIncomeTaxLossesUsed": ${carrySidewaysIncomeTaxLossesUsed.get},
       |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
       |    "totalBroughtForwardClass4Losses": ${totalBroughtForwardClass4Losses.get},
       |    "broughtForwardClass4LossesUsed": ${broughtForwardClass4LossesUsed.get},
@@ -129,6 +133,7 @@ object LossClaimSummaryFixtures {
      |    "totalBroughtForwardIncomeTaxLosses": ${totalBroughtForwardIncomeTaxLosses.get},
      |    "lossForCSFHL": $lossForCSFHL,
      |    "broughtForwardIncomeTaxLossesUsed": ${broughtForwardIncomeTaxLossesUsed.get},
+     |    "carrySidewaysIncomeTaxLossesUsed": ${carrySidewaysIncomeTaxLossesUsed.get},
      |    "taxableProfitAfterIncomeTaxLossesDeduction": $taxableProfitAfterIncomeTaxLossesDeduction,
      |    "totalIncomeTaxLossesCarriedForward": ${totalIncomeTaxLossesCarriedForward.get},
      |    "class4Loss": $class4Loss,

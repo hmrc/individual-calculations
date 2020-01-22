@@ -29,12 +29,10 @@ object UnclaimedLossFixtures {
   val lossType: String         = "income"
   val typeOfLoss: String       = "income"
   val currentLossValue: BigInt = 71438847594L
-  val expires: Int             = 2079
 
   val unclaimedLossResponse: UnclaimedLoss = UnclaimedLoss(
     DesTaxYear.fromDesIntToString(taxYearLossIncurred),
     currentLossValue,
-    DesTaxYear.fromDesIntToString(expires),
     LossType.INCOME,
     incomeSourceId
   )
@@ -44,7 +42,6 @@ object UnclaimedLossFixtures {
       |    "incomeSourceType": "$incomeSourceType",
       |    "taxYearLossIncurred": $taxYearLossIncurred,
       |    "currentLossValue": $currentLossValue,
-      |    "expires": $expires,
       |    "lossType": "$lossType"
       |}""".stripMargin)
 
@@ -53,7 +50,6 @@ object UnclaimedLossFixtures {
       |    "incomeSourceType": "02",
       |    "taxYearLossIncurred": $taxYearLossIncurred,
       |    "currentLossValue": $currentLossValue,
-      |    "expires": $expires,
       |    "lossType": "$lossType"
       |}""".stripMargin)
 
@@ -61,7 +57,6 @@ object UnclaimedLossFixtures {
       |  {
       |    "taxYearLossIncurred": "${DesTaxYear.fromDesIntToString(taxYearLossIncurred)}",
       |    "currentLossValue": $currentLossValue,
-      |    "expires": "${DesTaxYear.fromDesIntToString(expires)}",
       |    "lossType": "$typeOfLoss"
       |}""".stripMargin)
 
@@ -69,8 +64,7 @@ object UnclaimedLossFixtures {
       |    "incomeSourceId": "$incomeSourceId",
       |    "incomeSourceType": "$incomeSourceType",
       |    "taxYearLossIncurred": $taxYearLossIncurred,
-      |    "currentLossValue": $currentLossValue,
-      |    "expires": $expires
+      |    "currentLossValue": $currentLossValue
       |}""".stripMargin)
 
 }

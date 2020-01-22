@@ -139,10 +139,10 @@ object SelfEmploymentJson {
   val lcd2 = LossClaimsDetail(Some(Seq(lbf3)), None, None, None, None)
   val lcd3 = LossClaimsDetail(Some(Seq(lbf4)), None, None, None, None)
 
-  val se1 = SelfEmployment("a", None, None, None, None, None, None, None, None, None, None, None, None, Some(lcd1))
-  val se2 = SelfEmployment("b", None, None, None, None, None, None, None, None, None, None, None, None, Some(lcd2))
-  val se3 = SelfEmployment("c", None, None, None, None, None, None, None, None, None, None, None, None, Some(lcd3))
-  val se4 = SelfEmployment("d", None, None, None, None, None, None, None, None, None, None, None, None, None)
+  val se1 = SelfEmployment("a", None, None, None, None, None, None, None, None, None, None, None, None, Some(lcd1), None)
+  val se2 = SelfEmployment("b", None, None, None, None, None, None, None, None, None, None, None, None, Some(lcd2), None)
+  val se3 = SelfEmployment("c", None, None, None, None, None, None, None, None, None, None, None, None, Some(lcd3), None)
+  val se4 = SelfEmployment("d", None, None, None, None, None, None, None, None, None, None, None, None, None, None)
 
   val complexSelfEmploymentCaseResponse = Seq(se1, se2, se3, se4)
 }

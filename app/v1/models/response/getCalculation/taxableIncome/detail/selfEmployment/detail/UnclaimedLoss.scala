@@ -24,7 +24,6 @@ import v1.models.request.DesTaxYear
 case class UnclaimedLoss(
     taxYearLossIncurred: String,
     currentLossValue: BigInt,
-    expires: String,
     lossType: LossType,
     incomeSourceId: String
 )
@@ -36,7 +35,6 @@ object UnclaimedLoss {
     def writes(unclaimedLoss: UnclaimedLoss): JsObject = Json.obj(
       "taxYearLossIncurred" -> unclaimedLoss.taxYearLossIncurred,
       "currentLossValue"    -> unclaimedLoss.currentLossValue,
-      "expires"             -> unclaimedLoss.expires,
       "lossType"            -> unclaimedLoss.lossType
     )
   }
@@ -44,7 +42,6 @@ object UnclaimedLoss {
   implicit val reads: Reads[UnclaimedLoss] = (
     (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
-      (JsPath \ "expires").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "lossType").read[LossType] and
       (JsPath \ "incomeSourceId").read[String]
   )(UnclaimedLoss.apply _)
