@@ -43,6 +43,13 @@ class SelfEmploymentSpec extends UnitSpec {
       }
     }
 
+    "des returns a valid json with different incomeSourceId in annualAdjustments" should {
+      "return SelfEmploymentBusiness object without BSAS object" in {
+        selfEmploymentBusinessDefaultDesJsonSequenceWithDifferentIncomeSourceId.as[Seq[SelfEmployment]] shouldBe
+          Seq(selfEmploymentBusinessDefaultResponse.copy(bsas = None))
+      }
+    }
+
     "read from empty Json" should {
       "return an empty sequence" in {
         emptyJson.as[Seq[SelfEmployment]].isEmpty shouldBe true

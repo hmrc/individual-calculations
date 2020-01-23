@@ -17,20 +17,28 @@
 package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json._
 import utils.NestedJsonReads
 
 case class BusinessSourceAdjustableSummary(
                                           bsasId: String,
-                                          applied: Boolean
+                                          applied: Boolean,
+                                          incomeSourceId: String
 )
 
 object BusinessSourceAdjustableSummary extends NestedJsonReads{
 
   implicit val reads: Reads[BusinessSourceAdjustableSummary] = (
     (JsPath \ "ascId").read[String] and
-      (JsPath \ "applied").read[Boolean]
+      (JsPath \ "applied").read[Boolean] and
+        (JsPath \ "incomeSourceId").read[String]
   )(BusinessSourceAdjustableSummary.apply _)
 
-  implicit val writes: OWrites[BusinessSourceAdjustableSummary] = Json.writes[BusinessSourceAdjustableSummary]
+  implicit val writes: Writes[BusinessSourceAdjustableSummary] = new Writes[BusinessSourceAdjustableSummary] {
+    override def writes(bsas: BusinessSourceAdjustableSummary): JsValue =
+      Json.obj(
+        "bsasId" -> bsas.bsasId,
+        "applied" -> bsas.applied
+      )
+  }
 }

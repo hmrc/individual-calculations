@@ -74,7 +74,8 @@ object SelfEmployment extends NestedJsonReads {
     val seqSelfEmploys    = seqSelfEmploysOpt.getOrElse(Seq.empty)
     val details = detailsOpt.getOrElse(LossClaimsDetail.empty)
     val bsas = bsasOpt
-    seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId), bsas = bsas))
+    seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId),
+      bsas = bsas.filter(x => selfEmploy.selfEmploymentId == x.incomeSourceId)))
   }
 
   def filterByIncomeSourceType(js: JsValue, sourceType: String = "01"): Option[SelfEmployment] = js.as[FilterWrapper] match {

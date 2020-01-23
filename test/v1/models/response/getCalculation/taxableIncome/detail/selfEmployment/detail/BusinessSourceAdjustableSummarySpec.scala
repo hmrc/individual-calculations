@@ -25,7 +25,8 @@ class BusinessSourceAdjustableSummarySpec extends UnitSpec {
   val desJson = Json.parse(
     """{
       |"ascId": "bsasId",
-      |"applied": true
+      |"applied": true,
+      |"incomeSourceId": "AAIS12345678904"
       |}""".stripMargin)
 
   val mtdJson = Json.parse(
@@ -34,7 +35,7 @@ class BusinessSourceAdjustableSummarySpec extends UnitSpec {
       |"applied": true
       |}""".stripMargin)
 
-  val model = BusinessSourceAdjustableSummary("bsasId", true)
+  val model = BusinessSourceAdjustableSummary("bsasId", true, "AAIS12345678904")
 
   "BusinessSourceAdjustableSummary" when {
     "read from valid Json" should {

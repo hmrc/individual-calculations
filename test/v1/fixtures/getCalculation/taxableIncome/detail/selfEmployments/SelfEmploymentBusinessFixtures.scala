@@ -36,7 +36,7 @@ object SelfEmploymentBusinessFixtures {
   val taxableProfit: Option[BigDecimal]                 = Some(92149284)
   val adjustedIncomeTaxLoss: Option[BigInt]             = Some(2)
   val taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt] = Some(2)
-  val bsas = BusinessSourceAdjustableSummary("bsasId", true)
+  val bsas = BusinessSourceAdjustableSummary("bsasId", true, "AAIS12345678904")
 
   val selfEmploymentBusinessDefaultResponse: SelfEmployment = SelfEmployment(
     selfEmploymentId,
@@ -63,6 +63,11 @@ object SelfEmploymentBusinessFixtures {
   val selfEmploymentBusinessDefaultDesJsonSequence: JsValue = Json
     .obj("calculation" -> Json.obj("businessProfitAndLoss" -> Seq(lossClaimSummaryDesJson)))
     .deepMerge(lossClaimsDetailDefaultDesJson.as[JsObject])
+
+  val selfEmploymentBusinessDefaultDesJsonSequenceWithDifferentIncomeSourceId: JsValue = Json
+    .obj("calculation" -> Json.obj("businessProfitAndLoss" -> Seq(lossClaimSummaryDesJson)))
+    .deepMerge(lossClaimsDetailSEDesJsonWithDifferentIncomeSourceId.as[JsObject])
+
 
   val additionalWrittenFieldsJson: JsValue = Json.parse(s"""{
       |    "selfEmploymentId": "$selfEmploymentId",
