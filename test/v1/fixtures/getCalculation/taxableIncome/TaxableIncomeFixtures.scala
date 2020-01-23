@@ -28,6 +28,7 @@ import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.sum
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{DefaultCarriedForwardLoss => FHLDefaultCarriedForwardLoss, LossBroughtForward => FHLLossBroughtForward, LossClaimsDetail => FHLLossClaimsDetail, ResultOfClaimApplied => FHLResultOfClaimApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.{LossClaimsSummary => FHLLossClaimsSummary}
+import v1.fixtures.getCalculation.taxableIncome.detail.BsasFixture._
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{DefaultCarriedForwardLoss, LossBroughtForward, LossClaimsDetail, ResultOfClaimApplied, ClaimNotApplied => NonFHLClaimNotApplied}
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.summary.{LossClaimsSummary => NonFHLLossClaimsSummary}
@@ -48,7 +49,7 @@ object TaxableIncomeFixtures {
                 LossType.INCOME, "AaIS12345678910"))),Some(List(UnclaimedLoss("2017-18",1001,LossType.INCOME,"AaIS12345678910"))),
               Some(List(CarriedForwardLoss(Some("CCIS12345678901"),TypeOfClaim.`carry-forward`, Some("2018-19"), "2017-18",1001,INCOME, "AaIS12345678910"))),
               Some(List(ClaimNotApplied("CCIS12345678921","2017-18",TypeOfClaim.`carry-forward`, "AaIS12345678910"))))),
-            Some(BusinessSourceAdjustableSummary("bsasId", true, "AaIS12345678910"))),
+            Some(BusinessSourceAdjustableSummary("10000001", true, "AaIS12345678910"))),
             SelfEmployment("AbIS12345678910",Some(100102.22),Some(100202.22),Some(100302.22),Some(100402.22),Some(101502),Some(100502.22),Some(100602.22),
               Some(100702.22),Some(100902),Some(100802),Some(101302),Some(SELossClaimsSummary(Some(101002),Some(101202),Some(101402),Some(101602),Some(101702),
                 Some(101802),Some(101902), Some(101392))),Some(SELossClaimsDetail(Some(List(SELossBroughtForward(LossType.INCOME, "2017-18",
@@ -60,13 +61,13 @@ object TaxableIncomeFixtures {
           Some(UkPropertyFhl(Some(4001.11),Some(4002.11),Some(4003.11),Some(4004.11),Some(4005.11),Some(4006.11),Some(4007.11),Some(4009),Some(4008),
             Some(4013),Some(FHLLossClaimsSummary(Some(4011),Some(4010),Some(4012),Some(4014))),Some(FHLLossClaimsDetail(
               Some(List(FHLLossBroughtForward("2017-18",40101,mtdLoss = true))),Some(List(FHLResultOfClaimApplied(Some("CCIS12345678904"),"2017-18",
-                TypeOfClaim.`carry-forward-to-carry-sideways`,mtdLoss = true,"2017-18",40101,40201))),Some(List(FHLDefaultCarriedForwardLoss("2017-18",401))))))),
+                TypeOfClaim.`carry-forward-to-carry-sideways`,mtdLoss = true,"2017-18",40101,40201))),Some(List(FHLDefaultCarriedForwardLoss("2017-18",401))))), Some(fhlBsasResponse))),
           Some(UkPropertyNonFhl(Some(2001.11),Some(2002.11),Some(2003.11),Some(2004.11),Some(2005.11),Some(2006.11),Some(2007.11),Some(2009),Some(2008),Some(2013),
             Some(NonFHLLossClaimsSummary(Some(2010),Some(2012),Some(2014), Some(2011))),Some(LossClaimsDetail(
               Some(List(LossBroughtForward("2017-18",20101,mtdLoss = true))),Some(List(ResultOfClaimApplied(Some("CCIS12345678903"),
                 Some("000000000000213"),"2017-18",TypeOfClaim.`carry-sideways-fhl`,mtdLoss = true, "2017-18",20101,20201))),
               Some(List(DefaultCarriedForwardLoss("2017-18",201))),Some(List(NonFHLClaimNotApplied("CCIS12345678923","2017-18",
-                TypeOfClaim.`carry-sideways-fhl`))))))))))),Some(SavingsAndGains(7012,7014,
+                TypeOfClaim.`carry-sideways-fhl`))))), Some(Bsas("10000003",false)))))))),Some(SavingsAndGains(7012,7014,
       Some(List(Savings("SAVKB1UVwUTBQGJ","UK Savings Account ONE",90101.11,Some(90201.11),Some(90301.11)),
         Savings("SAVKB2UVwUTBQGJ","UK Savings Account TWO",90102.11,Some(90202.11),Some(90302.11)))))),Some(Dividends(7020,7022))))
 
@@ -110,7 +111,7 @@ object TaxableIncomeFixtures {
       |						"totalClass4LossesCarriedForward": 101119
       |					},
       |         "bsas":{
-      |           "bsasId":"bsasId",
+      |           "bsasId":"10000001",
       |           "applied":true
       |         },
       |					"lossClaimsDetail": {
@@ -245,7 +246,11 @@ object TaxableIncomeFixtures {
       |							"taxYearLossIncurred": "2017-18",
       |							"currentLossValue": 401
       |						}]
-      |					}
+      |					},
+      |          "bsas" : {
+      |             "bsasId" : "12345678",
+      |             "applied" : true
+      |           }
       |				},
       |				"ukPropertyNonFhl": {
       |					"totalIncome": 2001.11,
@@ -289,7 +294,11 @@ object TaxableIncomeFixtures {
       |							"taxYearClaimMade": "2017-18",
       |							"claimType": "carry-sideways-fhl"
       |						}]
-      |					}
+      |					},
+      |        "bsas" : {
+      |          "bsasId" : "10000003",
+      |          "applied" : false
+      |       }
       |				}
       |			}
       |		},
@@ -463,7 +472,7 @@ object TaxableIncomeFixtures {
       |          {
       |            "incomeSourceId": "AaIS12345678910",
       |            "incomeSourceType": "01",
-      |            "ascId": "bsasId",
+      |            "ascId": "10000001",
       |            "receivedDateTime": "2019-07-17T08:15:28Z",
       |            "applied": true
       |          },
@@ -477,14 +486,14 @@ object TaxableIncomeFixtures {
       |          {
       |            "incomeSourceId": "AcIS12345678910",
       |            "incomeSourceType": "02",
-      |            "bissId": "10000003",
+      |            "ascId": "10000003",
       |            "receivedDateTime": "2019-07-17T08:15:28Z",
       |            "applied": false
       |          },
       |          {
       |            "incomeSourceId": "AdIS12345678910",
       |            "incomeSourceType": "04",
-      |            "bissId": "10000004",
+      |            "ascId": "12345678",
       |            "receivedDateTime": "2019-07-17T08:15:28Z",
       |            "applied": true
       |          }
