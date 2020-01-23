@@ -24,7 +24,7 @@ case class Bsas(bsasId: String, applied: Boolean)
 object Bsas {
   implicit val writes: OWrites[Bsas] = Json.writes[Bsas]
   implicit val reads: Reads[Bsas] = (
-    (JsPath \ "incomeSourceId").read[String] and
+    (JsPath \ "ascid").read[String] and
       (JsPath \ "applied").read[Boolean]
   )(Bsas.apply _)
 }
