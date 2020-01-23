@@ -52,14 +52,14 @@ object BusinessProfitAndLossFixtures {
     Some(FhlLossClaimsSummary(Some(1000),Some(1000),Some(1000),Some(100))),None, None))
 
   val ukPropertyNonFhlWithoutLossClaimsDetailObject = Some(UkPropertyNonFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
-    Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),Some(NonFhlLossClaimsSummary(Some(1000),Some(1000),Some(100),Some(100))),None))
+    Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),Some(NonFhlLossClaimsSummary(Some(1000),Some(1000),Some(100),Some(100))),None, None))
 
   val ukPropertyNonFhlObject = Some(UkPropertyNonFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
     Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),Some(NonFhlLossClaimsSummary(Some(1000),Some(1000),Some(1000), Some(100))),
     Some(NonFhlLossClaimsDetail(Some(List(NonFhlLossBroughtForward("2054-55",1000, mtdLoss = true))),
       Some(List(NonFhlResultOfClaimApplied(Some("CCIS12345678901"),Some("000000000000210"),"2038-39",TypeOfClaim.`carry-forward`,
         mtdLoss = true,"2050-51",1000,1000))),Some(List(NonFhlDefaultCarriedForwardLoss("2026-27",1000))),
-      Some(List(ClaimNotApplied("CCIS12345678912","2045-46",TypeOfClaim.`carry-forward`)))))))
+      Some(List(ClaimNotApplied("CCIS12345678912","2045-46",TypeOfClaim.`carry-forward`))))), None))
 
   def lossBroughtForwardDesJsonForFhl(incomeSourceType: String):JsValue = Json.parse(
     s"""

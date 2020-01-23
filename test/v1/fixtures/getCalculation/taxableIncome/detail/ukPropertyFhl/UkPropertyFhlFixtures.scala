@@ -74,7 +74,7 @@ object UkPropertyFhlFixtures {
       |            {
       |                "incomeSourceId": "AdIS12345678910",
       |                "incomeSourceType": "04",
-      |                "bissId": "12345678",
+      |                "ascId": "12345678",
       |                "receivedDateTime": "2019-07-17T08:15:28Z",
       |                "applied": true
       |            }
@@ -382,7 +382,7 @@ object UkPropertyFhlFixtures {
       |		}]
       |	},
       | "bsas" : {
-      |   "bsasId" : "AdIS12345678910",
+      |   "bsasId" : "12345678",
       |   "applied" : true
       |  }
       |}
@@ -404,7 +404,7 @@ object UkPropertyFhlFixtures {
       |		"lossForCSFHL": 1000
       |	},
       |  "bsas" : {
-      |   "bsasId" : "AdIS12345678910",
+      |   "bsasId" : "12345678",
       |   "applied" : true
       |  }
       |}
@@ -459,7 +459,7 @@ object UkPropertyFhlFixtures {
       |          {
       |            "incomeSourceId": "AdIS12345678910",
       |            "incomeSourceType": "04",
-      |            "bissId": "10000004",
+      |            "ascId": "12345678",
       |            "receivedDateTime": "2019-07-17T08:15:28Z",
       |            "applied": true
       |          }

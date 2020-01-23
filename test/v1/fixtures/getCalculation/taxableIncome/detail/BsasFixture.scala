@@ -24,7 +24,7 @@ object BsasFixture {
   val desJson: JsValue = Json.parse(
     """
       |{
-      |  "incomeSourceId" : "anId",
+      |  "ascId" : "anId",
       |  "applied" : true
       |}
     """.stripMargin)
@@ -32,7 +32,7 @@ object BsasFixture {
   val invalidDesJson: JsValue = Json.parse(
     """
       |{
-      |  "incomeSourceId" : 100,
+      |  "ascId" : 200,
       |  "applied" : true
       |}
     """.stripMargin)
@@ -46,7 +46,7 @@ object BsasFixture {
     """.stripMargin)
 
   val bsasResponse: Bsas = Bsas("anId", applied = true)
-  val fhlBsasResponse: Bsas = Bsas("AdIS12345678910", applied = true)
+  val fhlBsasResponse: Bsas = Bsas("12345678", applied = true)
   val nonFhlBsasResponse: Bsas = Bsas("AcIS12345678910", applied = false)
 
 }
