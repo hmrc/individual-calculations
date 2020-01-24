@@ -38,7 +38,11 @@ object BusinessProfitAndLossFixtures {
 
   val selfEmployments = Some(List(SelfEmployment("LLIS12345678908",Some(1000),Some(1000),Some(1000),Some(1000),None,
     Some(1000),Some(1000),Some(1000),None,Some(1000),Some(1000),Some(LossClaimsSummary(Some(1000),Some(1000),
-      Some(1000),Some(100),None,None,Some(1000),None)),None, Some(BusinessSourceAdjustableSummary("bsasId", true)))))
+      Some(1000),Some(100),None,None,Some(1000),None)),None, None)))
+
+  val selfEmploymentsWithBsas = Some(List(SelfEmployment("LLIS12345678908",Some(1000),Some(1000),Some(1000),Some(1000),None,
+    Some(1000),Some(1000),Some(1000),None,Some(1000),Some(1000),Some(LossClaimsSummary(Some(1000),Some(1000),
+      Some(1000),Some(100),None,None,Some(1000),None)),None, Some(BusinessSourceAdjustableSummary("bsasId", true, "AAIS12345678904")))))
 
   val ukPropertyFhlObject = Some(UkPropertyFhl(Some(1000.00),Some(1000.00),Some(1000.00),Some(1000.00),
     Some(1000.00),Some(1000.00),Some(1000.00),None,Some(1000),Some(1000),
@@ -137,7 +141,7 @@ object BusinessProfitAndLossFixtures {
        |"inputs": {
        |        "lossesBroughtForward": ${JsArray(incomeSourceType.map(x => lossBroughtForwardDesJsonForFhl(x)))},
        |        "annualAdjustments": [{
-       |          "incomeSourceId": "AAIS12345678903",
+       |          "incomeSourceId": "AAIS12345678904",
        |				  "incomeSourceType": "01",
        |				  "ascId": "bsasId",
        |				  "receivedDateTime": "2019-07-17T08:15:28Z",

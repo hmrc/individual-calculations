@@ -50,7 +50,16 @@ object LossClaimsDetailFixtures {
 
   val desBsasJson = Json.parse(
     """{
-      |       "incomeSourceId": "AAIS12345678903",
+      |       "incomeSourceId": "AAIS12345678904",
+      |				"incomeSourceType": "01",
+      |				"ascId": "bsasId",
+      |				"receivedDateTime": "2019-07-17T08:15:28Z",
+      |				"applied": true
+      |}""".stripMargin)
+
+  val desBsasJsonWithDifferentIncomeSourceId = Json.parse(
+    """{
+      |       "incomeSourceId": "0001",
       |				"incomeSourceType": "01",
       |				"ascId": "bsasId",
       |				"receivedDateTime": "2019-07-17T08:15:28Z",
@@ -60,6 +69,14 @@ object LossClaimsDetailFixtures {
   val lossClaimsDetailDefaultDesJson: JsValue = Json
     .obj("inputs" -> Json.obj("lossesBroughtForward" -> Seq(lossBroughtForwardDesJson)))
     .deepMerge(Json.obj("inputs" -> Json.obj("annualAdjustments" -> Seq(desBsasJson))))
+    .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("resultOfClaimsApplied" -> Seq(resultOfClaimAppliedDesJson)))))
+    .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("unclaimedLosses" -> Seq(unclaimedLossDesJson)))))
+    .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("carriedForwardLosses" -> Seq(carriedForwardLossDesJson)))))
+    .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("claimsNotApplied" -> Seq(claimNotAppliedDesJson)))))
+
+  val lossClaimsDetailSEDesJsonWithDifferentIncomeSourceId: JsValue = Json
+    .obj("inputs" -> Json.obj("lossesBroughtForward" -> Seq(lossBroughtForwardDesJson)))
+    .deepMerge(Json.obj("inputs" -> Json.obj("annualAdjustments" -> Seq(desBsasJsonWithDifferentIncomeSourceId))))
     .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("resultOfClaimsApplied" -> Seq(resultOfClaimAppliedDesJson)))))
     .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("unclaimedLosses" -> Seq(unclaimedLossDesJson)))))
     .deepMerge(Json.obj("calculation" -> Json.obj("lossesAndClaims" -> Json.obj("carriedForwardLosses" -> Seq(carriedForwardLossDesJson)))))

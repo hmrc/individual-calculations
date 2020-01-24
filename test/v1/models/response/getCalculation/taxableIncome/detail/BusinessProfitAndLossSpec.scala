@@ -55,7 +55,7 @@ class BusinessProfitAndLossSpec extends UnitSpec {
 
     "writes a object with all fields" should {
       "return a valid json" in {
-        Json.toJson(businessProfitAndLoss(selfEmployments, ukPropertyFhlObject, ukPropertyNonFhlObject)) shouldBe mtdJson
+        Json.toJson(businessProfitAndLoss(selfEmploymentsWithBsas, ukPropertyFhlObject, ukPropertyNonFhlObject)) shouldBe mtdJson
       }
     }
   }
