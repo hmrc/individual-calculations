@@ -67,15 +67,15 @@ object SelfEmployment extends NestedJsonReads {
     .map(x => Some(x)) and
     JsPath.readNullable[LossClaimsDetail] and
     (JsPath \ "inputs" \ "annualAdjustments")
-      .readNestedNullableOpt(filteredArrayValueReads[BusinessSourceAdjustableSummary](None, "incomeSourceType", "01")))(buildSelfEmployments(_, _, _))
+      .readNestedNullable[Seq[BusinessSourceAdjustableSummary]](filteredArrayReads("incomeSourceType", "01")).mapEmptySeqToNone)(buildSelfEmployments(_, _, _))
 
   def buildSelfEmployments(seqSelfEmploysOpt: Option[Seq[SelfEmployment]],
-                           detailsOpt: Option[LossClaimsDetail], bsasOpt: Option[BusinessSourceAdjustableSummary]): Seq[SelfEmployment] = {
+                           detailsOpt: Option[LossClaimsDetail], bsasOpt: Option[Seq[BusinessSourceAdjustableSummary]]): Seq[SelfEmployment] = {
     val seqSelfEmploys    = seqSelfEmploysOpt.getOrElse(Seq.empty)
     val details = detailsOpt.getOrElse(LossClaimsDetail.empty)
     val bsas = bsasOpt
     seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId),
-      bsas = bsas.filter(x => selfEmploy.selfEmploymentId == x.incomeSourceId)))
+      bsas = bsas.getOrElse(Seq.empty).find(x => selfEmploy.selfEmploymentId == x.incomeSourceId)))
   }
 
   def filterByIncomeSourceType(js: JsValue, sourceType: String = "01"): Option[SelfEmployment] = js.as[FilterWrapper] match {

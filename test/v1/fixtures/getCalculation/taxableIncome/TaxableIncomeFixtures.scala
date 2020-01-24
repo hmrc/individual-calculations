@@ -57,7 +57,8 @@ object TaxableIncomeFixtures {
                 TypeOfClaim.`carry-sideways`, mtdLoss = true,"2017-18",10102,10202,LossType.INCOME, "AbIS12345678910"))),
                 Some(List(UnclaimedLoss("2017-18",1002, LossType.INCOME, "AbIS12345678910"))),
                 Some(List(CarriedForwardLoss(Some("CCIS12345678902"),TypeOfClaim.`carry-forward`,Some("2018-19"),"2017-18",1002,INCOME,"AbIS12345678910"))),
-                Some(List(ClaimNotApplied("CCIS12345678922","2017-18",TypeOfClaim.`carry-sideways`, "AbIS12345678910"))))),None))),
+                Some(List(ClaimNotApplied("CCIS12345678922","2017-18",TypeOfClaim.`carry-sideways`, "AbIS12345678910"))))),
+              Some(BusinessSourceAdjustableSummary("10000002",true,"AbIS12345678910"))))),
           Some(UkPropertyFhl(Some(4001.11),Some(4002.11),Some(4003.11),Some(4004.11),Some(4005.11),Some(4006.11),Some(4007.11),Some(4009),Some(4008),
             Some(4013),Some(FHLLossClaimsSummary(Some(4011),Some(4010),Some(4012),Some(4014))),Some(FHLLossClaimsDetail(
               Some(List(FHLLossBroughtForward("2017-18",40101,mtdLoss = true))),Some(List(FHLResultOfClaimApplied(Some("CCIS12345678904"),"2017-18",
@@ -173,6 +174,10 @@ object TaxableIncomeFixtures {
       |						"carrySidewaysClass4LossesUsed": 101902,
       |						"totalClass4LossesCarriedForward": 101392
       |					},
+      |         "bsas":{
+      |           "bsasId":"10000002",
+      |           "applied":true
+      |         },
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
       |							"lossType": "income",
