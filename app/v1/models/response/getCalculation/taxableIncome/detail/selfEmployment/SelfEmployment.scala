@@ -56,7 +56,7 @@ object SelfEmployment extends NestedJsonReads {
     (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
     (JsPath \ "taxableProfit").readNullable[BigDecimal] and
     (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
-      JsPath.readNullable[LossClaimsSummary].map{
+    JsPath.readNullable[LossClaimsSummary].map{
       case Some(LossClaimsSummary.empty) => None
       case other => other
     } and Reads.pure(None) and Reads.pure(None))(SelfEmployment.apply _)

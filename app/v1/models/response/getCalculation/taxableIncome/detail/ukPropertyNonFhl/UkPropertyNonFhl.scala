@@ -63,7 +63,10 @@ object UkPropertyNonFhl extends NestedJsonReads {
       (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
       (JsPath \ "taxableProfit").readNullable[BigInt] and
       (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
-      JsPath.readNullable[LossClaimsSummary]
+      JsPath.readNullable[LossClaimsSummary].map{
+        case Some(LossClaimsSummary.empty) => None
+        case other => other
+      }
     ) (TopLevelElements.apply _)
 
   def componentApply(topLevelElementsOpt: Option[TopLevelElements], lossClaimsDetail: Option[LossClaimsDetail], bsas: Option[Bsas]): UkPropertyNonFhl = {

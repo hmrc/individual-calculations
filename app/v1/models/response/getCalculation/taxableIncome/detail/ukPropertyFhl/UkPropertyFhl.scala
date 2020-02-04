@@ -23,7 +23,6 @@ import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.Bsas
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.LossClaimsDetail
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.LossClaimsSummary
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.UkPropertyNonFhl.filteredArrayValueReads
 
 case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          totalExpenses: Option[BigDecimal],
@@ -71,7 +70,10 @@ object UkPropertyFhl extends NestedJsonReads{
         (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
         (JsPath \ "taxableProfit").readNullable[BigInt] and
         (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
-        __.readNullable[LossClaimsSummary]
+        JsPath.readNullable[LossClaimsSummary].map{
+          case Some(LossClaimsSummary.empty) => None
+          case other => other
+        }
       )(TopLevelElements.apply _)
   }
 
