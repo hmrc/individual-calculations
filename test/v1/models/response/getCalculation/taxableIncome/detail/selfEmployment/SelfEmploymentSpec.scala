@@ -16,7 +16,7 @@
 
   package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsObject, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.taxableIncome.detail.selfEmployments.SelfEmploymentBusinessFixtures._
 import v1.fixtures.getCalculation.taxableIncome.detail.selfEmployments.SelfEmploymentJson._
@@ -26,9 +26,24 @@ class SelfEmploymentSpec extends UnitSpec {
 
   "SelfEmploymentBusiness: singular" when {
 
+    val selfEmploymentResponseWithoutOptionals: SelfEmployment =
+      SelfEmployment("anId", None, None, None, None, None, None, None, None, None, None, None, None, None, None)
+
+    "read from valid JSON without LossClaimsSummary fields" should {
+      "produce the expected SelfEmployment object" in {
+        Json.parse("""{"incomeSourceId" : "anId"}""").as[SelfEmployment] shouldBe selfEmploymentResponseWithoutOptionals
+      }
+    }
+
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(selfEmploymentBusinessDefaultResponse) shouldBe selfEmploymentDetailDefaultWrittenJsonSingular
+      }
+    }
+
+    "written to JSON with an empty LossClaimsSummary" should {
+      "not write the LossClaimsSummary field" in {
+        Json.toJson(selfEmploymentBusinessDefaultResponse.copy(lossClaimsSummary = None)) shouldBe selfEmploymentDetailDefaultWrittenJsonSingularNoSummary
       }
     }
   }
@@ -52,7 +67,7 @@ class SelfEmploymentSpec extends UnitSpec {
 
     "read from empty Json" should {
       "return an empty sequence" in {
-        emptyJson.as[Seq[SelfEmployment]].isEmpty shouldBe true
+        JsObject.empty.as[Seq[SelfEmployment]].isEmpty shouldBe true
       }
     }
 

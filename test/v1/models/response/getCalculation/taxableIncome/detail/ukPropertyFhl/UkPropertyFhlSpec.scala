@@ -28,6 +28,12 @@ class UkPropertyFhlSpec extends UnitSpec {
         desJson.validate[UkPropertyFhl] shouldBe a[JsSuccess[_]]
       }
 
+      "reads with a valid json without LossClaimsSummary" should {
+        "return the expected UkPropertyFhl object" in {
+          Json.parse("""{"incomeSourceType": "aType"}""").as[UkPropertyFhl] shouldBe UkPropertyFhl.empty
+        }
+      }
+
       "return the expected ukPropertyFhl object" in {
         desJson.as[UkPropertyFhl] shouldBe ukPropertyFhlObject
       }
@@ -43,6 +49,10 @@ class UkPropertyFhlSpec extends UnitSpec {
       }
 
       "return a valid json with out LossClaimsDetail" in {
+        Json.toJson(ukPropertyFhlWithOutLossClaimsDetailObject) shouldBe mtdUkPropertyFhlObjWithOutLossClaimsDetail
+      }
+
+      "return a valid json with out LossClaimsSummary" in {
         Json.toJson(ukPropertyFhlWithOutLossClaimsDetailObject) shouldBe mtdUkPropertyFhlObjWithOutLossClaimsDetail
       }
 

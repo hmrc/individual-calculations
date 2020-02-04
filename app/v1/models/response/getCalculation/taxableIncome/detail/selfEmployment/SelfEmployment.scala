@@ -44,7 +44,7 @@ object SelfEmployment extends NestedJsonReads {
 
   implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
 
-  private implicit val singleReads: Reads[SelfEmployment] = ((JsPath \ "incomeSourceId").read[String] and
+  implicit val singleReads: Reads[SelfEmployment] = ((JsPath \ "incomeSourceId").read[String] and
     (JsPath \ "totalIncome").readNullable[BigDecimal] and
     (JsPath \ "totalExpenses").readNullable[BigDecimal] and
     (JsPath \ "netProfit").readNullable[BigDecimal] and
