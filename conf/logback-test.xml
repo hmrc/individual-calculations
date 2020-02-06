@@ -51,8 +51,6 @@
 
     <logger name="application" level="WARN"/>
 
-    <logger name="reactivemongo.core" level="ERROR"/>
-
     <logger name="connector" level="ERROR">
         <appender-ref ref="STDOUT"/>
     </logger>

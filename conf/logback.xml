@@ -49,8 +49,6 @@
 
     <logger name="application" level="DEBUG"/>
 
-    <logger name="reactivemongo.core" level="ERROR"/>
-
     <logger name="connector" level="TRACE">
         <appender-ref ref="STDOUT"/>
     </logger>
