@@ -64,7 +64,7 @@ object TaxableIncomeFixtures {
               Some(List(FHLLossBroughtForward("2017-18",40101,mtdLoss = true))),Some(List(FHLResultOfClaimApplied(Some("CCIS12345678904"),"2017-18",
                 TypeOfClaim.`carry-forward-to-carry-sideways`,mtdLoss = true,"2017-18",40101,40201))),Some(List(FHLDefaultCarriedForwardLoss("2017-18",401))))), Some(fhlBsasResponse))),
           Some(UkPropertyNonFhl(Some(2001.11),Some(2002.11),Some(2003.11),Some(2004.11),Some(2005.11),Some(2006.11),Some(2007.11),Some(2009),Some(2008),Some(2013),
-            Some(NonFHLLossClaimsSummary(Some(2010),Some(2012),Some(2014), Some(2011))),Some(LossClaimsDetail(
+            Some(NonFHLLossClaimsSummary(Some(2010),Some(2012),Some(2014), Some(2011), Some(2020))),Some(LossClaimsDetail(
               Some(List(LossBroughtForward("2017-18",20101,mtdLoss = true))),Some(List(ResultOfClaimApplied(Some("CCIS12345678903"),
                 Some("000000000000213"),"2017-18",TypeOfClaim.`carry-sideways-fhl`,mtdLoss = true, "2017-18",20101,20201))),
               Some(List(DefaultCarriedForwardLoss("2017-18",201))),Some(List(NonFHLClaimNotApplied("CCIS12345678923","2017-18",
@@ -272,7 +272,8 @@ object TaxableIncomeFixtures {
       |						"totalBroughtForwardIncomeTaxLosses": 2010,
       |						"broughtForwardIncomeTaxLossesUsed": 2012,
       |           "carrySidewaysIncomeTaxLossesUsed": 2014,
-      |						"totalIncomeTaxLossesCarriedForward": 2011
+      |						"totalIncomeTaxLossesCarriedForward": 2011,
+      |           "broughtForwardCarrySidewaysIncomeTaxLossesUsed": 2020
       |					},
       |					"lossClaimsDetail": {
       |						"lossesBroughtForward": [{
@@ -714,6 +715,7 @@ object TaxableIncomeFixtures {
       |            "broughtForwardIncomeTaxLossesUsed": 2012,
       |            "taxableProfitAfterIncomeTaxLossesDeduction": 2013,
       |            "totalIncomeTaxLossesCarriedForward": 2011,
+      |            "broughtForwardCarrySidewaysIncomeTaxLossesUsed": 2020,
       |            "class4Loss": 2015,
       |            "totalBroughtForwardClass4Losses": 2016,
       |            "broughtForwardClass4LossesUsed": 2017,
