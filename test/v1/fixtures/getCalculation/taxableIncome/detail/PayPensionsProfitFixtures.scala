@@ -220,7 +220,8 @@ object PayPensionsProfitFixtures {
        |				"totalBroughtForwardIncomeTaxLosses": 1000,
        |				"broughtForwardIncomeTaxLossesUsed": 1000,
        |        "carrySidewaysIncomeTaxLossesUsed": 1000,
-       |				"totalIncomeTaxLossesCarriedForward": 100
+       |				"totalIncomeTaxLossesCarriedForward": 100,
+       |        "broughtForwardCarrySidewaysIncomeTaxLossesUsed": 1000
        |			},
        |			"lossClaimsDetail": {
        |				"lossesBroughtForward": [{
