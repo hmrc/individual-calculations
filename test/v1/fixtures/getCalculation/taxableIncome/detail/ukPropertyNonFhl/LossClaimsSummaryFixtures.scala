@@ -44,6 +44,7 @@ object LossClaimsSummaryFixtures {
   val carrySidewaysClass4LossesUsed: Option[BigDecimal]          = Some(1000.00)
   val totalClass4LossesCarriedForward: Option[BigDecimal]        = Some(1000.00)
   val carrySidewaysIncomeTaxLossesUsed: Option[BigInt]       = Some(1000)
+  val broughtForwardCarrySidewaysIncomeTaxLossesUsed: Option[BigInt] = Some(1000)
 
   val lossClaimSummaryDesJson: JsValue = Json.parse(s"""{
                                                        |    "incomeSourceId": "$incomeSourceId",
@@ -68,7 +69,8 @@ object LossClaimsSummaryFixtures {
                                                        |    "totalBroughtForwardClass4Losses": ${totalBroughtForwardClass4Losses.get},
                                                        |    "broughtForwardClass4LossesUsed": ${broughtForwardClass4LossesUsed.get},
                                                        |    "carrySidewaysClass4LossesUsed": ${carrySidewaysClass4LossesUsed.get},
-                                                       |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get}
+                                                       |    "totalClass4LossesCarriedForward": ${totalClass4LossesCarriedForward.get},
+                                                       |    "broughtForwardCarrySidewaysIncomeTaxLossesUsed": ${broughtForwardCarrySidewaysIncomeTaxLossesUsed.get}
                                                        |}""".stripMargin)
 
   val lossClaimsSummaryJson: JsValue = Json.parse(
@@ -77,9 +79,10 @@ object LossClaimsSummaryFixtures {
       | "totalBroughtForwardIncomeTaxLosses" : 1000,
       | "broughtForwardIncomeTaxLossesUsed" : 1000,
       | "carrySidewaysIncomeTaxLossesUsed": 1000,
-      | "totalIncomeTaxLossesCarriedForward" : 1000
+      | "totalIncomeTaxLossesCarriedForward" : 1000,
+      | "broughtForwardCarrySidewaysIncomeTaxLossesUsed": 1000
       |}
     """.stripMargin)
 
-  val lossClaimsSummaryModel = LossClaimsSummary(Some(1000), Some(1000), Some(1000), Some(1000))
+  val lossClaimsSummaryModel = LossClaimsSummary(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000))
 }
