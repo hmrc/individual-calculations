@@ -24,17 +24,19 @@ object TaxDeductedAtSourceFixtures {
   val json: JsValue = Json.parse("""
       |{
       | "ukLandAndProperty" : 100.25,
-      | "bbsi" : 200.25
+      | "bbsi" : 200.25,
+      | "cis": 123.25
       |}
     """.stripMargin)
 
   val outputJson: JsValue = Json.parse("""
       |{
       | "ukLandAndProperty" : 100.25,
-      | "savings" : 200.25
+      | "savings" : 200.25,
+      | "cis": 123.25
       |}
     """.stripMargin)
 
-  val model = TaxDeductedAtSource(Some(100.25), Some(200.25))
+  val model = TaxDeductedAtSource(Some(100.25), Some(200.25), Some(123.25))
 
 }

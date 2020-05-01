@@ -75,7 +75,8 @@ object CalculationDetailFixtures {
       |   },
       |   "taxDeductedAtSource" : {
       |     "ukLandAndProperty" : 300.25,
-      |     "bbsi" : 300.50
+      |     "bbsi" : 300.50,
+      |     "cis" : 500.75
       |   },
       |   "giftAid" : {
       |     "grossGiftAidPayments" : 400.25,
@@ -117,7 +118,8 @@ object CalculationDetailFixtures {
       | },
       | "taxDeductedAtSource" : {
       |   "ukLandAndProperty" : 300.25,
-      |   "savings" : 300.50
+      |   "savings" : 300.50,
+      |   "cis" : 500.75
       | }
       |}
     """.stripMargin)
@@ -127,7 +129,7 @@ object CalculationDetailFixtures {
   val filledModel = CalculationDetail(
     IncomeTaxDetail(Some(IncomeTypeBreakdown(200.25, 200.50, None)), None, None, Some(GiftAid(400.25, 400.50, 400.75))),
     Some(NicDetail(Some(Class2NicDetail(None, None, None, None, true, None)), None)),
-    Some(TaxDeductedAtSource(Some(300.25), Some(300.50)))
+    Some(TaxDeductedAtSource(Some(300.25), Some(300.50), Some(500.75)))
   )
 
 }
