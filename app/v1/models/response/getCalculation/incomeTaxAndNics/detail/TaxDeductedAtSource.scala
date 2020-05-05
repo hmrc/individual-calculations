@@ -20,15 +20,17 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
-                               savings: Option[BigDecimal])
+                               savings: Option[BigDecimal],
+                               cis: Option[BigDecimal])
 
 object TaxDeductedAtSource {
-  val empty = TaxDeductedAtSource(None, None)
+  val empty = TaxDeductedAtSource(None, None, None)
 
   implicit val writes: OWrites[TaxDeductedAtSource] = Json.writes[TaxDeductedAtSource]
 
   implicit val reads: Reads[TaxDeductedAtSource] = (
     (JsPath \ "ukLandAndProperty").readNullable[BigDecimal] and
-      (JsPath \ "bbsi").readNullable[BigDecimal]
+      (JsPath \ "bbsi").readNullable[BigDecimal] and
+      (JsPath \ "cis").readNullable[BigDecimal]
   )(TaxDeductedAtSource.apply _)
 }
