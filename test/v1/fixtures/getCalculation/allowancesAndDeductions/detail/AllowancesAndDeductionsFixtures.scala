@@ -16,7 +16,7 @@
 
 package v1.fixtures.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
 
 object AllowancesAndDeductionsFixtures {
 
@@ -27,7 +27,21 @@ object AllowancesAndDeductionsFixtures {
       |            "reducedPersonalAllowance": 1000,
       |            "giftOfInvestmentsAndPropertyToCharity": 1000,
       |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000
+      |            "lossesAppliedToGeneralIncome": 1000,
+      |            "qualifyingLoanInterestFromInvestments": 1000,
+      |            "post-cessationTradeReceipts": 1000,
+      |            "paymentsToTradeUnionsForDeathBenefits": 1000,
+      |            "grossAnnuityPayments": 1000,
+      |            "annuityPayments": {
+      |               "reliefClaimed": 1000,
+      |               "rate": 1000
+      |            },
+      |            "pensionContributions": 1000,
+      |            "pensionContributionsDetail": {
+      |               "retirementAnnuityPayments": 1000,
+      |               "paymentToEmployersSchemeNoTaxRelief": 1000,
+      |               "overseasPensionSchemeContributions": 1000
+      |            }
       |        },
       |        "reliefs": {
       |            "residentialFinanceCosts": {
@@ -35,8 +49,30 @@ object AllowancesAndDeductionsFixtures {
       |                "allowableAmount": 56668463807,
       |                "rate": 2,
       |                "propertyFinanceRelief": 67923591034
+      |            },
+      |            "foreignTaxCreditRelief": {
+      |                "incomeSourceType": 6282356308,
+      |                "incomeSourceId": 56668463807,
+      |                "countryCode": 2,
+      |                "allowableAmount": 67923591034,
+      |                "rate": 67923591034,
+      |                "amountUsed": 67923591034
+      |            },
+      |             "reliefsClaimed": {
+      |                "type": 6282356308,
+      |                "amountClaimed": 56668463807,
+      |                "allowableAmount": 2,
+      |                "amountUsed": 67923591034,
+      |                "rate": 67923591034
       |            }
-      |        }
+      |        },
+      |       "pensionContributionReliefs": {
+      |           "totalPensionContributionReliefs": 6282356308,
+      |           "pensionContributionDetail": {
+      |               "regularPensionContributions": 56668463807,
+      |               "oneOffPensionContributionsPaid": 2
+      |           }
+      |       }
       |    }
       |}""".stripMargin)
 
@@ -53,12 +89,26 @@ object AllowancesAndDeductionsFixtures {
       |    }
       |}""".stripMargin)
 
-  val mtdJson: JsValue = Json.parse("""{
+  val mtdJson: JsValue = Json.parse("""
+      |{
       |            "personalAllowance": 1000,
       |            "reducedPersonalAllowance": 1000,
       |            "giftOfInvestmentsAndPropertyToCharity": 1000,
       |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000
+      |            "lossesAppliedToGeneralIncome": 1000,
+      |            "qualifyingLoanInterestFromInvestments": 1000,
+      |            "post-cessationTradeReceipts": 1000,
+      |            "paymentsToTradeUnionsForDeathBenefits": 1000,
+      |            "annualPayments": {
+      |               "grossAnnuityPayments": 1000,
+      |               "reliefClaimed": 1000,
+      |               "rate": 1000
+      |            },
+      |            "pensionContributions": {
+      |               "totalPensionContributions": 1000,
+      |               "retirementAnnuityPayments": 1000,
+      |               "paymentToEmployersSchemeNoTaxRelief": 1000,
+      |               "overseasPensionSchemeContributions": 1000
+      |            }
       |}""".stripMargin)
-
 }

@@ -23,10 +23,16 @@ import v1.models.utils.JsonErrorValidators
 
 class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
+  val reliefs = Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
+    Some(ForeignTaxCreditRelief(Some(1000), Some(1000), Some(1000), Some(1000),
+      Some(1000), Some(1000))), Some(PensionContributionReliefs(Some(1000), Some(1000),
+      Some(1000))), Some(ReliefsClaimed(Some(1000),Some(1000),Some(1000),
+      Some(1000),Some(1000))))
+
   "reads" should {
     "return a valid object" when {
       "valid json is passed" in {
-        desJson.as[Reliefs] shouldBe Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)))
+        desJson.as[Reliefs] shouldBe reliefs
       }
 
       "json has no fields" in {
@@ -38,7 +44,7 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
   "writes" should {
     "return a valid json" when {
       "ResidentialFinanceCosts object has data" in {
-        Json.toJson(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)))) shouldBe mtdJson
+        Json.toJson(reliefs) shouldBe mtdJson
       }
     }
   }

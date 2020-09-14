@@ -22,21 +22,57 @@ object ReliefFixtures {
 
   val desJson: JsValue = Json.parse("""{
       |    "calculation": {
-      |        "allowancesAndDeductions": {
+      |    "allowancesAndDeductions": {
       |            "personalAllowance": 1000,
       |            "reducedPersonalAllowance": 1000,
       |            "giftOfInvestmentsAndPropertyToCharity": 1000,
       |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000
+      |            "lossesAppliedToGeneralIncome": 1000,
+      |            "qualifyingLoanInterestFromInvestments": 1000,
+      |            "post-cessationTradeReceipts": 1000,
+      |            "paymentsToTradeUnionsForDeathBenefits": 1000,
+      |            "grossAnnuityPayments": 1000,
+      |            "annuityPayments": {
+      |               "reliefClaimed": 1000,
+      |               "rate": 1000
+      |            },
+      |            "pensionContributions": 1000,
+      |            "pensionContributionsDetail": {
+      |               "retirementAnnuityPayments": 1000,
+      |               "paymentToEmployersSchemeNoTaxRelief": 1000,
+      |               "overseasPensionSchemeContributions": 1000
+      |            }
       |        },
       |        "reliefs": {
       |            "residentialFinanceCosts": {
       |                "amountClaimed": 1000.25,
       |                "allowableAmount": 1000.25,
-      |                "rate": 2,
-      |                "propertyFinanceRelief": 1000.25
+      |                 "rate": 2,
+      |                 "propertyFinanceRelief": 1000.25
+      |            },
+      |            "foreignTaxCreditRelief": {
+      |                  "incomeSourceType": 1000,
+      |                  "incomeSourceId": 1000,
+      |                  "countryCode": 1000,
+      |                  "allowableAmount": 1000,
+      |                  "rate": 1000,
+      |                  "amountUsed": 1000
+      |            },
+      |            "reliefsClaimed": {
+      |                  "type": 1000,
+      |                  "amountClaimed": 1000,
+      |                   "allowableAmount": 1000,
+      |                  "amountUsed": 1000,
+      |                  "rate": 1000
       |            }
-      |        }
+      |    },
+      |   "pensionContributionReliefs": {
+      |       "totalPensionContributionReliefs": 1000,
+      |       "pensionContributionDetail": {
+      |          "regularPensionContributions": 1000,
+      |          "oneOffPensionContributionsPaid": 1000
+      |       }
+      |      }
       |    }
       |}""".stripMargin)
 
@@ -59,9 +95,36 @@ object ReliefFixtures {
       |    }
       |}""".stripMargin)
 
-  val mtdJson: JsValue = Json.parse("""{
-      |"residentialFinanceCosts":{"amountClaimed":1000.25,"allowableAmount":1000.25,"rate":2,"propertyFinanceRelief":1000.25}
+  val mtdJson: JsValue = Json.parse(
+    """
+      |{
+      |	"residentialFinanceCosts": {
+      |		"amountClaimed": 1000.25,
+      |		"allowableAmount": 1000.25,
+      |		"rate": 2,
+      |		"propertyFinanceRelief": 1000.25
+      |	},
+      |	"foreignTaxCreditRelief": {
+      |		"incomeSourceType": 1000,
+      |		"incomeSourceId": 1000,
+      |		"countryCode": 1000,
+      |		"allowableAmount": 1000,
+      |		"rate": 1000,
+      |		"amountUsed": 1000
+      |	},
+      |	"pensionContributionReliefs": {
+      |		"totalPensionContributionReliefs": 1000,
+      |		"regularPensionContributions": 1000,
+      |		"oneOffPensionContributionsPaid": 1000
+      |	},
+      |	"reliefsClaimed": {
+      |		"type": 1000,
+      |		"amountClaimed": 1000,
+      |		"allowableAmount": 1000,
+      |		"amountUsed": 1000,
+      |		"rate": 1000
+      |	}
       |}
-    """.stripMargin)
+      |""".stripMargin)
 
 }
