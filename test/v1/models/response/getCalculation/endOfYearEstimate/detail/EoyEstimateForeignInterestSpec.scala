@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateForeignInterestFixtures._
 
@@ -24,10 +24,7 @@ class EoyEstimateForeignInterestSpec extends UnitSpec {
 
   "EoyEstimateForeignInterest" when {
     "read from valid Json" should {
-      "return a JsSuccess" in {
-        eoyEstimateForeignInterestDesJson.validate[EoyEstimateForeignInterest] shouldBe a[JsSuccess[_]]
-      }
-      "with the expected EoyEstimateForeignInterest object" in {
+      "return the expected EoyEstimateForeignInterest object" in {
         eoyEstimateForeignInterestDesJson.as[EoyEstimateForeignInterest] shouldBe eoyEstimateForeignInterestResponse
       }
     }

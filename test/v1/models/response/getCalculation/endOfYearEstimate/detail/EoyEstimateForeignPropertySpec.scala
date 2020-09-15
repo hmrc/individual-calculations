@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateForeignPropertyFixtures._
 
@@ -24,17 +24,8 @@ class EoyEstimateForeignPropertySpec extends UnitSpec {
 
   "EoyEstimateForeignProperty" when {
     "read from valid Json" should {
-      "return a JsSuccess" in {
-        eoyEstimateForeignPropertyDesJson.validate[EoyEstimateForeignProperty] shouldBe a[JsSuccess[_]]
-      }
-      "with the expected EoyEstimateForeignProperty object" in {
-        eoyEstimateForeignPropertyDesJson.as[EoyEstimateForeignProperty] shouldBe eoyEstimateForeignPropertyResponse
-      }
-    }
-
-    "read from Json with missing optional fields" should {
       "return the expected EoyEstimateForeignProperty object" in {
-        eoyEstimateForeignPropertyDesJsonMissingFields.as[EoyEstimateForeignProperty] shouldBe eoyEstimateForeignPropertyResponseFactory(finalised = None)
+        eoyEstimateForeignPropertyDesJson.as[EoyEstimateForeignProperty] shouldBe eoyEstimateForeignPropertyResponse
       }
     }
 
@@ -47,12 +38,6 @@ class EoyEstimateForeignPropertySpec extends UnitSpec {
     "written to Json" should {
       "return the expected JsObject" in {
         Json.toJson(eoyEstimateForeignPropertyResponse) shouldBe eoyEstimateForeignPropertyWrittenJson
-      }
-    }
-
-    "written to Json with missing optional fields" should {
-      "return the expected JsObject" in {
-        Json.toJson(eoyEstimateForeignPropertyResponseFactory(finalised = None)) shouldBe eoyEstimateForeignPropertyWrittenJsonMissingFields
       }
     }
   }

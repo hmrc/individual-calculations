@@ -38,18 +38,9 @@ object EoyEstimateForeignPropertyFixtures {
       |  "incomeSourceType" : "source"
       |}""".stripMargin)
 
-  val eoyEstimateForeignPropertyDesJsonMissingFields: JsValue = Json.parse(s"""{
-      |  "taxableIncome" : $taxableIncome,
-      |  "incomeSourceType" : "15"
-      |}""".stripMargin)
-
   val eoyEstimateForeignPropertyWrittenJson: JsValue = Json.parse(s"""{
       |  "taxableIncome" : $taxableIncome,
       |  "finalised" : ${finalised.get}
-      |}""".stripMargin)
-
-  val eoyEstimateForeignPropertyWrittenJsonMissingFields: JsValue = Json.parse(s"""{
-      |  "taxableIncome" : $taxableIncome
       |}""".stripMargin)
 
   val eoyEstimateForeignPropertyWrittenJsonObject: JsObject = Json.obj("foreignProperty" -> eoyEstimateForeignPropertyWrittenJson)
@@ -58,9 +49,4 @@ object EoyEstimateForeignPropertyFixtures {
       |  "taxableIncome" : $taxableIncome,
       |  "finalised" : "notABoolean"
       |}""".stripMargin)
-
-  def eoyEstimateForeignPropertyResponseFactory(taxableIncome: BigInt = taxableIncome,
-                                                finalised: Option[Boolean] = finalised): EoyEstimateForeignProperty =
-    EoyEstimateForeignProperty(taxableIncome, finalised)
-
 }
