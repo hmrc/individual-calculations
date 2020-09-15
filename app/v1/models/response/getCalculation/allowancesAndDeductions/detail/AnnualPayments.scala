@@ -21,9 +21,9 @@ import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
 case class AnnualPayments(
-                           grossAnnuityPayments: Option[BigInt],
-                           reliefClaimed: Option[BigInt],
-                           rate: Option[BigInt]
+                           grossAnnualPayments: Option[BigDecimal],
+                           reliefClaimed: Option[BigDecimal],
+                           rate: Option[Double]
                          )
 
 object AnnualPayments extends NestedJsonReads{
@@ -32,8 +32,8 @@ object AnnualPayments extends NestedJsonReads{
   implicit val writes: OWrites[AnnualPayments] = Json.writes[AnnualPayments]
 
   implicit val reads: Reads[AnnualPayments] = (
-    (JsPath \ "grossAnnuityPayments").readNestedNullable[BigInt] and
-      (JsPath \ "annuityPayments" \ "reliefClaimed").readNestedNullable[BigInt] and
-      (JsPath \ "annuityPayments" \ "rate").readNestedNullable[BigInt]
+    (JsPath \ "grossAnnuityPayments").readNestedNullable[BigDecimal] and
+      (JsPath \ "annuityPayments" \ "reliefClaimed").readNestedNullable[BigDecimal] and
+      (JsPath \ "annuityPayments" \ "rate").readNestedNullable[Double]
     )(AnnualPayments.apply _)
 }

@@ -24,7 +24,7 @@ import v1.models.utils.JsonErrorValidators
 class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
 
   val allowancesAndDeductions = AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000),
-    Some(1000), Some(1000), Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(1000))),
+    Some(1000), Some(1000), Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(2))),
     Some(PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))))
 
   "reads" should {

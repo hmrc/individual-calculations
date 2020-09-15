@@ -21,12 +21,12 @@ import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
 case class ForeignTaxCreditRelief(
-                                   incomeSourceType: Option[BigInt],
-                                   incomeSourceId: Option[BigInt],
-                                   countryCode: Option[BigInt],
-                                   allowableAmount: Option[BigInt],
-                                   rate: Option[BigInt],
-                                   amountUsed: Option[BigInt]
+                                   incomeSourceType: Option[String],
+                                   incomeSourceId: Option[String],
+                                   countryCode: Option[String],
+                                   allowableAmount: Option[BigDecimal],
+                                   rate: Option[Double],
+                                   amountUsed: Option[BigDecimal]
                                  )
 
 object ForeignTaxCreditRelief extends NestedJsonReads{
@@ -35,11 +35,11 @@ object ForeignTaxCreditRelief extends NestedJsonReads{
   implicit val writes: OWrites[ForeignTaxCreditRelief] = Json.writes[ForeignTaxCreditRelief]
 
   implicit val reads: Reads[ForeignTaxCreditRelief] = (
-    (JsPath \ "incomeSourceType").readNestedNullable[BigInt] and
-      (JsPath \ "incomeSourceId").readNestedNullable[BigInt] and
-      (JsPath \ "countryCode").readNestedNullable[BigInt] and
-      (JsPath \ "allowableAmount").readNestedNullable[BigInt] and
-      (JsPath \ "rate").readNestedNullable[BigInt] and
-      (JsPath \ "amountUsed").readNestedNullable[BigInt]
+    (JsPath \ "incomeSourceType").readNestedNullable[String] and
+      (JsPath \ "incomeSourceId").readNestedNullable[String] and
+      (JsPath \ "countryCode").readNestedNullable[String] and
+      (JsPath \ "allowableAmount").readNestedNullable[BigDecimal] and
+      (JsPath \ "rate").readNestedNullable[Double] and
+      (JsPath \ "amountUsed").readNestedNullable[BigDecimal]
     )(ForeignTaxCreditRelief.apply _)
 }

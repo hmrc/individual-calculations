@@ -34,7 +34,7 @@ object ReliefFixtures {
       |            "grossAnnuityPayments": 1000,
       |            "annuityPayments": {
       |               "reliefClaimed": 1000,
-      |               "rate": 1000
+      |               "rate": 2
       |            },
       |            "pensionContributions": 1000,
       |            "pensionContributionsDetail": {
@@ -50,21 +50,21 @@ object ReliefFixtures {
       |                 "rate": 2,
       |                 "propertyFinanceRelief": 1000.25
       |            },
-      |            "foreignTaxCreditRelief": {
-      |                  "incomeSourceType": 1000,
-      |                  "incomeSourceId": 1000,
-      |                  "countryCode": 1000,
+      |            "foreignTaxCreditRelief": [{
+      |                  "incomeSourceType": "foreignInterest",
+      |                  "incomeSourceId": "ABC647261934212",
+      |                  "countryCode": "FRA",
       |                  "allowableAmount": 1000,
-      |                  "rate": 1000,
+      |                  "rate": 2,
       |                  "amountUsed": 1000
-      |            },
-      |            "reliefsClaimed": {
-      |                  "type": 1000,
+      |            }],
+      |            "reliefsClaimed": [{
+      |                  "type": "foreignInterest",
       |                  "amountClaimed": 1000,
       |                   "allowableAmount": 1000,
       |                  "amountUsed": 1000,
-      |                  "rate": 1000
-      |            }
+      |                  "rate": 2
+      |            }]
       |    },
       |   "pensionContributionReliefs": {
       |       "totalPensionContributionReliefs": 1000,
@@ -104,26 +104,26 @@ object ReliefFixtures {
       |		"rate": 2,
       |		"propertyFinanceRelief": 1000.25
       |	},
-      |	"foreignTaxCreditRelief": {
-      |		"incomeSourceType": 1000,
-      |		"incomeSourceId": 1000,
-      |		"countryCode": 1000,
+      |	"foreignTaxCreditRelief": [{
+      |		"incomeSourceType": "foreignInterest",
+      |		"incomeSourceId": "ABC647261934212",
+      |		"countryCode": "FRA",
       |		"allowableAmount": 1000,
-      |		"rate": 1000,
+      |		"rate": 2,
       |		"amountUsed": 1000
-      |	},
+      |	}],
       |	"pensionContributionReliefs": {
       |		"totalPensionContributionReliefs": 1000,
       |		"regularPensionContributions": 1000,
       |		"oneOffPensionContributionsPaid": 1000
       |	},
-      |	"reliefsClaimed": {
-      |		"type": 1000,
+      |	"reliefsClaimed": [{
+      |		"type": "foreignInterest",
       |		"amountClaimed": 1000,
       |		"allowableAmount": 1000,
       |		"amountUsed": 1000,
-      |		"rate": 1000
-      |	}
+      |		"rate": 2
+      |	}]
       |}
       |""".stripMargin)
 

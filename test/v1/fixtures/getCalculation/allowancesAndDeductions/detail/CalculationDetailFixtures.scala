@@ -35,7 +35,7 @@ object CalculationDetailFixtures {
       |            "grossAnnuityPayments": 1000,
       |            "annuityPayments": {
       |               "reliefClaimed": 1000,
-      |               "rate": 1000
+      |               "rate": 2
       |            },
       |            "pensionContributions": 1000,
       |            "pensionContributionsDetail": {
@@ -51,21 +51,21 @@ object CalculationDetailFixtures {
       |                 "rate": 2,
       |                 "propertyFinanceRelief": 1000.25
       |            },
-      |            "foreignTaxCreditRelief": {
-      |                  "incomeSourceType": 1000,
-      |                  "incomeSourceId": 1000,
-      |                  "countryCode": 1000,
+      |            "foreignTaxCreditRelief": [{
+      |                  "incomeSourceType": "foreignInterest",
+      |                  "incomeSourceId": "ABC647261934212",
+      |                  "countryCode": "FRA",
       |                  "allowableAmount": 1000,
-      |                  "rate": 1000,
+      |                  "rate": 2,
       |                  "amountUsed": 1000
-      |            },
-      |            "reliefsClaimed": {
-      |                  "type": 1000,
+      |            }],
+      |            "reliefsClaimed": [{
+      |                  "type": "foreignInterest",
       |                  "amountClaimed": 1000,
       |                   "allowableAmount": 1000,
       |                  "amountUsed": 1000,
-      |                  "rate": 1000
-      |            }
+      |                  "rate": 2
+      |            }]
       |    },
       |   "pensionContributionReliefs": {
       |       "totalPensionContributionReliefs": 1000,
@@ -107,12 +107,12 @@ object CalculationDetailFixtures {
       |		"blindPersonsAllowance": 1000,
       |		"lossesAppliedToGeneralIncome": 1000,
       |		"qualifyingLoanInterestFromInvestments": 1000,
-      |		"post-cessationTradeReceipts": 1000,
+      |		"postCessationTradeReceipts": 1000,
       |		"paymentsToTradeUnionsForDeathBenefits": 1000,
       |		"annualPayments": {
-      |			"grossAnnuityPayments": 1000,
+      |			"grossAnnualPayments": 1000,
       |			"reliefClaimed": 1000,
-      |			"rate": 1000
+      |			"rate": 2
       |		},
       |		"pensionContributions": {
       |			"totalPensionContributions": 1000,
@@ -128,36 +128,36 @@ object CalculationDetailFixtures {
       |			"rate": 2,
       |			"propertyFinanceRelief": 1000.25
       |		},
-      |		"foreignTaxCreditRelief": {
-      |			"incomeSourceType": 1000,
-      |			"incomeSourceId": 1000,
-      |			"countryCode": 1000,
+      |		"foreignTaxCreditRelief": [{
+      |			"incomeSourceType": "foreignInterest",
+      |			"incomeSourceId": "ABC647261934212",
+      |			"countryCode": "FRA",
       |			"allowableAmount": 1000,
-      |			"rate": 1000,
+      |			"rate": 2,
       |			"amountUsed": 1000
-      |		},
+      |		}],
       |		"pensionContributionReliefs": {
       |			"totalPensionContributionReliefs": 1000,
       |			"regularPensionContributions": 1000,
       |			"oneOffPensionContributionsPaid": 1000
       |		},
-      |		"reliefsClaimed": {
-      |			"type": 1000,
+      |		"reliefsClaimed": [{
+      |			"type": "foreignInterest",
       |			"amountClaimed": 1000,
       |			"allowableAmount": 1000,
       |			"amountUsed": 1000,
-      |			"rate": 1000
-      |		}
+      |			"rate": 2
+      |		}]
       |	}
       |}
       |""".stripMargin)
 
   val calculationDetail = CalculationDetail(
     Some(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000),
-      Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(1000))),
+      Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(2))),
       Some(PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))))),
     Some(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
-      Some(ForeignTaxCreditRelief(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000))),
+      Some(Seq(ForeignTaxCreditRelief(Some("foreignInterest"), Some("ABC647261934212"), Some("FRA"), Some(1000), Some(2), Some(1000)))),
       Some(PensionContributionReliefs(Some(1000), Some(1000), Some(1000))),
-      Some(ReliefsClaimed(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000))))))
+      Some(Seq(ReliefsClaimed(Some("foreignInterest"), Some(1000), Some(1000), Some(1000), Some(2)))))))
 }

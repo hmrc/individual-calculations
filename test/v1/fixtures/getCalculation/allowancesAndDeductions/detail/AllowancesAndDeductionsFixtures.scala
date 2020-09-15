@@ -34,7 +34,7 @@ object AllowancesAndDeductionsFixtures {
       |            "grossAnnuityPayments": 1000,
       |            "annuityPayments": {
       |               "reliefClaimed": 1000,
-      |               "rate": 1000
+      |               "rate": 2
       |            },
       |            "pensionContributions": 1000,
       |            "pensionContributionsDetail": {
@@ -50,21 +50,21 @@ object AllowancesAndDeductionsFixtures {
       |                "rate": 2,
       |                "propertyFinanceRelief": 67923591034
       |            },
-      |            "foreignTaxCreditRelief": {
+      |            "foreignTaxCreditRelief": [{
       |                "incomeSourceType": 6282356308,
       |                "incomeSourceId": 56668463807,
       |                "countryCode": 2,
       |                "allowableAmount": 67923591034,
-      |                "rate": 67923591034,
+      |                "rate": 2,
       |                "amountUsed": 67923591034
-      |            },
-      |             "reliefsClaimed": {
-      |                "type": 6282356308,
+      |            }],
+      |             "reliefsClaimed": [{
+      |                "type": "foreignInterest",
       |                "amountClaimed": 56668463807,
       |                "allowableAmount": 2,
       |                "amountUsed": 67923591034,
-      |                "rate": 67923591034
-      |            }
+      |                "rate": 2
+      |            }]
       |        },
       |       "pensionContributionReliefs": {
       |           "totalPensionContributionReliefs": 6282356308,
@@ -97,12 +97,12 @@ object AllowancesAndDeductionsFixtures {
       |            "blindPersonsAllowance": 1000,
       |            "lossesAppliedToGeneralIncome": 1000,
       |            "qualifyingLoanInterestFromInvestments": 1000,
-      |            "post-cessationTradeReceipts": 1000,
+      |            "postCessationTradeReceipts": 1000,
       |            "paymentsToTradeUnionsForDeathBenefits": 1000,
       |            "annualPayments": {
-      |               "grossAnnuityPayments": 1000,
+      |               "grossAnnualPayments": 1000,
       |               "reliefClaimed": 1000,
-      |               "rate": 1000
+      |               "rate": 2
       |            },
       |            "pensionContributions": {
       |               "totalPensionContributions": 1000,

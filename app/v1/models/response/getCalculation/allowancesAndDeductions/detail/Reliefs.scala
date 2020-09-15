@@ -22,9 +22,9 @@ import play.api.libs.functional.syntax._
 
 case class Reliefs (
                      residentialFinanceCosts: Option[ResidentialFinanceCosts],
-                     foreignTaxCreditRelief: Option[ForeignTaxCreditRelief],
+                     foreignTaxCreditRelief: Option[Seq[ForeignTaxCreditRelief]],
                      pensionContributionReliefs: Option[PensionContributionReliefs],
-                     reliefsClaimed: Option[ReliefsClaimed]
+                     reliefsClaimed: Option[Seq[ReliefsClaimed]]
                    )
 
 object Reliefs extends NestedJsonReads{
@@ -34,9 +34,9 @@ object Reliefs extends NestedJsonReads{
 
   implicit val reads: Reads[Reliefs] = (
     (JsPath \ "calculation" \ "reliefs" \ "residentialFinanceCosts").readNestedNullable[ResidentialFinanceCosts] and
-      (JsPath \ "calculation" \ "reliefs" \ "foreignTaxCreditRelief").readNestedNullable(ForeignTaxCreditRelief.reads) and
+      (JsPath \ "calculation" \ "reliefs" \ "foreignTaxCreditRelief").readNestedNullable[Seq[ForeignTaxCreditRelief]].mapEmptySeqToNone and
       (JsPath \ "calculation" \ "pensionContributionReliefs").readNestedNullable(PensionContributionReliefs.reads) and
-      (JsPath \ "calculation" \ "reliefs" \ "reliefsClaimed").readNestedNullable(ReliefsClaimed.reads)
+      (JsPath \ "calculation" \ "reliefs" \ "reliefsClaimed").readNestedNullable[Seq[ReliefsClaimed]].mapEmptySeqToNone
     )(Reliefs.apply _)
 
 }

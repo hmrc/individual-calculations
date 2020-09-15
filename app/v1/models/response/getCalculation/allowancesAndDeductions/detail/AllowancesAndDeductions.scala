@@ -25,9 +25,9 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    giftOfInvestmentsAndPropertyToCharity: Option[BigInt],
                                    blindPersonsAllowance: Option[BigInt],
                                    lossesAppliedToGeneralIncome: Option[BigInt],
-                                   qualifyingLoanInterestFromInvestments: Option[BigInt],
-                                   `post-cessationTradeReceipts`: Option[BigInt],
-                                   paymentsToTradeUnionsForDeathBenefits: Option[BigInt],
+                                   qualifyingLoanInterestFromInvestments: Option[BigDecimal],
+                                   postCessationTradeReceipts: Option[BigDecimal],
+                                   paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal],
                                    annualPayments: Option[AnnualPayments],
                                    pensionContributions: Option[PensionContributions]
                                   )
@@ -43,9 +43,9 @@ object AllowancesAndDeductions extends NestedJsonReads{
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "giftOfInvestmentsAndPropertyToCharity").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "blindPersonsAllowance").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "lossesAppliedToGeneralIncome").readNestedNullable[BigInt] and
-      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "qualifyingLoanInterestFromInvestments").readNestedNullable[BigInt] and
-      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "post-cessationTradeReceipts").readNestedNullable[BigInt] and
-      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "paymentsToTradeUnionsForDeathBenefits").readNestedNullable[BigInt] and
+      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "qualifyingLoanInterestFromInvestments").readNestedNullable[BigDecimal] and
+      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "post-cessationTradeReceipts").readNestedNullable[BigDecimal] and
+      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "paymentsToTradeUnionsForDeathBenefits").readNestedNullable[BigDecimal] and
       (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable(AnnualPayments.reads) and
       (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable(PensionContributions.reads)
     )(AllowancesAndDeductions.apply _)

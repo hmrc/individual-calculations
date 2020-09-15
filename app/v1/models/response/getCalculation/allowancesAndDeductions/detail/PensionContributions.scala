@@ -21,10 +21,10 @@ import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
 case class PensionContributions(
-                                 totalPensionContributions: Option[BigInt],
-                                 retirementAnnuityPayments: Option[BigInt],
-                                 paymentToEmployersSchemeNoTaxRelief: Option[BigInt],
-                                 overseasPensionSchemeContributions: Option[BigInt]
+                                 totalPensionContributions: Option[BigDecimal],
+                                 retirementAnnuityPayments: Option[BigDecimal],
+                                 paymentToEmployersSchemeNoTaxRelief: Option[BigDecimal],
+                                 overseasPensionSchemeContributions: Option[BigDecimal]
                                )
 
 object PensionContributions extends NestedJsonReads{
@@ -33,9 +33,9 @@ object PensionContributions extends NestedJsonReads{
   implicit val writes: OWrites[PensionContributions] = Json.writes[PensionContributions]
 
   implicit val reads: Reads[PensionContributions] = (
-    (JsPath \ "pensionContributions").readNestedNullable[BigInt] and
-      (JsPath \ "pensionContributionsDetail" \ "retirementAnnuityPayments").readNestedNullable[BigInt] and
-      (JsPath \ "pensionContributionsDetail" \ "paymentToEmployersSchemeNoTaxRelief").readNestedNullable[BigInt] and
-      (JsPath \ "pensionContributionsDetail" \ "overseasPensionSchemeContributions").readNestedNullable[BigInt]
+    (JsPath \ "pensionContributions").readNestedNullable[BigDecimal] and
+      (JsPath \ "pensionContributionsDetail" \ "retirementAnnuityPayments").readNestedNullable[BigDecimal] and
+      (JsPath \ "pensionContributionsDetail" \ "paymentToEmployersSchemeNoTaxRelief").readNestedNullable[BigDecimal] and
+      (JsPath \ "pensionContributionsDetail" \ "overseasPensionSchemeContributions").readNestedNullable[BigDecimal]
     )(PensionContributions.apply _)
 }

@@ -24,10 +24,10 @@ import v1.models.utils.JsonErrorValidators
 class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
   val reliefs = Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
-    Some(ForeignTaxCreditRelief(Some(1000), Some(1000), Some(1000), Some(1000),
-      Some(1000), Some(1000))), Some(PensionContributionReliefs(Some(1000), Some(1000),
-      Some(1000))), Some(ReliefsClaimed(Some(1000),Some(1000),Some(1000),
-      Some(1000),Some(1000))))
+    Some(Seq(ForeignTaxCreditRelief(Some("foreignInterest"), Some("ABC647261934212"), Some("FRA"), Some(1000),
+      Some(2), Some(1000)))), Some(PensionContributionReliefs(Some(1000), Some(1000),
+      Some(1000))), Some(Seq(ReliefsClaimed(Some("foreignInterest"),Some(1000),Some(1000),
+      Some(1000),Some(2)))))
 
   "reads" should {
     "return a valid object" when {

@@ -18,9 +18,9 @@ package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json._
 
-case class ResidentialFinanceCosts (amountClaimed: BigDecimal,
+case class ResidentialFinanceCosts(amountClaimed: BigDecimal,
                                     allowableAmount: Option[BigDecimal],
-                                    rate: BigDecimal,
+                                    rate: Double,
                                     propertyFinanceRelief: BigDecimal)
 
 object ResidentialFinanceCosts {
