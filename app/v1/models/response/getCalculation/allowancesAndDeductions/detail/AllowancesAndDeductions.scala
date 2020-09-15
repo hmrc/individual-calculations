@@ -46,7 +46,13 @@ object AllowancesAndDeductions extends NestedJsonReads{
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "qualifyingLoanInterestFromInvestments").readNestedNullable[BigDecimal] and
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "post-cessationTradeReceipts").readNestedNullable[BigDecimal] and
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "paymentsToTradeUnionsForDeathBenefits").readNestedNullable[BigDecimal] and
-      (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable(AnnualPayments.reads) and
-      (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable(PensionContributions.reads)
+      (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable[AnnualPayments].map {
+        case Some(AnnualPayments.empty) => None
+        case other => other
+      } and
+      (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable[PensionContributions].map {
+        case Some(PensionContributions.empty) => None
+        case other => other
+      }
     )(AllowancesAndDeductions.apply _)
 }
