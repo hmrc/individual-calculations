@@ -26,11 +26,18 @@ object EoyEstimateSummaryFixtures {
   val incomeTaxAmount: Option[BigDecimal]    = Some(1003.1)
   val nic2: Option[BigDecimal]               = Some(1004.1)
   val nic4: Option[BigDecimal]               = Some(1005.1)
-  val totalNicAmount: Option[BigDecimal]     = Some(1005.1)
-  val incomeTaxNicAmount: Option[BigDecimal] = Some(1006.1)
+  val totalNicAmount: Option[BigDecimal]     = Some(1006.1)
+  val totalStudentLoansRepaymentAmount: Option[BigDecimal] = Some(1007.1)
+  val totalAnnualPaymentsTaxCharged: Option[BigDecimal] = Some(1008.1)
+  val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = Some(1009.1)
+  val totalTaxDeducted: Option[BigDecimal] = Some(1010.1)
+  val incomeTaxNicAmount: Option[BigDecimal] = Some(1011.1)
 
   val eoyEstimateSummaryResponse: EoyEstimateSummary =
-    EoyEstimateSummary(totalEstimatedIncome, totalTaxableIncome, incomeTaxAmount, nic2, nic4, totalNicAmount, incomeTaxNicAmount)
+    EoyEstimateSummary(
+      totalEstimatedIncome, totalTaxableIncome, incomeTaxAmount, nic2, nic4, totalNicAmount, totalStudentLoansRepaymentAmount,
+      totalAnnualPaymentsTaxCharged, totalRoyaltyPaymentsTaxCharged, totalTaxDeducted, incomeTaxNicAmount
+    )
 
   val eoyEstimateSummaryDesJson: JsValue = Json.parse(s"""{
       |  "totalEstimatedIncome": ${totalEstimatedIncome.get},
@@ -38,8 +45,12 @@ object EoyEstimateSummaryFixtures {
       |  "incomeTaxAmount": ${incomeTaxAmount.get},
       |  "nic2": ${nic2.get},
       |  "nic4": ${nic4.get},
-      |  "totalNicAmount" : ${totalNicAmount.get},
-      |  "incomeTaxNicAmount" :  ${incomeTaxNicAmount.get}
+      |  "totalNicAmount": ${totalNicAmount.get},
+      |  "totalStudentLoansRepaymentAmount": ${totalStudentLoansRepaymentAmount.get},
+      |  "totalAnnuityPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
+      |  "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
+      |  "totalTaxDeducted": ${totalTaxDeducted.get},
+      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get}
       |}""".stripMargin)
 
   val eoyEstimateSummaryDesJsonMissingFields: JsValue = Json.parse(s"""{
@@ -56,8 +67,12 @@ object EoyEstimateSummaryFixtures {
       |  "incomeTaxAmount": ${incomeTaxAmount.get},
       |  "nic2": ${nic2.get},
       |  "nic4": ${nic4.get},
-      |  "totalNicAmount" : ${totalNicAmount.get} ,
-      |  "incomeTaxNicAmount" :  ${incomeTaxNicAmount.get}
+      |  "totalNicAmount": ${totalNicAmount.get},
+      |  "totalStudentLoansRepaymentAmount": ${totalStudentLoansRepaymentAmount.get},
+      |  "totalAnnualPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
+      |  "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
+      |  "totalTaxDeducted": ${totalTaxDeducted.get},
+      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get}
       |}""".stripMargin)
 
   val eoyEstimateSummaryWrittenJsonMissingFields: JsValue = Json.parse(s"""{
@@ -76,8 +91,12 @@ object EoyEstimateSummaryFixtures {
       |  "incomeTaxAmount": ${incomeTaxAmount.get},
       |  "nic2": ${nic2.get},
       |  "nic4": ${nic4.get},
-      |  "totalNicAmount" : ${totalNicAmount.get} ,
-      |  "incomeTaxNicAmount" :  ${incomeTaxNicAmount.get}
+      |  "totalNicAmount": ${totalNicAmount.get},
+      |  "totalStudentLoansRepaymentAmount": ${totalStudentLoansRepaymentAmount.get},
+      |  "totalAnnuityPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
+      |  "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
+      |  "totalTaxDeducted": ${totalTaxDeducted.get},
+      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get}
       |}""".stripMargin)
 
   def eoyEstimateSummaryResponseFactory(totalEstimatedIncome: Option[BigInt] = totalEstimatedIncome,
@@ -86,7 +105,12 @@ object EoyEstimateSummaryFixtures {
                                         nic2: Option[BigDecimal] = nic2,
                                         nic4: Option[BigDecimal] = nic4,
                                         totalNicAmount: Option[BigDecimal] = totalNicAmount,
+                                        totalStudentLoansRepaymentAmount: Option[BigDecimal] = totalStudentLoansRepaymentAmount,
+                                        totalAnnualPaymentsTaxCharged: Option[BigDecimal] = totalAnnualPaymentsTaxCharged,
+                                        totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = totalRoyaltyPaymentsTaxCharged,
+                                        totalTaxDeducted: Option[BigDecimal] = totalTaxDeducted,
                                         incomeTaxNicAmount: Option[BigDecimal] = incomeTaxNicAmount): EoyEstimateSummary =
-    EoyEstimateSummary(totalEstimatedIncome, totalTaxableIncome, incomeTaxAmount, nic2, nic4, totalNicAmount, incomeTaxNicAmount)
+    EoyEstimateSummary(totalEstimatedIncome, totalTaxableIncome, incomeTaxAmount, nic2, nic4, totalNicAmount,
+      totalStudentLoansRepaymentAmount, totalAnnualPaymentsTaxCharged, totalRoyaltyPaymentsTaxCharged, totalTaxDeducted, incomeTaxNicAmount)
 
 }

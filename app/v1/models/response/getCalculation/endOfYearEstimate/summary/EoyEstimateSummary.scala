@@ -16,7 +16,8 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.summary
 
-import play.api.libs.json.{ Json, OFormat }
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
                               totalTaxableIncome: Option[BigInt],
@@ -24,10 +25,28 @@ case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
                               nic2: Option[BigDecimal],
                               nic4: Option[BigDecimal],
                               totalNicAmount: Option[BigDecimal],
+                              totalStudentLoansRepaymentAmount: Option[BigDecimal],
+                              totalAnnualPaymentsTaxCharged: Option[BigDecimal],
+                              totalRoyaltyPaymentsTaxCharged: Option[BigDecimal],
+                              totalTaxDeducted: Option[BigDecimal],
                               incomeTaxNicAmount: Option[BigDecimal])
 
 object EoyEstimateSummary {
-  val empty = EoyEstimateSummary(None, None, None, None, None, None, None)
+  val empty = EoyEstimateSummary(None, None, None, None, None, None, None, None, None, None, None)
 
-  implicit val formats: OFormat[EoyEstimateSummary] = Json.format[EoyEstimateSummary]
+  implicit val writes: OWrites[EoyEstimateSummary] = Json.writes[EoyEstimateSummary]
+
+  implicit val reads: Reads[EoyEstimateSummary] = (
+    (JsPath \ "totalEstimatedIncome").readNullable[BigInt] and
+      (JsPath \ "totalTaxableIncome").readNullable[BigInt] and
+      (JsPath \ "incomeTaxAmount").readNullable[BigDecimal] and
+      (JsPath \ "nic2").readNullable[BigDecimal] and
+      (JsPath \ "nic4").readNullable[BigDecimal] and
+      (JsPath \ "totalNicAmount").readNullable[BigDecimal] and
+      (JsPath \ "totalStudentLoansRepaymentAmount").readNullable[BigDecimal] and
+      (JsPath \ "totalAnnuityPaymentsTaxCharged").readNullable[BigDecimal] and
+      (JsPath \ "totalRoyaltyPaymentsTaxCharged").readNullable[BigDecimal] and
+      (JsPath \ "totalTaxDeducted").readNullable[BigDecimal] and
+      (JsPath \ "incomeTaxNicAmount").readNullable[BigDecimal]
+    ) (EoyEstimateSummary.apply _)
 }
