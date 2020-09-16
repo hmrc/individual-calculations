@@ -53,7 +53,7 @@ object AllowancesDeductionsAndReliefsFixtures {
       |                 "propertyFinanceRelief": 1000.25
       |            },
       |            "foreignTaxCreditRelief": [{
-      |                  "incomeSourceType": "foreignInterest",
+      |                  "incomeSourceType": "16",
       |                  "incomeSourceId": "ABC647261934212",
       |                  "countryCode": "FRA",
       |                  "allowableAmount": 1000,
@@ -61,7 +61,7 @@ object AllowancesDeductionsAndReliefsFixtures {
       |                  "amountUsed": 1000
       |            }],
       |            "reliefsClaimed": [{
-      |                  "type": "foreignInterest",
+      |                  "type": "nonDeductableLoanInterest",
       |                  "amountClaimed": 1000,
       |                   "allowableAmount": 1000,
       |                  "amountUsed": 1000,
@@ -97,8 +97,8 @@ object AllowancesDeductionsAndReliefsFixtures {
       Some(1000), Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(2))),
     Some(PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))))),
     Some(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)), Some(Seq(ForeignTaxCreditRelief(
-      Some("foreignInterest"), Some("ABC647261934212"), Some("FRA"), Some(1000), Some(2), Some(1000)))), Some(PensionContributionReliefs(
-      Some(1000), Some(1000), Some(1000))), Some(Seq(ReliefsClaimed(Some("foreignInterest"), Some(1000), Some(1000), Some(1000),
+      Some(IncomeSourceType.foreignInterest), Some("ABC647261934212"), Some("FRA"), Some(1000), Some(2), Some(1000)))), Some(PensionContributionReliefs(
+      Some(1000), Some(1000), Some(1000))), Some(Seq(ReliefsClaimed(Some("nonDeductibleLoanInterest"), Some(1000), Some(1000), Some(1000),
       Some(2)))))))
 
   val calculationSummary = CalculationSummary(Some(1000), Some(1000))
@@ -153,7 +153,7 @@ object AllowancesDeductionsAndReliefsFixtures {
       |       "oneOffPensionContributionsPaid": 1000
       |       },
       |     "reliefsClaimed": [{
-      |         "type": "foreignInterest",
+      |         "type": "nonDeductibleLoanInterest",
       |         "amountClaimed": 1000,
       |         "allowableAmount": 1000,
       |         "amountUsed": 1000,

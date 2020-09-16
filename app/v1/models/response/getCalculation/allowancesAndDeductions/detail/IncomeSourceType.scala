@@ -16,19 +16,17 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import play.api.libs.functional.syntax._
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-case class CalculationDetail(allowancesAndDeductions: Option[AllowancesAndDeductions],
-                        reliefs: Option[Reliefs])
+sealed trait IncomeSourceType
 
-object CalculationDetail {
-  val empty = CalculationDetail(None, None)
+object IncomeSourceType {
+  case object fhlPropertyEea extends IncomeSourceType
+  case object foreignIncome extends IncomeSourceType
+  case object dividendsFromForeignCompanies extends IncomeSourceType
+  case object foreignProperty extends IncomeSourceType
+  case object foreignInterest extends IncomeSourceType
 
-  implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
-
-  implicit val reads: Reads[CalculationDetail] = (
-    JsPath.readNullable[AllowancesAndDeductions].mapEmptyModelToNone(AllowancesAndDeductions.empty) and
-    JsPath.readNullable[Reliefs].mapEmptyModelToNone(Reliefs.empty)
-  )(CalculationDetail.apply _)
+  implicit val format: Format[IncomeSourceType] = Enums.format[IncomeSourceType]
 }

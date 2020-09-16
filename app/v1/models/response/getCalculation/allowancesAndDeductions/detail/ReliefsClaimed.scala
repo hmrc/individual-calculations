@@ -34,10 +34,13 @@ object ReliefsClaimed extends NestedJsonReads{
   implicit val writes: OWrites[ReliefsClaimed] = Json.writes[ReliefsClaimed]
 
   implicit val reads: Reads[ReliefsClaimed] = (
-    (JsPath \ "type").readNestedNullable[String] and
-      (JsPath \ "amountClaimed").readNestedNullable[BigDecimal] and
-      (JsPath \ "allowableAmount").readNestedNullable[BigDecimal] and
-      (JsPath \ "amountUsed").readNestedNullable[BigDecimal] and
-      (JsPath \ "rate").readNestedNullable[Double]
+    (JsPath \ "type").readNullable[String].map {
+      case Some(res) if res == "nonDeductableLoanInterest" => Some("nonDeductibleLoanInterest")
+      case other => other
+    } and
+      (JsPath \ "amountClaimed").readNullable[BigDecimal] and
+      (JsPath \ "allowableAmount").readNullable[BigDecimal] and
+      (JsPath \ "amountUsed").readNullable[BigDecimal] and
+      (JsPath \ "rate").readNullable[Double]
     )(ReliefsClaimed.apply _)
 }

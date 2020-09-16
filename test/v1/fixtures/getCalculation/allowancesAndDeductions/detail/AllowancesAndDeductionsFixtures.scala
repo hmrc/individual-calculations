@@ -51,7 +51,7 @@ object AllowancesAndDeductionsFixtures {
       |                "propertyFinanceRelief": 67923591034
       |            },
       |            "foreignTaxCreditRelief": [{
-      |                "incomeSourceType": 6282356308,
+      |                "incomeSourceType": "16",
       |                "incomeSourceId": 56668463807,
       |                "countryCode": 2,
       |                "allowableAmount": 67923591034,
@@ -59,7 +59,7 @@ object AllowancesAndDeductionsFixtures {
       |                "amountUsed": 67923591034
       |            }],
       |             "reliefsClaimed": [{
-      |                "type": "foreignInterest",
+      |                "type": "nonDeductableLoanInterest",
       |                "amountClaimed": 56668463807,
       |                "allowableAmount": 2,
       |                "amountUsed": 67923591034,
@@ -78,6 +78,25 @@ object AllowancesAndDeductionsFixtures {
 
   val desJsonWithNoAllowancesAndDeductionsDetails: JsValue = Json.parse("""{
       |    "calculation": {
+      |        "reliefs": {
+      |            "residentialFinanceCosts": {
+      |                "amountClaimed": 6282356308,
+      |                "allowableAmount": 56668463807,
+      |                "rate": 2,
+      |                "propertyFinanceRelief": 67923591034
+      |            }
+      |        }
+      |    }
+      |}""".stripMargin)
+
+  val desJsonWithNoDataAndEmptyAnnualPaymentsDetails: JsValue = Json.parse("""
+      |{
+      |    "calculation": {
+      |        "allowancesAndDeductions": {
+      |               "annuityPayments": {
+      |
+      |            }
+      |        },
       |        "reliefs": {
       |            "residentialFinanceCosts": {
       |                "amountClaimed": 6282356308,

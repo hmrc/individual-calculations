@@ -32,7 +32,7 @@ object PensionContributionReliefs extends NestedJsonReads{
   implicit val writes: OWrites[PensionContributionReliefs] = Json.writes[PensionContributionReliefs]
 
   implicit val reads: Reads[PensionContributionReliefs] = (
-    (JsPath \ "totalPensionContributionReliefs").readNestedNullable[BigDecimal] and
+    (JsPath \ "totalPensionContributionReliefs").readNullable[BigDecimal] and
       (JsPath \ "pensionContributionDetail" \ "regularPensionContributions").readNestedNullable[BigDecimal] and
       (JsPath \ "pensionContributionDetail" \ "oneOffPensionContributionsPaid").readNestedNullable[BigDecimal]
     )(PensionContributionReliefs.apply _)

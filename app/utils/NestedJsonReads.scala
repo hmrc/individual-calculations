@@ -38,7 +38,7 @@ trait NestedJsonReads {
               case JsNull => JsSuccess(None)
               case js     => rds.reads(js).repath(jsPath).map(Some(_))
             }
-        )
+          )
       )
     }
 
@@ -52,7 +52,7 @@ trait NestedJsonReads {
               case JsNull => JsSuccess(None)
               case js     => rds.reads(js).repath(jsPath)
             }
-        )
+          )
       )
     }
 
@@ -80,12 +80,27 @@ trait NestedJsonReads {
   }
 
   /**
-    * Extension methods for reads of a optional sequence
-    */
+   * Extension methods for reads of an optional model
+   */
+  implicit class OptReadsOps[A](reads: Reads[Option[A]]) {
+
+    /**
+     * Returns a Reads that returns a model unless all nested fields are empty
+     */
+    def mapEmptyModelToNone(empty: A): Reads[Option[A]] =
+      reads.map {
+        case Some(model) if model == empty => None
+        case other => other
+      }
+  }
+
+  /**
+   * Extension methods for reads of a optional sequence
+   */
   implicit class OptSeqReadsOps[A](reads: Reads[Option[Seq[A]]]) {
     /**
-      * Returns a Reads that maps the sequence to itself unless it is empty
-      */
+     * Returns a Reads that maps the sequence to itself unless it is empty
+     */
     def mapEmptySeqToNone: Reads[Option[Seq[A]]] =
       reads.map {
         case Some(Nil) => None
@@ -93,8 +108,21 @@ trait NestedJsonReads {
       }
 
     /**
-      * Returns a Reads that maps the sequence to its head unless it is empty
-      */
+     * Returns a Reads that maps the sequence to itself unless it is empty as well as all nested models
+     */
+    def mapEmptySeqAndModelToNone(empty: A): Reads[Option[Seq[A]]] =
+      reads.map {
+        case Some(Nil) => None
+        case Some(seq) => seq.filter(_ != empty) match {
+          case Nil => None
+          case other => Some(other)
+        }
+        case other => other
+      }
+
+    /**
+     * Returns a Reads that maps the sequence to its head unless it is empty
+     */
     def mapHeadOption: Reads[Option[A]] =
       reads.map {
         case Some(x) => x.headOption
@@ -149,11 +177,11 @@ trait NestedJsonReads {
     }
 
   /**
-    * Reads for optional fields that reads None if a path (typically a parent of the target
-    * JSON field or of a mandatory part of it) is absent from JSON.
-    *
-    * @param path the Json path that must be present
-    */
+   * Reads for optional fields that reads None if a path (typically a parent of the target
+   * JSON field or of a mandatory part of it) is absent from JSON.
+   *
+   * @param path the Json path that must be present
+   */
   def emptyIfNotPresent[A: Reads](path: JsPath): Reads[Option[A]] =
     path.readNestedNullable[JsValue].filter(_.isEmpty).map(_ => None) or JsPath.readNullable[A]
 }

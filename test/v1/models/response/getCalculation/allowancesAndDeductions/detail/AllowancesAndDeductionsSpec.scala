@@ -61,6 +61,10 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
       "json has no AllowancesAndDeductions details" in {
         desJsonWithNoAllowancesAndDeductionsDetails.as[AllowancesAndDeductions] shouldBe AllowancesAndDeductions.empty
       }
+
+      " json is empty and 'annualPayments' contains empty nested fields" in {
+        desJsonWithNoDataAndEmptyAnnualPaymentsDetails.as[AllowancesAndDeductions] shouldBe AllowancesAndDeductions.empty
+      }
     }
   }
 

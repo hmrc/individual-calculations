@@ -16,9 +16,23 @@
 
 package v1.fixtures.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{ JsValue, Json }
+import play.api.libs.json.{JsValue, Json}
 
 object ReliefFixtures {
+
+  def desJsonIncomeSourceType(incomeSourceType: String): JsValue = {
+    Json.parse(
+      s"""
+         |{
+         |   "incomeSourceType": "${incomeSourceType}",
+         |   "incomeSourceId": "ABC647261934212",
+         |   "countryCode": "FRA",
+         |   "allowableAmount": 1000,
+         |   "rate": 2,
+         |   "amountUsed": 1000
+         |}
+         |""".stripMargin)
+  }
 
   val desJson: JsValue = Json.parse("""{
       |    "calculation": {
@@ -51,7 +65,7 @@ object ReliefFixtures {
       |                 "propertyFinanceRelief": 1000.25
       |            },
       |            "foreignTaxCreditRelief": [{
-      |                  "incomeSourceType": "foreignInterest",
+      |                  "incomeSourceType": "16",
       |                  "incomeSourceId": "ABC647261934212",
       |                  "countryCode": "FRA",
       |                  "allowableAmount": 1000,
@@ -59,7 +73,7 @@ object ReliefFixtures {
       |                  "amountUsed": 1000
       |            }],
       |            "reliefsClaimed": [{
-      |                  "type": "foreignInterest",
+      |                  "type": "nonDeductableLoanInterest",
       |                  "amountClaimed": 1000,
       |                   "allowableAmount": 1000,
       |                  "amountUsed": 1000,
@@ -73,6 +87,26 @@ object ReliefFixtures {
       |          "oneOffPensionContributionsPaid": 1000
       |       }
       |      }
+      |    }
+      |}""".stripMargin)
+
+  val desJsonWithNoDataAndEmptyNestedFieldsAndSeq: JsValue = Json.parse("""{
+      |    "calculation": {
+      |        "allowancesAndDeductions": {
+      |            "personalAllowance": 1000,
+      |            "reducedPersonalAllowance": 1000,
+      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
+      |            "blindPersonsAllowance": 1000,
+      |            "lossesAppliedToGeneralIncome": 1000
+      |        },
+      |        "reliefs": {
+      |            "foreignTaxCreditRelief": [{
+      |
+      |            }],
+      |            "reliefsClaimed": [{
+      |
+      |            }]
+      |        }
       |    }
       |}""".stripMargin)
 
@@ -118,7 +152,7 @@ object ReliefFixtures {
       |		"oneOffPensionContributionsPaid": 1000
       |	},
       |	"reliefsClaimed": [{
-      |		"type": "foreignInterest",
+      |		"type": "nonDeductibleLoanInterest",
       |		"amountClaimed": 1000,
       |		"allowableAmount": 1000,
       |		"amountUsed": 1000,
