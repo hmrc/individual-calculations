@@ -23,21 +23,21 @@ object IncomeTypeBreakdownFixtures {
 
   val json: JsValue = Json.parse("""
       |{
-      | "allowancesAllocated" : 100.25,
+      | "allowancesAllocated" : 100,
       | "incomeTaxAmount" : 200.25,
       | "taxBands" : [
       |   {
       |     "name" : "name",
       |     "rate" : 300.25,
-      |     "bandLimit" : 600.25,
-      |     "apportionedBandLimit" : 700.25,
-      |     "income" : 800.25,
+      |     "bandLimit" : 600,
+      |     "apportionedBandLimit" : 700,
+      |     "income" : 800,
       |     "taxAmount" : 900.25
       |   }
       | ]
       |}
     """.stripMargin)
 
-  val model = IncomeTypeBreakdown(100.25, 200.25, Some(Seq(TaxBand("name", 300.25, 600.25, 700.25, 800.25, 900.25))))
+  val model = IncomeTypeBreakdown(100, 200.25, Some(Seq(TaxBand("name", 300.25, 600, 700, 800, 900.25))))
 
 }

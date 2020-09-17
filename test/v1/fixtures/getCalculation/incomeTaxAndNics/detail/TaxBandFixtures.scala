@@ -25,9 +25,9 @@ object TaxBandFixtures {
       |{
       | "name": "name",
       | "rate": 100.25,
-      | "bandLimit" : 400.25,
-      | "apportionedBandLimit" : 500.25,
-      | "income" : 600.25,
+      | "bandLimit" : 400,
+      | "apportionedBandLimit" : 500,
+      | "income" : 600,
       | "taxAmount" : 700.25
       |}
     """.stripMargin)
@@ -36,9 +36,9 @@ object TaxBandFixtures {
     TaxBand(
       name = "name",
       rate = 100.25,
-      bandLimit = 400.25,
-      apportionedBandLimit = 500.25,
-      income = 600.25,
+      bandLimit = 400,
+      apportionedBandLimit = 500,
+      income = 600,
       taxAmount = 700.25
     )
 
