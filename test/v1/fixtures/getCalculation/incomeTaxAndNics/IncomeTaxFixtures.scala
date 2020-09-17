@@ -30,7 +30,7 @@ object IncomeTaxFixtures {
       |     "incomeTax" : {
       |       "incomeTaxCharged" : 100.25,
       |       "payPensionsProfit" : {
-      |        "allowancesAllocated" : 300.25,
+      |        "allowancesAllocated" : 300,
       |        "incomeTaxAmount" : 400.25
       |       }
       |     },
@@ -57,7 +57,7 @@ object IncomeTaxFixtures {
       | "detail" : {
       |   "incomeTax" : {
       |     "payPensionsProfit" : {
-      |        "allowancesAllocated" : 300.25,
+      |        "allowancesAllocated" : 300,
       |        "incomeTaxAmount" : 400.25
       |     }
       |   }
@@ -66,7 +66,7 @@ object IncomeTaxFixtures {
     """.stripMargin)
 
   val calcSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25, "UK")
-  val calcDetail  = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300.25, 400.25, None)), None, None, None), None, None)
+  val calcDetail  = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300, 400.25, None)), None, None, None), None, None)
   val model       = IncomeTax(calcSummary, calcDetail)
 
 }

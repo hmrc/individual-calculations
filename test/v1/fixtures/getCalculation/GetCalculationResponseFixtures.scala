@@ -147,7 +147,7 @@ object GetCalculationResponseFixtures {
                  |            "totalReliefs": 1000,
                  |            "totalTaxableIncome": 234,
                  |            "payPensionsProfit": {
-                 |               "allowancesAllocated": 300.25,
+                 |               "allowancesAllocated": 300,
                  |               "incomeTaxAmount": 400.25,
                  |               "incomeReceived": 500,
                  |               "taxableIncome": 600
@@ -190,7 +190,7 @@ object GetCalculationResponseFixtures {
                                           |      "detail": {
                                           |         "incomeTax": {
                                           |            "payPensionsProfit": {
-                                          |               "allowancesAllocated": 300.25,
+                                          |               "allowancesAllocated": 300,
                                           |               "incomeTaxAmount": 400.25
                                           |            }
                                           |         }
@@ -345,7 +345,7 @@ object GetCalculationResponseFixtures {
 
   val messages           = Messages(None, None, Some(Seq(Message("id1", "text1"))))
   val calculationSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25, "UK")
-  val calculationDetail  = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300.25, 400.25, None)), None, None, None), None, None)
+  val calculationDetail  = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300, 400.25, None)), None, None, None), None, None)
   val incomeTax          = IncomeTax(calculationSummary, calculationDetail)
 
   val taxableIncomeModel = TaxableIncome(
