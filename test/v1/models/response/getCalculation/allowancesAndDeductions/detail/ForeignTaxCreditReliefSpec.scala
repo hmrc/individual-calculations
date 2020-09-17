@@ -17,7 +17,7 @@
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
 import support.UnitSpec
-import v1.fixtures.getCalculation.allowancesAndDeductions.detail.ReliefFixtures._
+import v1.fixtures.getCalculation.allowancesAndDeductions.detail.ReliefsFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {

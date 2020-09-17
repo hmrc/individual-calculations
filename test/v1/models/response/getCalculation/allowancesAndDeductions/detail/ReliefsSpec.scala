@@ -18,7 +18,7 @@ package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.{JsObject, Json}
 import support.UnitSpec
-import v1.fixtures.getCalculation.allowancesAndDeductions.detail.ReliefFixtures._
+import v1.fixtures.getCalculation.allowancesAndDeductions.detail.ReliefsFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class ReliefsSpec extends UnitSpec with JsonErrorValidators {
@@ -41,6 +41,10 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
       "json has empty nested fields and empty sequences" in {
         desJsonWithNoDataAndEmptyNestedFieldsAndSeq.as[Reliefs] shouldBe Reliefs.empty
+      }
+
+      "json has empty nested fields and no sequences" in {
+        desJsonWithNoDataAndEmptyNestedFields.as[Reliefs] shouldBe Reliefs.empty
       }
     }
   }

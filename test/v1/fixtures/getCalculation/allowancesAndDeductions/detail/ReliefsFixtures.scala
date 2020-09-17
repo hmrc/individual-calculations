@@ -18,7 +18,7 @@ package v1.fixtures.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.{JsValue, Json}
 
-object ReliefFixtures {
+object ReliefsFixtures {
 
   def desJsonIncomeSourceType(incomeSourceType: String): JsValue = {
     Json.parse(
@@ -106,6 +106,21 @@ object ReliefFixtures {
       |            "reliefsClaimed": [{
       |
       |            }]
+      |        }
+      |    }
+      |}""".stripMargin)
+
+  val desJsonWithNoDataAndEmptyNestedFields: JsValue = Json.parse("""{
+      |    "calculation": {
+      |        "allowancesAndDeductions": {
+      |            "personalAllowance": 1000,
+      |            "reducedPersonalAllowance": 1000,
+      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
+      |            "blindPersonsAllowance": 1000,
+      |            "lossesAppliedToGeneralIncome": 1000
+      |        },
+      |        "reliefs": {
+      |
       |        }
       |    }
       |}""".stripMargin)
