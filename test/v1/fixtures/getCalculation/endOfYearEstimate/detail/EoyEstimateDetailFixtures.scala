@@ -17,11 +17,16 @@
 package v1.fixtures.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.json.{JsObject, JsValue, Json}
+import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateForeignInterestFixtures._
+import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateForeignPropertyFixtures._
+import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateOtherDividendsFixtures._
 import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateSelfEmploymentFixtures._
+import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateStateBenefitsFixtures._
 import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateUkDividendsFixtures._
 import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateUkPropertyFhlFixtures._
 import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateUkPropertyNonFhlFixtures._
 import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateUkSavingFixtures._
+import v1.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateUkSecuritiesFixtures._
 import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail
 
 object EoyEstimateDetailFixtures {
@@ -31,7 +36,12 @@ object EoyEstimateDetailFixtures {
     Some(eoyEstimateUkPropertyFhlResponse),
     Some(eoyEstimateUkPropertyNonFhlResponse),
     Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse)),
-    Some(eoyEstimateUkDividendsResponse)
+    Some(eoyEstimateUkDividendsResponse),
+    Some(eoyEstimateOtherDividendsResponse),
+    Some(eoyEstimateStateBenefitsResponse),
+    Some(eoyEstimateUkSecuritiesResponse),
+    Some(eoyEstimateForeignPropertyResponse),
+    Some(eoyEstimateForeignInterestResponse)
   )
 
   val eoyEstimateDetailResponseReduced: EoyEstimateDetail = EoyEstimateDetail(
@@ -39,7 +49,12 @@ object EoyEstimateDetailFixtures {
     ukPropertyFhl = None,
     ukPropertyNonFhl = None,
     ukSavings = Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse)),
-    ukDividends = None
+    ukDividends = None,
+    otherDividends = None,
+    stateBenefits = None,
+    ukSecurities = None,
+    foreignProperty = None,
+    foreignInterest = None
   )
 
   val eoyEstimateDetailDesJson: JsObject =
@@ -51,7 +66,12 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkPropertyNonFhlDesJson,
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkSavingDesJson,
-          eoyEstimateUkDividendsDesJson
+          eoyEstimateUkDividendsDesJson,
+          eoyEstimateOtherDividendsDesJson,
+          eoyEstimateStateBenefitsDesJson,
+          eoyEstimateUkSecuritiesDesJson,
+          eoyEstimateForeignPropertyDesJson,
+          eoyEstimateForeignInterestDesJson
         ))
 
   val eoyEstimateDetailDesJsonSomeMissingOptionals: JsValue =
@@ -77,7 +97,12 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkPropertyNonFhlDesJsonWrongIncomeSourceType,
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkSavingDesJson,
-          eoyEstimateUkDividendsDesJsonWrongIncomeSourceType
+          eoyEstimateUkDividendsDesJsonWrongIncomeSourceType,
+          eoyEstimateOtherDividendsDesJsonWrongIncomeSourceType,
+          eoyEstimateStateBenefitsDesJsonWrongIncomeSourceType,
+          eoyEstimateUkSecuritiesDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignPropertyDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignInterestDesJsonWrongIncomeSourceType
         ))
 
   val eoyEstimateDetailDesJsonAllWrongIncomeSourceTypes: JsValue =
@@ -88,7 +113,12 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkPropertyFhlDesJsonWrongIncomeSourceType,
           eoyEstimateUkPropertyNonFhlDesJsonWrongIncomeSourceType,
           eoyEstimateUkSavingDesJsonWrongIncomeSourceType,
-          eoyEstimateUkDividendsDesJsonWrongIncomeSourceType
+          eoyEstimateUkDividendsDesJsonWrongIncomeSourceType,
+          eoyEstimateOtherDividendsDesJsonWrongIncomeSourceType,
+          eoyEstimateStateBenefitsDesJsonWrongIncomeSourceType,
+          eoyEstimateUkSecuritiesDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignPropertyDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignInterestDesJsonWrongIncomeSourceType
         ))
 
   val eoyEstimateDetailWrittenJson: JsValue =
@@ -97,6 +127,11 @@ object EoyEstimateDetailFixtures {
       .deepMerge(eoyEstimateUkPropertyNonFhlWrittenJsonObject)
       .deepMerge(eoyEstimateUkSavingWrittenJsonObject)
       .deepMerge(eoyEstimateUkDividendsWrittenJsonObject)
+      .deepMerge(eoyEstimateOtherDividendsWrittenJsonObject)
+      .deepMerge(eoyEstimateStateBenefitsWrittenJsonObject)
+      .deepMerge(eoyEstimateUkSecuritiesWrittenJsonObject)
+      .deepMerge(eoyEstimateForeignPropertyWrittenJsonObject)
+      .deepMerge(eoyEstimateForeignInterestWrittenJsonObject)
 
   val eoyEstimateDetailWrittenJsonObject: JsObject = Json.obj("detail" -> eoyEstimateDetailWrittenJson)
 
@@ -112,6 +147,11 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkPropertyFhlDesJson,
           eoyEstimateUkPropertyNonFhlDesJson,
           eoyEstimateUkSavingDesJson,
-          eoyEstimateUkDividendsDesJson
+          eoyEstimateUkDividendsDesJson,
+          eoyEstimateOtherDividendsDesJson,
+          eoyEstimateStateBenefitsDesJson,
+          eoyEstimateUkSecuritiesDesJson,
+          eoyEstimateForeignPropertyDesJson,
+          eoyEstimateForeignInterestDesJson
         ))
 }

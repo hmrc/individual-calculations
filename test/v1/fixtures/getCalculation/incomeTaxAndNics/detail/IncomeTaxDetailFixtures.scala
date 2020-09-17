@@ -39,15 +39,15 @@ object IncomeTaxDetailFixtures {
       | "taxCalculation" : {
       |   "incomeTax" : {
       |     "payPensionsProfit" : {
-      |       "allowancesAllocated": 100.25,
+      |       "allowancesAllocated": 100,
       |       "incomeTaxAmount" :100.50
       |     },
       |     "savingsAndGains" : {
-      |       "allowancesAllocated": 200.25,
+      |       "allowancesAllocated": 200,
       |       "incomeTaxAmount" :200.50
       |     },
       |     "dividends" : {
-      |       "allowancesAllocated": 300.25,
+      |       "allowancesAllocated": 300,
       |       "incomeTaxAmount" :300.50
       |     }
       |   }
@@ -63,15 +63,15 @@ object IncomeTaxDetailFixtures {
   val outputJson: JsValue = Json.parse("""
       |{
       | "payPensionsProfit" : {
-      |   "allowancesAllocated": 100.25,
+      |   "allowancesAllocated": 100,
       |   "incomeTaxAmount" :100.50
       | },
       |   "savingsAndGains" : {
-      |   "allowancesAllocated": 200.25,
+      |   "allowancesAllocated": 200,
       |   "incomeTaxAmount" :200.50
       | },
       | "dividends" : {
-      |   "allowancesAllocated": 300.25,
+      |   "allowancesAllocated": 300,
       |   "incomeTaxAmount" :300.50
       | },
       | "giftAid" : {
@@ -82,7 +82,7 @@ object IncomeTaxDetailFixtures {
       |}
     """.stripMargin)
 
-  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input + 0.25, input + 0.5, None)
+  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input.toBigInt, input + 0.5, None)
 
   val filledModel = detail.IncomeTaxDetail(Some(incomeTypeBreakdown(100)),
                                            Some(incomeTypeBreakdown(200)),

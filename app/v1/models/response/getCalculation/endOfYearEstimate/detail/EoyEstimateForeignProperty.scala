@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.incomeTaxAndNics.detail
+package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class TaxBand(name: String,
-                   rate: BigDecimal,
-                   bandLimit: BigInt,
-                   apportionedBandLimit: BigInt,
-                   income: BigInt,
-                   taxAmount: BigDecimal)
+case class EoyEstimateForeignProperty(taxableIncome: BigInt, finalised: Option[Boolean])
 
-object TaxBand {
-  implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
+object EoyEstimateForeignProperty {
+  implicit val format: OFormat[EoyEstimateForeignProperty] = Json.format[EoyEstimateForeignProperty]
 }
