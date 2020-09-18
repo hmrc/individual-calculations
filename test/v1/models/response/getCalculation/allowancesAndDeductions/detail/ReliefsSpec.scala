@@ -24,9 +24,9 @@ import v1.models.utils.JsonErrorValidators
 class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
   val reliefs = Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
-    Some(Seq(ForeignTaxCreditRelief(Some(IncomeSourceType.foreignInterest), Some("ABC647261934212"), Some("FRA"), Some(1000),
-      Some(2), Some(1000)))), Some(PensionContributionReliefs(Some(1000), Some(1000),
-      Some(1000))), Some(Seq(ReliefsClaimed(Some("nonDeductibleLoanInterest"),Some(1000),Some(1000),
+    Some(Seq(ForeignTaxCreditRelief(IncomeSourceType.foreignInterest, Some("ABC647261934212"), "FRA", Some(1000),
+      Some(2), Some(1000)))), Some(PensionContributionReliefs(1000, Some(1000),
+      Some(1000))), Some(Seq(ReliefsClaimed("nonDeductibleLoanInterest",Some(1000),Some(1000),
       Some(1000),Some(2)))))
 
   "reads" should {
@@ -37,10 +37,6 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
       "json has no fields" in {
         JsObject.empty.as[Reliefs] shouldBe Reliefs.empty
-      }
-
-      "json has empty nested fields and empty sequences" in {
-        desJsonWithNoDataAndEmptyNestedFieldsAndSeq.as[Reliefs] shouldBe Reliefs.empty
       }
 
       "json has empty nested fields and no sequences" in {

@@ -157,7 +157,7 @@ object CalculationDetailFixtures {
       Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(2))),
       Some(PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))))),
     Some(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
-      Some(Seq(ForeignTaxCreditRelief(Some(IncomeSourceType.foreignInterest), Some("ABC647261934212"), Some("FRA"), Some(1000), Some(2), Some(1000)))),
-      Some(PensionContributionReliefs(Some(1000), Some(1000), Some(1000))),
-      Some(Seq(ReliefsClaimed(Some("nonDeductibleLoanInterest"), Some(1000), Some(1000), Some(1000), Some(2)))))))
+      Some(Seq(ForeignTaxCreditRelief(IncomeSourceType.foreignInterest, Some("ABC647261934212"), "FRA", Some(1000), Some(2), Some(1000)))),
+      Some(PensionContributionReliefs(1000, Some(1000), Some(1000))),
+      Some(Seq(ReliefsClaimed("nonDeductibleLoanInterest", Some(1000), Some(1000), Some(1000), Some(2)))))))
 }

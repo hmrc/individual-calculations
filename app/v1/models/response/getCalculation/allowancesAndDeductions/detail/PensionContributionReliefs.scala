@@ -21,18 +21,17 @@ import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
 case class PensionContributionReliefs(
-                                       totalPensionContributionReliefs: Option[BigDecimal],
+                                       totalPensionContributionReliefs: BigDecimal,
                                        regularPensionContributions: Option[BigDecimal],
                                        oneOffPensionContributionsPaid: Option[BigDecimal]
                                      )
 
 object PensionContributionReliefs extends NestedJsonReads{
-  val empty = PensionContributionReliefs(None, None, None)
 
   implicit val writes: OWrites[PensionContributionReliefs] = Json.writes[PensionContributionReliefs]
 
-  implicit val reads: Reads[PensionContributionReliefs] = (
-    (JsPath \ "totalPensionContributionReliefs").readNullable[BigDecimal] and
+  implicit val readfs: Reads[PensionContributionReliefs] = (
+    (JsPath \ "totalPensionContributionReliefs").read[BigDecimal] and
       (JsPath \ "pensionContributionDetail" \ "regularPensionContributions").readNestedNullable[BigDecimal] and
       (JsPath \ "pensionContributionDetail" \ "oneOffPensionContributionsPaid").readNestedNullable[BigDecimal]
     )(PensionContributionReliefs.apply _)

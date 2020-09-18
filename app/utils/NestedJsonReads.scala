@@ -108,19 +108,6 @@ trait NestedJsonReads {
       }
 
     /**
-     * Returns a Reads that maps the sequence to itself unless it is empty as well as all nested models
-     */
-    def mapEmptySeqAndModelToNone(empty: A): Reads[Option[Seq[A]]] =
-      reads.map {
-        case Some(Nil) => None
-        case Some(seq) => seq.filter(_ != empty) match {
-          case Nil => None
-          case other => Some(other)
-        }
-        case other => other
-      }
-
-    /**
      * Returns a Reads that maps the sequence to its head unless it is empty
      */
     def mapHeadOption: Reads[Option[A]] =

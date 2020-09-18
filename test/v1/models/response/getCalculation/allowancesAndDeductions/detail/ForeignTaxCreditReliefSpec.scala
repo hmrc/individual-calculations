@@ -22,8 +22,8 @@ import v1.models.utils.JsonErrorValidators
 
 class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {
 
-  val foreignTaxCreditRelief = ForeignTaxCreditRelief(Some(IncomeSourceType.foreignInterest), Some("ABC647261934212"),
-    Some("FRA"), Some(1000), Some(2), Some(1000))
+  val foreignTaxCreditRelief = ForeignTaxCreditRelief(IncomeSourceType.foreignInterest, Some("ABC647261934212"),
+    "FRA", Some(1000), Some(2), Some(1000))
 
 
   "reads" should {
@@ -31,22 +31,22 @@ class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {
 
       "passed '03' for fhlPropertyEea" in {
         desJsonIncomeSourceType("03").as[ForeignTaxCreditRelief] shouldBe foreignTaxCreditRelief
-          .copy(incomeSourceType = Some(IncomeSourceType.fhlPropertyEea))
+          .copy(incomeSourceType = IncomeSourceType.fhlPropertyEea)
       }
 
       "passed '06' for foreignIncome" in {
         desJsonIncomeSourceType("06").as[ForeignTaxCreditRelief] shouldBe foreignTaxCreditRelief
-          .copy(incomeSourceType = Some(IncomeSourceType.foreignIncome))
+          .copy(incomeSourceType = IncomeSourceType.foreignIncome)
       }
 
       "passed '07' for dividendsFromForeignCompanies" in {
         desJsonIncomeSourceType("07").as[ForeignTaxCreditRelief] shouldBe foreignTaxCreditRelief
-          .copy(incomeSourceType = Some(IncomeSourceType.dividendsFromForeignCompanies))
+          .copy(incomeSourceType = IncomeSourceType.dividendsFromForeignCompanies)
       }
 
       "passed '15' for foreignProperty" in {
         desJsonIncomeSourceType("15").as[ForeignTaxCreditRelief] shouldBe foreignTaxCreditRelief
-          .copy(incomeSourceType = Some(IncomeSourceType.foreignProperty))
+          .copy(incomeSourceType = IncomeSourceType.foreignProperty)
       }
 
       "passed '16' for foreignInterest" in {

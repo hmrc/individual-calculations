@@ -21,26 +21,22 @@ import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 
 case class ForeignTaxCreditRelief(
-                                   incomeSourceType: Option[IncomeSourceType],
+                                   incomeSourceType: IncomeSourceType,
                                    incomeSourceId: Option[String],
-                                   countryCode: Option[String],
+                                   countryCode: String,
                                    allowableAmount: Option[BigDecimal],
                                    rate: Option[Double],
                                    amountUsed: Option[BigDecimal]
                                  )
 
 object ForeignTaxCreditRelief extends NestedJsonReads{
-  val empty = ForeignTaxCreditRelief(None, None, None, None, None, None)
 
   implicit val writes: OWrites[ForeignTaxCreditRelief] = Json.writes[ForeignTaxCreditRelief]
 
   implicit val reads: Reads[ForeignTaxCreditRelief] = (
-    (JsPath \ "incomeSourceType").readNullable[DesIncomeSourceType].map {
-      case Some(res) => Some(res.toIncomeSourceType)
-      case None => None
-    } and
+    (JsPath \ "incomeSourceType").read[DesIncomeSourceType].map(_.toIncomeSourceType) and
       (JsPath \ "incomeSourceId").readNullable[String] and
-      (JsPath \ "countryCode").readNullable[String] and
+      (JsPath \ "countryCode").read[String] and
       (JsPath \ "allowableAmount").readNullable[BigDecimal] and
       (JsPath \ "rate").readNullable[Double] and
       (JsPath \ "amountUsed").readNullable[BigDecimal]

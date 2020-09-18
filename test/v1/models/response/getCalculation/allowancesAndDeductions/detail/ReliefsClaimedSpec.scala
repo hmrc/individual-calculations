@@ -16,14 +16,14 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
 import v1.fixtures.getCalculation.allowancesAndDeductions.detail.ReliefsClaimedFixtures._
 import v1.models.utils.JsonErrorValidators
 
 class ReliefsClaimedSpec extends UnitSpec with JsonErrorValidators {
 
-  val reliefsClaimed = ReliefsClaimed(Some("nonDeductibleLoanInterest"),Some(1000),Some(1000), Some(1000),Some(2))
+  val reliefsClaimed = ReliefsClaimed("nonDeductibleLoanInterest",Some(1000),Some(1000), Some(1000),Some(2))
 
   "reads" should {
     "return a valid object" when {
@@ -32,13 +32,8 @@ class ReliefsClaimedSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "any other value for 'type' is passed" in {
-        desJsonDeficiencyRelief.as[ReliefsClaimed] shouldBe reliefsClaimed.copy(`type` = Some("deficiencyRelief"))
+        desJsonDeficiencyRelief.as[ReliefsClaimed] shouldBe reliefsClaimed.copy(`type` = "deficiencyRelief")
       }
-
-      "json has no fields" in {
-        JsObject.empty.as[ReliefsClaimed] shouldBe ReliefsClaimed.empty
-      }
-
     }
   }
 

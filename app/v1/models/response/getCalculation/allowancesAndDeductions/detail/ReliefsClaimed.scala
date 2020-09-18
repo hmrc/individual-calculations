@@ -21,7 +21,7 @@ import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
 case class ReliefsClaimed(
-                           `type`: Option[String],
+                           `type`: String,
                            amountClaimed: Option[BigDecimal],
                            allowableAmount: Option[BigDecimal],
                            amountUsed: Option[BigDecimal],
@@ -29,13 +29,12 @@ case class ReliefsClaimed(
                          )
 
 object ReliefsClaimed extends NestedJsonReads{
-  val empty = ReliefsClaimed(None, None, None, None, None)
 
   implicit val writes: OWrites[ReliefsClaimed] = Json.writes[ReliefsClaimed]
 
   implicit val reads: Reads[ReliefsClaimed] = (
-    (JsPath \ "type").readNullable[String].map {
-      case Some(res) if res == "nonDeductableLoanInterest" => Some("nonDeductibleLoanInterest")
+    (JsPath \ "type").read[String].map {
+      case "nonDeductableLoanInterest" => "nonDeductibleLoanInterest"
       case other => other
     } and
       (JsPath \ "amountClaimed").readNullable[BigDecimal] and

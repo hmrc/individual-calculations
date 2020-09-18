@@ -34,11 +34,8 @@ object Reliefs extends NestedJsonReads{
 
   implicit val reads: Reads[Reliefs] = (
     (JsPath \ "calculation" \ "reliefs" \ "residentialFinanceCosts").readNestedNullable[ResidentialFinanceCosts] and
-      (JsPath \ "calculation" \ "reliefs" \ "foreignTaxCreditRelief").readNestedNullable[Seq[ForeignTaxCreditRelief]]
-        .mapEmptySeqAndModelToNone(ForeignTaxCreditRelief.empty) and
-      (JsPath \ "calculation" \ "pensionContributionReliefs").readNestedNullable[PensionContributionReliefs]
-        .mapEmptyModelToNone(PensionContributionReliefs.empty) and
+      (JsPath \ "calculation" \ "reliefs" \ "foreignTaxCreditRelief").readNestedNullable[Seq[ForeignTaxCreditRelief]] and
+      (JsPath \ "calculation" \ "pensionContributionReliefs").readNestedNullable[PensionContributionReliefs] and
       (JsPath \ "calculation" \ "reliefs" \ "reliefsClaimed").readNestedNullable[Seq[ReliefsClaimed]]
-        .mapEmptySeqAndModelToNone(ReliefsClaimed.empty)
     )(Reliefs.apply _)
 }
