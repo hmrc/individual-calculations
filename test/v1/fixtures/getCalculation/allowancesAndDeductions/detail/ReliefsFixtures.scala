@@ -90,26 +90,6 @@ object ReliefsFixtures {
       |    }
       |}""".stripMargin)
 
-  val desJsonWithNoDataAndEmptyNestedFieldsAndSeq: JsValue = Json.parse("""{
-      |    "calculation": {
-      |        "allowancesAndDeductions": {
-      |            "personalAllowance": 1000,
-      |            "reducedPersonalAllowance": 1000,
-      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
-      |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000
-      |        },
-      |        "reliefs": {
-      |            "foreignTaxCreditRelief": [{
-      |
-      |            }],
-      |            "reliefsClaimed": [{
-      |
-      |            }]
-      |        }
-      |    }
-      |}""".stripMargin)
-
   val desJsonWithNoDataAndEmptyNestedFields: JsValue = Json.parse("""{
       |    "calculation": {
       |        "allowancesAndDeductions": {
