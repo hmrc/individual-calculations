@@ -21,8 +21,6 @@ import play.api.libs.json.Reads._
 import play.api.libs.json._
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.Bsas
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.LossClaimsDetail
-import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.summary.LossClaimsSummary
 
 case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          totalExpenses: Option[BigDecimal],
@@ -34,77 +32,41 @@ case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          adjustedIncomeTaxLoss: Option[BigInt],
                          taxableProfit: Option[BigInt],
                          taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
-                         lossClaimsSummary: Option[LossClaimsSummary],
-                         lossClaimsDetail: Option[LossClaimsDetail],
+                         lossClaimsSummary: Option[UkPropertyFhlLossClaimsSummary],
+                         lossClaimsDetail: Option[UkPropertyFhlLossClaimsDetail],
                          bsas: Option[Bsas])
 
-object UkPropertyFhl extends NestedJsonReads{
-  val empty = UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None, None)
+object UkPropertyFhl extends NestedJsonReads {
 
-  case class TopLevelElements(incomeSourceType: String,
-                              totalIncome: Option[BigDecimal],
-                              totalExpenses: Option[BigDecimal],
-                              netProfit: Option[BigDecimal],
-                              netLoss: Option[BigDecimal],
-                              totalAdditions: Option[BigDecimal],
-                              totalDeductions: Option[BigDecimal],
-                              accountingAdjustments: Option[BigDecimal],
-                              adjustedIncomeTaxLoss: Option[BigInt],
-                              taxableProfit: Option[BigInt],
-                              taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
-                              lossClaimsSummary: Option[LossClaimsSummary]
-                             )
-  object TopLevelElements {
+  private implicit val topLevelReads: Reads[UkPropertyFhl] = (
+    (JsPath \ "totalIncome").readNullable[BigDecimal] and
+      (JsPath \ "totalExpenses").readNullable[BigDecimal] and
+      (JsPath \ "netProfit").readNullable[BigDecimal] and
+      (JsPath \ "netLoss").readNullable[BigDecimal] and
+      (JsPath \ "totalAdditions").readNullable[BigDecimal] and
+      (JsPath \ "totalDeductions").readNullable[BigDecimal] and
+      (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
+      (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
+      (JsPath \ "taxableProfit").readNullable[BigInt] and
+      (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
+      JsPath.readNullable[UkPropertyFhlLossClaimsSummary].mapEmptyModelToNone(UkPropertyFhlLossClaimsSummary.empty) and
+      Reads.pure(None) and Reads.pure(None)
+  )(UkPropertyFhl.apply _)
 
-    implicit val writes: OWrites[TopLevelElements] = Json.writes[TopLevelElements]
+  val empty: UkPropertyFhl = UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None, None)
 
-    implicit val reads: Reads[TopLevelElements] = (
-      (JsPath \ "incomeSourceType").read[String] and
-        (JsPath \ "totalIncome").readNullable[BigDecimal] and
-        (JsPath \ "totalExpenses").readNullable[BigDecimal] and
-        (JsPath \ "netProfit").readNullable[BigDecimal] and
-        (JsPath \ "netLoss").readNullable[BigDecimal] and
-        (JsPath \ "totalAdditions").readNullable[BigDecimal] and
-        (JsPath \ "totalDeductions").readNullable[BigDecimal] and
-        (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
-        (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
-        (JsPath \ "taxableProfit").readNullable[BigInt] and
-        (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
-        JsPath.readNullable[LossClaimsSummary].map{
-          case Some(LossClaimsSummary.empty) => None
-          case other => other
-        }
-      )(TopLevelElements.apply _)
-  }
-
-  implicit val writes: OWrites[UkPropertyFhl] = Json.writes[UkPropertyFhl]
-
-  def readsApply(topLevelElementsOpt: Option[TopLevelElements], lossClaimsDetail: Option[LossClaimsDetail], bsas: Option[Bsas]):UkPropertyFhl =
-    topLevelElementsOpt match {
-      case None => UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, lossClaimsDetail, bsas)
-      case Some(topLevelElements) => UkPropertyFhl(topLevelElements.totalIncome,
-        topLevelElements.totalExpenses,
-        topLevelElements. netProfit,
-        topLevelElements.netLoss,
-        topLevelElements.totalAdditions,
-        topLevelElements.totalDeductions,
-        topLevelElements.accountingAdjustments,
-        topLevelElements.adjustedIncomeTaxLoss,
-        topLevelElements.taxableProfit,
-        topLevelElements.taxableProfitAfterIncomeTaxLossesDeduction,
-        topLevelElements.lossClaimsSummary,
-        lossClaimsDetail, bsas)
-    }
+  private def readsApply(topLevelElementsOpt: Option[UkPropertyFhl],
+                         lossClaimsDetail: Option[UkPropertyFhlLossClaimsDetail],
+                         bsas: Option[Bsas]): UkPropertyFhl =
+    topLevelElementsOpt
+      .getOrElse(UkPropertyFhl.empty)
+      .copy(lossClaimsDetail = lossClaimsDetail, bsas = bsas)
 
   implicit val reads: Reads[UkPropertyFhl] = (
-    (JsPath \ "calculation" \ "businessProfitAndLoss")
-      .readNestedNullableOpt[TopLevelElements](filteredArrayValueReads(None, "incomeSourceType", "04")) and
-     __.readNullable[LossClaimsDetail].map{
-       case Some(LossClaimsDetail.empty) => None
-       case other => other
-     } and
-      (JsPath \ "inputs" \ "annualAdjustments").readNestedNullableOpt[Bsas](filteredArrayValueReads(None, "incomeSourceType", "04"))
-    )(UkPropertyFhl.readsApply _)
+    (JsPath \ "calculation" \ "businessProfitAndLoss").readIncomeSourceTypeItem[UkPropertyFhl](incomeSourceType = "04")(topLevelReads) and
+      JsPath.readNullable[UkPropertyFhlLossClaimsDetail].mapEmptyModelToNone(UkPropertyFhlLossClaimsDetail.empty) and
+      (JsPath \ "inputs" \ "annualAdjustments").readIncomeSourceTypeItem[Bsas](incomeSourceType = "04")
+  )(UkPropertyFhl.readsApply _)
 
-
+  implicit val writes: OWrites[UkPropertyFhl] = Json.writes[UkPropertyFhl]
 }

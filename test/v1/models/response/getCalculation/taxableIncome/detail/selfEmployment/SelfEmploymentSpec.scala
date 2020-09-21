@@ -14,86 +14,319 @@
  * limitations under the License.
  */
 
-  package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
-import play.api.libs.json.{JsObject, JsSuccess, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 import support.UnitSpec
-import v1.fixtures.getCalculation.taxableIncome.detail.selfEmployments.SelfEmploymentBusinessFixtures._
-import v1.fixtures.getCalculation.taxableIncome.detail.selfEmployments.SelfEmploymentJson._
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment._
+import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
 class SelfEmploymentSpec extends UnitSpec {
 
-  "SelfEmploymentBusiness: singular" when {
-
-    val selfEmploymentResponseWithoutOptionals: SelfEmployment =
-      SelfEmployment("anId", None, None, None, None, None, None, None, None, None, None, None, None, None, None)
-
-    "read from valid JSON without LossClaimsSummary fields" should {
-      "produce the expected SelfEmployment object" in {
-        Json.parse("""{"incomeSourceId" : "anId"}""").as[SelfEmployment] shouldBe selfEmploymentResponseWithoutOptionals
+  "SelfEmployment" when {
+    "read from valid JSON with 1 Self Employment item" should {
+      "produce a sequence containing the expected SelfEmployment object" in {
+        TaxableIncomeJsonFixture.oneSelfEmploymentDesJson.as[Seq[SelfEmployment]] shouldBe
+          Seq(TaxableIncomeModelsFixture.selfEmploymentModel1)
       }
     }
 
-    "written to Json" should {
-      "return the expected JsObject" in {
-        Json.toJson(selfEmploymentBusinessDefaultResponse) shouldBe selfEmploymentDetailDefaultWrittenJsonSingular
+    "read from valid JSON with 1 Self Employment item where Bsas and LossClaimsDetail are missing" should {
+      "produce a sequence containing the expected SelfEmployment object without Bsas or LossClaimsDetail" in {
+        val noBsasOrLossClaimsDesJson: JsValue = Json.parse(
+          """
+            |{
+            |   "metadata":{
+            |      "calculationId":"041f7e4d-87d9-4d4a-a296-3cfbdf92f7e2",
+            |      "taxYear":2018,
+            |      "requestedBy":"customer",
+            |      "requestedTimestamp":"2019-02-15T09:35:15.094Z",
+            |      "calculationReason":"customerRequest",
+            |      "calculationTimestamp":"2019-02-15T09:35:15.094Z",
+            |      "calculationType":"inYear",
+            |      "intentToCrystallise":false,
+            |      "crystallised":false,
+            |      "crystallisationTimestamp":"2019-02-15T09:35:15.094Z",
+            |      "periodFrom":"2018-01-01",
+            |      "periodTo":"2019-01-01"
+            |   },
+            |   "inputs":{
+            |      "personalInformation":{
+            |         "identifier":"VO123456A",
+            |         "dateOfBirth":"1988-08-27",
+            |         "taxRegime":"UK",
+            |         "statePensionAgeDate":"2053-08-27"
+            |      },
+            |      "incomeSources":{
+            |         "businessIncomeSources":[
+            |            {
+            |               "incomeSourceId":"AaIS12345678910",
+            |               "incomeSourceType":"01",
+            |               "incomeSourceName":"Self-Employment Business ONE",
+            |               "accountingPeriodStartDate":"2018-01-01",
+            |               "accountingPeriodEndDate":"2019-01-01",
+            |               "source":"MTD-SA",
+            |               "latestPeriodEndDate":"2019-01-01",
+            |               "latestReceivedDateTime":"2019-08-06T11:45:01Z",
+            |               "finalised":false,
+            |               "finalisationTimestamp":"2019-02-15T09:35:15.094Z",
+            |               "submissionPeriods":[
+            |                  {
+            |                     "periodId":"abcdefghijk",
+            |                     "startDate":"2018-01-01",
+            |                     "endDate":"2019-01-01",
+            |                     "receivedDateTime":"2019-02-15T09:35:04.843Z"
+            |                  }
+            |               ]
+            |            }
+            |         ],
+            |         "nonBusinessIncomeSources":[
+            |            {
+            |               "incomeSourceId":"SAVKB1UVwUTBQGJ",
+            |               "incomeSourceType":"09",
+            |               "incomeSourceName":"UK Savings Account ONE",
+            |               "startDate":"2018-01-01",
+            |               "endDate":"2019-01-01",
+            |               "source":"MTD-SA",
+            |               "periodId":"001",
+            |               "latestReceivedDateTime":"2019-08-06T11:45:01Z"
+            |            },
+            |            {
+            |               "incomeSourceId":"SAVKB2UVwUTBQGJ",
+            |               "incomeSourceType":"09",
+            |               "incomeSourceName":"UK Savings Account TWO",
+            |               "startDate":"2018-01-01",
+            |               "endDate":"2019-01-01",
+            |               "source":"MTD-SA",
+            |               "periodId":"001",
+            |               "latestReceivedDateTime":"2019-08-06T11:45:01Z"
+            |            },
+            |            {
+            |               "incomeSourceId":"DDIS12345678910",
+            |               "incomeSourceType":"10",
+            |               "incomeSourceName":"UK Dividends",
+            |               "startDate":"2018-01-01",
+            |               "endDate":"2019-01-01",
+            |               "source":"MTD-SA",
+            |               "periodId":"001",
+            |               "latestReceivedDateTime":"2019-08-06T11:45:01Z"
+            |            }
+            |         ]
+            |      }
+            |   },
+            |   "calculation":{
+            |      "allowancesAndDeductions":{
+            |         "personalAllowance":8001,
+            |         "reducedPersonalAllowance":8002,
+            |         "giftOfInvestmentsAndPropertyToCharity":8003,
+            |         "blindPersonsAllowance":8004,
+            |         "lossesAppliedToGeneralIncome":8005
+            |      },
+            |      "reliefs":{
+            |         "residentialFinanceCosts":{
+            |            "amountClaimed":8006,
+            |            "allowableAmount":8007,
+            |            "rate":2,
+            |            "propertyFinanceRelief":8008
+            |         }
+            |      },
+            |      "taxDeductedAtSource":{
+            |         "bbsi":8009,
+            |         "ukLandAndProperty":8010
+            |      },
+            |      "giftAid":{
+            |         "grossGiftAidPayments":8011,
+            |         "rate":35,
+            |         "giftAidTax":8012.11
+            |      },
+            |      "businessProfitAndLoss":[
+            |         {
+            |            "incomeSourceId":"AaIS12345678910",
+            |            "incomeSourceType":"01",
+            |            "incomeSourceName":"Self-Employment Business ONE",
+            |            "totalIncome":100101.11,
+            |            "totalExpenses":100201.11,
+            |            "netProfit":100301.11,
+            |            "netLoss":100401.11,
+            |            "totalAdditions":100501.11,
+            |            "totalDeductions":100601.11,
+            |            "accountingAdjustments":100701.11,
+            |            "taxableProfit":100801,
+            |            "adjustedIncomeTaxLoss":100901,
+            |            "totalBroughtForwardIncomeTaxLosses":101001,
+            |            "lossForCSFHL":101101,
+            |            "broughtForwardIncomeTaxLossesUsed":101201,
+            |            "taxableProfitAfterIncomeTaxLossesDeduction":101301,
+            |            "totalIncomeTaxLossesCarriedForward":101601,
+            |            "class4Loss":101501,
+            |            "totalBroughtForwardClass4Losses":101701,
+            |            "carrySidewaysIncomeTaxLossesUsed":101401,
+            |            "broughtForwardClass4LossesUsed":101801,
+            |            "carrySidewaysClass4LossesUsed":101901,
+            |            "totalClass4LossesCarriedForward":101119
+            |         }
+            |      ],
+            |      "savingsAndGainsIncome":[
+            |         {
+            |            "incomeSourceId":"SAVKB1UVwUTBQGJ",
+            |            "incomeSourceType":"09",
+            |            "incomeSourceName":"UK Savings Account ONE",
+            |            "grossIncome":90101.11,
+            |            "netIncome":90201.11,
+            |            "taxDeducted":90301.11
+            |         },
+            |         {
+            |            "incomeSourceId":"SAVKB2UVwUTBQGJ",
+            |            "incomeSourceType":"09",
+            |            "incomeSourceName":"UK Savings Account TWO",
+            |            "grossIncome":90102.11,
+            |            "netIncome":90202.11,
+            |            "taxDeducted":90302.11
+            |         }
+            |      ],
+            |      "incomeSummaryTotals":{
+            |         "totalSelfEmploymentProfit":6001,
+            |         "totalPropertyProfit":6002,
+            |         "totalFHLPropertyProfit":6003,
+            |         "totalUKOtherPropertyProfit":6004
+            |      },
+            |      "taxCalculation":{
+            |         "incomeTax":{
+            |            "totalIncomeReceivedFromAllSources":7001,
+            |            "totalAllowancesAndDeductions":7002,
+            |            "totalTaxableIncome":100,
+            |            "payPensionsProfit":{
+            |               "incomeReceived":7004,
+            |               "allowancesAllocated":7005,
+            |               "taxableIncome":7006,
+            |               "incomeTaxAmount":7007.11,
+            |               "taxBands":[
+            |                  {
+            |                     "name":"SSR",
+            |                     "rate":31,
+            |                     "bandLimit":7008,
+            |                     "apportionedBandLimit":7009,
+            |                     "income":7010,
+            |                     "taxAmount":7011.11
+            |                  }
+            |               ]
+            |            },
+            |            "savingsAndGains":{
+            |               "incomeReceived":7012,
+            |               "allowancesAllocated":7013,
+            |               "taxableIncome":7014,
+            |               "incomeTaxAmount":7015.11,
+            |               "taxBands":[
+            |                  {
+            |                     "name":"SSR",
+            |                     "rate":42,
+            |                     "bandLimit":7016,
+            |                     "apportionedBandLimit":7017,
+            |                     "income":7018,
+            |                     "taxAmount":7019
+            |                  }
+            |               ]
+            |            },
+            |            "dividends":{
+            |               "incomeReceived":7020,
+            |               "allowancesAllocated":7021,
+            |               "taxableIncome":7022,
+            |               "incomeTaxAmount":7023.11,
+            |               "taxBands":[
+            |                  {
+            |                     "name":"SSR",
+            |                     "rate":83,
+            |                     "bandLimit":7024,
+            |                     "apportionedBandLimit":7025,
+            |                     "income":7026,
+            |                     "taxAmount":7027.11
+            |                  }
+            |               ]
+            |            },
+            |            "incomeTaxCharged":7028,
+            |            "totalReliefs":7029,
+            |            "incomeTaxDueAfterReliefs":7030.11,
+            |            "incomeTaxDueAfterGiftAid":7031.11
+            |         },
+            |         "nics":{
+            |            "class2Nics":{
+            |               "amount":5001.11,
+            |               "weeklyRate":5002.11,
+            |               "weeks":23,
+            |               "limit":5004,
+            |               "apportionedLimit":5005,
+            |               "underSmallProfitThreshold":false,
+            |               "actualClass2Nic":false
+            |            },
+            |            "class4Nics":{
+            |               "totalIncomeLiableToClass4Charge":5006,
+            |               "totalClass4LossesAvailable":5007,
+            |               "totalClass4LossesUsed":5008,
+            |               "totalClass4LossesCarriedForward":5009,
+            |               "totalIncomeChargeableToClass4":5010,
+            |               "totalAmount":5011.11,
+            |               "nic4Bands":[
+            |                  {
+            |                     "name":"ZRT",
+            |                     "rate":1,
+            |                     "threshold":5012,
+            |                     "apportionedThreshold":5013,
+            |                     "income":5014,
+            |                     "amount":5015.11
+            |                  }
+            |               ]
+            |            },
+            |            "nic2NetOfDeductions":5016.11,
+            |            "nic4NetOfDeductions":5017.11,
+            |            "totalNic":5018.11
+            |         },
+            |         "totalIncomeTaxNicsCharged":5019.11,
+            |         "totalTaxDeducted":5020,
+            |         "totalIncomeTaxAndNicsDue":5021.11
+            |      },
+            |      "previousCalculation":{
+            |         "calculationTimestamp":"2019-02-15T09:35:15.094Z",
+            |         "calculationId":"12345678",
+            |         "totalIncomeTaxAndNicsDue":5022.11,
+            |         "incomeTaxNicDueThisPeriod":5023.11
+            |      }
+            |   }
+            |}
+          """.stripMargin
+        )
+
+        noBsasOrLossClaimsDesJson.as[Seq[SelfEmployment]] shouldBe
+          Seq(TaxableIncomeModelsFixture.selfEmploymentModel1.copy(
+            lossClaimsDetail = None, bsas = None))
       }
     }
 
-    "written to JSON with an empty LossClaimsSummary" should {
-      "not write the LossClaimsSummary field" in {
-        Json.toJson(selfEmploymentBusinessDefaultResponse.copy(lossClaimsSummary = None)) shouldBe selfEmploymentDetailDefaultWrittenJsonSingularNoSummary
-      }
-    }
-  }
-
-  "SelfEmploymentBusiness: sequence" when {
-    "read from valid Json" should {
-      "return a JsSuccess" in {
-        selfEmploymentBusinessDefaultDesJsonSequence.validate[Seq[SelfEmployment]] shouldBe a[JsSuccess[_]]
-      }
-      "containing the expected SelfEmploymentBusiness object" in {
-        selfEmploymentBusinessDefaultDesJsonSequence.as[Seq[SelfEmployment]] shouldBe Seq(selfEmploymentBusinessDefaultResponse)
+    "read from valid JSON with multiple Self Employment items" should {
+      "produce a sequence containing the expected SelfEmployment objects" in {
+        TaxableIncomeJsonFixture.desJson.as[Seq[SelfEmployment]] shouldBe
+          Seq(
+            TaxableIncomeModelsFixture.selfEmploymentModel1,
+            TaxableIncomeModelsFixture.selfEmploymentModel2
+          )
       }
     }
 
-    "des returns a valid json with different incomeSourceId in annualAdjustments" should {
-      "return SelfEmploymentBusiness object without BSAS object" in {
-        selfEmploymentBusinessDefaultDesJsonSequenceWithDifferentIncomeSourceId.as[Seq[SelfEmployment]] shouldBe
-          Seq(selfEmploymentBusinessDefaultResponse.copy(bsas = None))
-      }
-    }
-
-    "read from empty Json" should {
+    "read from empty JSON" should {
       "return an empty sequence" in {
-        JsObject.empty.as[Seq[SelfEmployment]].isEmpty shouldBe true
+        val emptyJson: JsValue = JsObject.empty
+        emptyJson.as[Seq[SelfEmployment]].isEmpty shouldBe true
       }
     }
 
-    "read from Json with multiple selfEmployments" should {
-      "return the expected sequence of SelfEmployments" in {
-        summariesDesJson.as[Seq[SelfEmployment]] shouldBe selfEmployments
-      }
-    }
-
-    "read from a complex Json scenario" should {
-      "return the expected sequence of SelfEmployments" in {
-        complexSelfEmploymentCaseDesJson.as[Seq[SelfEmployment]] shouldBe complexSelfEmploymentCaseResponse
-      }
-    }
-
-    "written to Json" should {
+    "written to JSON" should {
       "return the expected JsObject" in {
-        Json.toJson(Seq(selfEmploymentBusinessDefaultResponse)) shouldBe selfEmploymentDetailDefaultWrittenJsonSequence
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "payPensionsProfit" \
+          "businessProfitAndLoss" \ "selfEmployments").get
+        Json.toJson(Seq(
+          TaxableIncomeModelsFixture.selfEmploymentModel1,
+          TaxableIncomeModelsFixture.selfEmploymentModel2
+        )) shouldBe mtdJson
       }
     }
 
-    "written from a complex selfEmployment object" should {
-      "return the expected JsObject" in {
-        Json.toJson(complexSelfEmploymentCaseResponse) shouldBe complexSelfEmploymentCaseWrittenJson
-      }
-    }
   }
-
 }

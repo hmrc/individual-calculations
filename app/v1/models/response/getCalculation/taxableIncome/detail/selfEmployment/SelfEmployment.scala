@@ -19,74 +19,56 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{BusinessSourceAdjustableSummary, LossClaimsDetail}
-import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
 
-case class SelfEmployment(
-    selfEmploymentId: String,
-    totalIncome: Option[BigDecimal],
-    totalExpenses: Option[BigDecimal],
-    netProfit: Option[BigDecimal],
-    netLoss: Option[BigDecimal],
-    class4Loss: Option[BigInt],
-    totalAdditions: Option[BigDecimal],
-    totalDeductions: Option[BigDecimal],
-    accountingAdjustments: Option[BigDecimal],
-    adjustedIncomeTaxLoss: Option[BigInt],
-    taxableProfit: Option[BigDecimal],
-    taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
-    lossClaimsSummary: Option[LossClaimsSummary],
-    lossClaimsDetail: Option[LossClaimsDetail],
-    bsas: Option[BusinessSourceAdjustableSummary]
-)
+case class SelfEmployment(selfEmploymentId: String,
+                          totalIncome: Option[BigDecimal],
+                          totalExpenses: Option[BigDecimal],
+                          netProfit: Option[BigDecimal],
+                          netLoss: Option[BigDecimal],
+                          class4Loss: Option[BigInt],
+                          totalAdditions: Option[BigDecimal],
+                          totalDeductions: Option[BigDecimal],
+                          accountingAdjustments: Option[BigDecimal],
+                          adjustedIncomeTaxLoss: Option[BigInt],
+                          taxableProfit: Option[BigDecimal],
+                          taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
+                          lossClaimsSummary: Option[SelfEmploymentLossClaimsSummary],
+                          lossClaimsDetail: Option[SelfEmploymentLossClaimsDetail],
+                          bsas: Option[SelfEmploymentBsas])
 
 object SelfEmployment extends NestedJsonReads {
 
+  private implicit val topLevelReads: Reads[SelfEmployment] = (
+    (JsPath \ "incomeSourceId").read[String] and
+      (JsPath \ "totalIncome").readNullable[BigDecimal] and
+      (JsPath \ "totalExpenses").readNullable[BigDecimal] and
+      (JsPath \ "netProfit").readNullable[BigDecimal] and
+      (JsPath \ "netLoss").readNullable[BigDecimal] and
+      (JsPath \ "class4Loss").readNullable[BigInt] and
+      (JsPath \ "totalAdditions").readNullable[BigDecimal] and
+      (JsPath \ "totalDeductions").readNullable[BigDecimal] and
+      (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
+      (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
+      (JsPath \ "taxableProfit").readNullable[BigDecimal] and
+      (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
+      JsPath.readNullable[SelfEmploymentLossClaimsSummary].mapEmptyModelToNone(SelfEmploymentLossClaimsSummary.empty) and
+      Reads.pure(None) and Reads.pure(None)
+    ) (SelfEmployment.apply _)
+
+  private def readsApply(selfEmploymentSeqOpt: Option[Seq[SelfEmployment]],
+                         detailsOpt: Option[SelfEmploymentLossClaimsDetail],
+                         bsasSeqOpt: Option[Seq[SelfEmploymentBsas]]): Seq[SelfEmployment] =
+    selfEmploymentSeqOpt.getOrElse(Seq.empty[SelfEmployment])
+      .map(selfEmployment => selfEmployment.copy(
+        lossClaimsDetail = detailsOpt.getOrElse(SelfEmploymentLossClaimsDetail.empty).filterById(selfEmployment.selfEmploymentId),
+        bsas = bsasSeqOpt.getOrElse(Seq.empty).find(_.incomeSourceId == selfEmployment.selfEmploymentId)
+      ))
+
+  implicit val seqReads: Reads[Seq[SelfEmployment]] = (
+    (JsPath \ "calculation" \ "businessProfitAndLoss").readIncomeSourceTypeSeq[SelfEmployment](incomeSourceType = "01")(topLevelReads) and
+      JsPath.readNullable[SelfEmploymentLossClaimsDetail].mapEmptyModelToNone(SelfEmploymentLossClaimsDetail.empty) and
+      (JsPath \ "inputs" \ "annualAdjustments").readIncomeSourceTypeSeq[SelfEmploymentBsas](incomeSourceType = "01")
+    ) (SelfEmployment.readsApply _)
+
   implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
-
-  implicit val singleReads: Reads[SelfEmployment] = ((JsPath \ "incomeSourceId").read[String] and
-    (JsPath \ "totalIncome").readNullable[BigDecimal] and
-    (JsPath \ "totalExpenses").readNullable[BigDecimal] and
-    (JsPath \ "netProfit").readNullable[BigDecimal] and
-    (JsPath \ "netLoss").readNullable[BigDecimal] and
-    (JsPath \ "class4Loss").readNullable[BigInt] and
-    (JsPath \ "totalAdditions").readNullable[BigDecimal] and
-    (JsPath \ "totalDeductions").readNullable[BigDecimal] and
-    (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
-    (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
-    (JsPath \ "taxableProfit").readNullable[BigDecimal] and
-    (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
-    JsPath.readNullable[LossClaimsSummary].map{
-      case Some(LossClaimsSummary.empty) => None
-      case other => other
-    } and Reads.pure(None) and Reads.pure(None))(SelfEmployment.apply _)
-
-  implicit val seqReads: Reads[Seq[SelfEmployment]] =((JsPath \ "calculation" \ "businessProfitAndLoss")
-    .readNestedNullable[Seq[JsValue]].mapEmptySeqToNone
-    .map(_.getOrElse(Seq.empty).flatMap(js => filterByIncomeSourceType(js)))
-    .map(x => Some(x)) and
-    JsPath.readNullable[LossClaimsDetail] and
-    (JsPath \ "inputs" \ "annualAdjustments")
-      .readNestedNullable[Seq[BusinessSourceAdjustableSummary]](filteredArrayReads("incomeSourceType", "01")).mapEmptySeqToNone)(buildSelfEmployments(_, _, _))
-
-  def buildSelfEmployments(seqSelfEmploysOpt: Option[Seq[SelfEmployment]],
-                           detailsOpt: Option[LossClaimsDetail], bsasOpt: Option[Seq[BusinessSourceAdjustableSummary]]): Seq[SelfEmployment] = {
-    val seqSelfEmploys    = seqSelfEmploysOpt.getOrElse(Seq.empty)
-    val details = detailsOpt.getOrElse(LossClaimsDetail.empty)
-    val bsas = bsasOpt
-    seqSelfEmploys.map(selfEmploy => selfEmploy.copy(lossClaimsDetail = details.filterById(selfEmploy.selfEmploymentId),
-      bsas = bsas.getOrElse(Seq.empty).find(x => selfEmploy.selfEmploymentId == x.incomeSourceId)))
-  }
-
-  def filterByIncomeSourceType(js: JsValue, sourceType: String = "01"): Option[SelfEmployment] = js.as[FilterWrapper] match {
-    case FilterWrapper(incomeSourceType) if incomeSourceType == sourceType => Some(js.as[SelfEmployment])
-    case _ => None
-  }
-
-  case class FilterWrapper(incomeSourceType: String)
-
-  object FilterWrapper {
-    implicit val formats: OFormat[FilterWrapper] = Json.format[FilterWrapper]
-  }
-
 }

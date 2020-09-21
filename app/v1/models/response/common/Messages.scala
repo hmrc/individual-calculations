@@ -18,7 +18,7 @@ package v1.models.response.common
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import utils.NestedJsonReads._
+import utils.NestedJsonReads
 
 case class Message(id: String, text: String){
 }
@@ -28,7 +28,7 @@ object Message {
 
 case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]])
 
-object Messages {
+object Messages extends NestedJsonReads {
   val empty = Messages(None, None, None)
 
   implicit val writes: OWrites[Messages] = Json.writes[Messages]

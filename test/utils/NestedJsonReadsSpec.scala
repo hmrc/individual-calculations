@@ -197,7 +197,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
       "has all the data" when {
 
         "provided with a matching parameter without a field name" in {
-          NestedJsonReads.filteredArrayValueReads[MatchClass](None, "id", "2")
+          filteredArrayValueReads[MatchClass](None, "id", "2")
             .reads(json).get shouldBe Some(MatchClass("2", NameClass("Jane Doe", "Jane", "Doe")))
         }
       }
@@ -205,7 +205,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
       "has a defined subset of the data" when {
 
         "provided with a matching parameter with a field name" in {
-          NestedJsonReads.filteredArrayValueReads[NameClass](Some("name"), "id", "2")
+          filteredArrayValueReads[NameClass](Some("name"), "id", "2")
             .reads(json).get shouldBe Some(NameClass("Jane Doe", "Jane", "Doe"))
         }
       }
@@ -213,12 +213,12 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
       "has no data" when {
 
         "provided with a non-matching parameter without a field name" in {
-          NestedJsonReads.filteredArrayValueReads[MatchClass](None, "id", "6")
+          filteredArrayValueReads[MatchClass](None, "id", "6")
             .reads(json).get shouldBe None
         }
 
         "provided with a non-matching parameter with a field name" in {
-          NestedJsonReads.filteredArrayValueReads[NameClass](Some("name"), "badId", "2")
+          filteredArrayValueReads[NameClass](Some("name"), "badId", "2")
             .reads(json).get shouldBe None
         }
       }
@@ -227,13 +227,13 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
     "return a JsError" when {
 
       "provided with invalid json with a matching parameter" in {
-        val result = NestedJsonReads.filteredArrayValueReads[NameClass](None, "id", "4").reads(json)
+        val result = filteredArrayValueReads[NameClass](None, "id", "4").reads(json)
 
         result shouldBe a[JsError]
       }
 
       "provided with a matching parameter but with an invalid field name" in {
-        val result = NestedJsonReads.filteredArrayValueReads[NameClass](Some("invalidField"), "id", "2").reads(json)
+        val result = filteredArrayValueReads[NameClass](Some("invalidField"), "id", "2").reads(json)
 
         result shouldBe a[JsError]
       }
@@ -282,7 +282,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
     "return a sequence of filtered values" when {
 
       "provided with a matching parameter for multiple values" in {
-        NestedJsonReads.filteredArrayReads[MatchClass]("id", "1")
+        filteredArrayReads[MatchClass]("id", "1")
           .reads(json).get shouldBe Seq(
           MatchClass("1", NameClass("John Doe", "John", "Doe")),
           MatchClass("1", NameClass("John Smith", "John", "Smith"))
@@ -290,12 +290,12 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
       }
 
       "provided with a non-matching parameter value" in {
-        NestedJsonReads.filteredArrayReads[MatchClass]("id", "2")
+        filteredArrayReads[MatchClass]("id", "2")
           .reads(json).get shouldBe Seq()
       }
 
       "provided with a non-matching parameter" in {
-        NestedJsonReads.filteredArrayReads[MatchClass]("badId", "1")
+        filteredArrayReads[MatchClass]("badId", "1")
           .reads(json).get shouldBe Seq()
       }
     }
@@ -303,7 +303,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
     "return a JsError" when {
 
       "provided with a matching parameter for an invalid json object" in {
-        val result = NestedJsonReads.filteredArrayReads[MatchClass]("id", "4").reads(json)
+        val result = filteredArrayReads[MatchClass]("id", "4").reads(json)
 
         result shouldBe a[JsError]
       }
@@ -501,7 +501,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
 
   "mapEmptyModelToNone" must {
 
-    val reads = (__).readNullable[NestedJsonTest].mapEmptyModelToNone(NestedJsonTest())
+    val reads = __.readNullable[NestedJsonTest].mapEmptyModelToNone(NestedJsonTest())
 
     "map non-empty model to Some(non-empty model)" in {
       JsObject(Seq("test" -> JsString("test"))).as(reads) shouldBe Some(NestedJsonTest(Some("test")))
@@ -517,7 +517,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
   }
 
   "mapEmptySeqToNone" must {
-    val reads = (__).readNullable[Seq[String]].mapEmptySeqToNone
+    val reads = __.readNullable[Seq[String]].mapEmptySeqToNone
 
     "map non-empty sequence to Some(non-empty sequence)" in {
       JsArray(Seq(JsString("value0"), JsString("value1"))).as(reads) shouldBe Some(Seq("value0", "value1"))
@@ -533,7 +533,7 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
   }
 
   "mapHeadOption" must {
-    val reads = (__).readNullable[Seq[String]].mapHeadOption
+    val reads = __.readNullable[Seq[String]].mapHeadOption
 
     "map non-empty sequence to Some(1st element)" in {
       JsArray(Seq(JsString("value0"), JsString("value1"))).as(reads) shouldBe Some("value0")
@@ -545,6 +545,135 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
 
     "map None to None" in {
       JsNull.as(reads) shouldBe None
+    }
+  }
+
+  case class TestItem(name: String)
+
+  object TestItem {
+    implicit val readsName: Reads[TestItem] = Json.reads[TestItem]
+  }
+
+  case class TestClass1(seq1: Option[Seq[TestItem]], seq2: Option[Seq[TestItem]])
+
+  object TestClass1 {
+    implicit val reads: Reads[TestClass1] = (
+      (JsPath \ "aField").readIncomeSourceTypeSeq[TestItem](incomeSourceType = "01") and
+        (JsPath \ "aField").readIncomeSourceTypeSeq[TestItem](incomeSourceType = "02")
+      ) (TestClass1.apply _)
+  }
+
+  case class TestClass2(item1: Option[TestItem], item2: Option[TestItem])
+
+  object TestClass2 {
+    implicit val reads: Reads[TestClass2] = (
+      (JsPath \ "aField").readIncomeSourceTypeItem[TestItem](incomeSourceType = "01") and
+        (JsPath \ "aField").readIncomeSourceTypeItem[TestItem](incomeSourceType = "02")
+      ) (TestClass2.apply _)
+  }
+
+  "readIncomeSourceTypeSeq" should {
+    "filter correctly for valid items" in {
+      val json = Json.parse(
+        """
+          |{
+          |   "aField": [
+          |      {
+          |        "incomeSourceType": "01",
+          |        "name": "Geoff"
+          |      },
+          |      {
+          |        "incomeSourceType": "03",
+          |        "name": "Billy"
+          |      },
+          |      {
+          |        "incomeSourceType": "05",
+          |        "name": "Fred"
+          |      }
+          |   ]
+          |}
+        """.stripMargin
+      )
+
+      json.as[TestClass1] shouldBe TestClass1(Some(Seq(TestItem("Geoff"))), None)
+    }
+
+    "error if filtered items are invalid" in {
+      val json = Json.parse(
+        """
+          |{
+          |   "aField": [
+          |      {
+          |        "incomeSourceType": "01",
+          |        "name": 100
+          |      },
+          |      {
+          |        "incomeSourceType" : "03",
+          |        "name": "Billy"
+          |      },
+          |      {
+          |        "incomeSourceType": "05",
+          |        "name": "Fred"
+          |      }
+          |   ]
+          |}
+        """.stripMargin
+      )
+
+      json.validate[TestClass1] shouldBe a[JsError]
+    }
+  }
+
+  "readIncomeSourceTypeItem" should {
+
+    "filter correctly for valid items" in {
+      val json = Json.parse(
+        """
+          |{
+          |   "aField": [
+          |      {
+          |        "incomeSourceType": "01",
+          |        "name": "Geoff"
+          |      },
+          |      {
+          |        "incomeSourceType": "03",
+          |        "name": "Billy"
+          |      },
+          |      {
+          |        "incomeSourceType": "05",
+          |        "name": "Fred"
+          |      }
+          |   ]
+          |}
+        """.stripMargin
+      )
+
+      json.as[TestClass2] shouldBe TestClass2(Some(TestItem("Geoff")), None)
+    }
+
+    "error if filtered item is invalid" in {
+      val json = Json.parse(
+        """
+          |{
+          |   "aField": [
+          |      {
+          |        "incomeSourceType": "01",
+          |        "name": 100
+          |      },
+          |      {
+          |        "incomeSourceType" : "03",
+          |        "name": "Billy"
+          |      },
+          |      {
+          |        "incomeSourceType": "05",
+          |        "name": "Fred"
+          |      }
+          |   ]
+          |}
+        """.stripMargin
+      )
+
+      json.validate[TestClass2] shouldBe a[JsError]
     }
   }
 }

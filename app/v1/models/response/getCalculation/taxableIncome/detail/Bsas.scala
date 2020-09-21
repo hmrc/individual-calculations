@@ -16,15 +16,16 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 
 case class Bsas(bsasId: String, applied: Boolean)
 
 object Bsas {
-  implicit val writes: OWrites[Bsas] = Json.writes[Bsas]
   implicit val reads: Reads[Bsas] = (
     (JsPath \ "ascId").read[String] and
       (JsPath \ "applied").read[Boolean]
   )(Bsas.apply _)
+
+  implicit val writes: OWrites[Bsas] = Json.writes[Bsas]
 }

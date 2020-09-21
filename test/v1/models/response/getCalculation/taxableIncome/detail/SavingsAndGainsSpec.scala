@@ -16,48 +16,92 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsPath, JsValue, Json}
 import support.UnitSpec
-import v1.fixtures.getCalculation.taxableIncome.detail.SavingsAndGainsFixtures._
+import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
 class SavingsAndGainsSpec extends UnitSpec {
 
   "SavingsAndGains" when {
-    "read from valid Json" should {
-      "return a JsSuccess" in {
-        savingsAndGainsDesJson.validate[SavingsAndGains] shouldBe a[JsSuccess[_]]
-      }
-      "with the expected SavingsAndGains object" in {
-        savingsAndGainsDesJson.as[SavingsAndGains] shouldBe savingsAndGainsResponse
+    val savingsAndGainsModelWithoutSavings: SavingsAndGains = TaxableIncomeModelsFixture.savingsAndGainsModel.copy(
+      ukSavings = None
+    )
+
+    "read from valid JSON" should {
+      "produce the expected SavingsAndGains object" in {
+        TaxableIncomeJsonFixture.desJson.as[SavingsAndGains] shouldBe TaxableIncomeModelsFixture.savingsAndGainsModel
       }
     }
 
-    "read from valid Json with missing optional fields" should {
-      "return a JsSuccess" in {
-        savingsAndGainsDesJsonWithoutSavings.validate[SavingsAndGains] shouldBe a[JsSuccess[_]]
-      }
-      "with the expected SavingsAndGains object" in {
-        savingsAndGainsDesJsonWithoutSavings.as[SavingsAndGains] shouldBe savingsAndGainsResponseWithoutSavings
+    "read from valid JSON with a missing savings array" should {
+      "produce the expected SavingsAndGains object" in {
+        val pathToPrune: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome"
+        val desJsonWithoutSavings: JsValue = pathToPrune.prune(TaxableIncomeJsonFixture.desJson).get
+
+        desJsonWithoutSavings.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavings
       }
     }
 
-    "read from invalid Json" should {
+    "read from valid JSON with a savings array without any appropriate items" should {
+      "produce the expected SavingsAndGains object" in {
+        val desJsonWithoutValidSavings: JsValue = Json.parse(
+          """
+            |{
+            |   "calculation": {
+            |      "taxCalculation" : {
+            |         "incomeTax" : {
+            |            "savingsAndGains" : {
+            |               "incomeReceived": 7012,
+            |               "taxableIncome": 7014
+            |            }
+            |         }
+            |      },
+            |      "savingsAndGainsIncome" : [
+            |         {
+            |            "incomeSourceId":"anId3",
+            |            "incomeSourceType": "04",
+            |            "incomeSourceName":"aName3",
+            |            "grossIncome": 400.1,
+            |            "netIncome": 112.3,
+            |            "taxDeducted": 556.3
+            |         }
+            |      ]
+            |   }
+            |}
+          """.stripMargin
+        )
+
+        desJsonWithoutValidSavings.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavings
+      }
+    }
+
+    "read from invalid JSON" should {
       "return a JsError" in {
-        savingsAndGainsInvalidJson.validate[SavingsAndGains] shouldBe a[JsError]
+        val invalidDesJson: JsValue = Json.parse(
+          """
+            |{
+            |   "calculation": {
+            |      "taxCalculation" : {
+            |         "incomeTax" : {
+            |            "savingsAndGains" : {
+            |               "taxableIncome": 3920
+            |            }
+            |         }
+            |      }
+            |   }
+            |}
+          """.stripMargin
+        )
+
+        invalidDesJson.validate[SavingsAndGains] shouldBe a[JsError]
       }
     }
 
-    "written to Json" should {
+    "written to JSON" should {
       "return the expected JsObject" in {
-        Json.toJson(savingsAndGainsResponse) shouldBe savingsAndGainsWrittenJson
-      }
-    }
-
-    "written to Json with empty optional fields" should {
-      "return the expected JsObject" in {
-        Json.toJson(savingsAndGainsResponseWithoutSavings) shouldBe savingsAndGainsWrittenJsonWithoutSavings
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "savingsAndGains").get
+        Json.toJson(TaxableIncomeModelsFixture.savingsAndGainsModel) shouldBe mtdJson
       }
     }
   }
-
 }

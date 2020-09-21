@@ -17,17 +17,15 @@
 package v1.models.response.getCalculation.taxableIncome
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import v1.models.response.getCalculation.taxableIncome.detail.CalculationDetail
-import v1.models.response.getCalculation.taxableIncome.summary.CalculationSummary
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 
-case class TaxableIncome(summary: CalculationSummary, detail: CalculationDetail)
+case class TaxableIncome(summary: TaxableIncomeSummary, detail: TaxableIncomeDetail)
 
 object TaxableIncome {
-  implicit val writes: OWrites[TaxableIncome] = Json.writes[TaxableIncome]
   implicit val reads: Reads[TaxableIncome] = (
-    (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax").read[CalculationSummary] and
-      JsPath.read[CalculationDetail]
+    (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax").read[TaxableIncomeSummary] and
+      JsPath.read[TaxableIncomeDetail]
   )(TaxableIncome.apply _)
 
+  implicit val writes: OWrites[TaxableIncome] = Json.writes[TaxableIncome]
 }
