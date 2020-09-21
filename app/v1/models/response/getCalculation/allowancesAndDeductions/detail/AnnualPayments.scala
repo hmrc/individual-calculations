@@ -17,18 +17,23 @@
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
-case class CalculationDetail(allowancesAndDeductions: Option[AllowancesAndDeductions],
-                        reliefs: Option[Reliefs])
+case class AnnualPayments(
+                           grossAnnualPayments: Option[BigDecimal],
+                           reliefClaimed: Option[BigDecimal],
+                           rate: Option[Double]
+                         )
 
-object CalculationDetail {
-  val empty = CalculationDetail(None, None)
+object AnnualPayments extends NestedJsonReads{
+  val empty = AnnualPayments(None, None, None)
 
-  implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
+  implicit val writes: OWrites[AnnualPayments] = Json.writes[AnnualPayments]
 
-  implicit val reads: Reads[CalculationDetail] = (
-    JsPath.readNullable[AllowancesAndDeductions].mapEmptyModelToNone(AllowancesAndDeductions.empty) and
-    JsPath.readNullable[Reliefs].mapEmptyModelToNone(Reliefs.empty)
-  )(CalculationDetail.apply _)
+  implicit val reads: Reads[AnnualPayments] = (
+    (JsPath \ "grossAnnuityPayments").readNullable[BigDecimal] and
+      (JsPath \ "annuityPayments" \ "reliefClaimed").readNestedNullable[BigDecimal] and
+      (JsPath \ "annuityPayments" \ "rate").readNestedNullable[Double]
+    )(AnnualPayments.apply _)
 }

@@ -494,6 +494,28 @@ class NestedJsonReadsSpec extends UnitSpec with NestedJsonReads {
     }
   }
 
+  case class NestedJsonTest(test: Option[String] = None)
+  case object NestedJsonTest {
+    implicit val format: OFormat[NestedJsonTest] = Json.format[NestedJsonTest]
+  }
+
+  "mapEmptyModelToNone" must {
+
+    val reads = (__).readNullable[NestedJsonTest].mapEmptyModelToNone(NestedJsonTest())
+
+    "map non-empty model to Some(non-empty model)" in {
+      JsObject(Seq("test" -> JsString("test"))).as(reads) shouldBe Some(NestedJsonTest(Some("test")))
+    }
+
+    "map empty model to None" in {
+      JsObject.empty.as(reads) shouldBe None
+    }
+
+    "map None to None" in {
+      JsNull.as(reads) shouldBe None
+    }
+  }
+
   "mapEmptySeqToNone" must {
     val reads = (__).readNullable[Seq[String]].mapEmptySeqToNone
 

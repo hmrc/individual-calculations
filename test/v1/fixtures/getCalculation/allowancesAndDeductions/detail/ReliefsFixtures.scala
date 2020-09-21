@@ -17,11 +17,24 @@
 package v1.fixtures.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v1.models.response.getCalculation.allowancesAndDeductions.detail._
 
-object CalculationDetailFixtures {
-  val desJson: JsValue = Json.parse(
-    """{
+object ReliefsFixtures {
+
+  def desJsonIncomeSourceType(incomeSourceType: String): JsValue = {
+    Json.parse(
+      s"""
+         |{
+         |   "incomeSourceType": "${incomeSourceType}",
+         |   "incomeSourceId": "ABC647261934212",
+         |   "countryCode": "FRA",
+         |   "allowableAmount": 1000,
+         |   "rate": 2,
+         |   "amountUsed": 1000
+         |}
+         |""".stripMargin)
+  }
+
+  val desJson: JsValue = Json.parse("""{
       |    "calculation": {
       |    "allowancesAndDeductions": {
       |            "personalAllowance": 1000,
@@ -77,8 +90,22 @@ object CalculationDetailFixtures {
       |    }
       |}""".stripMargin)
 
-  val desJsonWithNoData: JsValue = Json.parse(
-    """{
+  val desJsonWithNoDataAndEmptyNestedFields: JsValue = Json.parse("""{
+      |    "calculation": {
+      |        "allowancesAndDeductions": {
+      |            "personalAllowance": 1000,
+      |            "reducedPersonalAllowance": 1000,
+      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
+      |            "blindPersonsAllowance": 1000,
+      |            "lossesAppliedToGeneralIncome": 1000
+      |        },
+      |        "reliefs": {
+      |
+      |        }
+      |    }
+      |}""".stripMargin)
+
+  val desJsonWithNoData: JsValue = Json.parse("""{
       |    "calculation": {
       |        "allowancesAndDeductions": {
       |            "personalAllowance": 1000,
@@ -89,9 +116,9 @@ object CalculationDetailFixtures {
       |        },
       |        "reliefs": {
       |            "residentialFinanceCosts": {
-      |                "amountClaimed": 1000,
+      |                "amountClaimed": 1000.25,
       |                "rate": 2,
-      |                "propertyFinanceRelief": 1000
+      |                "propertyFinanceRelief": 1000.25
       |            }
       |        }
       |    }
@@ -100,64 +127,33 @@ object CalculationDetailFixtures {
   val mtdJson: JsValue = Json.parse(
     """
       |{
-      |	"allowancesAndDeductions": {
-      |		"personalAllowance": 1000,
-      |		"reducedPersonalAllowance": 1000,
-      |		"giftOfInvestmentsAndPropertyToCharity": 1000,
-      |		"blindPersonsAllowance": 1000,
-      |		"lossesAppliedToGeneralIncome": 1000,
-      |		"qualifyingLoanInterestFromInvestments": 1000,
-      |		"postCessationTradeReceipts": 1000,
-      |		"paymentsToTradeUnionsForDeathBenefits": 1000,
-      |		"annualPayments": {
-      |			"grossAnnualPayments": 1000,
-      |			"reliefClaimed": 1000,
-      |			"rate": 2
-      |		},
-      |		"pensionContributions": {
-      |			"totalPensionContributions": 1000,
-      |			"retirementAnnuityPayments": 1000,
-      |			"paymentToEmployersSchemeNoTaxRelief": 1000,
-      |			"overseasPensionSchemeContributions": 1000
-      |		}
+      |	"residentialFinanceCosts": {
+      |		"amountClaimed": 1000.25,
+      |		"allowableAmount": 1000.25,
+      |		"rate": 2,
+      |		"propertyFinanceRelief": 1000.25
       |	},
-      |	"reliefs": {
-      |		"residentialFinanceCosts": {
-      |			"amountClaimed": 1000.25,
-      |			"allowableAmount": 1000.25,
-      |			"rate": 2,
-      |			"propertyFinanceRelief": 1000.25
-      |		},
-      |		"foreignTaxCreditRelief": [{
-      |			"incomeSourceType": "foreignInterest",
-      |			"incomeSourceId": "ABC647261934212",
-      |			"countryCode": "FRA",
-      |			"allowableAmount": 1000,
-      |			"rate": 2,
-      |			"amountUsed": 1000
-      |		}],
-      |		"pensionContributionReliefs": {
-      |			"totalPensionContributionReliefs": 1000,
-      |			"regularPensionContributions": 1000,
-      |			"oneOffPensionContributionsPaid": 1000
-      |		},
-      |		"reliefsClaimed": [{
-      |			"type": "nonDeductibleLoanInterest",
-      |			"amountClaimed": 1000,
-      |			"allowableAmount": 1000,
-      |			"amountUsed": 1000,
-      |			"rate": 2
-      |		}]
-      |	}
+      |	"foreignTaxCreditRelief": [{
+      |		"incomeSourceType": "foreignInterest",
+      |		"incomeSourceId": "ABC647261934212",
+      |		"countryCode": "FRA",
+      |		"allowableAmount": 1000,
+      |		"rate": 2,
+      |		"amountUsed": 1000
+      |	}],
+      |	"pensionContributionReliefs": {
+      |		"totalPensionContributionReliefs": 1000,
+      |		"regularPensionContributions": 1000,
+      |		"oneOffPensionContributionsPaid": 1000
+      |	},
+      |	"reliefsClaimed": [{
+      |		"type": "nonDeductibleLoanInterest",
+      |		"amountClaimed": 1000,
+      |		"allowableAmount": 1000,
+      |		"amountUsed": 1000,
+      |		"rate": 2
+      |	}]
       |}
       |""".stripMargin)
 
-  val calculationDetail = CalculationDetail(
-    Some(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000),
-      Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(2))),
-      Some(PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))))),
-    Some(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
-      Some(Seq(ForeignTaxCreditRelief(IncomeSourceType.foreignInterest, Some("ABC647261934212"), "FRA", Some(1000), Some(2), Some(1000)))),
-      Some(PensionContributionReliefs(1000, Some(1000), Some(1000))),
-      Some(Seq(ReliefsClaimed("nonDeductibleLoanInterest", Some(1000), Some(1000), Some(1000), Some(2)))))))
 }

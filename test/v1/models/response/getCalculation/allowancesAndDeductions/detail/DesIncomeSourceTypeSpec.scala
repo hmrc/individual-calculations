@@ -16,13 +16,21 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json._
+import play.api.libs.json.{JsValue, Json}
+import support.UnitSpec
+import utils.enums.EnumJsonSpecSupport
+import v1.models.response.getCalculation.allowancesAndDeductions.detail.DesIncomeSourceType.{`03`, `06`, `07`, `15`, `16`}
+import v1.models.utils.JsonErrorValidators
 
-case class ResidentialFinanceCosts(amountClaimed: BigDecimal,
-                                    allowableAmount: Option[BigDecimal],
-                                    rate: Double,
-                                    propertyFinanceRelief: BigDecimal)
+class DesIncomeSourceTypeSpec extends UnitSpec with JsonErrorValidators with EnumJsonSpecSupport {
 
-object ResidentialFinanceCosts {
-  implicit val format: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]
+  val desJson: JsValue = Json.toJson("")
+
+  testRoundTrip[DesIncomeSourceType](
+    ("03", `03`),
+    ("06", `06`),
+    ("07", `07`),
+    ("15", `15`),
+    ("16", `16`))
+
 }

@@ -24,10 +24,16 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    reducedPersonalAllowance: Option[BigInt],
                                    giftOfInvestmentsAndPropertyToCharity: Option[BigInt],
                                    blindPersonsAllowance: Option[BigInt],
-                                   lossesAppliedToGeneralIncome: Option[BigInt])
+                                   lossesAppliedToGeneralIncome: Option[BigInt],
+                                   qualifyingLoanInterestFromInvestments: Option[BigDecimal],
+                                   postCessationTradeReceipts: Option[BigDecimal],
+                                   paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal],
+                                   annualPayments: Option[AnnualPayments],
+                                   pensionContributions: Option[PensionContributions]
+                                  )
 
 object AllowancesAndDeductions extends NestedJsonReads{
-  val empty = AllowancesAndDeductions(None, None, None, None, None)
+  val empty = AllowancesAndDeductions(None, None, None, None, None, None, None, None, None, None)
 
   implicit val writes: OWrites[AllowancesAndDeductions] = Json.writes[AllowancesAndDeductions]
 
@@ -36,6 +42,11 @@ object AllowancesAndDeductions extends NestedJsonReads{
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "reducedPersonalAllowance").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "giftOfInvestmentsAndPropertyToCharity").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "blindPersonsAllowance").readNestedNullable[BigInt] and
-      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "lossesAppliedToGeneralIncome").readNestedNullable[BigInt]
-  )(AllowancesAndDeductions.apply _)
+      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "lossesAppliedToGeneralIncome").readNestedNullable[BigInt] and
+      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "qualifyingLoanInterestFromInvestments").readNestedNullable[BigDecimal] and
+      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "post-cessationTradeReceipts").readNestedNullable[BigDecimal] and
+      (JsPath \ "calculation" \ "allowancesAndDeductions" \ "paymentsToTradeUnionsForDeathBenefits").readNestedNullable[BigDecimal] and
+      (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable[AnnualPayments].mapEmptyModelToNone(AnnualPayments.empty) and
+      (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable[PensionContributions].mapEmptyModelToNone(PensionContributions.empty)
+    )(AllowancesAndDeductions.apply _)
 }

@@ -16,13 +16,17 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json._
+import play.api.libs.json.Format
+import utils.enums.Enums
 
-case class ResidentialFinanceCosts(amountClaimed: BigDecimal,
-                                    allowableAmount: Option[BigDecimal],
-                                    rate: Double,
-                                    propertyFinanceRelief: BigDecimal)
+sealed trait IncomeSourceType
 
-object ResidentialFinanceCosts {
-  implicit val format: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]
+object IncomeSourceType {
+  case object fhlPropertyEea extends IncomeSourceType
+  case object foreignIncome extends IncomeSourceType
+  case object dividendsFromForeignCompanies extends IncomeSourceType
+  case object foreignProperty extends IncomeSourceType
+  case object foreignInterest extends IncomeSourceType
+
+  implicit val format: Format[IncomeSourceType] = Enums.format[IncomeSourceType]
 }

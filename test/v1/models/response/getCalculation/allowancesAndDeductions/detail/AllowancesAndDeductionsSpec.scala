@@ -23,6 +23,10 @@ import v1.models.utils.JsonErrorValidators
 
 class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
 
+  val allowancesAndDeductions = AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000),
+    Some(1000), Some(1000), Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(2))),
+    Some(PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))))
+
   "reads" should {
     "return a valid AllowancesAndDeductions object" when {
 
@@ -49,7 +53,7 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
                                                          expectedError = JsonError.NUMBER_FORMAT_EXCEPTION)
 
       "a valid json is received" in {
-        desJson.as[AllowancesAndDeductions] shouldBe AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000))
+        desJson.as[AllowancesAndDeductions] shouldBe allowancesAndDeductions
       }
     }
 
@@ -57,13 +61,17 @@ class AllowancesAndDeductionsSpec extends UnitSpec with JsonErrorValidators {
       "json has no AllowancesAndDeductions details" in {
         desJsonWithNoAllowancesAndDeductionsDetails.as[AllowancesAndDeductions] shouldBe AllowancesAndDeductions.empty
       }
+
+      " json is empty and 'annualPayments' contains empty nested fields" in {
+        desJsonWithNoDataAndEmptyAnnualPaymentsDetails.as[AllowancesAndDeductions] shouldBe AllowancesAndDeductions.empty
+      }
     }
   }
 
   "writes" should {
     "return a valid json" when {
       "AllowancesAndDeductions object has data" in {
-        Json.toJson(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000))) shouldBe mtdJson
+        Json.toJson(allowancesAndDeductions) shouldBe mtdJson
       }
     }
 

@@ -22,7 +22,7 @@ import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationTyp
 import v1.models.response.common.{Message, Messages, Metadata}
 import v1.models.response.getCalculation.GetCalculationResponse
 import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
-import v1.models.response.getCalculation.allowancesAndDeductions.detail.{AllowancesAndDeductions, Reliefs, ResidentialFinanceCosts, CalculationDetail => ADRCalculationDetail}
+import v1.models.response.getCalculation.allowancesAndDeductions.detail.{AllowancesAndDeductions, AnnualPayments, ForeignTaxCreditRelief, IncomeSourceType, PensionContributionReliefs, PensionContributions, Reliefs, ReliefsClaimed, ResidentialFinanceCosts, CalculationDetail => ADRCalculationDetail}
 import v1.models.response.getCalculation.allowancesAndDeductions.summary.{CalculationSummary => ADRCalculationSummary}
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
@@ -124,21 +124,57 @@ object GetCalculationResponseFixtures {
                  |         ],
                  |         "nic4": 1005.1
                  |      },
-                 |      "allowancesAndDeductions": {
-                 |         "personalAllowance": 1000,
-                 |         "reducedPersonalAllowance": 1000,
-                 |         "giftOfInvestmentsAndPropertyToCharity": 1000,
-                 |         "blindPersonsAllowance": 1000,
-                 |         "lossesAppliedToGeneralIncome": 1000
-                 |      },
-                 |      "reliefs": {
-                 |         "residentialFinanceCosts": {
-                 |            "amountClaimed": 1000,
-                 |            "allowableAmount": 1000,
-                 |            "rate": 2,
-                 |            "propertyFinanceRelief": 1000
-                 |         }
-                 |      },
+                 |    "allowancesAndDeductions": {
+                 |            "personalAllowance": 1000,
+                 |            "reducedPersonalAllowance": 1000,
+                 |            "giftOfInvestmentsAndPropertyToCharity": 1000,
+                 |            "blindPersonsAllowance": 1000,
+                 |            "lossesAppliedToGeneralIncome": 1000,
+                 |            "qualifyingLoanInterestFromInvestments": 1000,
+                 |            "post-cessationTradeReceipts": 1000,
+                 |            "paymentsToTradeUnionsForDeathBenefits": 1000,
+                 |            "grossAnnuityPayments": 1000,
+                 |            "annuityPayments": {
+                 |               "reliefClaimed": 1000,
+                 |               "rate": 2
+                 |            },
+                 |            "pensionContributions": 1000,
+                 |            "pensionContributionsDetail": {
+                 |               "retirementAnnuityPayments": 1000,
+                 |               "paymentToEmployersSchemeNoTaxRelief": 1000,
+                 |               "overseasPensionSchemeContributions": 1000
+                 |            }
+                 |        },
+                 |        "reliefs": {
+                 |            "residentialFinanceCosts": {
+                 |                "amountClaimed": 1000.25,
+                 |                "allowableAmount": 1000.25,
+                 |                 "rate": 2,
+                 |                 "propertyFinanceRelief": 1000.25
+                 |            },
+                 |            "foreignTaxCreditRelief": [{
+                 |                  "incomeSourceType": "16",
+                 |                  "incomeSourceId": "ABC647261934212",
+                 |                  "countryCode": "FRA",
+                 |                  "allowableAmount": 1000,
+                 |                  "rate": 2,
+                 |                  "amountUsed": 1000
+                 |            }],
+                 |            "reliefsClaimed": [{
+                 |                  "type": "nonDeductableLoanInterest",
+                 |                  "amountClaimed": 1000,
+                 |                   "allowableAmount": 1000,
+                 |                  "amountUsed": 1000,
+                 |                  "rate": 2
+                 |            }]
+                 |    },
+                 |   "pensionContributionReliefs": {
+                 |       "totalPensionContributionReliefs": 1000,
+                 |       "pensionContributionDetail": {
+                 |          "regularPensionContributions": 1000,
+                 |          "oneOffPensionContributionsPaid": 1000
+                 |       }
+                 |    },
                  |      "taxCalculation": {
                  |         "incomeTax": {
                  |            "incomeTaxCharged": 100.25,
@@ -290,18 +326,52 @@ object GetCalculationResponseFixtures {
                                           |            "reducedPersonalAllowance": 1000,
                                           |            "giftOfInvestmentsAndPropertyToCharity": 1000,
                                           |            "blindPersonsAllowance": 1000,
-                                          |            "lossesAppliedToGeneralIncome": 1000
-                                          |         },
-                                          |         "reliefs": {
-                                          |            "residentialFinanceCosts": {
-                                          |               "amountClaimed": 1000,
-                                          |               "allowableAmount": 1000,
-                                          |               "rate": 2,
-                                          |               "propertyFinanceRelief": 1000
+                                          |            "lossesAppliedToGeneralIncome": 1000,
+                                          |            "qualifyingLoanInterestFromInvestments": 1000,
+                                          |            "postCessationTradeReceipts": 1000,
+                                          |            "paymentsToTradeUnionsForDeathBenefits": 1000,
+                                          |            "annualPayments": {
+                                          |               "grossAnnualPayments": 1000,
+                                          |               "reliefClaimed": 1000,
+                                          |               "rate": 2
+                                          |            },
+                                          |            "pensionContributions": {
+                                          |               "totalPensionContributions": 1000,
+                                          |               "retirementAnnuityPayments": 1000,
+                                          |               "paymentToEmployersSchemeNoTaxRelief": 1000,
+                                          |               "overseasPensionSchemeContributions": 1000
                                           |            }
-                                          |         }
-                                          |      }
-                                          |   }
+                                          |},
+                                          |			"reliefs": {
+                                          |				"residentialFinanceCosts": {
+                                          |					"amountClaimed": 1000.25,
+                                          |					"allowableAmount": 1000.25,
+                                          |					"rate": 2,
+                                          |					"propertyFinanceRelief": 1000.25
+                                          |				},
+                                          |     "foreignTaxCreditRelief": [{
+                                          |       "incomeSourceType": "foreignInterest",
+                                          |       "incomeSourceId": "ABC647261934212",
+                                          |       "countryCode": "FRA",
+                                          |       "allowableAmount": 1000,
+                                          |       "rate": 2,
+                                          |       "amountUsed": 1000
+                                          |       }],
+                                          |     "pensionContributionReliefs": {
+                                          |       "totalPensionContributionReliefs": 1000,
+                                          |       "regularPensionContributions": 1000,
+                                          |       "oneOffPensionContributionsPaid": 1000
+                                          |       },
+                                          |     "reliefsClaimed": [{
+                                          |         "type": "nonDeductibleLoanInterest",
+                                          |         "amountClaimed": 1000,
+                                          |         "allowableAmount": 1000,
+                                          |         "amountUsed": 1000,
+                                          |         "rate": 2
+                                          |       }]
+                                          |			}
+                                          |		}
+                                          |	}
                                           |}
                                           |""".stripMargin)
 
@@ -357,8 +427,13 @@ object GetCalculationResponseFixtures {
   val allowancesDeductionsAndReliefs = AllowancesDeductionsAndReliefs(
     ADRCalculationSummary(Some(1000), Some(1000)),
     ADRCalculationDetail(
-      Some(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000))),
-      Some(Reliefs(Some(ResidentialFinanceCosts(1000, Some(1000), 2, 1000))))
+      Some(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000),
+        Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(2))), Some(PensionContributions(Some(1000),
+          Some(1000), Some(1000), Some(1000))))),
+      Some(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
+        Some(Seq(ForeignTaxCreditRelief(IncomeSourceType.foreignInterest,
+        Some("ABC647261934212"), "FRA", Some(1000), Some(2), Some(1000)))), Some(PensionContributionReliefs(1000,
+        Some(1000), Some(1000))), Some(Seq(ReliefsClaimed("nonDeductibleLoanInterest", Some(1000), Some(1000), Some(1000), Some(2))))))
     )
   )
 

@@ -18,14 +18,24 @@ package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
+import play.api.libs.functional.syntax._
 
-case class Reliefs (residentialFinanceCosts: Option[ResidentialFinanceCosts])
+case class Reliefs (
+                     residentialFinanceCosts: Option[ResidentialFinanceCosts],
+                     foreignTaxCreditRelief: Option[Seq[ForeignTaxCreditRelief]],
+                     pensionContributionReliefs: Option[PensionContributionReliefs],
+                     reliefsClaimed: Option[Seq[ReliefsClaimed]]
+                   )
 
 object Reliefs extends NestedJsonReads{
-  val empty = Reliefs(None)
+  val empty = Reliefs(None, None, None, None)
 
   implicit val writes: OWrites[Reliefs] = Json.writes[Reliefs]
 
-  implicit val reads: Reads[Reliefs] =
-    (JsPath \ "calculation" \ "reliefs" \ "residentialFinanceCosts").readNestedNullable[ResidentialFinanceCosts].map(Reliefs(_))
+  implicit val reads: Reads[Reliefs] = (
+    (JsPath \ "calculation" \ "reliefs" \ "residentialFinanceCosts").readNestedNullable[ResidentialFinanceCosts] and
+      (JsPath \ "calculation" \ "reliefs" \ "foreignTaxCreditRelief").readNestedNullable[Seq[ForeignTaxCreditRelief]] and
+      (JsPath \ "calculation" \ "pensionContributionReliefs").readNestedNullable[PensionContributionReliefs] and
+      (JsPath \ "calculation" \ "reliefs" \ "reliefsClaimed").readNestedNullable[Seq[ReliefsClaimed]]
+    )(Reliefs.apply _)
 }
