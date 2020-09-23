@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.detail.TaxBandFixtures._
 
@@ -25,11 +25,29 @@ class TaxBandSpec extends UnitSpec {
   "TaxBand" should {
 
     "write correctly to json" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(taxBandModel) shouldBe taxBandJson
     }
 
     "read correctly from json" in {
-      json.validate[TaxBand] shouldBe JsSuccess(model)
+      taxBandJson.validate[TaxBand] shouldBe JsSuccess(taxBandModel)
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |   "name":true,
+            |   "rate":100.25,
+            |   "bandLimit":400,
+            |   "apportionedBandLimit":500,
+            |   "income":600,
+            |   "taxAmount":700.25
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[TaxBand] shouldBe a[JsError]
+      }
     }
   }
 }

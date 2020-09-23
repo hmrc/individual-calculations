@@ -23,50 +23,70 @@ import v1.models.response.getCalculation.incomeTaxAndNics.summary._
 
 object IncomeTaxFixtures {
 
-  val json: JsValue = Json.parse("""
+  val incomeTaxJson: JsValue = Json.parse(
+    """
       |{
-      |  "calculation" : {
-      |   "taxCalculation" : {
-      |     "incomeTax" : {
-      |       "incomeTaxCharged" : 100.25,
-      |       "payPensionsProfit" : {
-      |        "allowancesAllocated" : 300,
-      |        "incomeTaxAmount" : 400.25
-      |       }
-      |     },
-      |     "totalIncomeTaxAndNicsDue" : 200.25
-      |   }
-      | },
-      | "inputs" : {
-      |  "personalInformation" : {
-      |    "taxRegime" : "UK"
-      |  }
-      | }
-      |}
-    """.stripMargin)
-
-  val outputJson: JsValue = Json.parse("""
-      |{
-      | "summary" : {
-      |   "incomeTax" : {
-      |     "incomeTaxCharged" : 100.25
+      |   "calculation":{
+      |      "taxCalculation":{
+      |         "incomeTax":{
+      |            "incomeTaxCharged": 100.25,
+      |            "payPensionsProfit":{
+      |               "allowancesAllocated": 300,
+      |               "incomeTaxAmount": 400.25
+      |            }
+      |         },
+      |         "totalIncomeTaxAndNicsDue": 200.25
+      |      }
       |   },
-      |   "totalIncomeTaxAndNicsDue" : 200.25,
-      |   "taxRegime" : "UK"
-      | },
-      | "detail" : {
-      |   "incomeTax" : {
-      |     "payPensionsProfit" : {
-      |        "allowancesAllocated" : 300,
-      |        "incomeTaxAmount" : 400.25
-      |     }
+      |   "inputs":{
+      |      "personalInformation":{
+      |         "taxRegime": "UK"
+      |      }
       |   }
-      | }
       |}
     """.stripMargin)
 
-  val calcSummary = CalculationSummary(IncomeTaxSummary(100.25, None, None), None, None, None, 200.25, "UK")
-  val calcDetail  = CalculationDetail(IncomeTaxDetail(Some(IncomeTypeBreakdown(300, 400.25, None)), None, None, None), None, None)
-  val model       = IncomeTax(calcSummary, calcDetail)
+  val incomeTaxOutputJson: JsValue = Json.parse(
+    """
+      |{
+      |   "summary":{
+      |      "incomeTax":{
+      |         "incomeTaxCharged": 100.25
+      |      },
+      |      "totalIncomeTaxAndNicsDue": 200.25,
+      |      "taxRegime": "UK"
+      |   },
+      |   "detail":{
+      |      "incomeTax":{
+      |         "payPensionsProfit":{
+      |            "allowancesAllocated": 300,
+      |            "incomeTaxAmount": 400.25
+      |         }
+      |      }
+      |   }
+      |}
+    """.stripMargin)
 
+  val incomeTaxCalcSummary =
+    CalculationSummary(
+      IncomeTaxSummary(
+        100.25, None, None, None, None, None, None, None
+      ),
+      None, None, None, None, None, None, 200.25, "UK"
+    )
+
+  val incomeTaxCalcDetail =
+    CalculationDetail(
+      IncomeTaxDetail(
+        Some(
+          IncomeTypeBreakdown(
+            300, 400.25, None
+          )
+        ),
+        None, None, None, None, None
+      ),
+      None, None, None, None
+    )
+
+  val incomeTaxModel = IncomeTax(incomeTaxCalcSummary, incomeTaxCalcDetail)
 }

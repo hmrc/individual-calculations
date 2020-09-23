@@ -21,18 +21,19 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.NicBand
 
 object NicBandFixtures {
 
-  val json: JsValue = Json.parse(s"""
-       |				{
-       |					"name": "name",
-       |					"rate": 100.25,
-       |					"threshold": 200,
-       |					"apportionedThreshold": 300,
-       |					"income": 400,
-       |					"amount": 500.25
-       |				}
-           """.stripMargin)
+  val nicBandJson: JsValue = Json.parse(
+    """
+      |{
+      |	"name": "name",
+      |	"rate": 100.25,
+      |	"threshold": 200,
+      |	"apportionedThreshold": 300,
+      |	"income": 400,
+      |	"amount": 500.25
+      |}
+     """.stripMargin)
 
-  val model = NicBand(
+  val nicBandModel = NicBand(
     name = "name",
     rate = 100.25,
     threshold = Some(200),
@@ -40,5 +41,4 @@ object NicBandFixtures {
     income = 400,
     amount = 500.25
   )
-
 }

@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.detail.NicBandFixtures._
 
@@ -27,14 +27,32 @@ class NicBandSpec extends UnitSpec {
     "read from json correctly" when {
 
       "provided with valid json" in {
-        json.as[NicBand] shouldBe model
+        nicBandJson.as[NicBand] shouldBe nicBandModel
       }
     }
 
     "write to json correctly" when {
 
       "a valid model is provided" in {
-        Json.toJson(model) shouldBe json
+        Json.toJson(nicBandModel) shouldBe nicBandJson
+      }
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |	"name": true,
+            |	"rate": 100.25,
+            |	"threshold": 200,
+            |	"apportionedThreshold": 300,
+            |	"income": 400,
+            |	"amount": 500.25
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[NicBand] shouldBe a[JsError]
       }
     }
   }

@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.summary.NicSummaryFixtures._
 
@@ -27,26 +27,45 @@ class NicSummarySpec extends UnitSpec {
     "read correctly from json" when {
 
       "provided with empty json" in {
-        emptyJson.as[NicSummary] shouldBe NicSummary.empty
+        nicSummaryEmptyJson.as[NicSummary] shouldBe NicSummary.empty
       }
 
       "provided with json with empty models" in {
-        emptyModelJson.as[NicSummary] shouldBe NicSummary.empty
+        nicSummaryEmptyModelJson.as[NicSummary] shouldBe NicSummary.empty
       }
 
       "provided with filled json" in {
-        filledJson.as[NicSummary] shouldBe filledModel
+        nicSummaryFilledJson.as[NicSummary] shouldBe nicSummaryFilledModel
       }
     }
 
     "write correctly to json" when {
 
       "provided with an empty model" in {
-        Json.toJson(NicSummary.empty) shouldBe emptyJson
+        Json.toJson(NicSummary.empty) shouldBe nicSummaryEmptyJson
       }
 
       "provided with a filled model" in {
-        Json.toJson(filledModel) shouldBe outputJson
+        Json.toJson(nicSummaryFilledModel) shouldBe nicSummaryOutputJson
+      }
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |   "class2Nics":{
+            |      "amount": true
+            |   },
+            |   "class4Nics":{
+            |      "totalAmount": 200.25
+            |   },
+            |   "totalNic": 300.25
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[NicSummary] shouldBe a[JsError]
       }
     }
   }

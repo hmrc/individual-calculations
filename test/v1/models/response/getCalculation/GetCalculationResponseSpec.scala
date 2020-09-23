@@ -37,24 +37,25 @@ class GetCalculationResponseSpec extends UnitSpec {
     "fail to read from json" when {
       "invalid metadata JSON" in {
         // Mandatory value at /metadata/requestedBy is missing...
-        val invalidDesJson: JsValue = Json.parse("""{
-                       |    "metadata":{
-                       |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-                       |       "taxYear": 2019,
-                       |       "requestedBy": "me",
-                       |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-                       |       "calculationReason": "customerRequest",
-                       |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-                       |       "calculationType": "inYear",
-                       |       "periodFrom": "1-2018",
-                       |       "periodTo": "1-2019"
-                       |     },
-                       |     "messages" :{
-                       |        "errors":[
-                       |        {"id":"id1", "text":"text1"}
-                       |        ]
-                       |     }
-                       |}""".stripMargin)
+        val invalidDesJson: JsValue = Json.parse(
+          """{
+            |    "metadata":{
+            |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+            |       "taxYear": 2019,
+            |       "requestedBy": "me",
+            |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+            |       "calculationReason": "customerRequest",
+            |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+            |       "calculationType": "inYear",
+            |       "periodFrom": "1-2018",
+            |       "periodTo": "1-2019"
+            |     },
+            |     "messages" :{
+            |        "errors":[
+            |        {"id":"id1", "text":"text1"}
+            |        ]
+            |     }
+            |}""".stripMargin)
 
         invalidDesJson.validate[GetCalculationResponse] shouldBe a[JsError]
       }
@@ -62,27 +63,28 @@ class GetCalculationResponseSpec extends UnitSpec {
       "read invalid income tax and NICs JSON" in {
         // Mandatory value at /calculation/taxCalculation/totalIncomeTaxAndNicsDue is missing...
         val invalidDesJson: JsValue = desJsonWithoutOptionalParts.as[JsObject] ++
-          Json.parse("""
-                       |{
-                       | "calculation" : {
-                       |   "taxCalculation" : {
-                       |     "incomeTax" : {
-                       |       "incomeTaxCharged" : 100.25,
-                       |       "totalIncomeReceivedFromAllSources": 123,
-                       |       "totalTaxableIncome": 234,
-                       |       "payPensionsProfit" : {
-                       |           "allowancesAllocated" : 300.25,
-                       |           "incomeTaxAmount": 400.25
-                       |        }
-                       |     }
-                       |   }
-                       |  },
-                       | "inputs" : {
-                       |  "personalInformation" : {
-                       |    "taxRegime" : "UK"
-                       |  }
-                       | }
-                       |}
+          Json.parse(
+            """
+              |{
+              | "calculation" : {
+              |   "taxCalculation" : {
+              |     "incomeTax" : {
+              |       "incomeTaxCharged" : 100.25,
+              |       "totalIncomeReceivedFromAllSources": 123,
+              |       "totalTaxableIncome": 234,
+              |       "payPensionsProfit" : {
+              |           "allowancesAllocated" : 300.25,
+              |           "incomeTaxAmount": 400.25
+              |        }
+              |     }
+              |   }
+              |  },
+              | "inputs" : {
+              |  "personalInformation" : {
+              |    "taxRegime" : "UK"
+              |  }
+              | }
+              |}
                       """.stripMargin).as[JsObject]
 
         invalidDesJson.validate[GetCalculationResponse] shouldBe a[JsError]
@@ -91,27 +93,28 @@ class GetCalculationResponseSpec extends UnitSpec {
       "read invalid taxable income JSON" in {
         // Mandatory value at /calculation/taxCalculation/incomeTax/totalTaxableIncome is missing...
         val invalidDesJson: JsValue = desJsonWithoutOptionalParts.as[JsObject] ++
-          Json.parse("""
-                       |{
-                       | "calculation" : {
-                       |   "taxCalculation" : {
-                       |     "incomeTax" : {
-                       |       "incomeTaxCharged" : 100.25,
-                       |       "totalIncomeReceivedFromAllSources": 123,
-                       |       "payPensionsProfit" : {
-                       |           "allowancesAllocated" : 300.25,
-                       |           "incomeTaxAmount": 400.25
-                       |        }
-                       |     },
-                       |     "totalIncomeTaxAndNicsDue" : 200.25
-                       |   }
-                       |  },
-                       | "inputs" : {
-                       |  "personalInformation" : {
-                       |    "taxRegime" : "UK"
-                       |  }
-                       | }
-                       |}
+          Json.parse(
+            """
+              |{
+              | "calculation" : {
+              |   "taxCalculation" : {
+              |     "incomeTax" : {
+              |       "incomeTaxCharged" : 100.25,
+              |       "totalIncomeReceivedFromAllSources": 123,
+              |       "payPensionsProfit" : {
+              |           "allowancesAllocated" : 300.25,
+              |           "incomeTaxAmount": 400.25
+              |        }
+              |     },
+              |     "totalIncomeTaxAndNicsDue" : 200.25
+              |   }
+              |  },
+              | "inputs" : {
+              |  "personalInformation" : {
+              |    "taxRegime" : "UK"
+              |  }
+              | }
+              |}
                       """.stripMargin).as[JsObject]
 
         invalidDesJson.validate[GetCalculationResponse] shouldBe a[JsError]

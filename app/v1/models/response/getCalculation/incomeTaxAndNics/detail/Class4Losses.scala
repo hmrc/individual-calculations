@@ -27,5 +27,3 @@ object Class4Losses {
 
   implicit val formats: OFormat[Class4Losses] = Json.format[Class4Losses]
 }
-
-

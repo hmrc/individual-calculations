@@ -21,7 +21,8 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.TaxBand
 
 object TaxBandFixtures {
 
-  val json: JsValue = Json.parse("""
+  val taxBandJson: JsValue = Json.parse(
+    """
       |{
       | "name": "name",
       | "rate": 100.25,
@@ -32,7 +33,7 @@ object TaxBandFixtures {
       |}
     """.stripMargin)
 
-  val model =
+  val taxBandModel =
     TaxBand(
       name = "name",
       rate = 100.25,
@@ -41,5 +42,4 @@ object TaxBandFixtures {
       income = 600,
       taxAmount = 700.25
     )
-
 }

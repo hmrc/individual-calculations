@@ -21,22 +21,36 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.TaxDeductedAtSo
 
 object TaxDeductedAtSourceFixtures {
 
-  val json: JsValue = Json.parse("""
+  val taxDeductedAtSourceJson: JsValue = Json.parse(
+    """
       |{
-      | "ukLandAndProperty" : 100.25,
-      | "bbsi" : 200.25,
-      | "cis": 123.25
+      | "ukLandAndProperty" : 100,
+      | "savings" : 200,
+      | "cis": 110.25,
+      | "securities": 120.35,
+      | "voidedIsa": 130.45,
+      | "payeEmployments": 140.55,
+      | "occupationalPensions": 150.65,
+      | "stateBenefits": 160.75
       |}
     """.stripMargin)
 
-  val outputJson: JsValue = Json.parse("""
+  val taxDeductedAtSourceOutputJson: JsValue = Json.parse(
+    """
       |{
-      | "ukLandAndProperty" : 100.25,
-      | "savings" : 200.25,
-      | "cis": 123.25
+      | "ukLandAndProperty" : 100,
+      | "savings" : 200,
+      | "cis": 110.25,
+      | "securities": 120.35,
+      | "voidedIsa": 130.45,
+      | "payeEmployments": 140.55,
+      | "occupationalPensions": 150.65,
+      | "stateBenefits": 160.75
       |}
     """.stripMargin)
 
-  val model = TaxDeductedAtSource(Some(100.25), Some(200.25), Some(123.25))
-
+  val taxDeductedAtSourceModel =
+    TaxDeductedAtSource(
+      Some(100), Some(200), Some(110.25), Some(120.35), Some(130.45), Some(140.55), Some(150.65), Some(160.75)
+    )
 }

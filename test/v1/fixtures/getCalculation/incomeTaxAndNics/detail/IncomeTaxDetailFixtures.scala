@@ -22,9 +22,10 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.{GiftAid, Incom
 
 object IncomeTaxDetailFixtures {
 
-  val emptyJson: JsValue = Json.obj()
+  val incomeTaxDetailEmptyJson: JsValue = Json.obj()
 
-  val emptyModelJson: JsValue = Json.parse("""
+  val incomeTaxDetailEmptyModelJson: JsValue = Json.parse(
+    """
       |{
       | "taxCalculation" : {
       |   "incomeTax" : {
@@ -34,59 +35,81 @@ object IncomeTaxDetailFixtures {
       |}
     """.stripMargin)
 
-  val filledModelJson: JsValue = Json.parse("""
+  val incomeTaxDetailFilledModelJson: JsValue = Json.parse(
+    """
       |{
-      | "taxCalculation" : {
-      |   "incomeTax" : {
-      |     "payPensionsProfit" : {
-      |       "allowancesAllocated": 100,
-      |       "incomeTaxAmount" :100.50
-      |     },
-      |     "savingsAndGains" : {
-      |       "allowancesAllocated": 200,
-      |       "incomeTaxAmount" :200.50
-      |     },
-      |     "dividends" : {
-      |       "allowancesAllocated": 300,
-      |       "incomeTaxAmount" :300.50
-      |     }
+      |   "taxCalculation":{
+      |      "incomeTax":{
+      |         "payPensionsProfit":{
+      |            "allowancesAllocated":100,
+      |            "incomeTaxAmount":100.50
+      |         },
+      |         "savingsAndGains":{
+      |            "allowancesAllocated":200,
+      |            "incomeTaxAmount":200.50
+      |         },
+      |         "lumpSums":{
+      |            "allowancesAllocated":300,
+      |            "incomeTaxAmount":300.50
+      |         },
+      |         "dividends":{
+      |            "allowancesAllocated":400,
+      |            "incomeTaxAmount":400.50
+      |         },
+      |         "gainsOnLifePolicies":{
+      |            "allowancesAllocated":500,
+      |            "incomeTaxAmount":500.50
+      |         }
+      |      }
+      |   },
+      |   "giftAid":{
+      |      "grossGiftAidPayments":400,
+      |      "rate":50.50,
+      |      "giftAidTax":400.75
       |   }
-      | },
-      | "giftAid" : {
-      |   "grossGiftAidPayments" : 400.25,
-      |   "rate" : 400.50,
-      |   "giftAidTax" : 400.75
-      | }
       |}
     """.stripMargin)
 
-  val outputJson: JsValue = Json.parse("""
+  val incomeTaxDetailOutputJson: JsValue = Json.parse(
+    """
       |{
-      | "payPensionsProfit" : {
-      |   "allowancesAllocated": 100,
-      |   "incomeTaxAmount" :100.50
-      | },
-      |   "savingsAndGains" : {
-      |   "allowancesAllocated": 200,
-      |   "incomeTaxAmount" :200.50
-      | },
-      | "dividends" : {
-      |   "allowancesAllocated": 300,
-      |   "incomeTaxAmount" :300.50
-      | },
-      | "giftAid" : {
-      |   "grossGiftAidPayments" : 400.25,
-      |   "rate" : 400.50,
-      |   "giftAidTax" : 400.75
-      | }
+      |   "payPensionsProfit":{
+      |      "allowancesAllocated":100,
+      |      "incomeTaxAmount":100.50
+      |   },
+      |   "savingsAndGains":{
+      |      "allowancesAllocated":200,
+      |      "incomeTaxAmount":200.50
+      |   },
+      |   "lumpSums":{
+      |      "allowancesAllocated":300,
+      |      "incomeTaxAmount":300.50
+      |   },
+      |   "dividends":{
+      |      "allowancesAllocated":400,
+      |      "incomeTaxAmount":400.50
+      |   },
+      |   "gainsOnLifePolicies":{
+      |      "allowancesAllocated":500,
+      |      "incomeTaxAmount":500.50
+      |   },
+      |   "giftAid":{
+      |      "grossGiftAidPayments":400,
+      |      "rate":50.50,
+      |      "giftAidTax":400.75
+      |   }
       |}
     """.stripMargin)
 
-  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input.toBigInt, input + 0.5, None)
+  def incomeTypeBreakdown(input: BigDecimal): IncomeTypeBreakdown = IncomeTypeBreakdown(input.toBigInt, input + 0.50, None)
 
-  val filledModel = detail.IncomeTaxDetail(Some(incomeTypeBreakdown(100)),
-                                           Some(incomeTypeBreakdown(200)),
-                                           Some(incomeTypeBreakdown(300)),
-                                           Some(GiftAid(400.25, 400.50, 400.75)))
-
+  val incomeTaxDetailFilledModel = detail.IncomeTaxDetail(
+    Some(incomeTypeBreakdown(100)),
+    Some(incomeTypeBreakdown(200)),
+    Some(incomeTypeBreakdown(300)),
+    Some(incomeTypeBreakdown(400)),
+    Some(incomeTypeBreakdown(500)),
+    Some(GiftAid(400, 50.50, 400.75)
+    )
+  )
 }

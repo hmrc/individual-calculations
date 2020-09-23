@@ -18,11 +18,10 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class GiftAid(grossGiftAidPayments: BigDecimal,
+case class GiftAid(grossGiftAidPayments: BigInt,
                    rate: BigDecimal,
                    giftAidTax: BigDecimal)
 
 object GiftAid {
   implicit val format: OFormat[GiftAid] = Json.format[GiftAid]
 }
-

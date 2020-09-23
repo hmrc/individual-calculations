@@ -25,15 +25,12 @@ import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeduc
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
-case class GetCalculationResponse(
-                                  metadata: Metadata,
+case class GetCalculationResponse(metadata: Metadata,
                                   incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
                                   messages: Option[Messages] = None,
                                   taxableIncome: Option[TaxableIncome] = None,
                                   endOfYearEstimate: Option[EoyEstimate] = None,
-                                  allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None
-                                 )
-
+                                  allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None)
 
 object GetCalculationResponse extends NestedJsonReads {
   implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
@@ -49,5 +46,5 @@ object GetCalculationResponse extends NestedJsonReads {
         emptyIfNotPresent[TaxableIncome](__ \ "calculation") and
         (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate] and
         emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation")
-    )(GetCalculationResponse.apply _)
+      ) (GetCalculationResponse.apply _)
 }
