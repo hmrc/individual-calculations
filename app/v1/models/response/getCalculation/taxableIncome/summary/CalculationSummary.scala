@@ -18,13 +18,17 @@ package v1.models.response.getCalculation.taxableIncome.summary
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
-
+import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
+import sangria.schema.ObjectType
 case class CalculationSummary(totalIncomeReceivedFromAllSources: BigInt, totalTaxableIncome: BigInt)
 
-object CalculationSummary{
+object CalculationSummary {
   implicit val writes: Writes[CalculationSummary] = Json.writes[CalculationSummary]
   implicit val reads: Reads[CalculationSummary] = (
-    (JsPath  \ "totalIncomeReceivedFromAllSources").read[BigInt] and
+    (JsPath \ "totalIncomeReceivedFromAllSources").read[BigInt] and
       (JsPath \ "totalTaxableIncome").read[BigInt]
-    )(CalculationSummary.apply _)
+    ) (CalculationSummary.apply _)
+
+  implicit def gqlType: ObjectType[Unit, CalculationSummary] =
+    deriveObjectType[Unit, CalculationSummary](ObjectTypeName("TaxableIncomeCalculationSummary"))
 }

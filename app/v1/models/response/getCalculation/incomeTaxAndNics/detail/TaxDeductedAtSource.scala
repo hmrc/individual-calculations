@@ -18,7 +18,8 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
                                savings: Option[BigDecimal],
                                cis: Option[BigDecimal])
@@ -32,5 +33,8 @@ object TaxDeductedAtSource {
     (JsPath \ "ukLandAndProperty").readNullable[BigDecimal] and
       (JsPath \ "bbsi").readNullable[BigDecimal] and
       (JsPath \ "cis").readNullable[BigDecimal]
-  )(TaxDeductedAtSource.apply _)
+    ) (TaxDeductedAtSource.apply _)
+
+  implicit def gqlType: ObjectType[Unit, TaxDeductedAtSource] = deriveObjectType[Unit, TaxDeductedAtSource]()
+
 }

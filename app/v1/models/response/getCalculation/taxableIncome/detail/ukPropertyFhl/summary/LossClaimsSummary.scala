@@ -18,7 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.sum
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-
+import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
+import sangria.schema.ObjectType
 case class LossClaimsSummary(
                               lossForCSFHL: Option[BigInt],
                               totalBroughtForwardIncomeTaxLosses: Option[BigInt],
@@ -36,5 +37,8 @@ object LossClaimsSummary {
       (JsPath \ "totalBroughtForwardIncomeTaxLosses").readNullable[BigInt] and
       (JsPath \ "broughtForwardIncomeTaxLossesUsed").readNullable[BigInt] and
       (JsPath \ "totalIncomeTaxLossesCarriedForward").readNullable[BigInt]
-  )(LossClaimsSummary.apply _)
+    ) (LossClaimsSummary.apply _)
+
+  implicit def gqlType: ObjectType[Unit, LossClaimsSummary] =
+    deriveObjectType[Unit, LossClaimsSummary](ObjectTypeName("UkPropertyFhlLossClaimsSummary"))
 }

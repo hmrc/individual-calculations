@@ -17,7 +17,8 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
-
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 case class TaxBand(name: String,
                    rate: BigDecimal,
                    bandLimit: BigInt,
@@ -27,4 +28,6 @@ case class TaxBand(name: String,
 
 object TaxBand {
   implicit val format: OFormat[TaxBand] = Json.format[TaxBand]
+
+  implicit def gqlType: ObjectType[Unit, TaxBand] = deriveObjectType[Unit, TaxBand]()
 }

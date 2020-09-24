@@ -18,9 +18,14 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
-
-case class CalculationDetail(payPensionsProfit: Option[PayPensionsProfit], savingsAndGains: Option[SavingsAndGains], dividends: Option[Dividends])
+case class CalculationDetail(
+                              payPensionsProfit: Option[PayPensionsProfit],
+                              savingsAndGains: Option[SavingsAndGains],
+                              dividends: Option[Dividends]
+                            )
 
 object CalculationDetail extends NestedJsonReads {
   val empty = CalculationDetail(None, None, None)
@@ -30,5 +35,8 @@ object CalculationDetail extends NestedJsonReads {
     emptyIfNotPresent[PayPensionsProfit](__ \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit") and
       emptyIfNotPresent[SavingsAndGains](__ \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains") and
       (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "dividends").readNestedNullable[Dividends]
-  )(CalculationDetail.apply _)
+    ) (CalculationDetail.apply _)
+
+  implicit def gqlType: ObjectType[Unit, CalculationDetail] =
+    deriveObjectType[Unit, CalculationDetail](ObjectTypeName("TaxableIncomeCalculationDetail"))
 }

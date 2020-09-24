@@ -18,8 +18,9 @@ package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
+import sangria.schema.ObjectType
 import v1.models.request.DesTaxYear
-
 case class LossBroughtForward(taxYearLossIncurred: String,
                               currentLossValue: BigInt,
                               mtdLoss: Boolean)
@@ -31,5 +32,8 @@ object LossBroughtForward {
     (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "mtdLoss").read[Boolean]
-  )(LossBroughtForward.apply _)
+    ) (LossBroughtForward.apply _)
+
+  implicit def gqlType: ObjectType[Unit, LossBroughtForward] =
+    deriveObjectType[Unit, LossBroughtForward](ObjectTypeName("UkPropertyNonFhlLossBroughtForward"))
 }

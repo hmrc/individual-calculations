@@ -17,12 +17,16 @@
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json._
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 
 case class ResidentialFinanceCosts(amountClaimed: BigDecimal,
-                                    allowableAmount: Option[BigDecimal],
-                                    rate: Double,
-                                    propertyFinanceRelief: BigDecimal)
+                                   allowableAmount: Option[BigDecimal],
+                                   rate: Double,
+                                   propertyFinanceRelief: BigDecimal)
 
 object ResidentialFinanceCosts {
   implicit val format: OFormat[ResidentialFinanceCosts] = Json.format[ResidentialFinanceCosts]
+
+  implicit def gqlType: ObjectType[Unit, ResidentialFinanceCosts] = deriveObjectType[Unit, ResidentialFinanceCosts]()
 }

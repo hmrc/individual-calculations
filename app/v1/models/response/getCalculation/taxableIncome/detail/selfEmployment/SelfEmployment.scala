@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail.{BusinessSourceAdjustableSummary, LossClaimsDetail}
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.summary.LossClaimsSummary
@@ -88,5 +90,7 @@ object SelfEmployment extends NestedJsonReads {
   object FilterWrapper {
     implicit val formats: OFormat[FilterWrapper] = Json.format[FilterWrapper]
   }
+
+  implicit def gqlType: ObjectType[Unit, SelfEmployment] = deriveObjectType[Unit, SelfEmployment]()
 
 }

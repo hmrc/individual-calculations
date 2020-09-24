@@ -18,12 +18,17 @@ package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive._
+import sangria.schema._
 import utils.NestedJsonReads
-
-case class NicSummary(class2NicsAmount: Option[BigDecimal], class4NicsAmount: Option[BigDecimal], totalNic: Option[BigDecimal])
+case class NicSummary(
+                       class2NicsAmount: Option[BigDecimal],
+                       class4NicsAmount: Option[BigDecimal],
+                       totalNic: Option[BigDecimal]
+                     )
 
 object NicSummary extends NestedJsonReads {
-  val empty = NicSummary(None, None ,None)
+  val empty = NicSummary(None, None, None)
 
   implicit val writes: OWrites[NicSummary] = Json.writes[NicSummary]
 
@@ -31,5 +36,8 @@ object NicSummary extends NestedJsonReads {
     (JsPath \ "class2Nics" \ "amount").readNestedNullable[BigDecimal] and
       (JsPath \ "class4Nics" \ "totalAmount").readNestedNullable[BigDecimal] and
       (JsPath \ "totalNic").readNullable[BigDecimal]
-  )(NicSummary.apply _)
+    ) (NicSummary.apply _)
+
+  implicit def gqlType: ObjectType[Unit, NicSummary] = deriveObjectType[Unit, NicSummary]()
+
 }

@@ -18,33 +18,31 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.{ReplaceField, deriveObjectType}
+import sangria.schema._
 import v1.models.des.{LossType, ReliefClaimed}
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
-
 case class CarriedForwardLoss(
-    claimId: Option[String],
-    claimType: TypeOfClaim,
-    taxYearClaimMade: Option[String],
-    taxYearLossIncurred: String,
-    currentLossValue: BigInt,
-    lossType: LossType,
-    incomeSourceId: String
-)
+                               claimId: Option[String],
+                               claimType: TypeOfClaim,
+                               taxYearClaimMade: Option[String],
+                               taxYearLossIncurred: String,
+                               currentLossValue: BigInt,
+                               lossType: LossType,
+                               incomeSourceId: String
+                             )
 
 object CarriedForwardLoss {
 
-  implicit val writes: OWrites[CarriedForwardLoss] = new OWrites[CarriedForwardLoss] {
-
-    def writes(carriedForwardLoss: CarriedForwardLoss): JsObject = Json.obj(
-      "claimId"             -> carriedForwardLoss.claimId,
-      "claimType"           -> carriedForwardLoss.claimType,
-      "taxYearClaimMade"    -> carriedForwardLoss.taxYearClaimMade,
-      "taxYearLossIncurred" -> carriedForwardLoss.taxYearLossIncurred,
-      "currentLossValue"    -> carriedForwardLoss.currentLossValue,
-      "lossType"            -> carriedForwardLoss.lossType
-    )
-  }
+  implicit val writes: OWrites[CarriedForwardLoss] = (carriedForwardLoss: CarriedForwardLoss) => Json.obj(
+    "claimId" -> carriedForwardLoss.claimId,
+    "claimType" -> carriedForwardLoss.claimType,
+    "taxYearClaimMade" -> carriedForwardLoss.taxYearClaimMade,
+    "taxYearLossIncurred" -> carriedForwardLoss.taxYearLossIncurred,
+    "currentLossValue" -> carriedForwardLoss.currentLossValue,
+    "lossType" -> carriedForwardLoss.lossType
+  )
 
   implicit val reads: Reads[CarriedForwardLoss] = (
     (JsPath \ "claimId").readNullable[String] and
@@ -54,6 +52,11 @@ object CarriedForwardLoss {
       (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "lossType").read[LossType] and
       (JsPath \ "incomeSourceId").read[String]
-  )(CarriedForwardLoss.apply _)
+    ) (CarriedForwardLoss.apply _)
 
+  implicit def gqlType: ObjectType[Unit, CarriedForwardLoss] =
+    deriveObjectType[Unit, CarriedForwardLoss](
+      ReplaceField("claimType", Field("claimType", StringType, resolve = _.value.claimType.toString)),
+      ReplaceField("lossType", Field("lossType", StringType, resolve = _.value.lossType.toString))
+    )
 }

@@ -19,6 +19,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.Bsas
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.LossClaimsDetail
@@ -38,7 +40,7 @@ case class UkPropertyFhl(totalIncome: Option[BigDecimal],
                          lossClaimsDetail: Option[LossClaimsDetail],
                          bsas: Option[Bsas])
 
-object UkPropertyFhl extends NestedJsonReads{
+object UkPropertyFhl extends NestedJsonReads {
   val empty = UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, None, None)
 
   case class TopLevelElements(incomeSourceType: String,
@@ -54,6 +56,7 @@ object UkPropertyFhl extends NestedJsonReads{
                               taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
                               lossClaimsSummary: Option[LossClaimsSummary]
                              )
+
   object TopLevelElements {
 
     implicit val writes: OWrites[TopLevelElements] = Json.writes[TopLevelElements]
@@ -70,21 +73,21 @@ object UkPropertyFhl extends NestedJsonReads{
         (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
         (JsPath \ "taxableProfit").readNullable[BigInt] and
         (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
-        JsPath.readNullable[LossClaimsSummary].map{
+        JsPath.readNullable[LossClaimsSummary].map {
           case Some(LossClaimsSummary.empty) => None
-          case other => other
+          case other                         => other
         }
-      )(TopLevelElements.apply _)
+      ) (TopLevelElements.apply _)
   }
 
   implicit val writes: OWrites[UkPropertyFhl] = Json.writes[UkPropertyFhl]
 
-  def readsApply(topLevelElementsOpt: Option[TopLevelElements], lossClaimsDetail: Option[LossClaimsDetail], bsas: Option[Bsas]):UkPropertyFhl =
+  def readsApply(topLevelElementsOpt: Option[TopLevelElements], lossClaimsDetail: Option[LossClaimsDetail], bsas: Option[Bsas]): UkPropertyFhl =
     topLevelElementsOpt match {
-      case None => UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, lossClaimsDetail, bsas)
+      case None                   => UkPropertyFhl(None, None, None, None, None, None, None, None, None, None, None, lossClaimsDetail, bsas)
       case Some(topLevelElements) => UkPropertyFhl(topLevelElements.totalIncome,
         topLevelElements.totalExpenses,
-        topLevelElements. netProfit,
+        topLevelElements.netProfit,
         topLevelElements.netLoss,
         topLevelElements.totalAdditions,
         topLevelElements.totalDeductions,
@@ -99,12 +102,12 @@ object UkPropertyFhl extends NestedJsonReads{
   implicit val reads: Reads[UkPropertyFhl] = (
     (JsPath \ "calculation" \ "businessProfitAndLoss")
       .readNestedNullableOpt[TopLevelElements](filteredArrayValueReads(None, "incomeSourceType", "04")) and
-     __.readNullable[LossClaimsDetail].map{
-       case Some(LossClaimsDetail.empty) => None
-       case other => other
-     } and
+      __.readNullable[LossClaimsDetail].map {
+        case Some(LossClaimsDetail.empty) => None
+        case other                        => other
+      } and
       (JsPath \ "inputs" \ "annualAdjustments").readNestedNullableOpt[Bsas](filteredArrayValueReads(None, "incomeSourceType", "04"))
-    )(UkPropertyFhl.readsApply _)
+    ) (UkPropertyFhl.readsApply _)
 
-
+  implicit def gqlType: ObjectType[Unit, UkPropertyFhl] = deriveObjectType[Unit, UkPropertyFhl]()
 }

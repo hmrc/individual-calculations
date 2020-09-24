@@ -18,8 +18,9 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
-
 case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],
                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
                             unclaimedLosses: Option[Seq[UnclaimedLoss]],
@@ -28,11 +29,11 @@ case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]
 
   def filterById(id: String): Option[LossClaimsDetail] = {
 
-    val lossesBroughtForward  = this.lossesBroughtForward.getOrElse(Seq.empty).filter(lbf => lbf.incomeSourceId == id)
+    val lossesBroughtForward = this.lossesBroughtForward.getOrElse(Seq.empty).filter(lbf => lbf.incomeSourceId == id)
     val resultOfClaimsApplied = this.resultOfClaimsApplied.getOrElse(Seq.empty).filter(rca => rca.incomeSourceId == id)
-    val unclaimedLosses       = this.unclaimedLosses.getOrElse(Seq.empty).filter(ucl => ucl.incomeSourceId == id)
-    val carriedForwardLosses  = this.carriedForwardLosses.getOrElse(Seq.empty).filter(cfl => cfl.incomeSourceId == id)
-    val claimsNotApplied      = this.claimsNotApplied.getOrElse(Seq.empty).filter(cna => cna.incomeSourceId == id)
+    val unclaimedLosses = this.unclaimedLosses.getOrElse(Seq.empty).filter(ucl => ucl.incomeSourceId == id)
+    val carriedForwardLosses = this.carriedForwardLosses.getOrElse(Seq.empty).filter(cfl => cfl.incomeSourceId == id)
+    val claimsNotApplied = this.claimsNotApplied.getOrElse(Seq.empty).filter(cna => cna.incomeSourceId == id)
 
     val filteredDetail: LossClaimsDetail = LossClaimsDetail(
       LossClaimsDetail.toNoneIfEmpty(lossesBroughtForward),
@@ -58,5 +59,8 @@ object LossClaimsDetail extends NestedJsonReads {
     (JsPath \ "calculation" \ "lossesAndClaims" \ "resultOfClaimsApplied").readNestedNullable(filteredArrayReads[ResultOfClaimApplied]("incomeSourceType", "01")).mapEmptySeqToNone and
     (JsPath \ "calculation" \ "lossesAndClaims" \ "unclaimedLosses").readNestedNullable(filteredArrayReads[UnclaimedLoss]("incomeSourceType", "01")).mapEmptySeqToNone and
     (JsPath \ "calculation" \ "lossesAndClaims" \ "carriedForwardLosses").readNestedNullable(filteredArrayReads[CarriedForwardLoss]("incomeSourceType", "01")).mapEmptySeqToNone and
-    (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied").readNestedNullable(filteredArrayReads[ClaimNotApplied]("incomeSourceType", "01")).mapEmptySeqToNone)(LossClaimsDetail.apply _)
+    (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied").readNestedNullable(filteredArrayReads[ClaimNotApplied]("incomeSourceType", "01")).mapEmptySeqToNone) (LossClaimsDetail.apply _)
+
+  implicit def gqlType: ObjectType[Unit, LossClaimsDetail] =
+    deriveObjectType[Unit, LossClaimsDetail](ObjectTypeName("SelfEmploymentLossClaimsDetail"))
 }

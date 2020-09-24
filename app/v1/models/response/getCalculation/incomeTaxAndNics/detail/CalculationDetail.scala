@@ -18,9 +18,14 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive._
+import sangria.schema._
 import utils.NestedJsonReads
-
-case class CalculationDetail(incomeTax: IncomeTaxDetail, nics: Option[NicDetail], taxDeductedAtSource: Option[TaxDeductedAtSource])
+case class CalculationDetail(
+                              incomeTax: IncomeTaxDetail,
+                              nics: Option[NicDetail],
+                              taxDeductedAtSource: Option[TaxDeductedAtSource]
+                            )
 
 object CalculationDetail extends NestedJsonReads {
   implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
@@ -29,11 +34,14 @@ object CalculationDetail extends NestedJsonReads {
     (JsPath \ "calculation").read[IncomeTaxDetail] and
       (JsPath \ "calculation" \ "taxCalculation" \ "nics").readNestedNullable[NicDetail].map {
         case Some(NicDetail.empty) => None
-        case other => other
+        case other                 => other
       } and
       (JsPath \ "calculation" \ "taxDeductedAtSource").readNestedNullable[TaxDeductedAtSource].map {
         case Some(TaxDeductedAtSource.empty) => None
-        case other => other
+        case other                           => other
       }
-  )(CalculationDetail.apply _)
+    ) (CalculationDetail.apply _)
+
+  implicit def gqlType: ObjectType[Unit, CalculationDetail] =
+    deriveObjectType[Unit, CalculationDetail](ObjectTypeName("IncomeTaxAndNicsCalculationDetail"))
 }

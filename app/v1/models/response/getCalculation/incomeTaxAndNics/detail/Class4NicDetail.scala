@@ -18,8 +18,9 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
-
 case class Class4NicDetail(class4Losses: Option[Class4Losses],
                            totalIncomeLiableToClass4Charge: Option[BigInt],
                            totalIncomeChargeableToClass4: Option[BigInt],
@@ -30,12 +31,15 @@ object Class4NicDetail extends NestedJsonReads {
 
   implicit val writes: OWrites[Class4NicDetail] = Json.writes[Class4NicDetail]
   implicit val reads: Reads[Class4NicDetail] = (
-    JsPath.readNullable[Class4Losses].map{
+    JsPath.readNullable[Class4Losses].map {
       case Some(Class4Losses.empty) => None
-      case other => other
+      case other                    => other
     } and
       (JsPath \ "totalIncomeLiableToClass4Charge").readNullable[BigInt] and
       (JsPath \ "totalIncomeChargeableToClass4").readNullable[BigInt] and
       (JsPath \ "nic4Bands").readNullable[Seq[NicBand]].mapEmptySeqToNone
-    )(Class4NicDetail.apply _)
+    ) (Class4NicDetail.apply _)
+
+  implicit def gqlType: ObjectType[Unit, Class4NicDetail] = deriveObjectType[Unit, Class4NicDetail]()
+
 }

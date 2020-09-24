@@ -19,6 +19,8 @@ package v1.models.response.getCalculation.taxableIncome.detail
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.SelfEmployment
 import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhl
@@ -36,16 +38,17 @@ object BusinessProfitAndLoss extends NestedJsonReads {
   implicit val reads: Reads[BusinessProfitAndLoss] = (
     __.readNullable[Seq[SelfEmployment]](SelfEmployment.seqReads).map(_.flatMap {
       case Nil => None
-      case x => Some(x)
+      case x   => Some(x)
     }) and
       __.readNullable[UkPropertyFhl].map {
         case Some(UkPropertyFhl.empty) => None
-        case other => other
+        case other                     => other
       } and
       __.readNullable[UkPropertyNonFhl].map {
         case Some(UkPropertyNonFhl.empty) => None
-        case other => other
+        case other                        => other
       }
-    )(BusinessProfitAndLoss.apply _)
+    ) (BusinessProfitAndLoss.apply _)
 
+  implicit def gqlType: ObjectType[Unit, BusinessProfitAndLoss] = deriveObjectType[Unit, BusinessProfitAndLoss]()
 }

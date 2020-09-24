@@ -18,7 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 case class Savings(savingsAccountId: String,
                    savingsAccountName: String,
                    grossIncome: BigDecimal,
@@ -33,5 +34,7 @@ object Savings {
       (JsPath \ "grossIncome").read[BigDecimal] and
       (JsPath \ "netIncome").readNullable[BigDecimal] and
       (JsPath \ "taxDeducted").readNullable[BigDecimal]
-  )(Savings.apply _)
+    ) (Savings.apply _)
+
+  implicit def gqlType: ObjectType[Unit, Savings] = deriveObjectType[Unit, Savings]()
 }

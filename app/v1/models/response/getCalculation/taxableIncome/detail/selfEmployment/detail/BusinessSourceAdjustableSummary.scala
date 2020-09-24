@@ -18,27 +18,27 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
-
 case class BusinessSourceAdjustableSummary(
-                                          bsasId: String,
-                                          applied: Boolean,
-                                          incomeSourceId: String
-)
+                                            bsasId: String,
+                                            applied: Boolean,
+                                            incomeSourceId: String
+                                          )
 
-object BusinessSourceAdjustableSummary extends NestedJsonReads{
+object BusinessSourceAdjustableSummary extends NestedJsonReads {
 
   implicit val reads: Reads[BusinessSourceAdjustableSummary] = (
     (JsPath \ "ascId").read[String] and
       (JsPath \ "applied").read[Boolean] and
-        (JsPath \ "incomeSourceId").read[String]
-  )(BusinessSourceAdjustableSummary.apply _)
+      (JsPath \ "incomeSourceId").read[String]
+    ) (BusinessSourceAdjustableSummary.apply _)
 
-  implicit val writes: Writes[BusinessSourceAdjustableSummary] = new Writes[BusinessSourceAdjustableSummary] {
-    override def writes(bsas: BusinessSourceAdjustableSummary): JsValue =
-      Json.obj(
-        "bsasId" -> bsas.bsasId,
-        "applied" -> bsas.applied
-      )
-  }
+  implicit val writes: Writes[BusinessSourceAdjustableSummary] = (bsas: BusinessSourceAdjustableSummary) => Json.obj(
+    "bsasId" -> bsas.bsasId,
+    "applied" -> bsas.applied
+  )
+
+  implicit def gqlType: ObjectType[Unit, BusinessSourceAdjustableSummary] = deriveObjectType[Unit, BusinessSourceAdjustableSummary]()
 }

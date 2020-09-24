@@ -18,16 +18,20 @@ package v1.models.response.getCalculation.allowancesAndDeductions.summary
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
-
 case class CalculationSummary(totalAllowancesAndDeductions: Option[BigInt], totalReliefs: Option[BigDecimal])
 
-object CalculationSummary extends NestedJsonReads{
+object CalculationSummary extends NestedJsonReads {
   val empty = CalculationSummary(None, None)
 
   implicit val writes: Writes[CalculationSummary] = Json.writes[CalculationSummary]
   implicit val reads: Reads[CalculationSummary] = (
     (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "totalAllowancesAndDeductions").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "totalReliefs").readNestedNullable[BigDecimal]
-    )(CalculationSummary.apply _)
+    ) (CalculationSummary.apply _)
+
+  implicit def gqlType: ObjectType[Unit, CalculationSummary] =
+    deriveObjectType[Unit, CalculationSummary](ObjectTypeName("AllowancesAndDeductionsCalculationSummary"))
 }

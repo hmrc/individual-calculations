@@ -17,9 +17,14 @@
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
-
-case class EoyEstimateSelfEmployment(selfEmploymentId: String, taxableIncome: BigInt, finalised: Option[Boolean])
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
+case class EoyEstimateSelfEmployment(
+                                      selfEmploymentId: String,
+                                      taxableIncome: BigInt,
+                                      finalised: Option[Boolean]
+                                    )
 
 object EoyEstimateSelfEmployment {
   implicit val writes: OWrites[EoyEstimateSelfEmployment] = Json.writes[EoyEstimateSelfEmployment]
@@ -27,5 +32,7 @@ object EoyEstimateSelfEmployment {
     (JsPath \ "incomeSourceId").read[String] and
       (JsPath \ "taxableIncome").read[BigInt] and
       (JsPath \ "finalised").readNullable[Boolean]
-  )(EoyEstimateSelfEmployment.apply _)
+    ) (EoyEstimateSelfEmployment.apply _)
+
+  implicit def gqlType: ObjectType[Unit, EoyEstimateSelfEmployment] = deriveObjectType[Unit, EoyEstimateSelfEmployment]()
 }

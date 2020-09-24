@@ -18,37 +18,35 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.{ObjectTypeName, ReplaceField, deriveObjectType}
+import sangria.schema.{Field, ObjectType, StringType}
 import v1.models.des.{LossType, ReliefClaimed}
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
-
 case class ResultOfClaimApplied(
-    claimId: Option[String],
-    taxYearClaimMade: String,
-    claimType: TypeOfClaim,
-    mtdLoss: Boolean,
-    taxYearLossIncurred: String,
-    lossAmountUsed: BigInt,
-    remainingLossValue: BigInt,
-    lossType: LossType,
-    incomeSourceId: String
-)
+                                 claimId: Option[String],
+                                 taxYearClaimMade: String,
+                                 claimType: TypeOfClaim,
+                                 mtdLoss: Boolean,
+                                 taxYearLossIncurred: String,
+                                 lossAmountUsed: BigInt,
+                                 remainingLossValue: BigInt,
+                                 lossType: LossType,
+                                 incomeSourceId: String
+                               )
 
 object ResultOfClaimApplied {
 
-  implicit val writes: OWrites[ResultOfClaimApplied] = new OWrites[ResultOfClaimApplied] {
-
-    def writes(resultOfClaimApplied: ResultOfClaimApplied): JsObject = Json.obj(
-      "claimId"             -> resultOfClaimApplied.claimId,
-      "taxYearClaimMade"    -> resultOfClaimApplied.taxYearClaimMade,
-      "claimType"           -> resultOfClaimApplied.claimType,
-      "mtdLoss"             -> resultOfClaimApplied.mtdLoss,
-      "taxYearLossIncurred" -> resultOfClaimApplied.taxYearLossIncurred,
-      "lossAmountUsed"      -> resultOfClaimApplied.lossAmountUsed,
-      "remainingLossValue"  -> resultOfClaimApplied.remainingLossValue,
-      "lossType"            -> resultOfClaimApplied.lossType
-    )
-  }
+  implicit val writes: OWrites[ResultOfClaimApplied] = (resultOfClaimApplied: ResultOfClaimApplied) => Json.obj(
+    "claimId" -> resultOfClaimApplied.claimId,
+    "taxYearClaimMade" -> resultOfClaimApplied.taxYearClaimMade,
+    "claimType" -> resultOfClaimApplied.claimType,
+    "mtdLoss" -> resultOfClaimApplied.mtdLoss,
+    "taxYearLossIncurred" -> resultOfClaimApplied.taxYearLossIncurred,
+    "lossAmountUsed" -> resultOfClaimApplied.lossAmountUsed,
+    "remainingLossValue" -> resultOfClaimApplied.remainingLossValue,
+    "lossType" -> resultOfClaimApplied.lossType
+  )
 
   implicit val reads: Reads[ResultOfClaimApplied] = (
     (JsPath \ "claimId").readNullable[String] and
@@ -60,6 +58,12 @@ object ResultOfClaimApplied {
       (JsPath \ "remainingLossValue").read[BigInt] and
       (JsPath \ "lossType").read[LossType] and
       (JsPath \ "incomeSourceId").read[String]
-  )(ResultOfClaimApplied.apply _)
+    ) (ResultOfClaimApplied.apply _)
 
+  implicit def gqlType: ObjectType[Unit, ResultOfClaimApplied] =
+    deriveObjectType[Unit, ResultOfClaimApplied](
+      ObjectTypeName("SelfEmploymentResultOfClaimApplied"),
+      ReplaceField("claimType", Field("claimType", StringType, resolve = _.value.claimType.toString)),
+      ReplaceField("lossType", Field("lossType", StringType, resolve = _.value.lossType.toString))
+    )
 }

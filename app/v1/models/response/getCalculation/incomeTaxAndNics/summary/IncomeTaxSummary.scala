@@ -17,9 +17,16 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
 import play.api.libs.json._
-
-case class IncomeTaxSummary(incomeTaxCharged: BigDecimal, incomeTaxDueAfterReliefs: Option[BigDecimal], incomeTaxDueAfterGiftAid: Option[BigDecimal])
+import sangria.macros.derive._
+import sangria.schema._
+case class IncomeTaxSummary(
+                             incomeTaxCharged: BigDecimal,
+                             incomeTaxDueAfterReliefs: Option[BigDecimal],
+                             incomeTaxDueAfterGiftAid: Option[BigDecimal]
+                           )
 
 object IncomeTaxSummary {
   implicit val format: OFormat[IncomeTaxSummary] = Json.format[IncomeTaxSummary]
+
+  implicit def gqlType: ObjectType[Unit, IncomeTaxSummary] = deriveObjectType[Unit, IncomeTaxSummary]()
 }

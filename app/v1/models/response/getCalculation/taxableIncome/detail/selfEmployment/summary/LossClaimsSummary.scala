@@ -18,7 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.su
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Json, OWrites, Reads, _}
-
+import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
+import sangria.schema.ObjectType
 case class LossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
                              broughtForwardIncomeTaxLossesUsed: Option[BigInt],
                              carrySidewaysIncomeTaxLossesUsed: Option[BigInt],
@@ -44,6 +45,8 @@ object LossClaimsSummary {
       (JsPath \ "broughtForwardClass4LossesUsed").readNullable[BigInt] and
       (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigInt] and
       (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigInt]
-  )(LossClaimsSummary.apply _)
+    ) (LossClaimsSummary.apply _)
 
+  implicit def gqlType: ObjectType[Unit, LossClaimsSummary] =
+    deriveObjectType[Unit, LossClaimsSummary](ObjectTypeName("SelfEmploymentLossClaimsSummary"))
 }

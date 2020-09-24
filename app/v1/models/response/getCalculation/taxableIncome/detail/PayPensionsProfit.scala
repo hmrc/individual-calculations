@@ -18,8 +18,9 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
-
 case class PayPensionsProfit(incomeReceived: BigInt,
                              taxableIncome: BigInt,
                              totalSelfEmploymentProfit: Option[BigInt],
@@ -42,4 +43,6 @@ object PayPensionsProfit extends NestedJsonReads{
         case other => other
       }
   )(PayPensionsProfit.apply _)
+
+  implicit def gqlType: ObjectType[Unit, PayPensionsProfit] = deriveObjectType[Unit, PayPensionsProfit]()
 }

@@ -17,9 +17,13 @@
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.json.{Json, OFormat}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 
 case class EoyEstimateOtherDividends(taxableIncome: BigInt)
 
 object EoyEstimateOtherDividends {
   implicit val format: OFormat[EoyEstimateOtherDividends] = Json.format[EoyEstimateOtherDividends]
+
+  implicit def gqlType: ObjectType[Unit, EoyEstimateOtherDividends] = deriveObjectType[Unit, EoyEstimateOtherDividends]()
 }

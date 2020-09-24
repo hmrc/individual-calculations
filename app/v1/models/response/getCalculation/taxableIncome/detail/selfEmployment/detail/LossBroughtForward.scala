@@ -18,28 +18,26 @@ package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.de
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.{ObjectTypeName, ReplaceField, deriveObjectType}
+import sangria.schema.{Field, ObjectType, StringType}
 import v1.models.des.LossType
 import v1.models.request.DesTaxYear
-
 case class LossBroughtForward(
-    lossType: LossType,
-    taxYearLossIncurred: String,
-    currentLossValue: BigInt,
-    mtdLoss: Boolean,
-    incomeSourceId: String
-)
+                               lossType: LossType,
+                               taxYearLossIncurred: String,
+                               currentLossValue: BigInt,
+                               mtdLoss: Boolean,
+                               incomeSourceId: String
+                             )
 
 object LossBroughtForward {
 
-  implicit val writes: OWrites[LossBroughtForward] = new OWrites[LossBroughtForward] {
-
-    def writes(lossBroughtForward: LossBroughtForward): JsObject = Json.obj(
-      "lossType"            -> lossBroughtForward.lossType,
-      "taxYearLossIncurred" -> lossBroughtForward.taxYearLossIncurred,
-      "currentLossValue"    -> lossBroughtForward.currentLossValue,
-      "mtdLoss"             -> lossBroughtForward.mtdLoss
-    )
-  }
+  implicit val writes: OWrites[LossBroughtForward] = (lossBroughtForward: LossBroughtForward) => Json.obj(
+    "lossType" -> lossBroughtForward.lossType,
+    "taxYearLossIncurred" -> lossBroughtForward.taxYearLossIncurred,
+    "currentLossValue" -> lossBroughtForward.currentLossValue,
+    "mtdLoss" -> lossBroughtForward.mtdLoss
+  )
 
   implicit val reads: Reads[LossBroughtForward] = (
     (JsPath \ "lossType").read[LossType] and
@@ -47,6 +45,11 @@ object LossBroughtForward {
       (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "mtdLoss").readWithDefault(true) and
       (JsPath \ "incomeSourceId").read[String]
-  )(LossBroughtForward.apply _)
+    ) (LossBroughtForward.apply _)
 
+  implicit def gqlType: ObjectType[Unit, LossBroughtForward] =
+    deriveObjectType[Unit, LossBroughtForward](
+      ObjectTypeName("SelfEmploymentLossBroughtForward"),
+      ReplaceField("lossType", Field("lossType", StringType, resolve = _.value.lossType.toString))
+    )
 }

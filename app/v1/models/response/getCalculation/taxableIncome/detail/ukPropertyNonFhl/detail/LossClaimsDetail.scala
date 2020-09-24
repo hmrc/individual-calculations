@@ -18,8 +18,9 @@ package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
-
 case class LossClaimsDetail(lossesBroughtForward: Option[Seq[LossBroughtForward]],
                             resultOfClaimsApplied: Option[Seq[ResultOfClaimApplied]],
                             defaultCarriedForwardLosses: Option[Seq[DefaultCarriedForwardLoss]],
@@ -39,5 +40,8 @@ object LossClaimsDetail extends NestedJsonReads {
         .readNestedNullable[Seq[DefaultCarriedForwardLoss]](filteredArrayReads("incomeSourceType", "02")).mapEmptySeqToNone and
       (JsPath \ "calculation" \ "lossesAndClaims" \ "claimsNotApplied")
         .readNestedNullable[Seq[ClaimNotApplied]](filteredArrayReads("incomeSourceType", "02")).mapEmptySeqToNone
-  )(LossClaimsDetail.apply _)
+    ) (LossClaimsDetail.apply _)
+
+  implicit def gqlType: ObjectType[Unit, LossClaimsDetail] =
+    deriveObjectType[Unit, LossClaimsDetail](ObjectTypeName("UkPropertyNonFhlLossClaimsDetail"))
 }

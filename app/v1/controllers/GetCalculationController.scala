@@ -20,15 +20,22 @@ import cats.data.EitherT
 import cats.implicits._
 import javax.inject.{Inject, Singleton}
 import play.api.http.MimeTypes
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.libs.json._
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
+import sangria._
+import sangria.execution.{ErrorWithResolver, Executor, QueryAnalysisError}
+import sangria.marshalling.playJson._
+import sangria.parser.QueryParser
 import utils.Logging
 import v1.controllers.requestParsers.GetCalculationParser
 import v1.models.errors._
+import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRawData
+import v1.models.response.getCalculation.GetCalculationResponse
 import v1.services.{EnrolmentsAuthService, GetCalculationService, MtdIdLookupService}
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
 @Singleton
 class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
@@ -36,7 +43,7 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
                                          getCalculationParser: GetCalculationParser,
                                          getCalculationService: GetCalculationService,
                                          cc: ControllerComponents)(implicit ec: ExecutionContext)
-    extends AuthorisedController(cc)
+  extends AuthorisedController(cc)
     with BaseController
     with Logging {
 
@@ -46,35 +53,70 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
       endpointName = "getCalculation"
     )
 
-  def getCalculation(nino: String, calculationId: String): Action[AnyContent] =
-    authorisedAction(nino).async { implicit request =>
-      val rawData = GetCalculationRawData(nino, calculationId)
-      val result =
-        for {
-          parsedRequest <- EitherT.fromEither[Future](getCalculationParser.parseRequest(rawData))
-          desResponse   <- EitherT(getCalculationService.getCalculation(parsedRequest))
-        } yield {
-          logger.info(
-            s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
-              s"Success response received with CorrelationId: ${desResponse.correlationId}"
-          )
+  def getCalculation(nino: String, calculationId: String, query: String): Action[AnyContent] =
+    authorisedAction(nino).async {
+      implicit request => {
+        val rawData = GetCalculationRawData(nino, calculationId)
+        val result =
+          for {
+            parsedRequest <- EitherT.fromEither[Future](getCalculationParser.parseRequest(rawData))
+            desResponse <- EitherT(getCalculationService.getCalculation(parsedRequest))
+          } yield {
+            logger.info(
+              s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
+                s"Success response received with CorrelationId: ${desResponse.correlationId}"
+            )
 
-          Ok(Json.toJson(desResponse.responseData))
-            .withApiHeaders(desResponse.correlationId)
-            .as(MimeTypes.JSON)
-        }
-      result.leftMap { errorWrapper =>
-        val correlationId = getCorrelationId(errorWrapper)
-        errorResult(errorWrapper).withApiHeaders(correlationId)
-      }.merge
+            parseGraphQLRequest(query, desResponse)
+          }
+        result.leftMap { errorWrapper =>
+          val correlationId = getCorrelationId(errorWrapper)
+          Future.successful(errorResult(errorWrapper).withApiHeaders(correlationId))
+        }.merge
+      }.flatten
     }
+
+  private def parseGraphQLRequest(query: String, response: ResponseWrapper[GetCalculationResponse]): Future[Result] = {
+    QueryParser.parse(query) match {
+      case Failure(_)        => Future.successful(InternalServerError(Json.toJson(DownstreamError)).withApiHeaders(response.correlationId))
+      case Success(queryAst) => executeGraphQLQuery(queryAst)(response)
+    }
+  }
+
+  // TODO: Move this into its own object/trait/whatever to test it thoroughly
+  private def withoutNull(json: JsValue): JsValue = json match {
+    case JsObject(fields) =>
+      JsObject(fields.flatMap {
+        case (_, JsNull) => None
+        case (s, js)     => Some((s, withoutNull(js)))
+      })
+    case JsArray(fields)  =>
+      JsArray(fields.flatMap {
+        case JsNull => None
+        case js     => Some(withoutNull(js))
+      })
+    case other            => other
+  }
+
+  private def executeGraphQLQuery(query: ast.Document)(response: ResponseWrapper[GetCalculationResponse]): Future[Result] = {
+    Executor.execute(GetCalculationResponse.schema, query, response.responseData)
+      .map(withoutNull)
+      .map(
+        Ok(_)
+          .withApiHeaders(response.correlationId)
+          .as(MimeTypes.JSON)
+      ).recover {
+      case error: QueryAnalysisError => BadRequest(error.resolveError).withApiHeaders(response.correlationId)
+      case error: ErrorWithResolver  => InternalServerError(error.resolveError).withApiHeaders(response.correlationId)
+    }
+  }
 
   private def errorResult(errorWrapper: ErrorWrapper) = {
     (errorWrapper.error: @unchecked) match {
       case BadRequestError | NinoFormatError | CalculationIdFormatError =>
         BadRequest(Json.toJson(errorWrapper))
-      case NotFoundError   => NotFound(Json.toJson(errorWrapper))
-      case DownstreamError => InternalServerError(Json.toJson(errorWrapper))
+      case NotFoundError                                                => NotFound(Json.toJson(errorWrapper))
+      case DownstreamError                                              => InternalServerError(Json.toJson(errorWrapper))
     }
   }
 

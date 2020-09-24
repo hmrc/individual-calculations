@@ -18,6 +18,7 @@ package v1.models.response.getCalculation.incomeTaxAndNics
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive._
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.CalculationDetail
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.CalculationSummary
 
@@ -27,6 +28,8 @@ object IncomeTax {
   implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
   implicit val reads: Reads[IncomeTax] = (
     JsPath.read[CalculationSummary] and
-    JsPath.read[CalculationDetail]
-  )(IncomeTax.apply _)
+      JsPath.read[CalculationDetail]
+    ) (IncomeTax.apply _)
+
+  implicit def gqlType = deriveObjectType[Unit, IncomeTax]()
 }

@@ -23,10 +23,12 @@ import utils.enums.Enums
 sealed trait LossType
 
 object LossType {
+
   case object INCOME extends LossType
+
   case object CLASS4NICS extends LossType
 
-  implicit val show : Show[LossType] = Show.show(_.toString.toLowerCase)
+  implicit val show: Show[LossType] = Show.show(_.toString.toLowerCase)
 
-  implicit val format : Format[LossType] = Enums.format[LossType]
+  implicit val format: Format[LossType] = Enums.format[LossType]
 }

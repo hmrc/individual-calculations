@@ -16,9 +16,11 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
+import utils.NestedJsonReads
 
 case class ReliefsClaimed(
                            `type`: String,
@@ -28,18 +30,20 @@ case class ReliefsClaimed(
                            rate: Option[Double]
                          )
 
-object ReliefsClaimed extends NestedJsonReads{
+object ReliefsClaimed extends NestedJsonReads {
 
   implicit val writes: OWrites[ReliefsClaimed] = Json.writes[ReliefsClaimed]
 
   implicit val reads: Reads[ReliefsClaimed] = (
     (JsPath \ "type").read[String].map {
       case "nonDeductableLoanInterest" => "nonDeductibleLoanInterest"
-      case other => other
+      case other                       => other
     } and
       (JsPath \ "amountClaimed").readNullable[BigDecimal] and
       (JsPath \ "allowableAmount").readNullable[BigDecimal] and
       (JsPath \ "amountUsed").readNullable[BigDecimal] and
       (JsPath \ "rate").readNullable[Double]
-    )(ReliefsClaimed.apply _)
+    ) (ReliefsClaimed.apply _)
+
+  implicit def gqlType: ObjectType[Unit, ReliefsClaimed] = deriveObjectType[Unit, ReliefsClaimed]()
 }

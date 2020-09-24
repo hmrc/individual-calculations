@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.taxableIncome
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import v1.models.response.getCalculation.taxableIncome.detail.CalculationDetail
 import v1.models.response.getCalculation.taxableIncome.summary.CalculationSummary
 
@@ -28,6 +30,8 @@ object TaxableIncome {
   implicit val reads: Reads[TaxableIncome] = (
     (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax").read[CalculationSummary] and
       JsPath.read[CalculationDetail]
-  )(TaxableIncome.apply _)
+    ) (TaxableIncome.apply _)
+
+  implicit def gqlType: ObjectType[Unit, TaxableIncome] = deriveObjectType[Unit, TaxableIncome]()
 
 }

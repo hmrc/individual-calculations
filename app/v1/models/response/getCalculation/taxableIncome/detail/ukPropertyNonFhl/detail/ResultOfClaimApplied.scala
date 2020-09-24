@@ -18,10 +18,11 @@ package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.{ObjectTypeName, ReplaceField, deriveObjectType}
+import sangria.schema.{Field, ObjectType, StringType}
 import v1.models.des.ReliefClaimed
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
-
 case class ResultOfClaimApplied(claimId: Option[String],
                                 originatingClaimId: Option[String],
                                 taxYearClaimMade: String,
@@ -43,5 +44,11 @@ object ResultOfClaimApplied {
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "lossAmountUsed").read[BigInt] and
       (JsPath \ "remainingLossValue").read[BigInt]
-  )(ResultOfClaimApplied.apply _)
+    ) (ResultOfClaimApplied.apply _)
+
+  implicit def gqlType: ObjectType[Unit, ResultOfClaimApplied] =
+    deriveObjectType[Unit, ResultOfClaimApplied](
+      ObjectTypeName("UkPropertyNonFhlResultOfClaimApplied"),
+      ReplaceField("claimType", Field("claimType", StringType, resolve = _.value.claimType.toString))
+    )
 }

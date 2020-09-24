@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.endOfYearEstimate.summary
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 
 case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
                               totalTaxableIncome: Option[BigInt],
@@ -49,4 +51,6 @@ object EoyEstimateSummary {
       (JsPath \ "totalTaxDeducted").readNullable[BigDecimal] and
       (JsPath \ "incomeTaxNicAmount").readNullable[BigDecimal]
     ) (EoyEstimateSummary.apply _)
+
+  implicit def gqlType: ObjectType[Unit, EoyEstimateSummary] = deriveObjectType[Unit, EoyEstimateSummary]()
 }
