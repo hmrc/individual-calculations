@@ -29,7 +29,29 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
 
     val nino          = "AA123456A"
     val calcId        = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
-    val correlationId = "X-123"
+    val query =
+      """
+        |{
+        |  metadata {
+        |    id
+        |    taxYear
+        |    requestedBy
+        |    requestedTimestamp
+        |    calculationReason
+        |    calculationTimestamp
+        |    calculationType
+        |    intentToCrystallise
+        |    crystallised
+        |    calculationErrorCount
+        |  }
+        |  messages {
+        |    errors {
+        |      id
+        |      text
+        |    }
+        |  }
+        |}
+        |""".stripMargin
 
     def desUrl: String = s"/income-tax/03.00.00/calculation-data/$nino/calcId/$calcId"
 
@@ -37,7 +59,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
 
     def request: WSRequest = {
       setupStubs()
-      buildRequest(uri)
+      buildRequest(s"$uri?query=$query")
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
@@ -74,23 +96,28 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
       |}""".stripMargin)
 
       val readJson: JsValue = Json.parse("""{
+      |  "data": {
       |    "metadata":{
-      |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |       "taxYear": "2018-19",
-      |       "requestedBy": "customer",
-      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |       "calculationReason": "customerRequest",
-      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |       "calculationType": "inYear",
-      |       "intentToCrystallise": false,
-      |       "crystallised": false,
-      |       "calculationErrorCount": 1
-      |       },
-      |     "messages" :{
-      |        "errors":[
-      |        {"id":"id1", "text":"text1"}
-      |        ]
-      |     }
+      |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |      "taxYear": "2018-19",
+      |      "requestedBy": "customer",
+      |      "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |      "calculationReason": "customerRequest",
+      |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |      "calculationType": "inYear",
+      |      "intentToCrystallise": false,
+      |      "crystallised": false,
+      |      "calculationErrorCount": 1
+      |    },
+      |    "messages" :{
+      |      "errors":[
+      |        {
+      |          "id":"id1",
+      |          "text":"text1"
+      |        }
+      |      ]
+      |    }
+      |  }
       |}""".stripMargin)
 
 

@@ -106,8 +106,12 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
           .withApiHeaders(response.correlationId)
           .as(MimeTypes.JSON)
       ).recover {
-      case error: QueryAnalysisError => BadRequest(error.resolveError).withApiHeaders(response.correlationId)
-      case error: ErrorWithResolver  => InternalServerError(error.resolveError).withApiHeaders(response.correlationId)
+      case error: QueryAnalysisError =>
+        logger.info("GraphQL Query failed with error", error)
+        InternalServerError(Json.toJson(DownstreamError)).withApiHeaders(response.correlationId)
+      case error: ErrorWithResolver  =>
+        logger.info("GraphQL Query failed with error", error)
+        InternalServerError(Json.toJson(DownstreamError)).withApiHeaders(response.correlationId)
     }
   }
 
