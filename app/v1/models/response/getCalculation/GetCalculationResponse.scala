@@ -31,7 +31,8 @@ case class GetCalculationResponse(
                                   messages: Option[Messages] = None,
                                   taxableIncome: Option[TaxableIncome] = None,
                                   endOfYearEstimate: Option[EoyEstimate] = None,
-                                  allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None
+                                  allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None,
+                                  metadataExistence: Option[MetadataExistence] = None
                                  )
 
 
@@ -48,6 +49,14 @@ object GetCalculationResponse extends NestedJsonReads {
         } and
         emptyIfNotPresent[TaxableIncome](__ \ "calculation") and
         (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate] and
-        emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation")
+        emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation") and
+        (
+          (__ \"metadata").readNullable[Metadata] and
+          (__ \"incomeTaxAndNicsCalculated").readNullable[IncomeTax] and
+          (__ \"messages").readNullable[Messages] and
+          (__ \"taxableIncome").readNullable[TaxableIncome] and
+          (__ \"endOfYearEstimate").readNullable[EoyEstimate] and
+          (__ \"metadataExistence").readNullable[AllowancesDeductionsAndReliefs]
+          )((a,b,c,d,e,f) => Some(MetadataExistence()))
     )(GetCalculationResponse.apply _)
 }

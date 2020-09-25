@@ -20,7 +20,7 @@ import play.api.libs.json.{JsObject, JsValue, Json}
 import v1.fixtures.getCalculation.endOfYearEstimate.EoyEstimateFixtures.eoyEstimateResponse
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.response.common.{Message, Messages, Metadata}
-import v1.models.response.getCalculation.GetCalculationResponse
+import v1.models.response.getCalculation.{GetCalculationResponse, MetadataExistence}
 import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
 import v1.models.response.getCalculation.allowancesAndDeductions.detail.{AllowancesAndDeductions, AnnualPayments, ForeignTaxCreditRelief, IncomeSourceType, PensionContributionReliefs, PensionContributions, Reliefs, ReliefsClaimed, ResidentialFinanceCosts, CalculationDetail => ADRCalculationDetail}
 import v1.models.response.getCalculation.allowancesAndDeductions.summary.{CalculationSummary => ADRCalculationSummary}
@@ -49,6 +49,14 @@ object GetCalculationResponseFixtures {
                                                           |        "errors":[
                                                           |        {"id":"id1", "text":"text1"}
                                                           |        ]
+                                                          |     },
+                                                          |     "metadataExistence": {
+                                                          |         "metadata": true,
+                                                          |         "incomeTaxAndNicsCalculated": false,
+                                                          |         "messages": false,
+                                                          |         "taxableIncome": false,
+                                                          |         "endOfYearEstimate": false,
+                                                          |         "allowancesDeductionsAndReliefs": false
                                                           |     }
                                                           |}""".stripMargin)
 
@@ -371,7 +379,15 @@ object GetCalculationResponseFixtures {
                                           |       }]
                                           |			}
                                           |		}
-                                          |	}
+                                          |	},
+                                          |   "metadataExistence": {
+                                          |     "metadata": true,
+                                          |     "incomeTaxAndNicsCalculated": true,
+                                          |     "messages": true,
+                                          |     "taxableIncome": true,
+                                          |     "endOfYearEstimate": true,
+                                          |     "allowancesDeductionsAndReliefs": true
+                                          |  }
                                           |}
                                           |""".stripMargin)
 
@@ -396,6 +412,14 @@ object GetCalculationResponseFixtures {
                                                               |        "text": "text1"
                                                               |      }
                                                               |    ]
+                                                              |  },
+                                                              |  "metadataExistence": {
+                                                              |     "metadata": true,
+                                                              |     "incomeTaxAndNicsCalculated": false,
+                                                              |     "messages": false,
+                                                              |     "taxableIncome": false,
+                                                              |     "endOfYearEstimate": false,
+                                                              |     "allowancesDeductionsAndReliefs": false
                                                               |  }
                                                               |}""".stripMargin)
 
@@ -422,7 +446,8 @@ object GetCalculationResponseFixtures {
     TaxableIncomeCalculationSummary(123, 234),
     TaxableIncomeCalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
-  val calculationResponse = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages))
+  val calculationResponse = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages),
+    metadataExistence = MetadataExistence().copy(metadata = true))
 
   val allowancesDeductionsAndReliefs = AllowancesDeductionsAndReliefs(
     ADRCalculationSummary(Some(1000), Some(1000)),
@@ -443,7 +468,10 @@ object GetCalculationResponseFixtures {
     Some(messages),
     Some(taxableIncomeModel),
     Some(eoyEstimateResponse),
-    Some(allowancesDeductionsAndReliefs)
+    Some(allowancesDeductionsAndReliefs),
+    metadataExistence = MetadataExistence(
+      true,true,true,true,true,true
+    )
   )
 
 }
