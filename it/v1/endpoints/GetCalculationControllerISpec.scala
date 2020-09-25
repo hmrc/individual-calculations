@@ -59,7 +59,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
 
     def request: WSRequest = {
       setupStubs()
-      buildRequest(s"$uri?query=$query")
+      buildRequest(uri)
         .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
     }
 
@@ -129,7 +129,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
           DesStub.onSuccess(DesStub.GET, desUrl, OK, desResponse)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.post(Json.obj("query" -> query)))
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -160,7 +160,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
           DesStub.onSuccess(DesStub.GET, desUrl, OK, desResponse)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.post(Json.obj("query" -> query)))
         response.status shouldBe  NOT_FOUND
         response.json shouldBe Json.toJson(NotFoundError)
         response.header("Content-Type") shouldBe Some("application/json")
@@ -182,7 +182,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
               MtdIdLookupStub.ninoFound(nino)
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.post(Json.obj("query" -> query)))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")
@@ -209,7 +209,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
               DesStub.onError(DesStub.GET, desUrl, desStatus, errorBody(desCode))
             }
 
-            val response: WSResponse = await(request.get)
+            val response: WSResponse = await(request.post(Json.obj("query" -> query)))
             response.status shouldBe expectedStatus
             response.json shouldBe Json.toJson(expectedBody)
             response.header("Content-Type") shouldBe Some("application/json")

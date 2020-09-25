@@ -21,7 +21,7 @@ import cats.implicits._
 import javax.inject.{Inject, Singleton}
 import play.api.http.MimeTypes
 import play.api.libs.json._
-import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
+import play.api.mvc.{Action, ControllerComponents, Result}
 import sangria._
 import sangria.execution.{ErrorWithResolver, Executor, QueryAnalysisError}
 import sangria.marshalling.playJson._
@@ -53,8 +53,8 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
       endpointName = "getCalculation"
     )
 
-  def getCalculation(nino: String, calculationId: String, query: String): Action[AnyContent] =
-    authorisedAction(nino).async {
+  def getCalculation(nino: String, calculationId: String): Action[JsValue] =
+    authorisedAction(nino).async(parse.json) {
       implicit request => {
         val rawData = GetCalculationRawData(nino, calculationId)
         val result =
@@ -67,6 +67,7 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
                 s"Success response received with CorrelationId: ${desResponse.correlationId}"
             )
 
+            val query = (request.body \ "query").as[String]
             parseGraphQLRequest(query, desResponse)
           }
         result.leftMap { errorWrapper =>
@@ -78,7 +79,9 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
 
   private def parseGraphQLRequest(query: String, response: ResponseWrapper[GetCalculationResponse]): Future[Result] = {
     QueryParser.parse(query) match {
-      case Failure(_)        => Future.successful(InternalServerError(Json.toJson(DownstreamError)).withApiHeaders(response.correlationId))
+      case Failure(error)        =>
+        logger.info("GraphQL Query failed with error", error)
+        Future.successful(InternalServerError(Json.toJson(DownstreamError)).withApiHeaders(response.correlationId))
       case Success(queryAst) => executeGraphQLQuery(queryAst)(response)
     }
   }
