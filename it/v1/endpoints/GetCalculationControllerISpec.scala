@@ -90,6 +90,14 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
       |        "errors":[
       |        {"id":"id1", "text":"text1"}
       |        ]
+      |     },
+      |       "metadataExistence": {
+      |       "metadata":true,
+      |       "incomeTaxAndNicsCalculated":false,
+      |       "messages":true,
+      |       "taxableIncome":false,
+      |       "endOfYearEstimate":false,
+      |       "allowancesDeductionsAndReliefs":false
       |     }
       |}""".stripMargin)
 
