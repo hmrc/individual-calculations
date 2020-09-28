@@ -505,7 +505,7 @@ class GetCalculationControllerSpec
           .getCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, GetCalculationResponseFixtures.calculationResponseAllParts))))
 
-        val result: Future[Result] = controller.getCalculation(nino, calcId)(fakePostRequest(body))
+        val result: Future[Result] = controller.getCalculationGraphQL(nino, calcId)(fakePostRequest(body))
 
         status(result) shouldBe OK
         contentAsJson(result) shouldBe Json.obj("data" -> GetCalculationResponseFixtures.writtenJson)
@@ -522,7 +522,7 @@ class GetCalculationControllerSpec
               .parse(rawData)
               .returns(Left(ErrorWrapper(Some(correlationId), error, None)))
 
-            val result: Future[Result] = controller.getCalculation(nino, calcId)(fakePostRequest(body))
+            val result: Future[Result] = controller.getCalculationGraphQL(nino, calcId)(fakePostRequest(body))
 
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(error)
@@ -553,7 +553,7 @@ class GetCalculationControllerSpec
               .getCalculation(requestData)
               .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError))))
 
-            val result: Future[Result] = controller.getCalculation(nino, calcId)(fakePostRequest(body))
+            val result: Future[Result] = controller.getCalculationGraphQL(nino, calcId)(fakePostRequest(body))
 
             status(result) shouldBe expectedStatus
             contentAsJson(result) shouldBe Json.toJson(mtdError)
