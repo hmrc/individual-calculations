@@ -52,16 +52,15 @@ class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesRe
   private def addMetadata(desResponseWrapper: ResponseWrapper[GetCalculationResponse]): Future[DesOutcome[GetCalculationResponse]] =
     Future.successful { Right {
       desResponseWrapper.map { res =>
-        res.copy(metadataExistence = Some(
+        res.copy(res.metadata.copy(metadataExistence = Some(
           MetadataExistence(
-            metadata = true,
             incomeTaxAndNicsCalculated = res.incomeTaxAndNicsCalculated.isDefined,
             messages = res.messages.isDefined,
             taxableIncome = res.taxableIncome.isDefined,
             endOfYearEstimate = res.endOfYearEstimate.isDefined,
             allowancesDeductionsAndReliefs = res.allowancesDeductionsAndReliefs.isDefined
           )
-        ))
+        )))
       }
     }}
 

@@ -19,7 +19,6 @@ package v1.models.response.getCalculation
 import play.api.libs.json.{Json, OFormat}
 
 case class MetadataExistence(
-                              metadata: Boolean = false,
                               incomeTaxAndNicsCalculated: Boolean = false,
                               messages: Boolean = false,
                               taxableIncome: Boolean = false,

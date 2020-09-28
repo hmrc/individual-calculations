@@ -422,8 +422,7 @@ object GetCalculationResponseFixtures {
     TaxableIncomeCalculationSummary(123, 234),
     TaxableIncomeCalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
-  val calculationResponse = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages),
-    metadataExistence = None)
+  val calculationResponse = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages))
 
   val allowancesDeductionsAndReliefs = AllowancesDeductionsAndReliefs(
     ADRCalculationSummary(Some(1000), Some(1000)),
@@ -444,8 +443,7 @@ object GetCalculationResponseFixtures {
     Some(messages),
     Some(taxableIncomeModel),
     Some(eoyEstimateResponse),
-    Some(allowancesDeductionsAndReliefs),
-    metadataExistence = None
+    Some(allowancesDeductionsAndReliefs)
   )
 
 }

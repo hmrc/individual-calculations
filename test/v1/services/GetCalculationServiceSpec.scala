@@ -80,7 +80,7 @@ class GetCalculationServiceSpec extends UnitSpec {
           .returns(Future.successful(Right(ResponseWrapper(correlationId, getCalculationResponse))))
 
         await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId,
-          getCalculationResponse.copy(metadataExistence = Some(MetadataExistence(metadata = true, messages = true)))))
+          getCalculationResponse.copy(getCalculationResponse.metadata.copy(metadataExistence = Some(MetadataExistence(messages = true))))))
       }
       "return mapped result with all data" in new Test {
         MockTaxCalcConnector
@@ -88,8 +88,8 @@ class GetCalculationServiceSpec extends UnitSpec {
           .returns(Future.successful(Right(ResponseWrapper(correlationId, getCalculationResponseAllData))))
 
         await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId,
-          getCalculationResponseAllData.copy(metadataExistence = Some(MetadataExistence(metadata = true, messages = true,
-            incomeTaxAndNicsCalculated = true, taxableIncome = true, endOfYearEstimate = true, allowancesDeductionsAndReliefs = true)))))
+          getCalculationResponseAllData.copy(getCalculationResponseAllData.metadata.copy(metadataExistence = Some(MetadataExistence(messages = true,
+            incomeTaxAndNicsCalculated = true, taxableIncome = true, endOfYearEstimate = true, allowancesDeductionsAndReliefs = true))))))
       }
 
       "not surface unwanted calculation types" in new Test {

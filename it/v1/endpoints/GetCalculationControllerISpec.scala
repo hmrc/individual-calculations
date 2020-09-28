@@ -84,20 +84,19 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
       |       "calculationType": "inYear",
       |       "intentToCrystallise": false,
       |       "crystallised": false,
-      |       "calculationErrorCount": 1
+      |       "calculationErrorCount": 1,
+      |       "metadataExistence": {
+      |         "incomeTaxAndNicsCalculated":false,
+      |         "messages":true,
+      |         "taxableIncome":false,
+      |         "endOfYearEstimate":false,
+      |         "allowancesDeductionsAndReliefs":false
+      |     }
       |       },
       |     "messages" :{
       |        "errors":[
       |        {"id":"id1", "text":"text1"}
       |        ]
-      |     },
-      |       "metadataExistence": {
-      |       "metadata":true,
-      |       "incomeTaxAndNicsCalculated":false,
-      |       "messages":true,
-      |       "taxableIncome":false,
-      |       "endOfYearEstimate":false,
-      |       "allowancesDeductionsAndReliefs":false
       |     }
       |}""".stripMargin)
 

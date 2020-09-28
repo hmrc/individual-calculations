@@ -31,8 +31,7 @@ case class GetCalculationResponse(
                                   messages: Option[Messages] = None,
                                   taxableIncome: Option[TaxableIncome] = None,
                                   endOfYearEstimate: Option[EoyEstimate] = None,
-                                  allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None,
-                                  metadataExistence: Option[MetadataExistence] = None
+                                  allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None
                                  )
 
 
@@ -49,7 +48,6 @@ object GetCalculationResponse extends NestedJsonReads {
         } and
         emptyIfNotPresent[TaxableIncome](__ \ "calculation") and
         (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate] and
-        emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation") and
-      Reads(_ => JsResult.applicativeJsResult.pure(None))
+        emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation")
     )(GetCalculationResponse.apply _)
 }
