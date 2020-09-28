@@ -16,6 +16,8 @@
 
 package v1.models.response.getCalculation
 
+import play.api.libs.json.{Json, OFormat}
+
 case class MetadataExistence(
                               metadata: Boolean = false,
                               incomeTaxAndNicsCalculated: Boolean = false,
@@ -24,3 +26,7 @@ case class MetadataExistence(
                               endOfYearEstimate: Boolean = false,
                               allowancesDeductionsAndReliefs: Boolean = false
                             )
+
+object MetadataExistence {
+  implicit val format: OFormat[MetadataExistence] = Json.format[MetadataExistence]
+}

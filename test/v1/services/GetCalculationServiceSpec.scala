@@ -21,13 +21,16 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.fixtures.common.MessageFixtures._
+import v1.fixtures.getCalculation.GetCalculationResponseFixtures._
 import v1.mocks.connectors.MockTaxCalcConnector
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.errors._
+import v1.fixtures.getCalculation.endOfYearEstimate.EoyEstimateFixtures.eoyEstimateResponse
+
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRequest
 import v1.models.response.common.{Messages, Metadata}
-import v1.models.response.getCalculation.GetCalculationResponse
+import v1.models.response.getCalculation.{GetCalculationResponse, MetadataExistence}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -51,6 +54,9 @@ class GetCalculationServiceSpec extends UnitSpec {
   val messagesResponse = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
 
   val getCalculationResponse = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse))
+  val getCalculationResponseAllData = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse),
+    incomeTaxAndNicsCalculated = Some(incomeTax), taxableIncome = Some(taxableIncomeModel), endOfYearEstimate = Some(eoyEstimateResponse),
+    allowancesDeductionsAndReliefs = Some(allowancesDeductionsAndReliefs))
   val wrongCalcTypeResponse = GetCalculationResponse(metadataResponse.copy(calculationType = CalculationType.biss), None)
 
 
@@ -73,8 +79,19 @@ class GetCalculationServiceSpec extends UnitSpec {
           .getCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, getCalculationResponse))))
 
-        await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId, getCalculationResponse))
+        await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId,
+          getCalculationResponse.copy(metadataExistence = Some(MetadataExistence(metadata = true, messages = true)))))
       }
+      "return mapped result with all data" in new Test {
+        MockTaxCalcConnector
+          .getCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, getCalculationResponseAllData))))
+
+        await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId,
+          getCalculationResponseAllData.copy(metadataExistence = Some(MetadataExistence(metadata = true, messages = true,
+            incomeTaxAndNicsCalculated = true, taxableIncome = true, endOfYearEstimate = true, allowancesDeductionsAndReliefs = true)))))
+      }
+
       "not surface unwanted calculation types" in new Test {
         MockTaxCalcConnector
           .getCalculation(requestData)
