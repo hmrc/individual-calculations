@@ -19,11 +19,13 @@ package v1.models.response.getCalculation.taxableIncome
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import v1.models.response.getCalculation.taxableIncome.detail.{Dividends, PayPensionsProfit, SavingsAndGains}
+import v1.models.response.getCalculation.taxableIncome.detail._
 
 case class TaxableIncomeDetail(payPensionsProfit: Option[PayPensionsProfit],
                                savingsAndGains: Option[SavingsAndGains],
-                               dividends: Option[Dividends])
+                               dividends: Option[Dividends],
+                               lumpSums: Option[LumpSums],
+                               gainsOnLifePolicies: Option[GainsOnLifePolicies])
 
 object TaxableIncomeDetail extends NestedJsonReads {
   implicit val reads: Reads[TaxableIncomeDetail] = {
@@ -31,7 +33,9 @@ object TaxableIncomeDetail extends NestedJsonReads {
     (
       emptyIfNotPresent[PayPensionsProfit](commonJsPath \ "payPensionsProfit") and
         emptyIfNotPresent[SavingsAndGains](commonJsPath \ "savingsAndGains") and
-        (commonJsPath \ "dividends").readNestedNullable[Dividends]
+        (commonJsPath \ "dividends").readNestedNullable[Dividends] and
+        (commonJsPath \ "lumpSums").readNestedNullable[LumpSums] and
+        (commonJsPath \ "gainsOnLifePolicies").readNestedNullable[GainsOnLifePolicies]
       ) (TaxableIncomeDetail.apply _)
   }
 
