@@ -36,7 +36,6 @@ class UkSavingSpec extends UnitSpec {
           """
             |{
             |    "incomeSourceName": "aName",
-            |    "grossIncome": 300.1,
             |    "netIncome": 12.3,
             |    "taxDeducted": 456.3
             |}
