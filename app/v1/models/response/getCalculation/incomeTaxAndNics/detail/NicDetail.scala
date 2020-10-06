@@ -22,7 +22,7 @@ import utils.NestedJsonReads
 
 case class NicDetail(class2Nics: Option[Class2NicDetail], class4Nics: Option[Class4NicDetail])
 
-object NicDetail extends NestedJsonReads{
+object NicDetail extends NestedJsonReads {
   val empty = NicDetail(None, None)
 
   implicit val writes: OWrites[NicDetail] = Json.writes[NicDetail]
@@ -33,5 +33,5 @@ object NicDetail extends NestedJsonReads{
         case Some(Class4NicDetail.empty) => None
         case other => other
       }
-  )(NicDetail.apply _)
+    ) (NicDetail.apply _)
 }

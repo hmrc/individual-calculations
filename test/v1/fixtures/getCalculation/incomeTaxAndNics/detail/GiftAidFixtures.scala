@@ -21,13 +21,17 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.GiftAid
 
 object GiftAidFixtures {
 
-  val json: JsValue = Json.parse(s"""
-                                    |{
-                                    | "grossGiftAidPayments": 100.25,
-                                    | "rate": 200.25,
-                                    | "giftAidTax": 300.25
-                                    |}""".stripMargin)
+  val giftAidJson: JsValue = Json.parse(
+    """
+      |{
+      |   "grossGiftAidPayments": 100,
+      |   "rate": 70.25,
+      |   "giftAidTax": 300.25
+      |}
+    """.stripMargin)
 
-  val model = GiftAid(100.25, 200.25, 300.25)
-
+  val giftAidModel =
+    GiftAid(
+      100, 70.25, 300.25
+    )
 }

@@ -27,6 +27,6 @@ object IncomeTax {
   implicit val writes: OWrites[IncomeTax] = Json.writes[IncomeTax]
   implicit val reads: Reads[IncomeTax] = (
     JsPath.read[CalculationSummary] and
-    JsPath.read[CalculationDetail]
-  )(IncomeTax.apply _)
+      JsPath.read[CalculationDetail]
+    ) (IncomeTax.apply _)
 }

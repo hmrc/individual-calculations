@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.detail.NicDetailFixtures._
 
@@ -27,26 +27,56 @@ class NicDetailSpec extends UnitSpec {
     "read from json correctly" when {
 
       "provided with empty json" in {
-        emptyJson.as[NicDetail] shouldBe NicDetail.empty
+        nicDetailEmptyJson.as[NicDetail] shouldBe NicDetail.empty
       }
 
       "provided with empty models in the json" in {
-        inputJsonWithEmptyModels.as[NicDetail] shouldBe NicDetail.empty
+        nicDetailInputJsonWithEmptyModels.as[NicDetail] shouldBe NicDetail.empty
       }
 
       "provided with filled json" in {
-        filledJson.as[NicDetail] shouldBe filledModel
+        nicDetailFilledJson.as[NicDetail] shouldBe nicDetailFilledModel
       }
     }
 
     "write to json correctly" when {
 
       "provided with an empty model" in {
-        Json.toJson(NicDetail.empty) shouldBe emptyJson
+        Json.toJson(NicDetail.empty) shouldBe nicDetailEmptyJson
       }
 
       "provided with a filled model" in {
-        Json.toJson(filledModel) shouldBe outputJson
+        Json.toJson(nicDetailFilledModel) shouldBe nicDetailOutputJson
+      }
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          s"""
+            |{
+            |   "class2Nics": ${Json.toJson(class2).toString()},
+            |   "class4Nics":{
+            |      "totalClass4LossesAvailable": true,
+            |      "totalClass4LossesUsed":3002,
+            |      "totalClass4LossesCarriedForward":3003,
+            |      "totalIncomeLiableToClass4Charge":3003,
+            |      "totalIncomeChargeableToClass4":3004,
+            |      "nic4Bands":[
+            |         {
+            |            "name":"name",
+            |            "rate":100.25,
+            |            "threshold":200,
+            |            "apportionedThreshold":300,
+            |            "income":400,
+            |            "amount":500.25
+            |         }
+            |      ]
+            |   }
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[NicDetail] shouldBe a[JsError]
       }
     }
   }

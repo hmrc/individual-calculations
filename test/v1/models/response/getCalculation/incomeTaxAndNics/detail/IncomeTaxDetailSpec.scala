@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.detail.IncomeTaxDetailFixtures._
 
@@ -27,26 +27,67 @@ class IncomeTaxDetailSpec extends UnitSpec {
     "read correctly from Json" when {
 
       "provided with empty json" in {
-        emptyJson.validate[IncomeTaxDetail] shouldBe JsSuccess(IncomeTaxDetail.empty)
+        incomeTaxDetailEmptyJson.validate[IncomeTaxDetail] shouldBe JsSuccess(IncomeTaxDetail.empty)
       }
 
       "provided with json containing empty models" in {
-        emptyModelJson.validate[IncomeTaxDetail] shouldBe JsSuccess(IncomeTaxDetail.empty)
+        incomeTaxDetailEmptyModelJson.validate[IncomeTaxDetail] shouldBe JsSuccess(IncomeTaxDetail.empty)
       }
 
       "provided with filled json" in {
-        filledModelJson.validate[IncomeTaxDetail] shouldBe JsSuccess(filledModel)
+        incomeTaxDetailFilledModelJson.validate[IncomeTaxDetail] shouldBe JsSuccess(incomeTaxDetailFilledModel)
+      }
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |   "taxCalculation":{
+            |      "incomeTax":{
+            |         "payPensionsProfit":{
+            |            "allowancesAllocated": true,
+            |            "incomeTaxAmount": 100.50
+            |         },
+            |         "savingsAndGains":{
+            |            "allowancesAllocated": 200,
+            |            "incomeTaxAmount": 200.50
+            |         },
+            |         "lumpSums":{
+            |            "allowancesAllocated": 300,
+            |            "incomeTaxAmount": 300.50
+            |         },
+            |         "dividends":{
+            |            "allowancesAllocated": 400,
+            |            "incomeTaxAmount": 400.50
+            |         },
+            |         "gainsOnLifePolicies":{
+            |            "allowancesAllocated": 500,
+            |            "incomeTaxAmount": 500.50
+            |         }
+            |      }
+            |   },
+            |   "giftAid":{
+            |      "grossGiftAidPayments": 400.25,
+            |      "rate": 50.50,
+            |      "giftAidTax": 400.75
+            |   }
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[GiftAid] shouldBe a[JsError]
       }
     }
 
     "write to json correctly" when {
 
       "provided with an empty model" in {
-        Json.toJson(IncomeTaxDetail.empty) shouldBe emptyJson
+        Json.toJson(IncomeTaxDetail.empty) shouldBe incomeTaxDetailEmptyJson
       }
 
       "provided with a filled model" in {
-        Json.toJson(filledModel) shouldBe outputJson
+        Json.toJson(incomeTaxDetailFilledModel) shouldBe incomeTaxDetailOutputJson
       }
     }
   }

@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsError, JsObject, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.detail.TaxDeductedAtSourceFixtures._
 
@@ -25,15 +25,35 @@ class TaxDeductedAtSourceSpec extends UnitSpec {
   "TaxDeductedAtSource" should {
 
     "read correctly from json" in {
-      json.as[TaxDeductedAtSource] shouldBe model
+      taxDeductedAtSourceJson.as[TaxDeductedAtSource] shouldBe taxDeductedAtSourceModel
     }
 
-    "read empty json as empty objecty" in {
+    "read empty json as empty object" in {
       JsObject.empty.as[TaxDeductedAtSource] shouldBe TaxDeductedAtSource.empty
     }
 
     "write correctly to json" in {
-      Json.toJson(model) shouldBe outputJson
+      Json.toJson(taxDeductedAtSourceModel) shouldBe taxDeductedAtSourceOutputJson
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |   "ukLandAndProperty":true,
+            |   "savings":200,
+            |   "cis":110.25,
+            |   "securities":120.35,
+            |   "voidedIsa":130.45,
+            |   "payeEmployments":140.55,
+            |   "occupationalPensions":150.65,
+            |   "stateBenefits":160.75
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[TaxDeductedAtSource] shouldBe a[JsError]
+      }
     }
   }
 }
