@@ -20,20 +20,15 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 
-case class SavingsAndGains(incomeReceived: BigInt,
-                           taxableIncome: BigInt,
-                           ukSavings: Option[Seq[UkSaving]],
-                           ukSecurities: Option[Seq[UkSecurity]])
+case class SavingsAndGains(incomeReceived: BigInt, taxableIncome: BigInt, ukSavings: Option[Seq[UkSaving]])
 
 object SavingsAndGains extends NestedJsonReads {
   implicit val reads: Reads[SavingsAndGains] = {
-    val savingsAndGainsJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains"
-    val savingsAndGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome"
+    val commonJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains"
     (
-      (savingsAndGainsJsPath \ "incomeReceived").read[BigInt] and
-        (savingsAndGainsJsPath \ "taxableIncome").read[BigInt] and
-        savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSaving](incomeSourceType = "09") and
-        savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSecurity](incomeSourceType = "18")
+      (commonJsPath \ "incomeReceived").read[BigInt] and
+        (commonJsPath \ "taxableIncome").read[BigInt] and
+        (JsPath \ "calculation" \ "savingsAndGainsIncome").readIncomeSourceTypeSeq[UkSaving](incomeSourceType = "09")
     )(SavingsAndGains.apply _)
   }
 

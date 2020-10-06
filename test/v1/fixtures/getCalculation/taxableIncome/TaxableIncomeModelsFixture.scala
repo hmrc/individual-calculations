@@ -18,23 +18,52 @@ package v1.fixtures.getCalculation.taxableIncome
 
 import v1.models.des.LossType
 import v1.models.domain.TypeOfClaim
-import v1.models.response.getCalculation.taxableIncome._
 import v1.models.response.getCalculation.taxableIncome.detail._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.eeaPropertyFhl._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.eeaPropertyFhl.detail._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.foreignProperty._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.foreignProperty.detail._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.selfEmployment._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.selfEmployment.detail._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyFhl._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyFhl.detail._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyNonFhl._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyNonFhl.detail._
-import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.{BusinessProfitAndLoss, PropertyBsas}
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.detail._
+import v1.models.response.getCalculation.taxableIncome.detail.selfEmployment.{SelfEmployment, SelfEmploymentBsas, SelfEmploymentLossClaimsDetail, SelfEmploymentLossClaimsSummary}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail.{UkPropertyFhlDefaultCarriedForwardLoss, UkPropertyFhlLossBroughtForward, UkPropertyFhlResultOfClaimApplied}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.{UkPropertyFhl, UkPropertyFhlLossClaimsDetail, UkPropertyFhlLossClaimsSummary}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.detail.{UkPropertyNonFhlClaimNotApplied, UkPropertyNonFhlDefaultCarriedForwardLoss, UkPropertyNonFhlLossBroughtForward, UkPropertyNonFhlResultOfClaimApplied}
+import v1.models.response.getCalculation.taxableIncome.detail.ukPropertyNonFhl.{UkPropertyNonFhl, UkPropertyNonFhlLossClaimsDetail, UkPropertyNonFhlLossClaimsSummary}
+import v1.models.response.getCalculation.taxableIncome.{TaxableIncome, TaxableIncomeDetail, TaxableIncomeSummary}
 
 object TaxableIncomeModelsFixture {
-  
-  // Self Employment Model 1:
+  val taxableIncomeSummaryModel: TaxableIncomeSummary = TaxableIncomeSummary(
+    totalIncomeReceivedFromAllSources = 7001,
+    totalTaxableIncome = 100
+  )
+
+  val ukSavingModel1: UkSaving = UkSaving(
+    savingsAccountId = "SAVKB1UVwUTBQGJ",
+    savingsAccountName = "UK Savings Account ONE",
+    grossIncome = 90101.11,
+    netIncome = Some(90201.11),
+    taxDeducted = Some(90301.11)
+  )
+
+  val ukSavingModel2: UkSaving = UkSaving(
+    savingsAccountId = "SAVKB2UVwUTBQGJ",
+    savingsAccountName = "UK Savings Account TWO",
+    grossIncome = 90102.11,
+    netIncome = Some(90202.11),
+    taxDeducted = Some(90302.11)
+  )
+
+  val dividendsModel: Dividends = Dividends(
+    incomeReceived = 7020,
+    taxableIncome = 7022
+  )
+
+  val savingsAndGainsModel: SavingsAndGains = SavingsAndGains(
+    incomeReceived = 7012,
+    taxableIncome = 7014,
+    ukSavings = Some(
+      List(
+        ukSavingModel1,
+        ukSavingModel2
+      ))
+  )
+
   val selfEmploymentSummaryModel1: SelfEmploymentLossClaimsSummary = SelfEmploymentLossClaimsSummary(
     totalBroughtForwardIncomeTaxLosses = Some(101001),
     broughtForwardIncomeTaxLossesUsed = Some(101201),
@@ -122,7 +151,6 @@ object TaxableIncomeModelsFixture {
     bsas = Some(selfEmploymentBsasModel1)
   )
 
-  // Self Employment Model 2:
   val selfEmploymentSummaryModel2: SelfEmploymentLossClaimsSummary = SelfEmploymentLossClaimsSummary(
     totalBroughtForwardIncomeTaxLosses = Some(101002),
     broughtForwardIncomeTaxLossesUsed = Some(101202),
@@ -209,8 +237,7 @@ object TaxableIncomeModelsFixture {
     lossClaimsDetail = Some(selfEmploymentDetailModel2),
     bsas = Some(selfEmploymentBsasModel2)
   )
-  
-  // UK Property FHL model:
+
   val ukPropertyFhlSummaryModel: UkPropertyFhlLossClaimsSummary = UkPropertyFhlLossClaimsSummary(
     lossForCSFHL = Some(4011),
     totalBroughtForwardIncomeTaxLosses = Some(4010),
@@ -245,7 +272,7 @@ object TaxableIncomeModelsFixture {
     defaultCarriedForwardLosses = Some(List(ukPropertyFhlDefaultCarriedForwardLossModel))
   )
 
-  val ukPropertyFhlBsasModel: PropertyBsas = PropertyBsas(
+  val fhlBsasModel: Bsas = Bsas(
     bsasId = "12345678",
     applied = true
   )
@@ -257,70 +284,15 @@ object TaxableIncomeModelsFixture {
     netLoss = Some(4004.11),
     totalAdditions = Some(4005.11),
     totalDeductions = Some(4006.11),
+    accountingAdjustments = Some(4007.11),
     adjustedIncomeTaxLoss = Some(4009),
     taxableProfit = Some(4008),
     taxableProfitAfterIncomeTaxLossesDeduction = Some(4013),
     lossClaimsSummary = Some(ukPropertyFhlSummaryModel),
     lossClaimsDetail = Some(ukPropertyFhlDetailModel),
-    bsas = Some(ukPropertyFhlBsasModel)
-  )
-  
-  // EEA Property FHL model:
-  val eeaPropertyFhlSummaryModel: EeaPropertyFhlLossClaimsSummary = EeaPropertyFhlLossClaimsSummary(
-    lossForCSFHL = Some(5011),
-    totalBroughtForwardIncomeTaxLosses = Some(5010),
-    broughtForwardIncomeTaxLossesUsed = Some(5012),
-    totalIncomeTaxLossesCarriedForward = Some(5014)
+    bsas = Some(fhlBsasModel)
   )
 
-  val eeaPropertyFhlLossBroughtForwardModel: EeaPropertyFhlLossBroughtForward = EeaPropertyFhlLossBroughtForward(
-    taxYearLossIncurred = "2017-18",
-    currentLossValue = 50101,
-    mtdLoss = false
-  )
-
-  val eeaPropertyFhlResultOfClaimAppliedModel: EeaPropertyFhlResultOfClaimApplied = EeaPropertyFhlResultOfClaimApplied(
-    claimId = Some("CCIS12345678905"),
-    taxYearClaimMade = "2017-18",
-    claimType = TypeOfClaim.`carry-forward`,
-    mtdLoss = false,
-    taxYearLossIncurred = "2017-18",
-    lossAmountUsed = 50101,
-    remainingLossValue = 50201
-  )
-
-  val eeaPropertyFhlDefaultCarriedForwardLossModel: EeaPropertyFhlDefaultCarriedForwardLoss = EeaPropertyFhlDefaultCarriedForwardLoss(
-    taxYearLossIncurred = "2017-18",
-    currentLossValue = 501
-  )
-
-  val eeaPropertyFhlDetailModel: EeaPropertyFhlLossClaimsDetail = EeaPropertyFhlLossClaimsDetail(
-    lossesBroughtForward = Some(List(eeaPropertyFhlLossBroughtForwardModel)),
-    resultOfClaimsApplied = Some(List(eeaPropertyFhlResultOfClaimAppliedModel)),
-    defaultCarriedForwardLosses = Some(List(eeaPropertyFhlDefaultCarriedForwardLossModel))
-  )
-
-  val eeaPropertyFhlBsasModel: PropertyBsas = PropertyBsas(
-    bsasId = "87654321",
-    applied = false
-  )
-
-  val eeaPropertyFhlModel: EeaPropertyFhl = EeaPropertyFhl(
-    totalIncome = Some(5001.11),
-    totalExpenses = Some(5002.11),
-    netProfit = Some(5003.11),
-    netLoss = Some(5004.11),
-    totalAdditions = Some(5005.11),
-    totalDeductions = Some(5006.11),
-    adjustedIncomeTaxLoss = Some(5009),
-    taxableProfit = Some(5008),
-    taxableProfitAfterIncomeTaxLossesDeduction = Some(5013),
-    lossClaimsSummary = Some(eeaPropertyFhlSummaryModel),
-    lossClaimsDetail = Some(eeaPropertyFhlDetailModel),
-    bsas = Some(eeaPropertyFhlBsasModel)
-  )
-
-  // UK Property Non-FHL model:
   val ukPropertyNonFhlSummaryModel: UkPropertyNonFhlLossClaimsSummary = UkPropertyNonFhlLossClaimsSummary(
     totalBroughtForwardIncomeTaxLosses = Some(2010),
     broughtForwardIncomeTaxLossesUsed = Some(2012),
@@ -364,7 +336,7 @@ object TaxableIncomeModelsFixture {
     claimsNotApplied = Some(List(ukPropertyNonFhlClaimNotAppliedModel))
   )
 
-  val ukPropertyNonFhlBsasModel: PropertyBsas = PropertyBsas(
+  val nonFhlBsasModel: Bsas = Bsas(
     bsasId = "10000003",
     applied = false
   )
@@ -382,84 +354,17 @@ object TaxableIncomeModelsFixture {
     taxableProfitAfterIncomeTaxLossesDeduction = Some(2013),
     lossClaimsSummary = Some(ukPropertyNonFhlSummaryModel),
     lossClaimsDetail = Some(ukPropertyNonFhlDetailModel),
-    bsas = Some(ukPropertyNonFhlBsasModel)
-  )
-  
-  // Foreign Property model:
-  val foreignPropertySummaryModel: ForeignPropertyLossClaimsSummary = ForeignPropertyLossClaimsSummary(
-    totalBroughtForwardIncomeTaxLosses = Some(6010),
-    broughtForwardIncomeTaxLossesUsed = Some(6012),
-    carrySidewaysIncomeTaxLossesUsed = Some(6014),
-    totalIncomeTaxLossesCarriedForward = Some(6011),
-    broughtForwardCarrySidewaysIncomeTaxLossesUsed = Some(6020)
+    bsas = Some(nonFhlBsasModel)
   )
 
-  val foreignPropertyLossBroughtForwardModel: ForeignPropertyLossBroughtForward = ForeignPropertyLossBroughtForward(
-    taxYearLossIncurred = "2017-18",
-    currentLossValue = 60101,
-    mtdLoss = false
-  )
-
-  val foreignPropertyResultOfClaimAppliedModel: ForeignPropertyResultOfClaimApplied = ForeignPropertyResultOfClaimApplied(
-    claimId = Some("CCIS12345678906"),
-    originatingClaimId = Some("000000000000216"),
-    taxYearClaimMade = "2017-18",
-    claimType = TypeOfClaim.`carry-sideways-fhl`,
-    mtdLoss = false,
-    taxYearLossIncurred = "2017-18",
-    lossAmountUsed = 60101,
-    remainingLossValue = 60201
-  )
-
-  val foreignPropertyDefaultCarriedForwardLossModel: ForeignPropertyDefaultCarriedForwardLoss = ForeignPropertyDefaultCarriedForwardLoss(
-    taxYearLossIncurred = "2017-18",
-    currentLossValue = 601
-  )
-
-  val foreignPropertyClaimNotAppliedModel: ForeignPropertyClaimNotApplied = ForeignPropertyClaimNotApplied(
-    claimId = "CCIS12345678926",
-    taxYearClaimMade = "2017-18",
-    claimType = TypeOfClaim.`carry-sideways-fhl`
-  )
-
-  val foreignPropertyDetailModel: ForeignPropertyLossClaimsDetail = ForeignPropertyLossClaimsDetail(
-    lossesBroughtForward = Some(List(foreignPropertyLossBroughtForwardModel)),
-    resultOfClaimsApplied = Some(List(foreignPropertyResultOfClaimAppliedModel)),
-    defaultCarriedForwardLosses = Some(List(foreignPropertyDefaultCarriedForwardLossModel)),
-    claimsNotApplied = Some(List(foreignPropertyClaimNotAppliedModel))
-  )
-
-  val foreignPropertyBsasModel: PropertyBsas = PropertyBsas(
-    bsasId = "10000006",
-    applied = false
-  )
-
-  val foreignPropertyModel: ForeignProperty = ForeignProperty(
-    totalIncome = Some(6001.11),
-    totalExpenses = Some(6002.11),
-    netProfit = Some(6003.11),
-    netLoss = Some(6004.11),
-    totalAdditions = Some(6005.11),
-    totalDeductions = Some(6006.11),
-    accountingAdjustments = Some(6007.11),
-    adjustedIncomeTaxLoss = Some(6009),
-    taxableProfit = Some(6008),
-    taxableProfitAfterIncomeTaxLossesDeduction = Some(6013),
-    lossClaimsSummary = Some(foreignPropertySummaryModel),
-    lossClaimsDetail = Some(foreignPropertyDetailModel),
-    bsas = Some(foreignPropertyBsasModel)
-  )
-  
-  // Top level objects
   val businessProfitAndLossModel: BusinessProfitAndLoss = BusinessProfitAndLoss(
-    selfEmployments = Some(List(
-      selfEmploymentModel1,
-      selfEmploymentModel2
-    )),
+    selfEmployments = Some(
+      List(
+        selfEmploymentModel1,
+        selfEmploymentModel2
+      )),
     ukPropertyFhl = Some(ukPropertyFhlModel),
-    ukPropertyNonFhl = Some(ukPropertyNonFhlModel),
-    eeaPropertyFhl = Some(eeaPropertyFhlModel),
-    foreignProperty = Some(foreignPropertyModel)
+    ukPropertyNonFhl = Some(ukPropertyNonFhlModel)
   )
 
   val payPensionsProfitModel = PayPensionsProfit(
@@ -469,79 +374,13 @@ object TaxableIncomeModelsFixture {
     totalPropertyProfit = Some(6002),
     totalFHLPropertyProfit = Some(6003),
     totalUKOtherPropertyProfit = Some(6004),
-    totalForeignPropertyProfit = Some(6005),
-    totalEeaFhlProfit = Some(6006),
-    totalOccupationalPensionIncome = Some(6007.77),
-    totalStateBenefitsIncome = Some(6008.88),
-    totalBenefitsInKind = Some(6009.99),
-    totalPayeEmploymentAndLumpSumIncome = Some(6010.00),
-    totalEmploymentExpenses = Some(6011.11),
-    totalEmploymentIncome = Some(6012),
     businessProfitAndLoss = Some(businessProfitAndLossModel)
-  )
-
-  val ukSavingModel1: UkSaving = UkSaving(
-    savingsAccountId = Some("SAVKB1UVwUTBQGJ"),
-    savingsAccountName = Some("UK Savings Account ONE"),
-    grossIncome = 90101.11,
-    netIncome = Some(90201.11),
-    taxDeducted = Some(90301.11)
-  )
-
-  val ukSavingModel2: UkSaving = UkSaving(
-    savingsAccountId = Some("SAVKB2UVwUTBQGJ"),
-    savingsAccountName = Some("UK Savings Account TWO"),
-    grossIncome = 90102.11,
-    netIncome = Some(90202.11),
-    taxDeducted = Some(90302.11)
-  )
-
-  val ukSecurityModel: UkSecurity = UkSecurity(
-    ukSecuritiesAccountId = Some("SAVKB3UVwUTBQGJ"),
-    ukSecuritiesAccountName = Some("UK Securities Account ONE"),
-    grossIncome = 11101.11,
-    netIncome = Some(11201.11),
-    taxDeducted = Some(11301.11)
-  )
-
-  val savingsAndGainsModel: SavingsAndGains = SavingsAndGains(
-    incomeReceived = 7012,
-    taxableIncome = 7014,
-    ukSavings = Some(Seq(
-      ukSavingModel1,
-      ukSavingModel2
-    )),
-    ukSecurities = Some(Seq(
-      ukSecurityModel
-    ))
-  )
-
-  val dividendsModel: Dividends = Dividends(
-    incomeReceived = 7020,
-    taxableIncome = 7022
-  )
-
-  val lumpSumsModel: LumpSums = LumpSums(
-    incomeReceived = 8010,
-    taxableIncome = 8020
-  )
-
-  val gainsOnLifePoliciesModel: GainsOnLifePolicies = GainsOnLifePolicies(
-    incomeReceived = 9010,
-    taxableIncome = 9020
   )
 
   val taxableIncomeDetailModel: TaxableIncomeDetail = TaxableIncomeDetail(
     payPensionsProfit = Some(payPensionsProfitModel),
     savingsAndGains = Some(savingsAndGainsModel),
-    dividends = Some(dividendsModel),
-    lumpSums = Some(lumpSumsModel),
-    gainsOnLifePolicies = Some(gainsOnLifePoliciesModel)
-  )
-
-  val taxableIncomeSummaryModel: TaxableIncomeSummary = TaxableIncomeSummary(
-    totalIncomeReceivedFromAllSources = 7001,
-    totalTaxableIncome = 100
+    dividends = Some(dividendsModel)
   )
 
   val taxableIncomeModel: TaxableIncome = TaxableIncome(

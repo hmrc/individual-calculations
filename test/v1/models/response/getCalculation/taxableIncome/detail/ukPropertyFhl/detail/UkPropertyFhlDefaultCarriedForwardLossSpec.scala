@@ -14,43 +14,43 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail
+package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl.detail
 
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
-class UkSavingSpec extends UnitSpec {
+class UkPropertyFhlDefaultCarriedForwardLossSpec extends UnitSpec {
 
-  "UkSaving" when {
+  "UkPropertyFhlDefaultCarriedForwardLoss" when {
     "read from valid JSON" should {
-      "produce the expected UkSaving object" in {
-        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "savingsAndGainsIncome" \ 0).get
-        desJson.as[UkSaving] shouldBe TaxableIncomeModelsFixture.ukSavingModel1
+      "produce the expected UkPropertyFhlDefaultCarriedForwardLoss object" in {
+        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "lossesAndClaims" \
+          "defaultCarriedForwardLosses" \ 3).get
+        desJson.as[UkPropertyFhlDefaultCarriedForwardLoss] shouldBe
+          TaxableIncomeModelsFixture.ukPropertyFhlDefaultCarriedForwardLossModel
       }
     }
 
     "read from invalid JSON" should {
-      "return a JsError" in {
+      "produce a JsError" in {
         val invalidDesJson: JsValue = Json.parse(
           """
             |{
-            |    "incomeSourceName": "aName",
-            |    "grossIncome": 300.1,
-            |    "netIncome": 12.3,
-            |    "taxDeducted": 456.3
+            |   "incomeSourceId": true
             |}
           """.stripMargin
         )
 
-        invalidDesJson.validate[UkSaving] shouldBe a[JsError]
+        invalidDesJson.validate[UkPropertyFhlDefaultCarriedForwardLoss] shouldBe a[JsError]
       }
     }
 
     "written to JSON" should {
       "produce the expected JsObject" in {
-        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "savingsAndGains" \ "ukSavings" \ 0).get
-        Json.toJson(TaxableIncomeModelsFixture.ukSavingModel1) shouldBe mtdJson
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "payPensionsProfit" \
+          "businessProfitAndLoss" \ "ukPropertyFhl" \ "lossClaimsDetail" \ "defaultCarriedForwardLosses" \ 0).get
+        Json.toJson(TaxableIncomeModelsFixture.ukPropertyFhlDefaultCarriedForwardLossModel) shouldBe mtdJson
       }
     }
   }

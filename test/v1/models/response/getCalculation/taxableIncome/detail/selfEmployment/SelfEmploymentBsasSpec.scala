@@ -14,43 +14,41 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
-class UkSavingSpec extends UnitSpec {
+class SelfEmploymentBsasSpec extends UnitSpec {
 
-  "UkSaving" when {
+  "SelfEmploymentBsas" when {
     "read from valid JSON" should {
-      "produce the expected UkSaving object" in {
-        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "savingsAndGainsIncome" \ 0).get
-        desJson.as[UkSaving] shouldBe TaxableIncomeModelsFixture.ukSavingModel1
+      "produce the expected SelfEmploymentBsas object" in {
+        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "inputs" \ "annualAdjustments" \ 0).get
+        desJson.as[SelfEmploymentBsas] shouldBe TaxableIncomeModelsFixture.selfEmploymentBsasModel1
       }
     }
 
     "read from invalid JSON" should {
-      "return a JsError" in {
+      "produce a JsError" in {
         val invalidDesJson: JsValue = Json.parse(
           """
             |{
-            |    "incomeSourceName": "aName",
-            |    "grossIncome": 300.1,
-            |    "netIncome": 12.3,
-            |    "taxDeducted": 456.3
+            |   "ascId": "bsasId"
             |}
           """.stripMargin
         )
 
-        invalidDesJson.validate[UkSaving] shouldBe a[JsError]
+        invalidDesJson.validate[SelfEmploymentBsas] shouldBe a[JsError]
       }
     }
 
-    "written to JSON" should {
-      "produce the expected JsObject" in {
-        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "savingsAndGains" \ "ukSavings" \ 0).get
-        Json.toJson(TaxableIncomeModelsFixture.ukSavingModel1) shouldBe mtdJson
+    "writes a valid model" should {
+      "return a valid json" in {
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "payPensionsProfit" \
+          "businessProfitAndLoss" \ "selfEmployments" \ 0 \ "bsas").get
+        Json.toJson(TaxableIncomeModelsFixture.selfEmploymentBsasModel1) shouldBe mtdJson
       }
     }
   }

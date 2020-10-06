@@ -59,26 +59,6 @@ class TaxableIncomeDetailSpec extends UnitSpec {
       }
     }
 
-    "read from valid JSON without LumpSums" should {
-      "produce the expected TaxableIncomeDetail object" in {
-        val model: TaxableIncomeDetail = TaxableIncomeModelsFixture.taxableIncomeDetailModel.copy(lumpSums = None)
-        val pathToPrune: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "lumpSums"
-        val desJsonWithoutLumpSums: JsValue = pathToPrune.prune(TaxableIncomeJsonFixture.desJson).get
-
-        desJsonWithoutLumpSums.as[TaxableIncomeDetail] shouldBe model
-      }
-    }
-
-    "read from valid JSON without GainsOnLifePolicies" should {
-      "produce the expected TaxableIncomeDetail object" in {
-        val model: TaxableIncomeDetail = TaxableIncomeModelsFixture.taxableIncomeDetailModel.copy(gainsOnLifePolicies = None)
-        val pathToPrune: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "gainsOnLifePolicies"
-        val desJsonWithoutGainsOnLifePolicies: JsValue = pathToPrune.prune(TaxableIncomeJsonFixture.desJson).get
-
-        desJsonWithoutGainsOnLifePolicies.as[TaxableIncomeDetail] shouldBe model
-      }
-    }
-
     "read from invalid JSON" should {
       "produce a JsError" in {
         val invalidDesJson: JsValue = Json.parse(
@@ -104,7 +84,7 @@ class TaxableIncomeDetailSpec extends UnitSpec {
     "read from empty JSON" should {
       "produce the expected TaxableIncomeDetail object" in {
         val emptyJson: JsObject = JsObject.empty
-        emptyJson.as[TaxableIncomeDetail] shouldBe TaxableIncomeDetail(None, None, None, None, None)
+        emptyJson.as[TaxableIncomeDetail] shouldBe TaxableIncomeDetail(None, None, None)
       }
     }
 

@@ -71,9 +71,9 @@ trait NestedJsonReads {
     }
 
     /**
-      * Reads method for an optional item of generic type T. Uses `filteredArrayValueReads` method to filter
-      * sequence of JSON for any items with a given `incomeSourceType` field value (i.e "01") before attempting to read in
-      * first matching item as type T. If a matching value is not found `None` should be returned.
+      * Reads method for an optional sequence of generic type T. Uses `filteredArrayReads` method to filter
+      * sequence of JSON for items with a given `incomeSourceType` field value (i.e "01") before attempting to read in
+      * items as type T. If an empty sequence is returned `Some(Seq())` it is converted into `None`.
       */
     def readIncomeSourceTypeItem[T](incomeSourceType: String)(implicit rds: Reads[T]): Reads[Option[T]] = Reads[Option[T]] { json =>
       json.validate(

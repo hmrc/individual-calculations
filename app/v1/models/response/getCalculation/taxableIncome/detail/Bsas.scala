@@ -17,22 +17,15 @@
 package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 
-case class UkSaving(savingsAccountId: String,
-                    savingsAccountName: String,
-                    grossIncome: BigDecimal,
-                    netIncome: Option[BigDecimal],
-                    taxDeducted: Option[BigDecimal])
+case class Bsas(bsasId: String, applied: Boolean)
 
-object UkSaving {
-  implicit val reads: Reads[UkSaving] = (
-    (JsPath \ "incomeSourceId").read[String] and
-      (JsPath \ "incomeSourceName").read[String] and
-      (JsPath \ "grossIncome").read[BigDecimal] and
-      (JsPath \ "netIncome").readNullable[BigDecimal] and
-      (JsPath \ "taxDeducted").readNullable[BigDecimal]
-  )(UkSaving.apply _)
+object Bsas {
+  implicit val reads: Reads[Bsas] = (
+    (JsPath \ "ascId").read[String] and
+      (JsPath \ "applied").read[Boolean]
+  )(Bsas.apply _)
 
-  implicit val writes: OWrites[UkSaving] = Json.writes[UkSaving]
+  implicit val writes: OWrites[Bsas] = Json.writes[Bsas]
 }

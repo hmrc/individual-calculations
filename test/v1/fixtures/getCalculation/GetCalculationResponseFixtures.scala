@@ -418,33 +418,8 @@ object GetCalculationResponseFixtures {
   val incomeTax          = IncomeTax(calculationSummary, calculationDetail)
 
   val taxableIncomeModel = TaxableIncome(
-    TaxableIncomeSummary(
-      totalIncomeReceivedFromAllSources = 123,
-      totalTaxableIncome = 234
-    ),
-    TaxableIncomeDetail(
-      payPensionsProfit = Some(PayPensionsProfit(
-        incomeReceived = 500,
-        taxableIncome = 600,
-        totalSelfEmploymentProfit = None,
-        totalPropertyProfit = None,
-        totalFHLPropertyProfit = None,
-        totalUKOtherPropertyProfit = None,
-        totalForeignPropertyProfit = None,
-        totalEeaFhlProfit = None,
-        totalOccupationalPensionIncome = None,
-        totalStateBenefitsIncome = None,
-        totalBenefitsInKind = None,
-        totalPayeEmploymentAndLumpSumIncome = None,
-        totalEmploymentExpenses = None,
-        totalEmploymentIncome = None,
-        businessProfitAndLoss = None
-      )),
-      savingsAndGains = None,
-      dividends = None,
-      lumpSums = None,
-      gainsOnLifePolicies = None
-    )
+    TaxableIncomeSummary(123, 234),
+    TaxableIncomeDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
   val calculationResponse = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages))
 

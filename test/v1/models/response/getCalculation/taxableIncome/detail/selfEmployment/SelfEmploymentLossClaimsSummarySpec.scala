@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package v1.models.response.getCalculation.taxableIncome.detail
+package v1.models.response.getCalculation.taxableIncome.detail.selfEmployment
 
 import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
-class UkSavingSpec extends UnitSpec {
+class SelfEmploymentLossClaimsSummarySpec extends UnitSpec {
 
-  "UkSaving" when {
+  "LossClaimSummary" when {
     "read from valid JSON" should {
-      "produce the expected UkSaving object" in {
-        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "savingsAndGainsIncome" \ 0).get
-        desJson.as[UkSaving] shouldBe TaxableIncomeModelsFixture.ukSavingModel1
+      "produce the expected LossClaimsSummary object" in {
+        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "businessProfitAndLoss" \ 0).get
+        desJson.as[SelfEmploymentLossClaimsSummary] shouldBe TaxableIncomeModelsFixture.selfEmploymentSummaryModel1
       }
     }
 
@@ -35,22 +35,20 @@ class UkSavingSpec extends UnitSpec {
         val invalidDesJson: JsValue = Json.parse(
           """
             |{
-            |    "incomeSourceName": "aName",
-            |    "grossIncome": 300.1,
-            |    "netIncome": 12.3,
-            |    "taxDeducted": 456.3
+            |   "totalClass4LossesCarriedForward": true
             |}
           """.stripMargin
         )
 
-        invalidDesJson.validate[UkSaving] shouldBe a[JsError]
+        invalidDesJson.validate[SelfEmploymentLossClaimsSummary] shouldBe a[JsError]
       }
     }
 
     "written to JSON" should {
       "produce the expected JsObject" in {
-        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "savingsAndGains" \ "ukSavings" \ 0).get
-        Json.toJson(TaxableIncomeModelsFixture.ukSavingModel1) shouldBe mtdJson
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "payPensionsProfit" \
+          "businessProfitAndLoss" \ "selfEmployments" \ 0 \ "lossClaimsSummary").get
+        Json.toJson(TaxableIncomeModelsFixture.selfEmploymentSummaryModel1) shouldBe mtdJson
       }
     }
   }

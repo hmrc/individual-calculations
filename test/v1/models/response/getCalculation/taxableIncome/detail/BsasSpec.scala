@@ -20,13 +20,13 @@ import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
-class UkSavingSpec extends UnitSpec {
+class BsasSpec extends UnitSpec {
 
-  "UkSaving" when {
+  "Bsas" when {
     "read from valid JSON" should {
-      "produce the expected UkSaving object" in {
-        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "savingsAndGainsIncome" \ 0).get
-        desJson.as[UkSaving] shouldBe TaxableIncomeModelsFixture.ukSavingModel1
+      "produce the expected Bsas object" in {
+        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "inputs" \ "annualAdjustments" \ 3).get
+        desJson.as[Bsas] shouldBe TaxableIncomeModelsFixture.fhlBsasModel
       }
     }
 
@@ -35,22 +35,21 @@ class UkSavingSpec extends UnitSpec {
         val invalidDesJson: JsValue = Json.parse(
           """
             |{
-            |    "incomeSourceName": "aName",
-            |    "grossIncome": 300.1,
-            |    "netIncome": 12.3,
-            |    "taxDeducted": 456.3
+            |  "ascId" : 200,
+            |  "applied" : true
             |}
           """.stripMargin
         )
 
-        invalidDesJson.validate[UkSaving] shouldBe a[JsError]
+        invalidDesJson.validate[Bsas] shouldBe a[JsError]
       }
     }
 
     "written to JSON" should {
       "produce the expected JsObject" in {
-        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "savingsAndGains" \ "ukSavings" \ 0).get
-        Json.toJson(TaxableIncomeModelsFixture.ukSavingModel1) shouldBe mtdJson
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "payPensionsProfit" \
+          "businessProfitAndLoss" \ "ukPropertyFhl" \ "bsas").get
+        Json.toJson(TaxableIncomeModelsFixture.fhlBsasModel) shouldBe mtdJson
       }
     }
   }
