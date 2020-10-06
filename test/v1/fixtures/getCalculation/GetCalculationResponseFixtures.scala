@@ -27,9 +27,8 @@ import v1.models.response.getCalculation.allowancesAndDeductions.summary.{Calcul
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
-import v1.models.response.getCalculation.taxableIncome.TaxableIncome
-import v1.models.response.getCalculation.taxableIncome.detail.{PayPensionsProfit, CalculationDetail => TaxableIncomeCalculationDetail}
-import v1.models.response.getCalculation.taxableIncome.summary.{CalculationSummary => TaxableIncomeCalculationSummary}
+import v1.models.response.getCalculation.taxableIncome._
+import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
 
 object GetCalculationResponseFixtures {
 
@@ -419,8 +418,8 @@ object GetCalculationResponseFixtures {
   val incomeTax          = IncomeTax(calculationSummary, calculationDetail)
 
   val taxableIncomeModel = TaxableIncome(
-    TaxableIncomeCalculationSummary(123, 234),
-    TaxableIncomeCalculationDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
+    TaxableIncomeSummary(123, 234),
+    TaxableIncomeDetail(Some(PayPensionsProfit(500, 600, None, None, None, None, None)), None, None)
   )
   val calculationResponse = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages))
 

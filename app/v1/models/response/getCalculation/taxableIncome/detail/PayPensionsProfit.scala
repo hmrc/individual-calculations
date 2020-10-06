@@ -28,18 +28,20 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              totalUKOtherPropertyProfit: Option[BigInt],
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
-object PayPensionsProfit extends NestedJsonReads{
+object PayPensionsProfit extends NestedJsonReads {
+  implicit val reads: Reads[PayPensionsProfit] = {
+    val pppJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit"
+    val incomeSummaryTotalsJsPath: JsPath = JsPath \ "calculation" \ "incomeSummaryTotals"
+    (
+      (pppJsPath \ "incomeReceived").read[BigInt] and
+        (pppJsPath \ "taxableIncome").read[BigInt] and
+        (incomeSummaryTotalsJsPath \ "totalSelfEmploymentProfit").readNestedNullable[BigInt] and
+        (incomeSummaryTotalsJsPath \ "totalPropertyProfit").readNestedNullable[BigInt] and
+        (incomeSummaryTotalsJsPath \ "totalFHLPropertyProfit").readNestedNullable[BigInt] and
+        (incomeSummaryTotalsJsPath \ "totalUKOtherPropertyProfit").readNestedNullable[BigInt] and
+        JsPath.readNullable[BusinessProfitAndLoss].mapEmptyModelToNone(BusinessProfitAndLoss.empty)
+    )(PayPensionsProfit.apply _)
+  }
+
   implicit val writes: OWrites[PayPensionsProfit] = Json.writes[PayPensionsProfit]
-  implicit val reads: Reads[PayPensionsProfit] = (
-    (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit" \ "incomeReceived").read[BigInt] and
-      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit" \ "taxableIncome").read[BigInt] and
-      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalSelfEmploymentProfit").readNestedNullable[BigInt] and
-      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalPropertyProfit").readNestedNullable[BigInt] and
-      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalFHLPropertyProfit").readNestedNullable[BigInt] and
-      (JsPath \ "calculation" \ "incomeSummaryTotals" \ "totalUKOtherPropertyProfit").readNestedNullable[BigInt] and
-      __.readNullable[BusinessProfitAndLoss].map {
-        case Some(BusinessProfitAndLoss.empty) => None
-        case other => other
-      }
-  )(PayPensionsProfit.apply _)
 }

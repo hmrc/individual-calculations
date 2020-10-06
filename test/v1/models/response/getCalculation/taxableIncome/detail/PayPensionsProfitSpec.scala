@@ -16,48 +16,48 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json._
 import support.UnitSpec
-import v1.fixtures.getCalculation.taxableIncome.detail.PayPensionsProfitFixtures._
+import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
 class PayPensionsProfitSpec extends UnitSpec {
 
   "PayPensionsProfit" when {
     "read from valid Json" should {
-      "return a JsSuccess" in {
-        desJson("04", "02").validate[PayPensionsProfit] shouldBe a[JsSuccess[_]]
-      }
-      "with the expected BusinessProfitAndLoss object" in {
-        desJson("04", "02").as[PayPensionsProfit] shouldBe payPensionsProfitResponse
+      "produce the expected PayPensionsProfit object" in {
+        TaxableIncomeJsonFixture.desJson.as[PayPensionsProfit] shouldBe TaxableIncomeModelsFixture.payPensionsProfitModel
       }
     }
 
-    "read from valid Json with missing optional fields" should {
-      "return a JsSuccess" in {
-        payPensionsProfitDesJsonWithoutOptionalFields.validate[PayPensionsProfit] shouldBe a[JsSuccess[_]]
-      }
-      "with the expected BusinessProfitAndLoss object" in {
-        payPensionsProfitDesJsonWithoutOptionalFields.as[PayPensionsProfit] shouldBe payPensionsProfitResponseWithoutOptionalFields
+    "read from valid Json without BusinessProfitAndLoss" should {
+      "produce the expected PayPensionsProfit object" in {
+        val model: PayPensionsProfit = TaxableIncomeModelsFixture.payPensionsProfitModel.copy(businessProfitAndLoss = None)
+
+        val pathToPrune1: JsPath = JsPath \ "calculation" \ "businessProfitAndLoss"
+        val prunedDesJson1: JsValue = pathToPrune1.prune(TaxableIncomeJsonFixture.desJson).get
+
+        val pathToPrune2: JsPath = JsPath \ "calculation" \ "lossesAndClaims"
+        val prunedDesJson2 = pathToPrune2.prune(prunedDesJson1).get
+
+        val pathToPrune3: JsPath = JsPath \ "inputs"
+        val desJsonWithoutBPAL = pathToPrune3.prune(prunedDesJson2).get
+
+        desJsonWithoutBPAL.as[PayPensionsProfit] shouldBe model
       }
     }
 
-    "read from invalid Json" should {
+    "read from invalid JSON" should {
       "return a JsError" in {
-        payPensionsProfitInvalidJson.validate[PayPensionsProfit] shouldBe a[JsError]
+        val invalidDesJson: JsValue = JsObject.empty
+        invalidDesJson.validate[PayPensionsProfit] shouldBe a[JsError]
       }
     }
 
-    "written to Json with all fields present" should {
-      "return the expected JsObject" in {
-        Json.toJson(payPensionsProfitResponse) shouldBe payPensionsProfitWrittenJson
-      }
-    }
-
-    "written to Json with missing optional fields" should {
-      "return the expected JsObject" in {
-        Json.toJson(payPensionsProfitResponseWithoutOptionalFields) shouldBe payPensionsProfitWrittenJsonWithoutOptionalFields
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "payPensionsProfit").get
+        Json.toJson(TaxableIncomeModelsFixture.payPensionsProfitModel) shouldBe mtdJson
       }
     }
   }
-
 }

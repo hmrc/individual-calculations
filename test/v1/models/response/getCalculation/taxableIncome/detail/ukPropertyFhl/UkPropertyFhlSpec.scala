@@ -16,49 +16,54 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail.ukPropertyFhl
 
-import play.api.libs.json.{JsObject, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import support.UnitSpec
-import v1.fixtures.getCalculation.taxableIncome.detail.ukPropertyFhl.UkPropertyFhlFixtures._
-
+import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 class UkPropertyFhlSpec extends UnitSpec {
 
   "UkPropertyFhl" when {
-    "reads with a valid json" should {
-      "return JsSuccess" in {
-        desJson.validate[UkPropertyFhl] shouldBe a[JsSuccess[_]]
-      }
-
-      "reads with a valid json without LossClaimsSummary" should {
-        "return the expected UkPropertyFhl object" in {
-          Json.parse("""{"incomeSourceType": "aType"}""").as[UkPropertyFhl] shouldBe UkPropertyFhl.empty
-        }
-      }
-
-      "return the expected ukPropertyFhl object" in {
-        desJson.as[UkPropertyFhl] shouldBe ukPropertyFhlObject
-      }
-
-      "return the ukPropertyFhl with out LossClaimsDetail object" in {
-        desJsonWithOutLossClaimsDetail.as[UkPropertyFhl] shouldBe ukPropertyFhlWithOutLossClaimsDetailObject
+    "read from valid JSON" should {
+      "produce the expected UkPropertyFhl object" in {
+        TaxableIncomeJsonFixture.desJson.as[UkPropertyFhl] shouldBe TaxableIncomeModelsFixture.ukPropertyFhlModel
       }
     }
 
-    "writes with a valid object" should {
-      "return a valid json" in {
-        Json.toJson(ukPropertyFhlObject) shouldBe mtdUkPropertyFhlObj
+    "read from empty JSON" should {
+      "produce the expected UkPropertyFhl object" in {
+        val emptyJson: JsValue = JsObject.empty
+        emptyJson.as[UkPropertyFhl] shouldBe UkPropertyFhl.empty
       }
+    }
 
-      "return a valid json with out LossClaimsDetail" in {
-        Json.toJson(ukPropertyFhlWithOutLossClaimsDetailObject) shouldBe mtdUkPropertyFhlObjWithOutLossClaimsDetail
+    "read from non-empty JSON without incomeSourceType '04'" should {
+      "produce the expected UkPropertyFhl object" in {
+        TaxableIncomeJsonFixture.noUkPropertyFhlDesJson.as[UkPropertyFhl] shouldBe UkPropertyFhl.empty
       }
+    }
 
-      "return a valid json with out LossClaimsSummary" in {
-        Json.toJson(ukPropertyFhlWithOutLossClaimsDetailObject) shouldBe mtdUkPropertyFhlObjWithOutLossClaimsDetail
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidDesJson: JsValue = Json.parse(
+          """
+            |{
+            |   "calculation": {
+            |      "lossesAndClaims": {
+            |         "resultOfClaimsApplied": "no"
+            |      }
+            |   }
+            |}
+          """.stripMargin
+        )
+
+        invalidDesJson.validate[UkPropertyFhl] shouldBe a[JsError]
       }
+    }
 
-      "return a empty json with empty UkPropertyFhl object" in {
-        Json.toJson(UkPropertyFhl.empty) shouldBe
-          JsObject.empty
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "payPensionsProfit" \
+          "businessProfitAndLoss" \ "ukPropertyFhl").get
+        Json.toJson(TaxableIncomeModelsFixture.ukPropertyFhlModel) shouldBe mtdJson
       }
     }
   }

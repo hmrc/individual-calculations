@@ -16,30 +16,41 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{JsError, Json}
+import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
-import v1.fixtures.getCalculation.taxableIncome.detail.BsasFixture._
+import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
 class BsasSpec extends UnitSpec {
 
   "Bsas" when {
-    "read from valid Json" should {
-      "with the expected Bsas object" in {
-        desJson.as[Bsas] shouldBe bsasResponse
+    "read from valid JSON" should {
+      "produce the expected Bsas object" in {
+        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "inputs" \ "annualAdjustments" \ 3).get
+        desJson.as[Bsas] shouldBe TaxableIncomeModelsFixture.fhlBsasModel
       }
     }
 
-    "read from invalid Json" should {
+    "read from invalid JSON" should {
       "return a JsError" in {
+        val invalidDesJson: JsValue = Json.parse(
+          """
+            |{
+            |  "ascId" : 200,
+            |  "applied" : true
+            |}
+          """.stripMargin
+        )
+
         invalidDesJson.validate[Bsas] shouldBe a[JsError]
       }
     }
 
-    "written to Json" should {
-      "return the expected JsObject" in {
-        Json.toJson(bsasResponse) shouldBe mtdJson
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "payPensionsProfit" \
+          "businessProfitAndLoss" \ "ukPropertyFhl" \ "bsas").get
+        Json.toJson(TaxableIncomeModelsFixture.fhlBsasModel) shouldBe mtdJson
       }
     }
   }
-
 }

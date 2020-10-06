@@ -16,33 +16,40 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsValue, Json}
 import support.UnitSpec
-import v1.fixtures.getCalculation.taxableIncome.detail.DividendsFixtures._
+import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
 class DividendsSpec extends UnitSpec {
 
   "Dividends" when {
-    "read from valid Json" should {
-      "return a JsSuccess" in {
-        dividendsDesJson.validate[Dividends] shouldBe a[JsSuccess[_]]
-      }
-      "with the expected Dividends object" in {
-        dividendsDesJson.as[Dividends] shouldBe dividendsResponse
+    "read from valid JSON" should {
+      "produce the expected Dividends object" in {
+        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "taxCalculation" \
+          "incomeTax" \ "dividends").get
+        desJson.as[Dividends] shouldBe TaxableIncomeModelsFixture.dividendsModel
       }
     }
 
-    "read from invalid Json" should {
+    "read from invalid JSON" should {
       "return a JsError" in {
-        dividendsInvalidJson.validate[Dividends] shouldBe a[JsError]
+        val invalidDesJson: JsValue = Json.parse(
+          """
+            |{
+            |    "incomeReceived": 100
+            |}
+          """.stripMargin
+        )
+
+        invalidDesJson.validate[Dividends] shouldBe a[JsError]
       }
     }
 
-    "written to Json" should {
-      "return the expected JsObject" in {
-        Json.toJson(dividendsResponse) shouldBe dividendsDesJson
+    "written to JSON" should {
+      "produce the expected JsObject" in {
+        val mtdJson: JsValue = (TaxableIncomeJsonFixture.mtdJson \ "detail" \ "dividends").get
+        Json.toJson(TaxableIncomeModelsFixture.dividendsModel) shouldBe mtdJson
       }
     }
   }
-
 }
