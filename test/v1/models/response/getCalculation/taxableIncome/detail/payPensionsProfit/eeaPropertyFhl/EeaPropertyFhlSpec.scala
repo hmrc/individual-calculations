@@ -36,7 +36,7 @@ class EeaPropertyFhlSpec extends UnitSpec {
       }
     }
 
-    "read from non-empty JSON without incomeSourceType '04'" should {
+    "read from non-empty JSON without incomeSourceType '03'" should {
       "produce the expected EeaPropertyFhl object" in {
         TaxableIncomeJsonFixture.oneSelfEmploymentOnlyDesJson.as[EeaPropertyFhl] shouldBe EeaPropertyFhl.empty
       }
