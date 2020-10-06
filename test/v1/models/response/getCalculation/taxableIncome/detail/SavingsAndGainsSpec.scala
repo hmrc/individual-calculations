@@ -23,8 +23,9 @@ import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, Taxab
 class SavingsAndGainsSpec extends UnitSpec {
 
   "SavingsAndGains" when {
-    val savingsAndGainsModelWithoutSavings: SavingsAndGains = TaxableIncomeModelsFixture.savingsAndGainsModel.copy(
-      ukSavings = None
+    val savingsAndGainsModelWithoutSavingsOrSecurities: SavingsAndGains = TaxableIncomeModelsFixture.savingsAndGainsModel.copy(
+      ukSavings = None,
+      ukSecurities = None
     )
 
     "read from valid JSON" should {
@@ -33,12 +34,12 @@ class SavingsAndGainsSpec extends UnitSpec {
       }
     }
 
-    "read from valid JSON with a missing savings array" should {
+    "read from valid JSON with a savingsAndGainsIncome array" should {
       "produce the expected SavingsAndGains object" in {
         val pathToPrune: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome"
         val desJsonWithoutSavings: JsValue = pathToPrune.prune(TaxableIncomeJsonFixture.desJson).get
 
-        desJsonWithoutSavings.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavings
+        desJsonWithoutSavings.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavingsOrSecurities
       }
     }
 
@@ -71,7 +72,7 @@ class SavingsAndGainsSpec extends UnitSpec {
           """.stripMargin
         )
 
-        desJsonWithoutValidSavings.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavings
+        desJsonWithoutValidSavings.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavingsOrSecurities
       }
     }
 
