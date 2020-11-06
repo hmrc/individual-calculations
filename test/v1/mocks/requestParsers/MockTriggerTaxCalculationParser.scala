@@ -28,7 +28,7 @@ trait MockTriggerTaxCalculationParser extends MockFactory {
 
   object MockTriggerTaxCalculationParser {
     def parse(data: TriggerTaxCalculationRawData): CallHandler[Either[ErrorWrapper, TriggerTaxCalculationRequest]] = {
-      (mockTriggerTaxCalculationParser.parseRequest(_: TriggerTaxCalculationRawData)).expects(data)
+      (mockTriggerTaxCalculationParser.parseRequest(_: TriggerTaxCalculationRawData)(_: String)).expects(data, *)
     }
   }
 
