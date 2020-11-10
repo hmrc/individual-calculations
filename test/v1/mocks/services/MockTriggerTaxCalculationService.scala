@@ -37,8 +37,8 @@ trait MockTriggerTaxCalculationService extends MockFactory {
     def triggerTaxCalculation(requestData: TriggerTaxCalculationRequest):
     CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]]] = {
       (mockTriggerTaxCalculationService
-        .triggerTaxCalculation(_: TriggerTaxCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext))
-        .expects(requestData, *, *, *)
+        .triggerTaxCalculation(_: TriggerTaxCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))
+        .expects(requestData, *, *, *, *)
     }
   }
 

@@ -34,7 +34,7 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
   private val nino = "AA123456A"
   private val taxYear = "2017-18"
   private val calcId  = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
-  private val correlationId = "X-123"
+  implicit val correlationId = "X-123"
 
   private val requestData = TriggerTaxCalculationRequest(Nino(nino), TriggerTaxCalculation(taxYear))
 
@@ -66,7 +66,7 @@ class TriggerTaxCalculationServiceSpec extends UnitSpec {
             MockTaxCalcConnector.triggerTaxCalculation(requestData)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(desErrorCode))))))
 
-            await(service.triggerTaxCalculation(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), error))
+            await(service.triggerTaxCalculation(requestData)) shouldBe Left(ErrorWrapper(correlationId, error))
           }
 
         val input = Seq(

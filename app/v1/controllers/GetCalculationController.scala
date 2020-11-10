@@ -22,7 +22,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.http.MimeTypes
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import utils.Logging
+import utils.{IdGenerator, Logging}
 import v1.controllers.requestParsers.GetCalculationParser
 import v1.models.errors._
 import v1.models.request.getCalculation.GetCalculationRawData
@@ -35,7 +35,8 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
                                          val lookupService: MtdIdLookupService,
                                          getCalculationParser: GetCalculationParser,
                                          getCalculationService: GetCalculationService,
-                                         cc: ControllerComponents)(implicit ec: ExecutionContext)
+                                         cc: ControllerComponents,
+                                         idGenerator: IdGenerator)(implicit ec: ExecutionContext)
     extends AuthorisedController(cc)
     with BaseController
     with Logging {
@@ -48,6 +49,9 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
 
   def getCalculation(nino: String, calculationId: String): Action[AnyContent] =
     authorisedAction(nino).async { implicit request =>
+      implicit val correlationId: String = idGenerator.getCorrelationId
+      logger.info(message = s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
+        s"with correlationId : $correlationId")
       val rawData = GetCalculationRawData(nino, calculationId)
       val result =
         for {
@@ -64,8 +68,12 @@ class GetCalculationController @Inject()(val authService: EnrolmentsAuthService,
             .as(MimeTypes.JSON)
         }
       result.leftMap { errorWrapper =>
-        val correlationId = getCorrelationId(errorWrapper)
-        errorResult(errorWrapper).withApiHeaders(correlationId)
+        val resCorrelationId = errorWrapper.correlationId
+        val result = errorResult(errorWrapper).withApiHeaders(resCorrelationId)
+        logger.info(
+          s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] - " +
+            s"Error response received with CorrelationId: $resCorrelationId")
+        result
       }.merge
     }
 

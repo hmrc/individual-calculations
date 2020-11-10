@@ -25,6 +25,7 @@ import v1.models.request.getCalculation.{GetCalculationRawData, GetCalculationRe
 class GetCalculationParserSpec extends UnitSpec {
   val nino   = "AA123456B"
   val calcId = "12345678"
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
 
   trait Test extends MockGetCalculationValidator {
     lazy val parser = new GetCalculationParser(mockValidator)
@@ -45,7 +46,7 @@ class GetCalculationParserSpec extends UnitSpec {
         val data = GetCalculationRawData(nino, calcId)
         MockValidator.validate(data).returns(List(NinoFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, NinoFormatError))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError))
       }
     }
 
@@ -54,7 +55,7 @@ class GetCalculationParserSpec extends UnitSpec {
         val data = GetCalculationRawData(nino, calcId)
         MockValidator.validate(data).returns(List(NinoFormatError, CalculationIdFormatError))
 
-        parser.parseRequest(data) shouldBe Left(ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, CalculationIdFormatError))))
+        parser.parseRequest(data) shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, CalculationIdFormatError))))
       }
     }
   }

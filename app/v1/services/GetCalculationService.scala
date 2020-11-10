@@ -40,7 +40,8 @@ class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesRe
   def getCalculation(request: GetCalculationRequest)(
     implicit hc: HeaderCarrier,
     ec: ExecutionContext,
-    logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[GetCalculationResponse]]] = {
+    logContext: EndpointLogContext,
+    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[GetCalculationResponse]]] = {
 
     val result = for {
       desResponseWrapper <- EitherT(connector.getCalculation(request))

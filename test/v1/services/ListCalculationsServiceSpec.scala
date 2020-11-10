@@ -35,7 +35,7 @@ class ListCalculationsServiceSpec extends UnitSpec {
 
   private val nino = "AA123456A"
   private val taxYear = "2017-18"
-  private val correlationId = "X-123"
+  implicit val correlationId = "X-123"
 
   private val requestData = ListCalculationsRequest(Nino(nino), DesTaxYear(taxYear))
 
@@ -109,7 +109,7 @@ class ListCalculationsServiceSpec extends UnitSpec {
             MockTaxCalcConnector.listCalculations(requestData)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(desErrorCode))))))
 
-            await(service.listCalculations(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), error))
+            await(service.listCalculations(requestData)) shouldBe Left(ErrorWrapper(correlationId, error))
           }
 
         val input = Seq(

@@ -20,6 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
+import v1.mocks.MockIdGenerator
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockGetCalculationService, MockMtdIdLookupService}
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
@@ -37,7 +38,12 @@ class GetCalculationControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
-    with MockGetCalculationService {
+    with MockGetCalculationService
+    with MockIdGenerator {
+
+  private val nino          = "AA123456A"
+  private val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val correlationId = "X-123"
 
   trait Test {
     val hc = HeaderCarrier()
@@ -47,16 +53,14 @@ class GetCalculationControllerSpec
       lookupService = mockMtdIdLookupService,
       getCalculationParser = mockGetCalculationParser,
       getCalculationService = mockGetCalculationService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
-
-  private val nino          = "AA123456A"
-  private val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val correlationId = "X-123"
 
   val desResponse: JsValue = Json.parse("""{
       |    "metadata":{
@@ -119,7 +123,7 @@ class GetCalculationControllerSpec
 
             MockGetCalculationParser
               .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), error, None)))
+              .returns(Left(ErrorWrapper(correlationId, error, None)))
 
             val result: Future[Result] = controller.getCalculation(nino, calcId)(fakeGetRequest)
 
@@ -150,7 +154,7 @@ class GetCalculationControllerSpec
 
             MockGetCalculationService
               .getCalculation(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError))))
+              .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError))))
 
             val result: Future[Result] = controller.getCalculation(nino, calcId)(fakeGetRequest)
 

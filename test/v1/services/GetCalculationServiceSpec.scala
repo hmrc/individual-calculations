@@ -62,7 +62,7 @@ class GetCalculationServiceSpec extends UnitSpec {
 
   private val nino          = "AA111111A"
   private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
   private val requestData = GetCalculationRequest(Nino(nino), calculationId)
 
   trait Test extends MockTaxCalcConnector {
@@ -97,7 +97,7 @@ class GetCalculationServiceSpec extends UnitSpec {
           .getCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, wrongCalcTypeResponse))))
 
-        await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), NotFoundError))
+        await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(correlationId, NotFoundError))
       }
     }
 
@@ -110,7 +110,7 @@ class GetCalculationServiceSpec extends UnitSpec {
             MockTaxCalcConnector.getCalculation(requestData)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(desErrorCode))))))
 
-            await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), error))
+            await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(correlationId, error))
           }
 
         val input = Seq(

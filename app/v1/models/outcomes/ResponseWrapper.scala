@@ -24,7 +24,7 @@ case class ResponseWrapper[+A](correlationId: String, responseData: A) {
 
   def toErrorWhen(f: PartialFunction[A, MtdError]): Either[ErrorWrapper, ResponseWrapper[A]] =
     f.lift(responseData) match {
-      case Some(error) => ErrorWrapper(Some(correlationId), error).asLeft
+      case Some(error) => ErrorWrapper(correlationId, error).asLeft
       case None        => this.asRight
     }
 }
