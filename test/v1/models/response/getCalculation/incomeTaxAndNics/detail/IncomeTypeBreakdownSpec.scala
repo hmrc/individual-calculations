@@ -16,22 +16,47 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.detail.IncomeTypeBreakdownFixtures._
 
 class IncomeTypeBreakdownSpec extends UnitSpec {
+
   "IncomeTaxSummary" should {
 
     "read from json correctly" when {
       "provided with valid json" in {
-        json.as[IncomeTypeBreakdown] shouldBe model
+        incomeTypeBreakdownJson.as[IncomeTypeBreakdown] shouldBe incomeTypeBreakdownModel
       }
     }
 
     "write to json correctly" when {
       "a valid model is provided" in {
-        Json.toJson(model) shouldBe json
+        Json.toJson(incomeTypeBreakdownModel) shouldBe incomeTypeBreakdownJson
+      }
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            | "allowancesAllocated" : true,
+            | "incomeTaxAmount" : 200.25,
+            | "taxBands" : [
+            |   {
+            |     "name" : "name",
+            |     "rate" : 50.50,
+            |     "bandLimit" : 400,
+            |     "apportionedBandLimit" : 500,
+            |     "income" : 600,
+            |     "taxAmount" : 700.25
+            |   }
+            | ]
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[IncomeTypeBreakdown] shouldBe a[JsError]
       }
     }
   }

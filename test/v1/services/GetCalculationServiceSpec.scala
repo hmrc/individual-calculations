@@ -21,13 +21,16 @@ import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.controllers.EndpointLogContext
 import v1.fixtures.common.MessageFixtures._
+import v1.fixtures.getCalculation.GetCalculationResponseFixtures._
 import v1.mocks.connectors.MockTaxCalcConnector
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.errors._
+import v1.fixtures.getCalculation.endOfYearEstimate.EoyEstimateFixtures.eoyEstimateResponse
+
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRequest
 import v1.models.response.common.{Messages, Metadata}
-import v1.models.response.getCalculation.GetCalculationResponse
+import v1.models.response.getCalculation.{GetCalculationResponse, MetadataExistence}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -51,12 +54,15 @@ class GetCalculationServiceSpec extends UnitSpec {
   val messagesResponse = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
 
   val getCalculationResponse = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse))
+  val getCalculationResponseAllData = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse),
+    incomeTaxAndNicsCalculated = Some(incomeTaxAndNicsCalculated), taxableIncome = Some(taxableIncome), endOfYearEstimate = Some(eoyEstimateResponse),
+    allowancesDeductionsAndReliefs = Some(allowancesDeductionsAndReliefs))
   val wrongCalcTypeResponse = GetCalculationResponse(metadataResponse.copy(calculationType = CalculationType.biss), None)
 
 
   private val nino          = "AA111111A"
   private val calculationId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
   private val requestData = GetCalculationRequest(Nino(nino), calculationId)
 
   trait Test extends MockTaxCalcConnector {
@@ -73,14 +79,25 @@ class GetCalculationServiceSpec extends UnitSpec {
           .getCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, getCalculationResponse))))
 
-        await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId, getCalculationResponse))
+        await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId,
+          getCalculationResponse.copy(getCalculationResponse.metadata.copy(metadataExistence = Some(MetadataExistence(messages = true))))))
       }
+      "return mapped result with all data" in new Test {
+        MockTaxCalcConnector
+          .getCalculation(requestData)
+          .returns(Future.successful(Right(ResponseWrapper(correlationId, getCalculationResponseAllData))))
+
+        await(service.getCalculation(requestData)) shouldBe Right(ResponseWrapper(correlationId,
+          getCalculationResponseAllData.copy(getCalculationResponseAllData.metadata.copy(metadataExistence = Some(MetadataExistence(messages = true,
+            incomeTaxAndNicsCalculated = true, taxableIncome = true, endOfYearEstimate = true, allowancesDeductionsAndReliefs = true))))))
+      }
+
       "not surface unwanted calculation types" in new Test {
         MockTaxCalcConnector
           .getCalculation(requestData)
           .returns(Future.successful(Right(ResponseWrapper(correlationId, wrongCalcTypeResponse))))
 
-        await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), NotFoundError))
+        await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(correlationId, NotFoundError))
       }
     }
 
@@ -93,7 +110,7 @@ class GetCalculationServiceSpec extends UnitSpec {
             MockTaxCalcConnector.getCalculation(requestData)
               .returns(Future.successful(Left(ResponseWrapper(correlationId, DesErrors.single(DesErrorCode(desErrorCode))))))
 
-            await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(Some(correlationId), error))
+            await(service.getCalculation(requestData)) shouldBe Left(ErrorWrapper(correlationId, error))
           }
 
         val input = Seq(

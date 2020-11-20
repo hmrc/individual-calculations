@@ -18,22 +18,28 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
 import utils.NestedJsonReads
-case class SavingsAndGains(
-                            incomeReceived: BigInt,
-                            taxableIncome: BigInt,
-                            ukSavings: Option[Seq[Savings]]
-                          )
+import sangria.macros.derive._
+import sangria.schema.ObjectType
+
+case class SavingsAndGains(incomeReceived: BigInt,
+                           taxableIncome: BigInt,
+                           ukSavings: Option[Seq[UkSaving]],
+                           ukSecurities: Option[Seq[UkSecurity]])
 
 object SavingsAndGains extends NestedJsonReads {
+  implicit val reads: Reads[SavingsAndGains] = {
+    val savingsAndGainsJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains"
+    val savingsAndGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome"
+    (
+      (savingsAndGainsJsPath \ "incomeReceived").read[BigInt] and
+        (savingsAndGainsJsPath \ "taxableIncome").read[BigInt] and
+        savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSaving](incomeSourceType = "09") and
+        savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSecurity](incomeSourceType = "18")
+      )(SavingsAndGains.apply _)
+  }
+
   implicit val writes: OWrites[SavingsAndGains] = Json.writes[SavingsAndGains]
-  implicit val reads: Reads[SavingsAndGains] = (
-    (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "incomeReceived").read[BigInt] and
-      (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains" \ "taxableIncome").read[BigInt] and
-      (JsPath \ "calculation" \ "savingsAndGainsIncome").readNullable[Seq[Savings]](filteredArrayReads("incomeSourceType", "09"))
-    ) (SavingsAndGains.apply _)
 
   implicit def gqlType: ObjectType[Unit, SavingsAndGains] = deriveObjectType[Unit, SavingsAndGains]()
 }

@@ -21,10 +21,17 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail._
 
 object NicDetailFixtures {
 
-  val class2 = Class2NicDetail(Some(100.25), Some(200.25), Some(300.25), Some(400.25), underSmallProfitThreshold = true, Some(false))
+  val class2 =
+    Class2NicDetail(
+      Some(100.25), Some(200.25), Some(300.25), Some(400.25), underSmallProfitThreshold = true, Some(false)
+    )
 
   val class4 = Class4NicDetail(
-    Some(Class4Losses(Some(3001), Some(3002), Some(3003))),
+    Some(
+      Class4Losses(
+        Some(3001), Some(3002), Some(3003)
+      )
+    ),
     Some(3003),
     Some(3004),
     Some(
@@ -36,42 +43,52 @@ object NicDetailFixtures {
           apportionedThreshold = Some(300),
           income = 400,
           amount = 500.25
-        )))
+        )
+      )
+    )
   )
 
-  val emptyJson: JsValue = Json.obj()
+  val nicDetailEmptyJson: JsValue = Json.obj()
 
-  val inputJsonWithEmptyModels: JsValue = Json.parse(s"""
+  val nicDetailInputJsonWithEmptyModels: JsValue = Json.parse(
+    """
+      |{
+      | "class4Nics" : {}
+      |}
+    """.stripMargin)
+
+  val nicDetailFilledJson: JsValue = Json.parse(
+    s"""
        |{
-       | "class4Nics" : {}
+       |   "class2Nics": ${Json.toJson(class2).toString()},
+       |   "class4Nics":{
+       |      "totalClass4LossesAvailable":3001,
+       |      "totalClass4LossesUsed":3002,
+       |      "totalClass4LossesCarriedForward":3003,
+       |      "totalIncomeLiableToClass4Charge":3003,
+       |      "totalIncomeChargeableToClass4":3004,
+       |      "nic4Bands":[
+       |         {
+       |            "name":"name",
+       |            "rate":100.25,
+       |            "threshold":200,
+       |            "apportionedThreshold":300,
+       |            "income":400,
+       |            "amount":500.25
+       |         }
+       |      ]
+       |   }
        |}
     """.stripMargin)
 
-  val filledJson: JsValue = Json.parse(s"""|{
-        | "class2Nics" : ${Json.toJson(class2).toString()},
-        | "class4Nics" : {
-        |  "totalClass4LossesAvailable" : 3001,
-        | "totalClass4LossesUsed" : 3002,
-        | "totalClass4LossesCarriedForward" : 3003,
-        | "totalIncomeLiableToClass4Charge" : 3003,
-        | "totalIncomeChargeableToClass4" :3004,
-        |	"nic4Bands": [{
-        |					"name": "name",
-        |					"rate": 100.25,
-        |					"threshold": 200,
-        |					"apportionedThreshold": 300,
-        |					"income": 400,
-        |					"amount": 500.25
-        |				}]}
-        |}""".stripMargin)
-
-  val outputJson: JsValue = Json.parse(s"""
+  val nicDetailOutputJson: JsValue = Json.parse(
+    s"""
        |{
        | "class2Nics" : ${Json.toJson(class2).toString()},
        | "class4Nics" : ${Json.toJson(class4).toString()}
        |}
     """.stripMargin)
 
-  val filledModel = NicDetail(Some(class2), Some(class4))
+  val nicDetailFilledModel = NicDetail(Some(class2), Some(class4))
 
 }

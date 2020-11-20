@@ -16,11 +16,12 @@
 
 package v1.controllers
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.fixtures.getCalculation.GetCalculationResponseFixtures
+import v1.mocks.MockIdGenerator
 import v1.mocks.requestParsers.MockGetCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockGetCalculationService, MockMtdIdLookupService}
 import v1.models.errors._
@@ -31,11 +32,16 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class GetCalculationControllerSpec
-    extends ControllerBaseSpec
+  extends ControllerBaseSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockGetCalculationParser
-    with MockGetCalculationService {
+    with MockGetCalculationService
+    with MockIdGenerator {
+
+  private val nino = "AA123456A"
+  private val calcId = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
+  private val correlationId = "X-123"
 
   trait Test {
     val hc = HeaderCarrier()
@@ -45,18 +51,42 @@ class GetCalculationControllerSpec
       lookupService = mockMtdIdLookupService,
       getCalculationParser = mockGetCalculationParser,
       getCalculationService = mockGetCalculationService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
 
-  private val nino          = "AA123456A"
-  private val calcId        = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c"
-  private val correlationId = "X-123"
   private val query =
     """
+      |fragment incomeTypeBreakdown on IncomeTypeBreakdown {
+      |  allowancesAllocated
+      |  incomeTaxAmount
+      |  taxBands {
+      |    name
+      |    rate
+      |    bandLimit
+      |    apportionedBandLimit
+      |    income
+      |    taxAmount
+      |  }
+      |}
+      |
+      |fragment pensionTypeBreakdown on PensionTypeBreakdown {
+      |  amount
+      |  taxPaid
+      |  rate
+      |  chargeableAmount
+      |}
+      |
+      |fragment message on Message {
+      |  id
+      |  text
+      |}
+      |
       |{
       |  metadata {
       |    id
@@ -70,6 +100,13 @@ class GetCalculationControllerSpec
       |    crystallised
       |    totalIncomeTaxAndNicsDue
       |    calculationErrorCount
+      |    metadataExistence {
+      |      incomeTaxAndNicsCalculated
+      |      messages
+      |      taxableIncome
+      |      endOfYearEstimate
+      |      allowancesDeductionsAndReliefs
+      |    }
       |  }
       |  incomeTaxAndNicsCalculated {
       |    summary {
@@ -77,12 +114,20 @@ class GetCalculationControllerSpec
       |        incomeTaxCharged
       |        incomeTaxDueAfterReliefs
       |        incomeTaxDueAfterGiftAid
+      |        totalNotionalTax
+      |        totalPensionSavingsTaxCharges
+      |        statePensionLumpSumCharges
+      |        incomeTaxDueAfterTaxReductions
+      |        totalIncomeTaxDue
       |      }
       |      nics {
       |        class2NicsAmount
       |        class4NicsAmount
       |        totalNic
       |      }
+      |      totalStudentLoansRepaymentAmount
+      |      totalAnnualPaymentsTaxCharged
+      |      totalRoyaltyPaymentsTaxCharged
       |      totalIncomeTaxNicsCharged
       |      totalTaxDeducted
       |      totalIncomeTaxAndNicsDue
@@ -91,45 +136,87 @@ class GetCalculationControllerSpec
       |    detail {
       |      incomeTax {
       |        payPensionsProfit {
-      |          allowancesAllocated
-      |          incomeTaxAmount
-      |          taxBands {
-      |            name
-      |            rate
-      |            bandLimit
-      |            apportionedBandLimit
-      |            income
-      |            taxAmount
-      |          }
+      |          ...incomeTypeBreakdown
       |        }
       |        savingsAndGains {
-      |          allowancesAllocated
-      |          incomeTaxAmount
-      |          taxBands {
-      |            name
-      |            rate
-      |            bandLimit
-      |            apportionedBandLimit
-      |            income
-      |            taxAmount
-      |          }
+      |          ...incomeTypeBreakdown
+      |        }
+      |        lumpSums {
+      |          ...incomeTypeBreakdown
       |        }
       |        dividends {
-      |          allowancesAllocated
-      |          incomeTaxAmount
-      |          taxBands {
-      |            name
-      |            rate
-      |            bandLimit
-      |            apportionedBandLimit
-      |            income
-      |            taxAmount
-      |          }
+      |          ...incomeTypeBreakdown
+      |        }
+      |        gainsOnLifePolicies {
+      |          ...incomeTypeBreakdown
       |        }
       |        giftAid {
       |          grossGiftAidPayments
       |          rate
       |          giftAidTax
+      |        }
+      |      }
+      |      studentLoans {
+      |        planType
+      |        studentLoanTotalIncomeAmount
+      |        studentLoanChargeableIncomeAmount
+      |        studentLoanRepaymentAmount
+      |        studentLoanDeductionsFromEmployment
+      |        studentLoanRepaymentAmountNetOfDeductions
+      |        studentLoanApportionedIncomeThreshold
+      |        studentLoanRate
+      |      }
+      |      pensionSavingsTaxCharges {
+      |        totalPensionCharges
+      |        totalTaxPaid
+      |        totalPensionChargesDue
+      |        pensionSavingsTaxChargesDetail {
+      |          lumpSumBenefitTakenInExcessOfLifetimeAllowance {
+      |            ...pensionTypeBreakdown
+      |          }
+      |          benefitInExcessOfLifetimeAllowance {
+      |            ...pensionTypeBreakdown
+      |          }
+      |          pensionSchemeUnauthorisedPaymentsSurcharge {
+      |            ...pensionTypeBreakdown
+      |          }
+      |          pensionSchemeUnauthorisedPaymentsNonSurcharge {
+      |            ...pensionTypeBreakdown
+      |          }
+      |          pensionSchemeOverseasTransfers {
+      |            transferCharge
+      |            transferChargeTaxPaid
+      |            rate
+      |            chargeableAmount
+      |          }
+      |          pensionContributionsInExcessOfTheAnnualAllowance {
+      |            totalContributions
+      |            totalPensionCharge
+      |            annualAllowanceTaxPaid
+      |            totalPensionChargeDue
+      |            pensionBands {
+      |              name
+      |              rate
+      |              bandLimit
+      |              apportionedBandLimit
+      |              contributionAmount
+      |              pensionCharge
+      |            }
+      |          }
+      |          overseasPensionContributions {
+      |            totalShortServiceRefund
+      |            totalShortServiceRefundCharge
+      |            shortServiceTaxPaid
+      |            totalShortServiceRefundChargeDue
+      |            shortServiceRefundBands {
+      |              name
+      |              rate
+      |              bandLimit
+      |              apportionedBandLimit
+      |              shortServiceRefundAmount
+      |              shortServiceRefundCharge
+      |            }
+      |          }
       |        }
       |      }
       |      nics {
@@ -163,21 +250,23 @@ class GetCalculationControllerSpec
       |        ukLandAndProperty
       |        savings
       |        cis
+      |        securities
+      |        voidedIsa
+      |        payeEmployments
+      |        occupationalPensions
+      |        stateBenefits
       |      }
       |    }
       |  }
       |  messages {
       |    info {
-      |      id
-      |      text
+      |      ...message
       |    }
       |    warnings {
-      |      id
-      |      text
+      |      ...message
       |    }
       |    errors {
-      |      id
-      |      text
+      |      ...message
       |    }
       |  }
       |  taxableIncome {
@@ -193,6 +282,14 @@ class GetCalculationControllerSpec
       |        totalPropertyProfit
       |        totalFHLPropertyProfit
       |        totalUKOtherPropertyProfit
+      |        totalForeignPropertyProfit
+      |        totalEeaFhlProfit
+      |        totalOccupationalPensionIncome
+      |        totalStateBenefitsIncome
+      |        totalBenefitsInKind
+      |        totalPayeEmploymentAndLumpSumIncome
+      |        totalEmploymentExpenses
+      |        totalEmploymentIncome
       |        businessProfitAndLoss {
       |          selfEmployments {
       |            selfEmploymentId
@@ -223,7 +320,6 @@ class GetCalculationControllerSpec
       |                taxYearLossIncurred
       |                currentLossValue
       |                mtdLoss
-      |                incomeSourceId
       |              }
       |              resultOfClaimsApplied {
       |                claimId
@@ -234,13 +330,11 @@ class GetCalculationControllerSpec
       |                lossAmountUsed
       |                remainingLossValue
       |                lossType
-      |                incomeSourceId
       |              }
       |              unclaimedLosses {
       |                taxYearLossIncurred
       |                currentLossValue
       |                lossType
-      |                incomeSourceId
       |              }
       |              carriedForwardLosses {
       |                claimId
@@ -249,19 +343,16 @@ class GetCalculationControllerSpec
       |                taxYearLossIncurred
       |                currentLossValue
       |                lossType
-      |                incomeSourceId
       |              }
       |              claimsNotApplied {
       |                claimId
       |                taxYearClaimMade
       |                claimType
-      |                incomeSourceId
       |              }
       |            }
       |            bsas {
       |              bsasId
       |              applied
-      |              incomeSourceId
       |            }
       |          }
       |          ukPropertyFhl {
@@ -271,7 +362,6 @@ class GetCalculationControllerSpec
       |            netLoss
       |            totalAdditions
       |            totalDeductions
-      |            accountingAdjustments
       |            adjustedIncomeTaxLoss
       |            taxableProfit
       |            taxableProfitAfterIncomeTaxLossesDeduction
@@ -355,6 +445,96 @@ class GetCalculationControllerSpec
       |              applied
       |            }
       |          }
+      |          eeaPropertyFhl {
+      |            totalIncome
+      |            totalExpenses
+      |            netProfit
+      |            netLoss
+      |            totalAdditions
+      |            totalDeductions
+      |            adjustedIncomeTaxLoss
+      |            taxableProfit
+      |            taxableProfitAfterIncomeTaxLossesDeduction
+      |            lossClaimsSummary {
+      |              lossForCSFHL
+      |              totalBroughtForwardIncomeTaxLosses
+      |              broughtForwardIncomeTaxLossesUsed
+      |              totalIncomeTaxLossesCarriedForward
+      |            }
+      |            lossClaimsDetail {
+      |              lossesBroughtForward {
+      |                taxYearLossIncurred
+      |                currentLossValue
+      |                mtdLoss
+      |              }
+      |              resultOfClaimsApplied {
+      |                claimId
+      |                taxYearClaimMade
+      |                claimType
+      |                mtdLoss
+      |                taxYearLossIncurred
+      |                lossAmountUsed
+      |                remainingLossValue
+      |              }
+      |              defaultCarriedForwardLosses {
+      |                taxYearLossIncurred
+      |                currentLossValue
+      |              }
+      |            }
+      |            bsas {
+      |              bsasId
+      |              applied
+      |            }
+      |          }
+      |          foreignProperty {
+      |            totalIncome
+      |            totalExpenses
+      |            netProfit
+      |            netLoss
+      |            totalAdditions
+      |            totalDeductions
+      |            accountingAdjustments
+      |            adjustedIncomeTaxLoss
+      |            taxableProfit
+      |            taxableProfitAfterIncomeTaxLossesDeduction
+      |            lossClaimsSummary {
+      |              totalBroughtForwardIncomeTaxLosses
+      |              broughtForwardIncomeTaxLossesUsed
+      |              carrySidewaysIncomeTaxLossesUsed
+      |              totalIncomeTaxLossesCarriedForward
+      |              broughtForwardCarrySidewaysIncomeTaxLossesUsed
+      |            }
+      |            lossClaimsDetail {
+      |              lossesBroughtForward {
+      |                taxYearLossIncurred
+      |                currentLossValue
+      |                mtdLoss
+      |              }
+      |              resultOfClaimsApplied {
+      |                claimId
+      |                originatingClaimId
+      |                taxYearClaimMade
+      |                claimType
+      |                mtdLoss
+      |                taxYearLossIncurred
+      |                lossAmountUsed
+      |                remainingLossValue
+      |              }
+      |              defaultCarriedForwardLosses {
+      |                taxYearLossIncurred
+      |                currentLossValue
+      |              }
+      |              claimsNotApplied {
+      |                claimId
+      |                taxYearClaimMade
+      |                claimType
+      |              }
+      |            }
+      |            bsas {
+      |              bsasId
+      |              applied
+      |            }
+      |          }
       |        }
       |      }
       |      savingsAndGains {
@@ -367,8 +547,23 @@ class GetCalculationControllerSpec
       |          netIncome
       |          taxDeducted
       |        }
+      |        ukSecurities {
+      |          ukSecuritiesAccountId
+      |          ukSecuritiesAccountName
+      |          grossIncome
+      |          netIncome
+      |          taxDeducted
+      |        }
       |      }
       |      dividends {
+      |        incomeReceived
+      |        taxableIncome
+      |      }
+      |      lumpSums {
+      |        incomeReceived
+      |        taxableIncome
+      |      }
+      |      gainsOnLifePolicies {
       |        incomeReceived
       |        taxableIncome
       |      }
@@ -490,8 +685,24 @@ class GetCalculationControllerSpec
 
   val body = Json.obj("query" -> query)
 
-  val rawData                = GetCalculationRawData(nino, calcId)
-  val requestData            = GetCalculationRequest(Nino(nino), calcId)
+  val desResponse: JsValue = Json.parse(
+    """{
+      |    "metadata":{
+      |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |       "taxYear": "2018-19",
+      |       "requestedBy": "customer",
+      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |       "calculationReason": "customerRequest",
+      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |       "calculationType": "inYear",
+      |       "intentToCrystallise": false,
+      |       "crystallised": false,
+      |       "calculationErrorCount": 1
+      |       }
+      |}""".stripMargin)
+
+  val rawData = GetCalculationRawData(nino, calcId)
+  val requestData = GetCalculationRequest(Nino(nino), calcId)
 
   "handleRequest" should {
     "return OK with all fields returned" when {
@@ -520,7 +731,7 @@ class GetCalculationControllerSpec
 
             MockGetCalculationParser
               .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), error, None)))
+              .returns(Left(ErrorWrapper(correlationId, error, None)))
 
             val result: Future[Result] = controller.getCalculationGraphQL(nino, calcId)(fakePostRequest(body))
 
@@ -551,7 +762,7 @@ class GetCalculationControllerSpec
 
             MockGetCalculationService
               .getCalculation(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError))))
+              .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError))))
 
             val result: Future[Result] = controller.getCalculationGraphQL(nino, calcId)(fakePostRequest(body))
 

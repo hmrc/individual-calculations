@@ -24,15 +24,20 @@ class Class4LossesSpec extends UnitSpec {
   "Class4Losses" should {
 
     "write correctly to json" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(class4LossesModel) shouldBe class4LossesJson
     }
 
     "read correctly from json" in {
-      json.as[Class4Losses] shouldBe model
+      class4LossesJson.as[Class4Losses] shouldBe class4LossesModel
     }
 
-    "read empty json to an empty object" in {
-      JsObject.empty.as[Class4Losses] shouldBe Class4Losses.empty
+    "read from valid JSON with empty Class4Losses objects" should {
+      "produce an empty Class4Losses object" in {
+        val emptyJson = JsObject.empty
+
+        emptyJson.as[Class4Losses] shouldBe Class4Losses.empty
+      }
     }
+
   }
 }

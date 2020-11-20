@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.summary.IncomeTaxSummaryFixtures._
 
@@ -27,14 +27,34 @@ class IncomeTaxSummarySpec extends UnitSpec {
     "read from json correctly" when {
 
       "provided with valid json" in {
-        json.as[IncomeTaxSummary] shouldBe model
+        incomeTaxSummaryJson.as[IncomeTaxSummary] shouldBe incomeTaxSummaryModel
       }
     }
 
     "write to json correctly" when {
 
       "a valid model is provided" in {
-        Json.toJson(model) shouldBe json
+        Json.toJson(incomeTaxSummaryModel) shouldBe incomeTaxSummaryJson
+      }
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |   "incomeTaxCharged": true,
+            |   "incomeTaxDueAfterReliefs": 1525.22,
+            |   "incomeTaxDueAfterGiftAid": 120.10,
+            |   "totalNotionalTax": 1900.58,
+            |   "totalPensionSavingsTaxCharges": 2000.58,
+            |   "statePensionLumpSumCharges": 300.99,
+            |   "incomeTaxDueAfterTaxReductions": 1300.58,
+            |   "totalIncomeTaxDue": 1000.58
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[IncomeTaxSummary] shouldBe a[JsError]
       }
     }
   }

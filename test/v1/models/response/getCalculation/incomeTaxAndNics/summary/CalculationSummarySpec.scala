@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.summary.CalculationSummaryFixtures._
 
@@ -27,22 +27,57 @@ class CalculationSummarySpec extends UnitSpec {
     "write to json correctly" when {
 
       "provided with the minimum model" in {
-        Json.toJson(minModel) shouldBe minOutputJson
+        Json.toJson(calcSummaryMinModel) shouldBe calcSummaryMinOutputJson
       }
     }
 
     "read from json correctly" when {
 
       "provided with the minimum json" in {
-        minInputJson.validate[CalculationSummary] shouldBe JsSuccess(minModel)
+        calcSummaryMinInputJson.validate[CalculationSummary] shouldBe JsSuccess(calcSummaryMinModel)
       }
 
       "provided with json with empty models" in {
-        inputJsonWithEmptyModels.validate[CalculationSummary] shouldBe JsSuccess(minModel)
+        calcSummaryInputJsonWithEmptyModels.validate[CalculationSummary] shouldBe JsSuccess(calcSummaryMinModel)
       }
 
       "provided with a filled top level json" in {
-        filledInputJson.validate[CalculationSummary] shouldBe JsSuccess(filledModel)
+        calcSummaryFilledInputJson.validate[CalculationSummary] shouldBe JsSuccess(calcSummaryFilledModel)
+      }
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |   "calculation":{
+            |      "taxCalculation":{
+            |         "incomeTax":{
+            |            "incomeTaxCharged": true
+            |         },
+            |         "nics":{
+            |            "class2Nics":{
+            |               "amount": 200.25
+            |            }
+            |         },
+            |         "totalStudentLoansRepaymentAmount": 100.25,
+            |         "totalAnnualPaymentsTaxCharged": 200.25,
+            |         "totalRoyaltyPaymentsTaxCharged": 300.25,
+            |         "totalIncomeTaxNicsCharged": 400.25,
+            |         "totalTaxDeducted": 500.25,
+            |         "totalIncomeTaxAndNicsDue": 600.25
+            |      }
+            |   },
+            |   "inputs":{
+            |      "personalInformation":{
+            |         "taxRegime": "UK"
+            |      }
+            |   }
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[CalculationSummary] shouldBe a[JsError]
       }
     }
   }

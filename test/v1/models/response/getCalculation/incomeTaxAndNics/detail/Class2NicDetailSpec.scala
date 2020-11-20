@@ -16,18 +16,37 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.detail.Class2NicDetailFixtures._
 
 class Class2NicDetailSpec extends UnitSpec {
   "Class2NicDetail" should {
+
     "write correctly to json" in {
-      Json.toJson(model) shouldBe json
+      Json.toJson(class2NicDetailModel) shouldBe class2NicDetailJson
     }
 
     "read correctly from json" in {
-      json.validate[Class2NicDetail] shouldBe JsSuccess(model)
+      class2NicDetailJson.validate[Class2NicDetail] shouldBe JsSuccess(class2NicDetailModel)
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |   "weeklyRate" : true,
+            |   "weeks" : 200.25,
+            |   "limit" : 300.25,
+            |   "apportionedLimit" : 400.25,
+            |   "underSmallProfitThreshold" : true,
+            |   "actualClass2Nic" : false
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[Class2NicDetail] shouldBe a[JsError]
+      }
     }
   }
 }

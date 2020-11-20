@@ -35,6 +35,8 @@ object ErrorFixtures {
     val model = DesErrorCode("CODE")
   }
 
+  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+
   object SingleError {
     val jsonAsString = """{
                          |   "code": "FORMAT_NINO",
@@ -43,8 +45,8 @@ object ErrorFixtures {
 
     val json = Json.parse(jsonAsString)
 
-    val model             = ErrorWrapper(None, NinoFormatError, None)
-    val modelWithEmptySeq = ErrorWrapper(None, NinoFormatError, Some(Seq.empty))
+    val model             = ErrorWrapper(correlationId, NinoFormatError, None)
+    val modelWithEmptySeq = ErrorWrapper(correlationId, NinoFormatError, Some(Seq.empty))
   }
 
   object MultipleErrors {
@@ -68,6 +70,6 @@ object ErrorFixtures {
       """.stripMargin
     )
 
-    val model = ErrorWrapper(None, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))
+    val model = ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, TaxYearFormatError)))
   }
 }

@@ -20,6 +20,7 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
+import v1.mocks.MockIdGenerator
 import v1.mocks.requestParsers.MockListCalculationsParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockListCalculationsService, MockMtdIdLookupService}
 import v1.models.domain.{CalculationRequestor, CalculationType}
@@ -37,7 +38,13 @@ class ListCalculationsControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockListCalculationsParser
-    with MockListCalculationsService {
+    with MockListCalculationsService
+    with MockIdGenerator {
+
+  private val nino          = "AA123456A"
+  private val taxYear       =  "2017-18"
+  private val correlationId = "X-123"
+
 
   trait Test {
     val hc = HeaderCarrier()
@@ -47,17 +54,14 @@ class ListCalculationsControllerSpec
       listCalculationsParser = mockListCalculationsParser,
       lookupService = mockMtdIdLookupService,
       listCalculationsService = mockListCalculationsService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
-
-  private val nino          = "AA123456A"
-  private val taxYear       =  "2017-18"
-  private val correlationId = "X-123"
-
 
   val responseBody: JsValue = Json.parse(
     """{
@@ -130,7 +134,7 @@ class ListCalculationsControllerSpec
 
             MockListCalculationsParser
               .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), error, None)))
+              .returns(Left(ErrorWrapper(correlationId, error, None)))
 
             val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
 
@@ -162,7 +166,7 @@ class ListCalculationsControllerSpec
 
             MockListCalculationsService
               .listCalculations(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError))))
+              .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError))))
 
             val result: Future[Result] = controller.listCalculations(nino, taxYear)(fakeGetRequest)
 

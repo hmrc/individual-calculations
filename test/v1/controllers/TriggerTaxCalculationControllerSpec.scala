@@ -20,6 +20,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsJson, Result}
 import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
+import v1.mocks.MockIdGenerator
 import v1.mocks.requestParsers.MockTriggerTaxCalculationParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockMtdIdLookupService, MockTriggerTaxCalculationService}
 import v1.models.errors._
@@ -35,7 +36,12 @@ class TriggerTaxCalculationControllerSpec
     with MockEnrolmentsAuthService
     with MockMtdIdLookupService
     with MockTriggerTaxCalculationParser
-    with MockTriggerTaxCalculationService {
+    with MockTriggerTaxCalculationService
+    with MockIdGenerator {
+
+  private val nino          = "AA123456A"
+  private val correlationId = "X-123"
+  private val calcId        = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   trait Test {
     val hc = HeaderCarrier()
@@ -45,16 +51,14 @@ class TriggerTaxCalculationControllerSpec
       requestDataParser = mockTriggerTaxCalculationParser,
       lookupService = mockMtdIdLookupService,
       triggerTaxCalcService = mockTriggerTaxCalculationService,
-      cc = cc
+      cc = cc,
+      idGenerator = mockIdGenerator
     )
 
     MockedMtdIdLookupService.lookup(nino).returns(Future.successful(Right("test-mtd-id")))
     MockedEnrolmentsAuthService.authoriseUser()
+    MockIdGenerator.getCorrelationId.returns(correlationId)
   }
-
-  private val nino          = "AA123456A"
-  private val correlationId = "X-123"
-  private val calcId        = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   private val requestBodyJson = Json.parse("""{
                                              |  "taxYear" : "2017-18"
@@ -98,7 +102,7 @@ class TriggerTaxCalculationControllerSpec
 
             MockTriggerTaxCalculationParser
               .parse(rawData)
-              .returns(Left(ErrorWrapper(Some(correlationId), error, None)))
+              .returns(Left(ErrorWrapper(correlationId, error, None)))
 
             val result: Future[Result] = controller.triggerTaxCalculation(nino)(fakePostRequest(requestBodyJson))
 
@@ -130,7 +134,7 @@ class TriggerTaxCalculationControllerSpec
 
             MockTriggerTaxCalculationService
               .triggerTaxCalculation(requestData)
-              .returns(Future.successful(Left(ErrorWrapper(Some(correlationId), mtdError))))
+              .returns(Future.successful(Left(ErrorWrapper(correlationId, mtdError))))
 
             val result: Future[Result] = controller.triggerTaxCalculation(nino)(fakePostRequest(requestBodyJson))
 

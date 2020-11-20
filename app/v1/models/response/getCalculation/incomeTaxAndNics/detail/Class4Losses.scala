@@ -31,5 +31,3 @@ object Class4Losses {
   implicit def gqlType: ObjectType[Unit, Class4Losses] = deriveObjectType[Unit, Class4Losses]()
 
 }
-
-

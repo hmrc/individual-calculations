@@ -21,23 +21,32 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.{IncomeTypeBrea
 
 object IncomeTypeBreakdownFixtures {
 
-  val json: JsValue = Json.parse("""
+  val incomeTypeBreakdownJson: JsValue = Json.parse(
+    """
       |{
       | "allowancesAllocated" : 100,
       | "incomeTaxAmount" : 200.25,
       | "taxBands" : [
       |   {
       |     "name" : "name",
-      |     "rate" : 300.25,
-      |     "bandLimit" : 600,
-      |     "apportionedBandLimit" : 700,
-      |     "income" : 800,
-      |     "taxAmount" : 900.25
+      |     "rate" : 50.50,
+      |     "bandLimit" : 400,
+      |     "apportionedBandLimit" : 500,
+      |     "income" : 600,
+      |     "taxAmount" : 700.25
       |   }
       | ]
       |}
     """.stripMargin)
 
-  val model = IncomeTypeBreakdown(100, 200.25, Some(Seq(TaxBand("name", 300.25, 600, 700, 800, 900.25))))
-
+  val incomeTypeBreakdownModel =
+    IncomeTypeBreakdown(100, 200.25,
+      Some(
+        Seq(
+          TaxBand(
+            "name", 50.50, 400, 500, 600, 700.25
+          )
+        )
+      )
+    )
 }

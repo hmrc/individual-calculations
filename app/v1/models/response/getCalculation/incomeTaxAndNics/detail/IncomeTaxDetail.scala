@@ -21,20 +21,25 @@ import play.api.libs.json._
 import sangria.macros.derive.deriveObjectType
 import sangria.schema.ObjectType
 import utils.NestedJsonReads
+
 case class IncomeTaxDetail(payPensionsProfit: Option[IncomeTypeBreakdown],
                            savingsAndGains: Option[IncomeTypeBreakdown],
+                           lumpSums: Option[IncomeTypeBreakdown],
                            dividends: Option[IncomeTypeBreakdown],
+                           gainsOnLifePolicies: Option[IncomeTypeBreakdown],
                            giftAid: Option[GiftAid])
 
 object IncomeTaxDetail extends NestedJsonReads {
-  val empty = IncomeTaxDetail(None, None, None, None)
+  val empty = IncomeTaxDetail(None, None, None, None, None, None)
 
   implicit val writes: OWrites[IncomeTaxDetail] = Json.writes[IncomeTaxDetail]
 
   implicit val reads: Reads[IncomeTaxDetail] = (
     (JsPath \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit").readNestedNullable[IncomeTypeBreakdown] and
       (JsPath \ "taxCalculation" \ "incomeTax" \ "savingsAndGains").readNestedNullable[IncomeTypeBreakdown] and
+      (JsPath \ "taxCalculation" \ "incomeTax" \ "lumpSums").readNestedNullable[IncomeTypeBreakdown] and
       (JsPath \ "taxCalculation" \ "incomeTax" \ "dividends").readNestedNullable[IncomeTypeBreakdown] and
+      (JsPath \ "taxCalculation" \ "incomeTax" \ "gainsOnLifePolicies").readNestedNullable[IncomeTypeBreakdown] and
       (JsPath \ "giftAid").readNullable[GiftAid]
     ) (IncomeTaxDetail.apply _)
 

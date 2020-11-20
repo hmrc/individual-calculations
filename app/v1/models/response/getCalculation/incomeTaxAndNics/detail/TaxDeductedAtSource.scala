@@ -20,19 +20,30 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import sangria.macros.derive.deriveObjectType
 import sangria.schema.ObjectType
-case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
-                               savings: Option[BigDecimal],
-                               cis: Option[BigDecimal])
+
+case class TaxDeductedAtSource(ukLandAndProperty: Option[BigInt],
+                               savings: Option[BigInt],
+                               cis: Option[BigDecimal],
+                               securities: Option[BigDecimal],
+                               voidedIsa: Option[BigDecimal],
+                               payeEmployments: Option[BigDecimal],
+                               occupationalPensions: Option[BigDecimal],
+                               stateBenefits: Option[BigDecimal])
 
 object TaxDeductedAtSource {
-  val empty = TaxDeductedAtSource(None, None, None)
+  val empty = TaxDeductedAtSource(None, None, None, None, None, None, None, None)
 
   implicit val writes: OWrites[TaxDeductedAtSource] = Json.writes[TaxDeductedAtSource]
 
   implicit val reads: Reads[TaxDeductedAtSource] = (
-    (JsPath \ "ukLandAndProperty").readNullable[BigDecimal] and
-      (JsPath \ "bbsi").readNullable[BigDecimal] and
-      (JsPath \ "cis").readNullable[BigDecimal]
+    (JsPath \ "ukLandAndProperty").readNullable[BigInt] and
+      (JsPath \ "savings").readNullable[BigInt] and
+      (JsPath \ "cis").readNullable[BigDecimal] and
+      (JsPath \ "securities").readNullable[BigDecimal] and
+      (JsPath \ "voidedIsa").readNullable[BigDecimal] and
+      (JsPath \ "payeEmployments").readNullable[BigDecimal] and
+      (JsPath \ "occupationalPensions").readNullable[BigDecimal] and
+      (JsPath \ "stateBenefits").readNullable[BigDecimal]
     ) (TaxDeductedAtSource.apply _)
 
   implicit def gqlType: ObjectType[Unit, TaxDeductedAtSource] = deriveObjectType[Unit, TaxDeductedAtSource]()

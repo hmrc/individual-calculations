@@ -43,6 +43,13 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
         |    intentToCrystallise
         |    crystallised
         |    calculationErrorCount
+        |    metadataExistence {
+        |      incomeTaxAndNicsCalculated
+        |      messages
+        |      taxableIncome
+        |      endOfYearEstimate
+        |      allowancesDeductionsAndReliefs
+        |    }
         |  }
         |  messages {
         |    errors {
@@ -107,7 +114,14 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
       |      "calculationType": "inYear",
       |      "intentToCrystallise": false,
       |      "crystallised": false,
-      |      "calculationErrorCount": 1
+      |      "calculationErrorCount": 1,
+      |      "metadataExistence": {
+      |         "incomeTaxAndNicsCalculated":false,
+      |         "messages":true,
+      |         "taxableIncome":false,
+      |         "endOfYearEstimate":false,
+      |         "allowancesDeductionsAndReliefs":false
+      |       }
       |    },
       |    "messages" :{
       |      "errors":[
@@ -230,7 +244,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
     }
   }
 
-  "Calling the sample endpoint" should {
+  "Calling the Get Calculation endpoint" should {
 
     "return a 200 status code" when {
 
@@ -264,12 +278,19 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
                                            |       "calculationType": "inYear",
                                            |       "intentToCrystallise": false,
                                            |       "crystallised": false,
-                                           |       "calculationErrorCount": 1
-                                           |       },
+                                           |       "calculationErrorCount": 1,
+                                           |       "metadataExistence": {
+                                           |         "incomeTaxAndNicsCalculated":false,
+                                           |         "messages":true,
+                                           |         "taxableIncome":false,
+                                           |         "endOfYearEstimate":false,
+                                           |         "allowancesDeductionsAndReliefs":false
+                                           |       }
+                                           |     },
                                            |     "messages" :{
-                                           |        "errors":[
-                                           |        {"id":"id1", "text":"text1"}
-                                           |        ]
+                                           |       "errors":[
+                                           |         {"id":"id1", "text":"text1"}
+                                           |       ]
                                            |     }
                                            |}""".stripMargin)
 

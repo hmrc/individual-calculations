@@ -37,7 +37,10 @@ class ListCalculationsService @Inject()(connector: TaxCalcConnector) extends Des
 
   private val surfacedCalculationTypes = List(CalculationType.crystallisation, CalculationType.inYear)
 
-  def listCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext, logContext: EndpointLogContext):
+  def listCalculations(request: ListCalculationsRequest)(implicit hc: HeaderCarrier,
+                                                         ec: ExecutionContext,
+                                                         logContext: EndpointLogContext,
+                                                         correlationId: String):
   Future[Either[ErrorWrapper, ResponseWrapper[ListCalculationsResponse]]] = {
 
     val result = for {

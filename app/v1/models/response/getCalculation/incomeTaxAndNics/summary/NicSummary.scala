@@ -21,6 +21,7 @@ import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import sangria.macros.derive._
 import sangria.schema._
 import utils.NestedJsonReads
+
 case class NicSummary(
                        class2NicsAmount: Option[BigDecimal],
                        class4NicsAmount: Option[BigDecimal],

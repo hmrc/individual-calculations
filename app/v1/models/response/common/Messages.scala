@@ -20,12 +20,12 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import sangria.macros.derive.deriveObjectType
 import sangria.schema.ObjectType
-import utils.NestedJsonReads._
-case class Message(id: String, text: String) {
-}
+import utils.NestedJsonReads
 
-object Message {
-  implicit val format: OFormat[Message] = Json.format[Message]
+  case class Message(id: String, text: String){
+  }
+  object Message {
+    implicit val format: OFormat[Message] = Json.format[Message]
 
   implicit def gqlType: ObjectType[Unit, Message] = deriveObjectType[Unit, Message]()
 
@@ -33,25 +33,22 @@ object Message {
 
 case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]])
 
-object Messages {
+object Messages extends NestedJsonReads {
   val empty = Messages(None, None, None)
 
   implicit val writes: OWrites[Messages] = Json.writes[Messages]
   implicit val reads: Reads[Messages] = (
     (__ \ "messages" \ "info").readNestedNullable[Seq[Message]].map {
       case Some(info) if info.nonEmpty => Some(info)
-      case _                           => None
-    }
+      case _ => None}
       and
       (__ \ "messages" \ "warnings").readNestedNullable[Seq[Message]].map {
         case Some(warns) if warns.nonEmpty => Some(warns)
-        case _                             => None
-      }
+        case _ => None}
       and
       (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]].map {
         case Some(errs) if errs.nonEmpty => Some(errs)
-        case _                           => None
-      }) (Messages.apply _)
+        case _ => None})(Messages.apply _)
 
   implicit def gqlType: ObjectType[Unit, Messages] = deriveObjectType[Unit, Messages]()
 

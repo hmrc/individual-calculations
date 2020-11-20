@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.incomeTaxAndNics
 
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.incomeTaxAndNics.IncomeTaxFixtures._
 
@@ -25,11 +25,40 @@ class IncomeTaxSpec extends UnitSpec {
   "IncomeTax" should {
 
     "read from json correctly" in {
-      json.validate[IncomeTax] shouldBe JsSuccess(model)
+      incomeTaxJson.validate[IncomeTax] shouldBe JsSuccess(incomeTaxModel)
     }
 
     "write to json correctly" in {
-      Json.toJson(model) shouldBe outputJson
+      Json.toJson(incomeTaxModel) shouldBe incomeTaxOutputJson
+    }
+
+    "read from invalid JSON" should {
+      "produce a JsError" in {
+        val invalidJson = Json.parse(
+          """
+            |{
+            |   "calculation":{
+            |      "taxCalculation":{
+            |         "incomeTax":{
+            |            "incomeTaxCharged": true,
+            |            "payPensionsProfit":{
+            |               "allowancesAllocated": 300,
+            |               "incomeTaxAmount": 400.25
+            |            }
+            |         },
+            |         "totalIncomeTaxAndNicsDue": 200.25
+            |      }
+            |   },
+            |   "inputs":{
+            |      "personalInformation":{
+            |         "taxRegime": "UK"
+            |      }
+            |   }
+            |}
+          """.stripMargin
+        )
+        invalidJson.validate[IncomeTax] shouldBe a[JsError]
+      }
     }
   }
 }

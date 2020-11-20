@@ -36,8 +36,8 @@ trait MockGetCalculationService extends MockFactory {
 
     def getCalculation(requestData: GetCalculationRequest): CallHandler[Future[Either[ErrorWrapper, ResponseWrapper[GetCalculationResponse]]]] = {
       (mockGetCalculationService
-        .getCalculation(_: GetCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext))
-        .expects(requestData, *, *, *)
+        .getCalculation(_: GetCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: EndpointLogContext, _: String))
+        .expects(requestData, *, *, *, *)
     }
   }
 }

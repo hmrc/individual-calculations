@@ -56,6 +56,35 @@ trait NestedJsonReads {
       )
     }
 
+    /**
+      * Reads method for an optional sequence of generic type T. Uses `filteredArrayReads` method to filter
+      * sequence of JSON for items with a given `incomeSourceType` field value (i.e "01") before attempting to read in
+      * items as type T. If an empty sequence is returned `Some(Seq())` it is converted into `None`.
+      */
+    def readIncomeSourceTypeSeq[T](incomeSourceType: String)(implicit rds: Reads[T]): Reads[Option[Seq[T]]] = Reads[Option[Seq[T]]] { json =>
+      json.validate(
+        readNestedNullable[Seq[T]](filteredArrayReads(
+          filterName = "incomeSourceType",
+          matching = incomeSourceType
+        )).mapEmptySeqToNone
+      )
+    }
+
+    /**
+      * Reads method for an optional item of generic type T. Uses `filteredArrayValueReads` method to filter
+      * sequence of JSON for any items with a given `incomeSourceType` field value (i.e "01") before attempting to read in
+      * first matching item as type T. If a matching value is not found `None` should be returned.
+      */
+    def readIncomeSourceTypeItem[T](incomeSourceType: String)(implicit rds: Reads[T]): Reads[Option[T]] = Reads[Option[T]] { json =>
+      json.validate(
+        readNestedNullableOpt[T](filteredArrayValueReads(
+          None,
+          filterName = "incomeSourceType",
+          matching = incomeSourceType
+        ))
+      )
+    }
+
     private def applyTillLastNested(json: JsValue): Either[JsError, JsResult[JsValue]] = {
       def singleJsError(msg: String) = JsError(Seq(jsPath -> Seq(JsonValidationError(msg))))
       @tailrec
@@ -87,11 +116,10 @@ trait NestedJsonReads {
     /**
      * Returns a Reads that returns a model unless all nested fields are empty
      */
-    def mapEmptyModelToNone(empty: A): Reads[Option[A]] =
-      reads.map {
-        case Some(model) if model == empty => None
-        case other => other
-      }
+    def mapEmptyModelToNone(empty: A): Reads[Option[A]] = reads.map {
+      case Some(model) if model == empty => None
+      case other => other
+    }
   }
 
   /**
@@ -101,28 +129,25 @@ trait NestedJsonReads {
     /**
      * Returns a Reads that maps the sequence to itself unless it is empty
      */
-    def mapEmptySeqToNone: Reads[Option[Seq[A]]] =
-      reads.map {
-        case Some(Nil) => None
-        case other => other
-      }
+    def mapEmptySeqToNone: Reads[Option[Seq[A]]] = reads.map {
+      case Some(Nil) => None
+      case other => other
+    }
 
     /**
      * Returns a Reads that maps the sequence to its head unless it is empty
      */
-    def mapHeadOption: Reads[Option[A]] =
-      reads.map {
-        case Some(x) => x.headOption
-        case None => None
-      }
+    def mapHeadOption: Reads[Option[A]] = reads.map {
+      case Some(x) => x.headOption
+      case None => None
+    }
   }
 
   /*  Json Reads that replaces the standard reads for a sequence of type T. Instead of immediately reading in the json
       this takes the raw json sequence and filters out all elements which do not include the required matching element.
       After the filter it executes the standard json reads for the type T to read in only the filtered values.
    */
-  def filteredArrayReads[T](filterName: String, matching: String)(implicit rds: Reads[Seq[T]]): Reads[Seq[T]] = new Reads[Seq[T]] {
-    override def reads(json: JsValue): JsResult[Seq[T]] = {
+  def filteredArrayReads[T](filterName: String, matching: String)(implicit rds: Reads[Seq[T]]): Reads[Seq[T]] = (json: JsValue) => {
       json
         .validate[Seq[JsValue]]
         .flatMap(
@@ -133,7 +158,6 @@ trait NestedJsonReads {
               })
               .validate[Seq[T]])
     }
-  }
 
   /* Json Reads that replaces the standard reads for an optional value of type T from a sequence of json values. Instead
       of immediately reading in the value it first takes the array of json values and identifies which element, if any,
@@ -142,25 +166,23 @@ trait NestedJsonReads {
       matching json object or all top level elements depending on whether a specific element is provided.
    */
   def filteredArrayValueReads[T](fieldName: Option[String], filterName: String, matching: String)(implicit rds: Reads[T]): Reads[Option[T]] =
-    new Reads[Option[T]] {
-      override def reads(json: JsValue): JsResult[Option[T]] = {
-        json
-          .validate[Seq[JsValue]]
-          .flatMap(
-            readJson =>
-              Json
-                .toJson(readJson
-                  .find { element =>
-                    element.\(filterName).asOpt[String].contains(matching)
+    (json: JsValue) => {
+      json
+        .validate[Seq[JsValue]]
+        .flatMap(
+          readJson =>
+            Json
+              .toJson(readJson
+                .find { element =>
+                  element.\(filterName).asOpt[String].contains(matching)
+                }
+                .map { jsValue =>
+                  fieldName match {
+                    case Some(name) => jsValue.\(name).getOrElse(Json.obj())
+                    case None => jsValue
                   }
-                  .map { jsValue =>
-                    fieldName match {
-                      case Some(name) => jsValue.\(name).getOrElse(Json.obj())
-                      case None       => jsValue
-                    }
-                  })
-                .validateOpt[T])
-      }
+                })
+              .validateOpt[T])
     }
 
   /**
@@ -172,5 +194,3 @@ trait NestedJsonReads {
   def emptyIfNotPresent[A: Reads](path: JsPath): Reads[Option[A]] =
     path.readNestedNullable[JsValue].filter(_.isEmpty).map(_ => None) or JsPath.readNullable[A]
 }
-
-object NestedJsonReads extends NestedJsonReads

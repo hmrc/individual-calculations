@@ -35,7 +35,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class TriggerTaxCalculationService @Inject()(connector: TaxCalcConnector) extends DesResponseMappingSupport with Logging {
 
 
-  def triggerTaxCalculation(request: TriggerTaxCalculationRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext, logContext: EndpointLogContext):
+  def triggerTaxCalculation(request: TriggerTaxCalculationRequest)(implicit hc: HeaderCarrier,
+                                                                   ec: ExecutionContext,
+                                                                   logContext: EndpointLogContext,
+                                                                   correlationId: String):
   Future[Either[ErrorWrapper, ResponseWrapper[TriggerCalculationResponse]]] = {
 
     val result = for {

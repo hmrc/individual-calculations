@@ -23,6 +23,8 @@ import sangria.schema._
 import utils.NestedJsonReads
 import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.request.DesTaxYear
+import v1.models.response.getCalculation.MetadataExistence
+
 case class Metadata(id: String,
                     taxYear: String,
                     requestedBy: CalculationRequestor,
@@ -33,7 +35,8 @@ case class Metadata(id: String,
                     intentToCrystallise: Boolean,
                     crystallised: Boolean,
                     totalIncomeTaxAndNicsDue: Option[BigDecimal],
-                    calculationErrorCount: Option[Int])
+                    calculationErrorCount: Option[Int],
+                    metadataExistence: Option[MetadataExistence] = None)
 
 
 object Metadata extends NestedJsonReads {
@@ -52,12 +55,12 @@ object Metadata extends NestedJsonReads {
       (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]].map {
         case Some(errs) if errs.nonEmpty => Some(errs.length)
         case _                           => None
-      }
+      } and
+      Reads(_ => JsResult.applicativeJsResult.pure(None))
     ) (Metadata.apply _)
 
 
-
-  implicit def gqlType =
+  implicit def gqlType: ObjectType[Unit, Metadata] =
     deriveObjectType[Unit, Metadata](
       ReplaceField("requestedBy", Field("requestedBy", StringType, resolve = _.value.requestedBy.toString)),
       ReplaceField("calculationReason", Field("calculationReason", StringType, resolve = _.value.calculationReason.toString)),

@@ -27,17 +27,13 @@ import v1.models.response.getCalculation.endOfYearEstimate.EoyEstimate
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
-case class GetCalculationResponse(
-                                   metadata: Metadata,
-                                   incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
-                                   messages: Option[Messages] = None,
-                                   taxableIncome: Option[TaxableIncome] = None,
-                                   endOfYearEstimate: Option[EoyEstimate] = None,
-                                   allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None
-                                 )
+case class GetCalculationResponse(metadata: Metadata,
+                                  incomeTaxAndNicsCalculated: Option[IncomeTax] = None,
+                                  messages: Option[Messages] = None,
+                                  taxableIncome: Option[TaxableIncome] = None,
+                                  endOfYearEstimate: Option[EoyEstimate] = None,
+                                  allowancesDeductionsAndReliefs: Option[AllowancesDeductionsAndReliefs] = None)
 
-
-//noinspection ScalaStyle
 object GetCalculationResponse extends NestedJsonReads {
   implicit val writes: OWrites[GetCalculationResponse] = Json.writes[GetCalculationResponse]
 
@@ -47,7 +43,7 @@ object GetCalculationResponse extends NestedJsonReads {
         emptyIfNotPresent[IncomeTax](__ \ "calculation") and
         JsPath.readNullable[Messages].map {
           case Some(Messages.empty) => None
-          case other                => other
+          case other => other
         } and
         emptyIfNotPresent[TaxableIncome](__ \ "calculation") and
         (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate] and
@@ -56,6 +52,7 @@ object GetCalculationResponse extends NestedJsonReads {
 
   def gqlType: ObjectType[Unit, GetCalculationResponse] = deriveObjectType[Unit, GetCalculationResponse]()
 
+  //noinspection ScalaStyle
   private def Query: ObjectType[GetCalculationResponse, Unit] = ObjectType(
     name = "Query",
     fields[GetCalculationResponse, Unit] (

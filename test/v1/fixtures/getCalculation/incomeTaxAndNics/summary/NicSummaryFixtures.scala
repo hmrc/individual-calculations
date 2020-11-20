@@ -21,37 +21,43 @@ import v1.models.response.getCalculation.incomeTaxAndNics.summary.NicSummary
 
 object NicSummaryFixtures {
 
-  val filledJson: JsValue = Json.parse("""
+  val nicSummaryFilledJson: JsValue = Json.parse(
+    """
       |{
-      | "class2Nics" : {
-      |   "amount" : 100.25
-      | },
-      | "class4Nics" : {
-      |   "totalAmount" : 200.25
-      | },
-      | "totalNic" : 300.25
+      |   "class2Nics":{
+      |      "amount": 100.25
+      |   },
+      |   "class4Nics":{
+      |      "totalAmount": 200.25
+      |   },
+      |   "totalNic": 300.25
       |}
     """.stripMargin)
 
-  val emptyModelJson: JsValue = Json.parse("""
+  val nicSummaryEmptyModelJson: JsValue = Json.parse(
+    """
       |{
-      | "class2Nics" : {
-      | },
-      | "class4Nics" : {
-      | }
+      |   "class2Nics":{
+      |
+      |   },
+      |   "class4Nics":{
+      |
+      |   }
       |}
     """.stripMargin)
 
-  val outputJson: JsValue = Json.parse("""
+  val nicSummaryOutputJson: JsValue = Json.parse(
+    """
       |{
-      | "class2NicsAmount" : 100.25,
-      | "class4NicsAmount" : 200.25,
-      | "totalNic" : 300.25
+      |   "class2NicsAmount": 100.25,
+      |   "class4NicsAmount": 200.25,
+      |   "totalNic": 300.25
       |}
     """.stripMargin)
 
-  val emptyJson: JsValue = Json.obj()
+  val nicSummaryEmptyJson: JsValue = Json.obj()
 
-  val filledModel = NicSummary(Some(100.25), Some(200.25), Some(300.25))
-
+  val nicSummaryFilledModel = NicSummary(
+    Some(100.25), Some(200.25), Some(300.25)
+  )
 }

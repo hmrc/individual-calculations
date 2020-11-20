@@ -21,13 +21,13 @@ import cats.implicits._
 import javax.inject.{Inject, Singleton}
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.Logging
-import v1.connectors.TaxCalcConnector
+import v1.connectors.{DesOutcome, TaxCalcConnector}
 import v1.controllers.EndpointLogContext
 import v1.models.domain.CalculationType
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRequest
-import v1.models.response.getCalculation.GetCalculationResponse
+import v1.models.response.getCalculation.{GetCalculationResponse, MetadataExistence}
 import v1.support.DesResponseMappingSupport
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,15 +38,32 @@ class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesRe
   private val surfacedCalculationTypes = List(CalculationType.crystallisation, CalculationType.inYear)
 
   def getCalculation(request: GetCalculationRequest)(
-      implicit hc: HeaderCarrier,
-      ec: ExecutionContext,
-      logContext: EndpointLogContext): Future[Either[ErrorWrapper, ResponseWrapper[GetCalculationResponse]]] = {
+    implicit hc: HeaderCarrier,
+    ec: ExecutionContext,
+    logContext: EndpointLogContext,
+    correlationId: String): Future[Either[ErrorWrapper, ResponseWrapper[GetCalculationResponse]]] = {
 
     val result = for {
-      desResponseWrapper <- EitherT(connector.getCalculation(request)).leftMap(mapDesErrors(desErrorMap))
-    } yield desResponseWrapper
-    result.flatMap(_.toErrorWhen(nonMatchingCalcFilter).toEitherT).value
+      desResponseWrapper <- EitherT(connector.getCalculation(request))
+      desResponseWithMetadata <- EitherT(addMetadata((desResponseWrapper)))
+    } yield desResponseWithMetadata
+    result.leftMap(mapDesErrors(desErrorMap)).flatMap(_.toErrorWhen(nonMatchingCalcFilter).toEitherT).value
   }
+
+  private def addMetadata(desResponseWrapper: ResponseWrapper[GetCalculationResponse]): Future[DesOutcome[GetCalculationResponse]] =
+    Future.successful { Right {
+      desResponseWrapper.map { res =>
+        res.copy(res.metadata.copy(metadataExistence = Some(
+          MetadataExistence(
+            incomeTaxAndNicsCalculated = res.incomeTaxAndNicsCalculated.isDefined,
+            messages = res.messages.isDefined,
+            taxableIncome = res.taxableIncome.isDefined,
+            endOfYearEstimate = res.endOfYearEstimate.isDefined,
+            allowancesDeductionsAndReliefs = res.allowancesDeductionsAndReliefs.isDefined
+          )
+        )))
+      }
+    }}
 
   private def nonMatchingCalcFilter: PartialFunction[GetCalculationResponse, MtdError] = {
     new PartialFunction[GetCalculationResponse, MtdError] {

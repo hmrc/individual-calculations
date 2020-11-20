@@ -21,14 +21,29 @@ import v1.models.response.getCalculation.incomeTaxAndNics.summary.IncomeTaxSumma
 
 object IncomeTaxSummaryFixtures {
 
-  val json: JsValue = Json.parse("""
+  val incomeTaxSummaryJson: JsValue = Json.parse(
+    """
       |{
-      | "incomeTaxCharged" : 2000.00,
-      | "incomeTaxDueAfterReliefs" : 1525.22,
-      | "incomeTaxDueAfterGiftAid" : 120.10
+      |   "incomeTaxCharged": 2000.00,
+      |   "incomeTaxDueAfterReliefs": 1525.22,
+      |   "incomeTaxDueAfterGiftAid": 120.10,
+      |   "totalNotionalTax": 1900.58,
+      |   "totalPensionSavingsTaxCharges": 2000.58,
+      |   "statePensionLumpSumCharges": 4300.99,
+      |   "incomeTaxDueAfterTaxReductions": 1300.58,
+      |   "totalIncomeTaxDue": 1000.58
       |}
     """.stripMargin)
 
-  val model = IncomeTaxSummary(2000.00, Some(1525.22), Some(120.10))
-
+  val incomeTaxSummaryModel =
+    IncomeTaxSummary(
+      2000.00,
+      Some(1525.22),
+      Some(120.10),
+      Some(1900.58),
+      Some(2000.58),
+      Some(4300.99),
+      Some(1300.58),
+      Some(1000.58)
+    )
 }
