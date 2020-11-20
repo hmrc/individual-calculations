@@ -22,7 +22,7 @@ import sangria.schema.ObjectType
 
 case class OverseasPensionContributions(totalShortServiceRefund: BigDecimal,
                                         totalShortServiceRefundCharge: BigDecimal,
-                                        shortServiceTaxPaid: Option[BigDecimal],
+                                        shortServiceRefundTaxPaid: Option[BigDecimal],
                                         totalShortServiceRefundChargeDue: BigDecimal,
                                         shortServiceRefundBands: Option[Seq[ShortServiceRefundBands]])
 
