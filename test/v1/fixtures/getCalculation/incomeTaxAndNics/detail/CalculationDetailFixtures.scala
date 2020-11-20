@@ -105,7 +105,7 @@ object CalculationDetailFixtures {
       |                     "shortServiceRefundCharge":750.99
       |                  }
       |               ],
-      |               "shortServiceTaxPaid":160.25,
+      |               "shortServiceRefundTaxPaid":160.25,
       |               "totalShortServiceRefund":100.50,
       |               "totalShortServiceRefundCharge":200.50,
       |               "totalShortServiceRefundChargeDue":160.99
@@ -233,7 +233,7 @@ object CalculationDetailFixtures {
       |                  "shortServiceRefundCharge":750.99
       |               }
       |            ],
-      |            "shortServiceTaxPaid":160.25,
+      |            "shortServiceRefundTaxPaid":160.25,
       |            "totalShortServiceRefund":100.50,
       |            "totalShortServiceRefundCharge":200.50,
       |            "totalShortServiceRefundChargeDue":160.99

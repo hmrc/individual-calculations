@@ -42,7 +42,7 @@ class OverseasPensionContributionsSpec extends UnitSpec {
             |{
             |   "totalShortServiceRefund":100.50,
             |   "totalShortServiceRefundCharge":"200.50",
-            |   "shortServiceTaxPaid":160.25,
+            |   "shortServiceRefundTaxPaid":160.25,
             |   "totalShortServiceRefundChargeDue":160.99,
             |   "shortServiceRefundBands":[
             |      {
