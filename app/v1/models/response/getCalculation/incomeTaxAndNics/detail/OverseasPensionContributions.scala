@@ -20,7 +20,7 @@ import play.api.libs.json.{Json, OFormat}
 
 case class OverseasPensionContributions(totalShortServiceRefund: BigDecimal,
                                         totalShortServiceRefundCharge: BigDecimal,
-                                        shortServiceRefundTaxPaid: Option[BigDecimal],
+                                        shortServiceTaxPaid: Option[BigDecimal],
                                         totalShortServiceRefundChargeDue: BigDecimal,
                                         shortServiceRefundBands: Option[Seq[ShortServiceRefundBands]])
 
