@@ -206,7 +206,7 @@ class GetCalculationControllerSpec
       |          overseasPensionContributions {
       |            totalShortServiceRefund
       |            totalShortServiceRefundCharge
-      |            shortServiceTaxPaid
+      |            shortServiceRefundTaxPaid
       |            totalShortServiceRefundChargeDue
       |            shortServiceRefundBands {
       |              name
