@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class LumpSums (incomeReceived: BigInt, taxableIncome: BigInt)
 
@@ -28,4 +30,7 @@ object LumpSums {
     )(LumpSums.apply _)
 
   implicit val writes: OWrites[LumpSums] = Json.writes[LumpSums]
+
+  implicit def gqlType: ObjectType[Unit, LumpSums] =
+    deriveObjectType[Unit, LumpSums]()
 }

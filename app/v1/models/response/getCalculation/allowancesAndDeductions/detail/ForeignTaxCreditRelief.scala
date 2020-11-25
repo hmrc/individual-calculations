@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.{ReplaceField, deriveObjectType}
+import sangria.schema._
 import utils.NestedJsonReads
 
 case class ForeignTaxCreditRelief(
@@ -29,7 +31,7 @@ case class ForeignTaxCreditRelief(
                                    amountUsed: Option[BigDecimal]
                                  )
 
-object ForeignTaxCreditRelief extends NestedJsonReads{
+object ForeignTaxCreditRelief extends NestedJsonReads {
 
   implicit val writes: OWrites[ForeignTaxCreditRelief] = Json.writes[ForeignTaxCreditRelief]
 
@@ -40,5 +42,9 @@ object ForeignTaxCreditRelief extends NestedJsonReads{
       (JsPath \ "allowableAmount").readNullable[BigDecimal] and
       (JsPath \ "rate").readNullable[Double] and
       (JsPath \ "amountUsed").readNullable[BigDecimal]
-    )(ForeignTaxCreditRelief.apply _)
+    ) (ForeignTaxCreditRelief.apply _)
+
+  implicit def gqlType: ObjectType[Unit, ForeignTaxCreditRelief] = deriveObjectType[Unit, ForeignTaxCreditRelief](
+    ReplaceField("incomeSourceType", Field("incomeSourceType", StringType, resolve = _.value.incomeSourceType.toString))
+  )
 }

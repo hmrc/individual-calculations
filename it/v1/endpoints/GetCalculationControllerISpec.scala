@@ -29,7 +29,36 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
 
     val nino          = "AA123456A"
     val calcId        = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
-    val correlationId = "X-123"
+    val query =
+      """
+        |{
+        |  metadata {
+        |    id
+        |    taxYear
+        |    requestedBy
+        |    requestedTimestamp
+        |    calculationReason
+        |    calculationTimestamp
+        |    calculationType
+        |    intentToCrystallise
+        |    crystallised
+        |    calculationErrorCount
+        |    metadataExistence {
+        |      incomeTaxAndNicsCalculated
+        |      messages
+        |      taxableIncome
+        |      endOfYearEstimate
+        |      allowancesDeductionsAndReliefs
+        |    }
+        |  }
+        |  messages {
+        |    errors {
+        |      id
+        |      text
+        |    }
+        |  }
+        |}
+        |""".stripMargin
 
     def desUrl: String = s"/income-tax/03.00.00/calculation-data/$nino/calcId/$calcId"
 
@@ -50,7 +79,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
        |  "reason": "des message"
        |}""".stripMargin
 
-  "Calling the sample endpoint" should {
+  "Calling the GraphQL endpoint" should {
 
     "return a 200 status code" when {
 
@@ -74,30 +103,35 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
       |}""".stripMargin)
 
       val readJson: JsValue = Json.parse("""{
+      |  "data": {
       |    "metadata":{
-      |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
-      |       "taxYear": "2018-19",
-      |       "requestedBy": "customer",
-      |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
-      |       "calculationReason": "customerRequest",
-      |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
-      |       "calculationType": "inYear",
-      |       "intentToCrystallise": false,
-      |       "crystallised": false,
-      |       "calculationErrorCount": 1,
-      |       "metadataExistence": {
+      |      "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+      |      "taxYear": "2018-19",
+      |      "requestedBy": "customer",
+      |      "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+      |      "calculationReason": "customerRequest",
+      |      "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+      |      "calculationType": "inYear",
+      |      "intentToCrystallise": false,
+      |      "crystallised": false,
+      |      "calculationErrorCount": 1,
+      |      "metadataExistence": {
       |         "incomeTaxAndNicsCalculated":false,
       |         "messages":true,
       |         "taxableIncome":false,
       |         "endOfYearEstimate":false,
       |         "allowancesDeductionsAndReliefs":false
-      |     }
-      |       },
-      |     "messages" :{
-      |        "errors":[
-      |        {"id":"id1", "text":"text1"}
-      |        ]
-      |     }
+      |       }
+      |    },
+      |    "messages" :{
+      |      "errors":[
+      |        {
+      |          "id":"id1",
+      |          "text":"text1"
+      |        }
+      |      ]
+      |    }
+      |  }
       |}""".stripMargin)
 
 
@@ -109,7 +143,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
           DesStub.onSuccess(DesStub.GET, desUrl, OK, desResponse)
         }
 
-        val response: WSResponse = await(request.get)
+        val response: WSResponse = await(request.post(Json.obj("query" -> query)))
 
         response.status shouldBe OK
         response.header("Content-Type") shouldBe Some("application/json")
@@ -132,6 +166,166 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
           |       "periodTo": "1-2019"
           |     }
           |}""".stripMargin)
+
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          DesStub.onSuccess(DesStub.GET, desUrl, OK, desResponse)
+        }
+
+        val response: WSResponse = await(request.post(Json.obj("query" -> query)))
+        response.status shouldBe  NOT_FOUND
+        response.json shouldBe Json.toJson(NotFoundError)
+        response.header("Content-Type") shouldBe Some("application/json")
+      }
+    }
+
+    "return error according to spec" when {
+
+      "validation error" when {
+        def validationErrorTest(requestNino: String, requestCalcId: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"validation fails with ${expectedBody.code} error" in new Test {
+
+            override val nino: String   = requestNino
+            override val calcId: String = requestCalcId
+
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+            }
+
+            val response: WSResponse = await(request.post(Json.obj("query" -> query)))
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
+          }
+        }
+
+        val input = Seq(
+          ("AA1123A", "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c", BAD_REQUEST, NinoFormatError),
+          ("AA123456A", "asd", BAD_REQUEST, CalculationIdFormatError)
+        )
+
+        input.foreach(args => (validationErrorTest _).tupled(args))
+      }
+
+      "des service error" when {
+
+        def serviceErrorTest(desStatus: Int, desCode: String, expectedStatus: Int, expectedBody: MtdError): Unit = {
+          s"des returns an $desCode error and status $desStatus" in new Test {
+
+            override def setupStubs(): StubMapping = {
+              AuditStub.audit()
+              AuthStub.authorised()
+              MtdIdLookupStub.ninoFound(nino)
+              DesStub.onError(DesStub.GET, desUrl, desStatus, errorBody(desCode))
+            }
+
+            val response: WSResponse = await(request.post(Json.obj("query" -> query)))
+            response.status shouldBe expectedStatus
+            response.json shouldBe Json.toJson(expectedBody)
+            response.header("Content-Type") shouldBe Some("application/json")
+          }
+        }
+
+        val input = Seq(
+          (BAD_REQUEST, "INVALID_TAXABLE_ENTITY_ID", BAD_REQUEST, NinoFormatError),
+          (BAD_REQUEST, "INVALID_CALCULATION_ID", BAD_REQUEST, CalculationIdFormatError),
+          (BAD_REQUEST, "NOT_FOUND", NOT_FOUND, NotFoundError),
+          (INTERNAL_SERVER_ERROR, "SERVER_ERROR", INTERNAL_SERVER_ERROR, DownstreamError),
+          (SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", INTERNAL_SERVER_ERROR, DownstreamError),
+          (BAD_REQUEST, "INVALID_REQUEST", INTERNAL_SERVER_ERROR, DownstreamError)
+        )
+
+        input.foreach(args => (serviceErrorTest _).tupled(args))
+      }
+    }
+  }
+
+  "Calling the Get Calculation endpoint" should {
+
+    "return a 200 status code" when {
+
+      val desResponse: JsValue = Json.parse("""{
+                                              |    "metadata":{
+                                              |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                              |       "taxYear": 2019,
+                                              |       "requestedBy": "customer",
+                                              |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+                                              |       "calculationReason": "customerRequest",
+                                              |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                                              |       "calculationType": "inYear",
+                                              |       "periodFrom": "1-2018",
+                                              |       "periodTo": "1-2019"
+                                              |     },
+                                              |     "messages" :{
+                                              |        "errors":[
+                                              |        {"id":"id1", "text":"text1"}
+                                              |        ]
+                                              |     }
+                                              |}""".stripMargin)
+
+      val readJson: JsValue = Json.parse("""{
+                                           |    "metadata":{
+                                           |       "id": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                           |       "taxYear": "2018-19",
+                                           |       "requestedBy": "customer",
+                                           |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+                                           |       "calculationReason": "customerRequest",
+                                           |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                                           |       "calculationType": "inYear",
+                                           |       "intentToCrystallise": false,
+                                           |       "crystallised": false,
+                                           |       "calculationErrorCount": 1,
+                                           |       "metadataExistence": {
+                                           |         "incomeTaxAndNicsCalculated":false,
+                                           |         "messages":true,
+                                           |         "taxableIncome":false,
+                                           |         "endOfYearEstimate":false,
+                                           |         "allowancesDeductionsAndReliefs":false
+                                           |       }
+                                           |     },
+                                           |     "messages" :{
+                                           |       "errors":[
+                                           |         {"id":"id1", "text":"text1"}
+                                           |       ]
+                                           |     }
+                                           |}""".stripMargin)
+
+
+      "valid request is made" in new Test {
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+          DesStub.onSuccess(DesStub.GET, desUrl, OK, desResponse)
+        }
+
+        val response: WSResponse = await(request.get)
+
+        response.status shouldBe OK
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.json shouldBe readJson
+      }
+    }
+
+    "return a 404 not found" when {
+      "the response contains an unwanted calc type" in new Test {
+        val desResponse: JsValue = Json.parse("""{
+                                                |    "metadata":{
+                                                |       "calculationId": "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+                                                |       "taxYear": 2019,
+                                                |       "requestedBy": "customer",
+                                                |       "requestedTimestamp": "2019-11-15T09:25:15.094Z",
+                                                |       "calculationReason": "customerRequest",
+                                                |       "calculationTimestamp": "2019-11-15T09:35:15.094Z",
+                                                |       "calculationType": "biss",
+                                                |       "periodFrom": "1-2018",
+                                                |       "periodTo": "1-2019"
+                                                |     }
+                                                |}""".stripMargin)
 
         override def setupStubs(): StubMapping = {
           AuditStub.audit()

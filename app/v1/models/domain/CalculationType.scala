@@ -22,11 +22,16 @@ import utils.enums.Enums
 sealed trait CalculationType
 
 
-object CalculationType{
+object CalculationType {
+
   case object inYear extends CalculationType
+
   case object crystallisation extends CalculationType
+
   case object bissAdjustment extends CalculationType
+
   case object biss extends CalculationType
+
   case object POA extends CalculationType
 
   implicit val format: Format[CalculationType] = Enums.format[CalculationType]

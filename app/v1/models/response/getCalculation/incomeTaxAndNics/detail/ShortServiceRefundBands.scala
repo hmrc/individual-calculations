@@ -17,6 +17,8 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class ShortServiceRefundBands(name: String,
                                    rate: BigDecimal,
@@ -27,4 +29,7 @@ case class ShortServiceRefundBands(name: String,
 
 object ShortServiceRefundBands {
   implicit val format: OFormat[ShortServiceRefundBands] = Json.format[ShortServiceRefundBands]
+
+  implicit def gqlType: ObjectType[Unit, ShortServiceRefundBands] =
+    deriveObjectType[Unit, ShortServiceRefundBands]()
 }

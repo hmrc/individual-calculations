@@ -28,7 +28,9 @@ object AppDependencies {
     "org.typelevel" %% "cats-core"         % "2.2.0",
     compilerPlugin("com.github.ghik" % "silencer-plugin" % "1.6.0" cross CrossVersion.full),
     "com.github.ghik" % "silencer-lib" % "1.6.0" % Provided cross CrossVersion.full,
-    "com.chuusai"   %% "shapeless"            % "2.4.0-M1"
+    "com.chuusai"   %% "shapeless"            % "2.4.0-M1",
+    "org.sangria-graphql" %% "sangria" % "1.4.2",
+    "org.sangria-graphql" %% "sangria-play-json" % "1.0.5"
   )
 
   def test(scope: String = "test, it"): Seq[sbt.ModuleID] = Seq(

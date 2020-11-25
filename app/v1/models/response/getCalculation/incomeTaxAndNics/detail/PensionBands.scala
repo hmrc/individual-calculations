@@ -17,6 +17,8 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class PensionBands(name: String,
                         rate: BigDecimal,
@@ -27,4 +29,7 @@ case class PensionBands(name: String,
 
 object PensionBands {
   implicit val format: OFormat[PensionBands] = Json.format[PensionBands]
+
+  implicit def gqlType: ObjectType[Unit, PensionBands] =
+    deriveObjectType[Unit, PensionBands]()
 }

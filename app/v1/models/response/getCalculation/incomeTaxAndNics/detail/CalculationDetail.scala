@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive._
+import sangria.schema._
 import utils.NestedJsonReads
 
 case class CalculationDetail(incomeTax: IncomeTaxDetail,
@@ -42,4 +44,7 @@ object CalculationDetail extends NestedJsonReads {
         case other => other
       }
     ) (CalculationDetail.apply _)
+
+  implicit def gqlType: ObjectType[Unit, CalculationDetail] =
+    deriveObjectType[Unit, CalculationDetail](ObjectTypeName("IncomeTaxAndNicsCalculationDetail"))
 }

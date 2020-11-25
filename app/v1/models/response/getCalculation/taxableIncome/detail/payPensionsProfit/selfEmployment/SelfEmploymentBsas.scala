@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class SelfEmploymentBsas(bsasId: String, applied: Boolean, incomeSourceId: String)
 
@@ -30,4 +32,9 @@ object SelfEmploymentBsas {
 
   implicit val writes: OWrites[SelfEmploymentBsas] = (selfEmploymentBsas: SelfEmploymentBsas) =>
     Json.toJsObject(selfEmploymentBsas)(Json.writes[SelfEmploymentBsas]) - "incomeSourceId"
+
+  implicit def gqlType: ObjectType[Unit, SelfEmploymentBsas] =
+    deriveObjectType[Unit, SelfEmploymentBsas](
+      ExcludeFields("incomeSourceId")
+    )
 }

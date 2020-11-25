@@ -19,18 +19,50 @@ package v1.models.response.getCalculation
 import play.api.libs.json._
 import support.UnitSpec
 import v1.fixtures.getCalculation.GetCalculationResponseFixtures._
+import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
+import v1.models.response.common.{Message, Messages, Metadata}
+import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
+import v1.models.response.getCalculation.endOfYearEstimate.EoyEstimate
+import v1.models.response.getCalculation.endOfYearEstimate.summary.EoyEstimateSummary
+import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
+import v1.models.response.getCalculation.taxableIncome.{TaxableIncome, TaxableIncomeDetail, TaxableIncomeSummary}
 
 class GetCalculationResponseSpec extends UnitSpec {
 
   "GetCalculationResponse" should {
 
     "successfully read from json" when {
-      "provided with valid json with only metadata" in {
-        desJsonWithoutOptionalParts.as[GetCalculationResponse] shouldBe calculationResponse
-      }
-
       "provided with valid json with all optional top-level parts" in {
-        desJsonWithAllParts.as[GetCalculationResponse] shouldBe calculationResponseAllParts
+        desJsonWithAllParts.as[GetCalculationResponse] shouldBe GetCalculationResponse(
+          Metadata(
+            id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
+            taxYear = "2018-19",
+            requestedBy = CalculationRequestor.customer,
+            requestedTimestamp = Some("2019-11-15T09:25:15.094Z"),
+            calculationReason = CalculationReason.customerRequest,
+            calculationTimestamp = Some("2019-11-15T09:35:15.094Z"),
+            calculationType = CalculationType.inYear,
+            intentToCrystallise = false,
+            crystallised = false,
+            totalIncomeTaxAndNicsDue = Some(100.25),
+            calculationErrorCount = Some(1),
+            metadataExistence = None
+          ),
+          Some(IncomeTax(
+            incomeTaxAndNics.summary.CalculationSummary(
+              incomeTaxAndNics.summary.IncomeTaxSummary(100.25, None, None, None, None, None, None, None),
+              None, None, None, None, None, None, 100.25, "UK"
+            ),
+            incomeTaxAndNics.detail.CalculationDetail(
+              incomeTaxAndNics.detail.IncomeTaxDetail(None, None, None, None, None, None),
+              None, None, None, None
+            )
+          )),
+          Some(Messages(None, None, Some(Seq(Message("id1", "text1"))))),
+          Some(TaxableIncome(TaxableIncomeSummary(100, 100), TaxableIncomeDetail(None, None, None, None, None))),
+          Some(EoyEstimate(EoyEstimateSummary(Some(100), None, None, None, None, None, None, None, None, None, None))),
+          Some(AllowancesDeductionsAndReliefs(allowancesAndDeductions.summary.CalculationSummary(Some(100), None), allowancesAndDeductions.detail.CalculationDetail(None, None)))
+        )
       }
     }
 
@@ -122,9 +154,6 @@ class GetCalculationResponseSpec extends UnitSpec {
     }
 
     "write correctly to json" when {
-      "using a model with only metadata and messages" in {
-        Json.toJson(calculationResponse) shouldBe writtenJsonWithoutOptionalParts
-      }
       "using a model with all parts" in {
         Json.toJson(calculationResponseAllParts) shouldBe writtenJson
       }

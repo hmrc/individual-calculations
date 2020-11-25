@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class PropertyBsas(bsasId: String, applied: Boolean)
 
@@ -25,7 +27,9 @@ object PropertyBsas {
   implicit val reads: Reads[PropertyBsas] = (
     (JsPath \ "ascId").read[String] and
       (JsPath \ "applied").read[Boolean]
-  )(PropertyBsas.apply _)
+    )(PropertyBsas.apply _)
 
   implicit val writes: OWrites[PropertyBsas] = Json.writes[PropertyBsas]
+
+  implicit def gqlType: ObjectType[Unit, PropertyBsas] = deriveObjectType[Unit, PropertyBsas]()
 }

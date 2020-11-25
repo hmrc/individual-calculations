@@ -18,12 +18,17 @@ package v1.models.response.common
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
 
-case class Message(id: String, text: String){
-}
-object Message {
-  implicit val format: OFormat[Message] = Json.format[Message]
+  case class Message(id: String, text: String){
+  }
+  object Message {
+    implicit val format: OFormat[Message] = Json.format[Message]
+
+  implicit def gqlType: ObjectType[Unit, Message] = deriveObjectType[Unit, Message]()
+
 }
 
 case class Messages(info: Option[Seq[Message]], warnings: Option[Seq[Message]], errors: Option[Seq[Message]])
@@ -44,4 +49,7 @@ object Messages extends NestedJsonReads {
       (__ \ "messages" \ "errors").readNestedNullable[Seq[Message]].map {
         case Some(errs) if errs.nonEmpty => Some(errs)
         case _ => None})(Messages.apply _)
+
+  implicit def gqlType: ObjectType[Unit, Messages] = deriveObjectType[Unit, Messages]()
+
 }

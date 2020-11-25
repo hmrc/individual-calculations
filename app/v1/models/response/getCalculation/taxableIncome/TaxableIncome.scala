@@ -17,7 +17,9 @@
 package v1.models.response.getCalculation.taxableIncome
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 
 case class TaxableIncome(summary: TaxableIncomeSummary, detail: TaxableIncomeDetail)
 
@@ -25,7 +27,9 @@ object TaxableIncome {
   implicit val reads: Reads[TaxableIncome] = (
     (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax").read[TaxableIncomeSummary] and
       JsPath.read[TaxableIncomeDetail]
-  )(TaxableIncome.apply _)
+    ) (TaxableIncome.apply _)
 
   implicit val writes: OWrites[TaxableIncome] = Json.writes[TaxableIncome]
+
+  implicit def gqlType: ObjectType[Unit, TaxableIncome] = deriveObjectType[Unit, TaxableIncome]()
 }

@@ -55,7 +55,7 @@ class GetCalculationServiceSpec extends UnitSpec {
 
   val getCalculationResponse = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse))
   val getCalculationResponseAllData = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse),
-    incomeTaxAndNicsCalculated = Some(incomeTax), taxableIncome = Some(taxableIncomeModel), endOfYearEstimate = Some(eoyEstimateResponse),
+    incomeTaxAndNicsCalculated = Some(incomeTaxAndNicsCalculated), taxableIncome = Some(taxableIncome), endOfYearEstimate = Some(eoyEstimateResponse),
     allowancesDeductionsAndReliefs = Some(allowancesDeductionsAndReliefs))
   val wrongCalcTypeResponse = GetCalculationResponse(metadataResponse.copy(calculationType = CalculationType.biss), None)
 

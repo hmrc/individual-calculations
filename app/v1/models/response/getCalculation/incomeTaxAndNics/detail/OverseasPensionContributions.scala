@@ -17,6 +17,8 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class OverseasPensionContributions(totalShortServiceRefund: BigDecimal,
                                         totalShortServiceRefundCharge: BigDecimal,
@@ -26,4 +28,7 @@ case class OverseasPensionContributions(totalShortServiceRefund: BigDecimal,
 
 object OverseasPensionContributions {
   implicit val format: OFormat[OverseasPensionContributions] = Json.format[OverseasPensionContributions]
+
+  implicit def gqlType: ObjectType[Unit, OverseasPensionContributions] =
+    deriveObjectType[Unit, OverseasPensionContributions]()
 }

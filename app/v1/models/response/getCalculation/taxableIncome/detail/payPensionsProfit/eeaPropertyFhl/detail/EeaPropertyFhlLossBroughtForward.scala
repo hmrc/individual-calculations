@@ -19,6 +19,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import v1.models.request.DesTaxYear
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class EeaPropertyFhlLossBroughtForward(taxYearLossIncurred: String, currentLossValue: BigInt, mtdLoss: Boolean)
 
@@ -30,4 +32,7 @@ object EeaPropertyFhlLossBroughtForward {
   )(EeaPropertyFhlLossBroughtForward.apply _)
 
   implicit val writes: OWrites[EeaPropertyFhlLossBroughtForward] = Json.writes[EeaPropertyFhlLossBroughtForward]
+
+  implicit def gqlType: ObjectType[Unit, EeaPropertyFhlLossBroughtForward] =
+    deriveObjectType[Unit, EeaPropertyFhlLossBroughtForward]()
 }

@@ -19,6 +19,8 @@ package v1.models.response.getCalculation.taxableIncome.detail
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class SavingsAndGains(incomeReceived: BigInt,
                            taxableIncome: BigInt,
@@ -34,8 +36,10 @@ object SavingsAndGains extends NestedJsonReads {
         (savingsAndGainsJsPath \ "taxableIncome").read[BigInt] and
         savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSaving](incomeSourceType = "09") and
         savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSecurity](incomeSourceType = "18")
-    )(SavingsAndGains.apply _)
+      )(SavingsAndGains.apply _)
   }
 
   implicit val writes: OWrites[SavingsAndGains] = Json.writes[SavingsAndGains]
+
+  implicit def gqlType: ObjectType[Unit, SavingsAndGains] = deriveObjectType[Unit, SavingsAndGains]()
 }

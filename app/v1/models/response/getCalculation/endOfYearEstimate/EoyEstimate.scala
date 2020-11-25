@@ -17,7 +17,9 @@
 package v1.models.response.getCalculation.endOfYearEstimate
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import v1.models.response.getCalculation.endOfYearEstimate.detail.EoyEstimateDetail
 import v1.models.response.getCalculation.endOfYearEstimate.summary.EoyEstimateSummary
 
@@ -29,5 +31,7 @@ object EoyEstimate {
   implicit val reads: Reads[EoyEstimate] = (
     JsPath.read[EoyEstimateSummary] and
       JsPath.read[EoyEstimateDetail]
-  )(EoyEstimate.apply _)
+    ) (EoyEstimate.apply _)
+
+  implicit def gqlType: ObjectType[Unit, EoyEstimate] = deriveObjectType[Unit, EoyEstimate]()
 }

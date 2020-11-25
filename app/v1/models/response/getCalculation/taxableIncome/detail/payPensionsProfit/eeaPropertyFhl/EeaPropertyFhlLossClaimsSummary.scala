@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class EeaPropertyFhlLossClaimsSummary(lossForCSFHL: Option[BigInt],
                                            totalBroughtForwardIncomeTaxLosses: Option[BigInt],
@@ -35,4 +37,7 @@ object EeaPropertyFhlLossClaimsSummary {
   )(EeaPropertyFhlLossClaimsSummary.apply _)
 
   implicit val writes: OWrites[EeaPropertyFhlLossClaimsSummary] = Json.writes[EeaPropertyFhlLossClaimsSummary]
+
+  implicit def gqlType: ObjectType[Unit, EeaPropertyFhlLossClaimsSummary] =
+    deriveObjectType[Unit, EeaPropertyFhlLossClaimsSummary]()
 }

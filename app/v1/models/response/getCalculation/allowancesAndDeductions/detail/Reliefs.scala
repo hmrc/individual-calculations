@@ -17,6 +17,8 @@
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
@@ -38,4 +40,6 @@ object Reliefs extends NestedJsonReads{
       (JsPath \ "calculation" \ "pensionContributionReliefs").readNestedNullable[PensionContributionReliefs] and
       (JsPath \ "calculation" \ "reliefs" \ "reliefsClaimed").readNestedNullable[Seq[ReliefsClaimed]]
     )(Reliefs.apply _)
+
+  implicit def gqlType: ObjectType[Unit, Reliefs] = deriveObjectType[Unit, Reliefs]()
 }

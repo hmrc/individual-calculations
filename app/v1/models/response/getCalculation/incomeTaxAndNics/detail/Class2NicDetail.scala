@@ -17,7 +17,8 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
-
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 case class Class2NicDetail(weeklyRate: Option[BigDecimal],
                            weeks: Option[BigDecimal],
                            limit: Option[BigDecimal],
@@ -27,4 +28,6 @@ case class Class2NicDetail(weeklyRate: Option[BigDecimal],
 
 object Class2NicDetail {
   implicit val format: OFormat[Class2NicDetail] = Json.format[Class2NicDetail]
+
+  implicit def gqlType: ObjectType[Unit, Class2NicDetail] = deriveObjectType[Unit, Class2NicDetail]()
 }

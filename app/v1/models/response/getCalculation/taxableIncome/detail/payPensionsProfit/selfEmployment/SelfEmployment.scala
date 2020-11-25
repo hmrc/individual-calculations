@@ -19,6 +19,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class SelfEmployment(selfEmploymentId: String,
                           totalIncome: Option[BigDecimal],
@@ -71,4 +73,7 @@ object SelfEmployment extends NestedJsonReads {
     ) (SelfEmployment.readsApply _)
 
   implicit val writes: OWrites[SelfEmployment] = Json.writes[SelfEmployment]
+
+  implicit def gqlType: ObjectType[Unit, SelfEmployment] =
+    deriveObjectType[Unit, SelfEmployment]()
 }

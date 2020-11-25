@@ -17,7 +17,8 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
-
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 case class Class4Losses(totalClass4LossesAvailable: Option[BigInt],
                         totalClass4LossesUsed: Option[BigInt],
                         totalClass4LossesCarriedForward: Option[BigInt])
@@ -26,4 +27,7 @@ object Class4Losses {
   val empty = Class4Losses(None, None, None)
 
   implicit val formats: OFormat[Class4Losses] = Json.format[Class4Losses]
+
+  implicit def gqlType: ObjectType[Unit, Class4Losses] = deriveObjectType[Unit, Class4Losses]()
+
 }

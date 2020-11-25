@@ -16,8 +16,10 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import sangria.macros.derive.deriveObjectType
+import sangria.schema.ObjectType
 import utils.NestedJsonReads
 
 case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
@@ -32,7 +34,7 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    pensionContributions: Option[PensionContributions]
                                   )
 
-object AllowancesAndDeductions extends NestedJsonReads{
+object AllowancesAndDeductions extends NestedJsonReads {
   val empty = AllowancesAndDeductions(None, None, None, None, None, None, None, None, None, None)
 
   implicit val writes: OWrites[AllowancesAndDeductions] = Json.writes[AllowancesAndDeductions]
@@ -48,5 +50,7 @@ object AllowancesAndDeductions extends NestedJsonReads{
       (JsPath \ "calculation" \ "allowancesAndDeductions" \ "paymentsToTradeUnionsForDeathBenefits").readNestedNullable[BigDecimal] and
       (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable[AnnualPayments].mapEmptyModelToNone(AnnualPayments.empty) and
       (JsPath \ "calculation" \ "allowancesAndDeductions").readNestedNullable[PensionContributions].mapEmptyModelToNone(PensionContributions.empty)
-    )(AllowancesAndDeductions.apply _)
+    ) (AllowancesAndDeductions.apply _)
+
+  implicit def gqlType: ObjectType[Unit, AllowancesAndDeductions] = deriveObjectType[Unit, AllowancesAndDeductions]()
 }

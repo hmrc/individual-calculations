@@ -88,5 +88,61 @@ object IncomeTaxFixtures {
       None, None, None, None
     )
 
+  val fullCalcSummary = CalculationSummary(
+    incomeTax = IncomeTaxSummary(100.25, Some(100.25), Some(100.25), Some(100.25), Some(100.25), Some(100.25), Some(100.25), Some(100.25)),
+    nics = Some(NicSummary(Some(100.25), Some(100.25), Some(100.25))),
+    totalStudentLoansRepaymentAmount = Some(100.25),
+    totalAnnualPaymentsTaxCharged = Some(100.25),
+    totalRoyaltyPaymentsTaxCharged = Some(100.25),
+    totalIncomeTaxNicsCharged = Some(100.25),
+    totalTaxDeducted = Some(100.25),
+    totalIncomeTaxAndNicsDue = 200.25,
+    taxRegime = "UK"
+  )
+  val fullCalcDetail  = CalculationDetail(
+    incomeTax = IncomeTaxDetail(
+      payPensionsProfit = Some(IncomeTypeBreakdown(1, 400.25, Some(Seq(TaxBand("BandA", 100.25, 1, 1, 1, 100.25))))),
+      savingsAndGains = Some(IncomeTypeBreakdown(1, 400.25, Some(Seq(TaxBand("BandA", 100.25, 1, 1, 1, 100.25))))),
+      lumpSums = Some(IncomeTypeBreakdown(1, 400.25, Some(Seq(TaxBand("BandA", 100.25, 1, 1, 1, 100.25))))),
+      dividends = Some(IncomeTypeBreakdown(1, 400.25, Some(Seq(TaxBand("BandA", 100.25, 1, 1, 1, 100.25))))),
+      gainsOnLifePolicies = Some(IncomeTypeBreakdown(1, 400.25, Some(Seq(TaxBand("BandA", 100.25, 1, 1, 1, 100.25))))),
+      giftAid = Some(GiftAid(100, 100.25, 100.25))
+    ),
+    studentLoans = Some(Seq(StudentLoans("Plan A", 100.25, 100.25, 100.25, Some(100.25), 100.25, 100, 100.25))),
+    pensionSavingsTaxCharges = Some(PensionSavingsTaxCharges(Some(100.25), Some(100.25), Some(100.25), Some(PensionSavingsTaxChargesDetail(
+      lumpSumBenefitTakenInExcessOfLifetimeAllowance = Some(PensionTypeBreakdown(Some(100.25), Some(100.25), Some(100.25), Some(100.25))),
+      benefitInExcessOfLifetimeAllowance = Some(PensionTypeBreakdown(Some(100.25), Some(100.25), Some(100.25), Some(100.25))),
+      pensionSchemeUnauthorisedPaymentsSurcharge = Some(PensionTypeBreakdown(Some(100.25), Some(100.25), Some(100.25), Some(100.25))),
+      pensionSchemeUnauthorisedPaymentsNonSurcharge = Some(PensionTypeBreakdown(Some(100.25), Some(100.25), Some(100.25), Some(100.25))),
+      pensionSchemeOverseasTransfers = Some(PensionSchemeOverseasTransfers(Some(100.25), Some(100.25), Some(100.25), Some(100.25))),
+      pensionContributionsInExcessOfTheAnnualAllowance = Some(PensionContributionsInExcessOfTheAnnualAllowance(100.25, 100.25, Some(100.25), 100.25, Some(Seq(PensionBands(
+        "Band A",
+        100.25,
+        100,
+        100,
+        100.25,
+        100.25
+      ))))),
+      overseasPensionContributions = Some(OverseasPensionContributions(100.25, 100.25, Some(100.25), 100.25, Some(Seq(ShortServiceRefundBands(
+        "Refund Band A",
+        100.25,
+        100,
+        100,
+        100.25,
+        100.25
+      )))))
+    )))),
+    nics = Some(NicDetail(
+      class2Nics = Some(Class2NicDetail(Some(100.25), Some(100.25), Some(100.25), Some(100.25), true, Some(true))),
+      class4Nics = Some(Class4NicDetail(
+        class4Losses = Some(Class4Losses(Some(1), Some(1), Some(1))),
+        totalIncomeLiableToClass4Charge = Some(1),
+        totalIncomeChargeableToClass4 = Some(1),
+        class4NicBands = Some(Seq(NicBand("BandA", 100.25, Some(1), Some(1), 1, 100.25)))
+      ))
+    )),
+    taxDeductedAtSource = Some(TaxDeductedAtSource(Some(100), Some(100), Some(100.25), Some(100.25), Some(100.25), Some(100.25), Some(100.25), Some(100.25))))
+  val fullModel = IncomeTax(fullCalcSummary, fullCalcDetail)
+
   val incomeTaxModel = IncomeTax(incomeTaxCalcSummary, incomeTaxCalcDetail)
 }

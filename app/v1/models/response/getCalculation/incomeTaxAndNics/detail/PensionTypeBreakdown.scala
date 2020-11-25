@@ -17,6 +17,8 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class PensionTypeBreakdown(amount: Option[BigDecimal],
                                 taxPaid: Option[BigDecimal],
@@ -27,4 +29,7 @@ object PensionTypeBreakdown {
   val empty = PensionTypeBreakdown(None, None, None, None)
 
   implicit val format: OFormat[PensionTypeBreakdown] = Json.format[PensionTypeBreakdown]
+
+  implicit def gqlType: ObjectType[Unit, PensionTypeBreakdown] =
+    deriveObjectType[Unit, PensionTypeBreakdown]()
 }

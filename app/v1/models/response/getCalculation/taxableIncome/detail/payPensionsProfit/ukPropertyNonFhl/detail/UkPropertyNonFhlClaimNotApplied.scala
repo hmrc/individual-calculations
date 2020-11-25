@@ -21,6 +21,8 @@ import play.api.libs.json._
 import v1.models.des.ReliefClaimed
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
+import sangria.macros.derive._
+import sangria.schema.{Field, ObjectType, StringType}
 
 case class UkPropertyNonFhlClaimNotApplied(claimId: String, taxYearClaimMade: String, claimType: TypeOfClaim)
 
@@ -32,4 +34,9 @@ object UkPropertyNonFhlClaimNotApplied {
   )(UkPropertyNonFhlClaimNotApplied.apply _)
 
   implicit val writes: OWrites[UkPropertyNonFhlClaimNotApplied] = Json.writes[UkPropertyNonFhlClaimNotApplied]
+
+  implicit def gqlType: ObjectType[Unit, UkPropertyNonFhlClaimNotApplied] =
+    deriveObjectType[Unit, UkPropertyNonFhlClaimNotApplied](
+      ReplaceField("claimType", Field("claimType", StringType, resolve = _.value.claimType.toString))
+    )
 }

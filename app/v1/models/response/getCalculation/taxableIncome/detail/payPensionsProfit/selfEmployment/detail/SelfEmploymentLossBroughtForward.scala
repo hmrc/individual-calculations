@@ -18,6 +18,8 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import sangria.macros.derive._
+import sangria.schema._
 import v1.models.des.LossType
 import v1.models.request.DesTaxYear
 
@@ -34,8 +36,14 @@ object SelfEmploymentLossBroughtForward {
       (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "mtdLoss").readWithDefault(defaultValue = true) and
       (JsPath \ "incomeSourceId").read[String]
-  )(SelfEmploymentLossBroughtForward.apply _)
+    )(SelfEmploymentLossBroughtForward.apply _)
 
   implicit val writes: OWrites[SelfEmploymentLossBroughtForward] = (lossBroughtForward: SelfEmploymentLossBroughtForward) =>
     Json.toJsObject(lossBroughtForward)(Json.writes[SelfEmploymentLossBroughtForward]) - "incomeSourceId"
+
+  implicit def gqlType: ObjectType[Unit, SelfEmploymentLossBroughtForward] =
+    deriveObjectType[Unit, SelfEmploymentLossBroughtForward](
+      ReplaceField("lossType", Field("lossType", StringType, resolve = _.value.lossType.toString.toLowerCase)),
+      ExcludeFields("incomeSourceId")
+    )
 }

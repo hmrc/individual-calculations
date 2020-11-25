@@ -20,6 +20,8 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyFhl.detail._
+import sangria.macros.derive._
+import sangria.schema.ObjectType
 
 case class UkPropertyFhlLossClaimsDetail(lossesBroughtForward: Option[Seq[UkPropertyFhlLossBroughtForward]],
                                          resultOfClaimsApplied: Option[Seq[UkPropertyFhlResultOfClaimApplied]],
@@ -38,4 +40,7 @@ object UkPropertyFhlLossClaimsDetail extends NestedJsonReads {
   }
 
   implicit val writes: OWrites[UkPropertyFhlLossClaimsDetail] = Json.writes[UkPropertyFhlLossClaimsDetail]
+
+  implicit def gqlType: ObjectType[Unit, UkPropertyFhlLossClaimsDetail] =
+    deriveObjectType[Unit, UkPropertyFhlLossClaimsDetail]()
 }
