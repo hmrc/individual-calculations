@@ -16,10 +16,8 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions
 
-import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
+import play.api.libs.functional.syntax._
 import v1.models.response.getCalculation.allowancesAndDeductions.detail.CalculationDetail
 import v1.models.response.getCalculation.allowancesAndDeductions.summary.CalculationSummary
 
@@ -31,8 +29,6 @@ object AllowancesDeductionsAndReliefs {
 
   implicit val reads: Reads[AllowancesDeductionsAndReliefs] = (
     JsPath.read[CalculationSummary] and
-      JsPath.read[CalculationDetail]
-    ) (AllowancesDeductionsAndReliefs.apply _)
-
-  implicit def gqlType: ObjectType[Unit, AllowancesDeductionsAndReliefs] = deriveObjectType[Unit, AllowancesDeductionsAndReliefs]()
+    JsPath.read[CalculationDetail]
+  )(AllowancesDeductionsAndReliefs.apply _)
 }

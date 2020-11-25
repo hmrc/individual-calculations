@@ -16,13 +16,11 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import sangria.macros.derive.{ObjectTypeName, deriveObjectType}
-import sangria.schema.ObjectType
+import play.api.libs.functional.syntax._
 
 case class CalculationDetail(allowancesAndDeductions: Option[AllowancesAndDeductions],
-                             reliefs: Option[Reliefs])
+                        reliefs: Option[Reliefs])
 
 object CalculationDetail {
   val empty = CalculationDetail(None, None)
@@ -31,10 +29,6 @@ object CalculationDetail {
 
   implicit val reads: Reads[CalculationDetail] = (
     JsPath.readNullable[AllowancesAndDeductions].mapEmptyModelToNone(AllowancesAndDeductions.empty) and
-      JsPath.readNullable[Reliefs].mapEmptyModelToNone(Reliefs.empty)
-    ) (CalculationDetail.apply _)
-
-  implicit def gqlType: ObjectType[Unit, CalculationDetail] =
-    deriveObjectType[Unit, CalculationDetail](ObjectTypeName("AllowancesAndDeductionsCalculationDetail"))
-
+    JsPath.readNullable[Reliefs].mapEmptyModelToNone(Reliefs.empty)
+  )(CalculationDetail.apply _)
 }

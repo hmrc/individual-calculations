@@ -17,9 +17,7 @@
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
+import play.api.libs.json.{ JsPath, Json, OWrites, Reads }
 import utils.NestedJsonReads
 
 case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployment]],
@@ -49,7 +47,5 @@ object EoyEstimateDetail extends NestedJsonReads {
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkSecurities]("incomeSourceType", "18")).mapHeadOption and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateForeignProperty]("incomeSourceType", "15")).mapHeadOption and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateForeignInterest]("incomeSourceType", "16")).mapHeadOption
-    ) (EoyEstimateDetail.apply _)
-
-  implicit def gqlType: ObjectType[Unit, EoyEstimateDetail] = deriveObjectType[Unit, EoyEstimateDetail]()
+    )(EoyEstimateDetail.apply _)
 }

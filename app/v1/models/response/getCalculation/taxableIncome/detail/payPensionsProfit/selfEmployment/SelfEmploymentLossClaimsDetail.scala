@@ -20,8 +20,6 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.selfEmployment.detail._
-import sangria.macros.derive._
-import sangria.schema.ObjectType
 
 case class SelfEmploymentLossClaimsDetail(lossesBroughtForward: Option[Seq[SelfEmploymentLossBroughtForward]],
                                           resultOfClaimsApplied: Option[Seq[SelfEmploymentResultOfClaimApplied]],
@@ -66,7 +64,4 @@ object SelfEmploymentLossClaimsDetail extends NestedJsonReads {
   }
 
   implicit val writes: OWrites[SelfEmploymentLossClaimsDetail] = Json.writes[SelfEmploymentLossClaimsDetail]
-
-  implicit def gqlType: ObjectType[Unit, SelfEmploymentLossClaimsDetail] =
-    deriveObjectType[Unit, SelfEmploymentLossClaimsDetail]()
 }

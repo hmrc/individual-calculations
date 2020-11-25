@@ -21,8 +21,6 @@ import play.api.libs.json.Reads._
 import play.api.libs.json._
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.PropertyBsas
-import sangria.macros.derive._
-import sangria.schema.ObjectType
 
 case class EeaPropertyFhl(totalIncome: Option[BigDecimal],
                           totalExpenses: Option[BigDecimal],
@@ -69,7 +67,4 @@ object EeaPropertyFhl extends NestedJsonReads {
   )(EeaPropertyFhl.readsApply _)
 
   implicit val writes: OWrites[EeaPropertyFhl] = Json.writes[EeaPropertyFhl]
-
-  implicit def gqlType: ObjectType[Unit, EeaPropertyFhl] =
-    deriveObjectType[Unit, EeaPropertyFhl]()
 }

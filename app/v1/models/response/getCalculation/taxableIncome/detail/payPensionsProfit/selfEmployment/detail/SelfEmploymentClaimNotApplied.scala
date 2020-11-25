@@ -18,8 +18,6 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import sangria.macros.derive.{ExcludeFields, ReplaceField, deriveObjectType}
-import sangria.schema.{Field, ObjectType, StringType}
 import v1.models.des.ReliefClaimed
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
@@ -35,14 +33,8 @@ object SelfEmploymentClaimNotApplied {
       (JsPath \ "taxYearClaimMade").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "claimType").read[ReliefClaimed].map(des => des.toTypeOfClaim) and
       (JsPath \ "incomeSourceId").read[String]
-    )(SelfEmploymentClaimNotApplied.apply _)
+  )(SelfEmploymentClaimNotApplied.apply _)
 
   implicit val writes: OWrites[SelfEmploymentClaimNotApplied] = (claimNotApplied: SelfEmploymentClaimNotApplied) =>
     Json.toJsObject(claimNotApplied)(Json.writes[SelfEmploymentClaimNotApplied]) - "incomeSourceId"
-
-  implicit def gqlType: ObjectType[Unit, SelfEmploymentClaimNotApplied] =
-    deriveObjectType[Unit, SelfEmploymentClaimNotApplied](
-      ReplaceField("claimType", Field("claimType", StringType, resolve = _.value.claimType.toString)),
-      ExcludeFields("incomeSourceId")
-    )
 }

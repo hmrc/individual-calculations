@@ -18,8 +18,6 @@ package v1.models.response.getCalculation.incomeTaxAndNics.summary
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import sangria.macros.derive._
-import sangria.schema._
 import utils.NestedJsonReads
 
 case class CalculationSummary(incomeTax: IncomeTaxSummary,
@@ -39,7 +37,7 @@ object CalculationSummary extends NestedJsonReads {
     (JsPath \ "calculation" \ "taxCalculation" \ "incomeTax").read[IncomeTaxSummary] and
       (JsPath \ "calculation" \ "taxCalculation" \ "nics").readNestedNullable[NicSummary].map {
         case Some(NicSummary.empty) => None
-        case other                  => other
+        case other => other
       } and
       (JsPath \ "calculation" \ "taxCalculation" \ "totalStudentLoansRepaymentAmount").readNestedNullable[BigDecimal] and
       (JsPath \ "calculation" \ "taxCalculation" \ "totalAnnualPaymentsTaxCharged").readNestedNullable[BigDecimal] and
@@ -49,7 +47,4 @@ object CalculationSummary extends NestedJsonReads {
       (JsPath \ "calculation" \ "taxCalculation" \ "totalIncomeTaxAndNicsDue").read[BigDecimal] and
       (JsPath \ "inputs" \ "personalInformation" \ "taxRegime").read[String]
     ) (CalculationSummary.apply _)
-
-  implicit def gqlType: ObjectType[Unit, CalculationSummary] =
-    deriveObjectType[Unit, CalculationSummary](ObjectTypeName("IncomeTaxAndNicsCalculationSummary"))
 }

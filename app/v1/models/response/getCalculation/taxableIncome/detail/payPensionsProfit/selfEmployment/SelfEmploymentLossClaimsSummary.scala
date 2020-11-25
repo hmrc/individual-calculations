@@ -18,8 +18,6 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Json, OWrites, Reads, _}
-import sangria.macros.derive._
-import sangria.schema.ObjectType
 
 case class SelfEmploymentLossClaimsSummary(totalBroughtForwardIncomeTaxLosses: Option[BigInt],
                                            broughtForwardIncomeTaxLossesUsed: Option[BigInt],
@@ -42,10 +40,7 @@ object SelfEmploymentLossClaimsSummary {
       (JsPath \ "broughtForwardClass4LossesUsed").readNullable[BigInt] and
       (JsPath \ "carrySidewaysClass4LossesUsed").readNullable[BigInt] and
       (JsPath \ "totalClass4LossesCarriedForward").readNullable[BigInt]
-    )(SelfEmploymentLossClaimsSummary.apply _)
+  )(SelfEmploymentLossClaimsSummary.apply _)
 
   implicit val writes: OWrites[SelfEmploymentLossClaimsSummary] = Json.writes[SelfEmploymentLossClaimsSummary]
-
-  implicit def gqlType: ObjectType[Unit, SelfEmploymentLossClaimsSummary] =
-    deriveObjectType[Unit, SelfEmploymentLossClaimsSummary]()
 }

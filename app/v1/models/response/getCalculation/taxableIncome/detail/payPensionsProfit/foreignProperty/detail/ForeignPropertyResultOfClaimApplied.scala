@@ -18,8 +18,6 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import sangria.macros.derive.{ReplaceField, deriveObjectType}
-import sangria.schema.{Field, ObjectType, StringType}
 import v1.models.des.ReliefClaimed
 import v1.models.domain.TypeOfClaim
 import v1.models.request.DesTaxYear
@@ -43,12 +41,7 @@ object ForeignPropertyResultOfClaimApplied {
       (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "lossAmountUsed").read[BigInt] and
       (JsPath \ "remainingLossValue").read[BigInt]
-    )(ForeignPropertyResultOfClaimApplied.apply _)
+  )(ForeignPropertyResultOfClaimApplied.apply _)
 
   implicit val writes: OWrites[ForeignPropertyResultOfClaimApplied] = Json.writes[ForeignPropertyResultOfClaimApplied]
-
-  implicit def gqlType: ObjectType[Unit, ForeignPropertyResultOfClaimApplied] =
-    deriveObjectType[Unit, ForeignPropertyResultOfClaimApplied](
-      ReplaceField("claimType", Field("claimType", StringType, resolve = _.value.claimType.toString))
-    )
 }

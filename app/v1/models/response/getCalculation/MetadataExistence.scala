@@ -17,8 +17,6 @@
 package v1.models.response.getCalculation
 
 import play.api.libs.json.{Json, OFormat}
-import sangria.macros.derive._
-import sangria.schema.ObjectType
 
 case class MetadataExistence(
                               incomeTaxAndNicsCalculated: Boolean = false,
@@ -30,7 +28,4 @@ case class MetadataExistence(
 
 object MetadataExistence {
   implicit val format: OFormat[MetadataExistence] = Json.format[MetadataExistence]
-
-  implicit def gqlType: ObjectType[Unit, MetadataExistence] =
-    deriveObjectType[Unit, MetadataExistence]()
 }

@@ -17,8 +17,6 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
 
 case class GiftAid(grossGiftAidPayments: BigInt,
                    rate: BigDecimal,
@@ -26,6 +24,4 @@ case class GiftAid(grossGiftAidPayments: BigInt,
 
 object GiftAid {
   implicit val format: OFormat[GiftAid] = Json.format[GiftAid]
-
-  implicit def gqlType: ObjectType[Unit, GiftAid] = deriveObjectType[Unit, GiftAid]()
 }

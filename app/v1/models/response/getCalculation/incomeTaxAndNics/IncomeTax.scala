@@ -18,8 +18,6 @@ package v1.models.response.getCalculation.incomeTaxAndNics
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import sangria.macros.derive._
-import sangria.schema.ObjectType
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.CalculationDetail
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.CalculationSummary
 
@@ -31,6 +29,4 @@ object IncomeTax {
     JsPath.read[CalculationSummary] and
       JsPath.read[CalculationDetail]
     ) (IncomeTax.apply _)
-
-  implicit def gqlType: ObjectType[Unit, IncomeTax] = deriveObjectType[Unit, IncomeTax]()
 }

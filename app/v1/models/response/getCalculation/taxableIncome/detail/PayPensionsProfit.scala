@@ -18,8 +18,6 @@ package v1.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
 import utils.NestedJsonReads
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.BusinessProfitAndLoss
 
@@ -60,10 +58,8 @@ object PayPensionsProfit extends NestedJsonReads {
         (JsPath \ "calculation" \ "employmentExpenses" \ "totalEmploymentExpenses").readNestedNullable[BigDecimal] and
         (incomeSummaryTotalsJsPath \ "totalEmploymentIncome").readNestedNullable[BigInt] and
         JsPath.readNullable[BusinessProfitAndLoss].mapEmptyModelToNone(BusinessProfitAndLoss.empty)
-      ) (PayPensionsProfit.apply _)
+    )(PayPensionsProfit.apply _)
   }
 
   implicit val writes: OWrites[PayPensionsProfit] = Json.writes[PayPensionsProfit]
-
-  implicit def gqlType: ObjectType[Unit, PayPensionsProfit] = deriveObjectType[Unit, PayPensionsProfit]()
 }

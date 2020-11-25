@@ -16,11 +16,9 @@
 
 package v1.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
 import utils.NestedJsonReads
+import play.api.libs.functional.syntax._
 
 case class PensionContributions(
                                  totalPensionContributions: Option[BigDecimal],
@@ -29,7 +27,7 @@ case class PensionContributions(
                                  overseasPensionSchemeContributions: Option[BigDecimal]
                                )
 
-object PensionContributions extends NestedJsonReads {
+object PensionContributions extends NestedJsonReads{
   val empty = PensionContributions(None, None, None, None)
 
   implicit val writes: OWrites[PensionContributions] = Json.writes[PensionContributions]
@@ -39,7 +37,5 @@ object PensionContributions extends NestedJsonReads {
       (JsPath \ "pensionContributionsDetail" \ "retirementAnnuityPayments").readNestedNullable[BigDecimal] and
       (JsPath \ "pensionContributionsDetail" \ "paymentToEmployersSchemeNoTaxRelief").readNestedNullable[BigDecimal] and
       (JsPath \ "pensionContributionsDetail" \ "overseasPensionSchemeContributions").readNestedNullable[BigDecimal]
-    ) (PensionContributions.apply _)
-
-  implicit def gqlType: ObjectType[Unit, PensionContributions] = deriveObjectType[Unit, PensionContributions]()
+    )(PensionContributions.apply _)
 }

@@ -19,8 +19,6 @@ package v1.models.response.getCalculation.incomeTaxAndNics.detail
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import utils.NestedJsonReads
-import sangria.macros.derive._
-import sangria.schema.ObjectType
 
 case class PensionSavingsTaxChargesDetail(lumpSumBenefitTakenInExcessOfLifetimeAllowance: Option[PensionTypeBreakdown],
                                           benefitInExcessOfLifetimeAllowance: Option[PensionTypeBreakdown],
@@ -44,7 +42,4 @@ object PensionSavingsTaxChargesDetail extends NestedJsonReads {
       (JsPath \ "pensionContributionsInExcessOfTheAnnualAllowance").readNullable[PensionContributionsInExcessOfTheAnnualAllowance] and
       (JsPath \ "overseasPensionContributions").readNestedNullable[OverseasPensionContributions]
     ) (PensionSavingsTaxChargesDetail.apply _)
-
-  implicit def gqlType: ObjectType[Unit, PensionSavingsTaxChargesDetail] =
-    deriveObjectType[Unit, PensionSavingsTaxChargesDetail]()
 }
