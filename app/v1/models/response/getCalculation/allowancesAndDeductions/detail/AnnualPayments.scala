@@ -19,8 +19,6 @@ package v1.models.response.getCalculation.allowancesAndDeductions.detail
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
 
 case class AnnualPayments(
                            grossAnnualPayments: Option[BigDecimal],
@@ -38,6 +36,4 @@ object AnnualPayments extends NestedJsonReads{
       (JsPath \ "annuityPayments" \ "reliefClaimed").readNestedNullable[BigDecimal] and
       (JsPath \ "annuityPayments" \ "rate").readNestedNullable[Double]
     )(AnnualPayments.apply _)
-
-  implicit def gqlType: ObjectType[Unit, AnnualPayments] = deriveObjectType[Unit, AnnualPayments]()
 }

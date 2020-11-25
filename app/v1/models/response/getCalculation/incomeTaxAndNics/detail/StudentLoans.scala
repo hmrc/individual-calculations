@@ -17,8 +17,6 @@
 package v1.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
-import sangria.macros.derive._
-import sangria.schema.ObjectType
 
 case class StudentLoans(planType: String,
                         studentLoanTotalIncomeAmount: BigDecimal,
@@ -31,7 +29,4 @@ case class StudentLoans(planType: String,
 
 object StudentLoans {
   implicit val format: OFormat[StudentLoans] = Json.format[StudentLoans]
-
-  implicit def gqlType: ObjectType[Unit, StudentLoans] =
-    deriveObjectType[Unit, StudentLoans]()
 }

@@ -25,8 +25,6 @@ import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.selfEmployment.SelfEmployment
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyFhl.UkPropertyFhl
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyNonFhl.UkPropertyNonFhl
-import sangria.macros.derive._
-import sangria.schema.ObjectType
 
 case class BusinessProfitAndLoss(selfEmployments: Option[Seq[SelfEmployment]],
                                  ukPropertyFhl: Option[UkPropertyFhl],
@@ -46,7 +44,4 @@ object BusinessProfitAndLoss extends NestedJsonReads {
   )(BusinessProfitAndLoss.apply _)
 
   implicit val writes: Writes[BusinessProfitAndLoss] = Json.writes[BusinessProfitAndLoss]
-
-  implicit def gqlType: ObjectType[Unit, BusinessProfitAndLoss] =
-    deriveObjectType[Unit, BusinessProfitAndLoss]()
 }

@@ -18,8 +18,6 @@ package v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
 import v1.models.request.DesTaxYear
 
 case class ForeignPropertyLossBroughtForward(taxYearLossIncurred: String, currentLossValue: BigInt, mtdLoss: Boolean)
@@ -29,10 +27,7 @@ object ForeignPropertyLossBroughtForward {
     (JsPath \ "taxYearLossIncurred").read[Int].map(DesTaxYear.fromDesIntToString) and
       (JsPath \ "currentLossValue").read[BigInt] and
       (JsPath \ "mtdLoss").read[Boolean]
-    ) (ForeignPropertyLossBroughtForward.apply _)
+  )(ForeignPropertyLossBroughtForward.apply _)
 
   implicit val writes: OWrites[ForeignPropertyLossBroughtForward] = Json.writes[ForeignPropertyLossBroughtForward]
-
-  implicit def gqlType: ObjectType[Unit, ForeignPropertyLossBroughtForward] =
-    deriveObjectType[Unit, ForeignPropertyLossBroughtForward]()
 }

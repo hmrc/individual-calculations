@@ -16,16 +16,10 @@
 
 package v1.models.response.getCalculation.endOfYearEstimate.detail
 
-import play.api.libs.json.{Json, OFormat}
-import sangria.macros.derive.deriveObjectType
-import sangria.schema.ObjectType
-case class EoyEstimateUkPropertyNonFhl(
-                                        taxableIncome: BigInt,
-                                        finalised: Option[Boolean]
-                                      )
+import play.api.libs.json.{ Json, OFormat }
+
+case class EoyEstimateUkPropertyNonFhl(taxableIncome: BigInt, finalised: Option[Boolean])
 
 object EoyEstimateUkPropertyNonFhl {
   implicit val formats: OFormat[EoyEstimateUkPropertyNonFhl] = Json.format[EoyEstimateUkPropertyNonFhl]
-
-  implicit def gqlType: ObjectType[Unit, EoyEstimateUkPropertyNonFhl] = deriveObjectType[Unit, EoyEstimateUkPropertyNonFhl]()
 }

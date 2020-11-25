@@ -18,12 +18,10 @@ package v1.models.response.getCalculation
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads, _}
-import sangria.macros.derive._
-import sangria.schema._
 import utils.NestedJsonReads
 import v1.models.response.common.{Messages, Metadata}
-import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
 import v1.models.response.getCalculation.endOfYearEstimate.EoyEstimate
+import v1.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
 import v1.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1.models.response.getCalculation.taxableIncome.TaxableIncome
 
@@ -49,21 +47,4 @@ object GetCalculationResponse extends NestedJsonReads {
         (__ \ "calculation" \ "endOfYearEstimate").readNestedNullable[EoyEstimate] and
         emptyIfNotPresent[AllowancesDeductionsAndReliefs](__ \ "calculation")
       ) (GetCalculationResponse.apply _)
-
-  def gqlType: ObjectType[Unit, GetCalculationResponse] = deriveObjectType[Unit, GetCalculationResponse]()
-
-  //noinspection ScalaStyle
-  private def Query: ObjectType[GetCalculationResponse, Unit] = ObjectType(
-    name = "Query",
-    fields[GetCalculationResponse, Unit] (
-      Field("metadata", Metadata.gqlType, resolve = _.ctx.metadata),
-      Field("incomeTaxAndNicsCalculated", OptionType(IncomeTax.gqlType), resolve = _.ctx.incomeTaxAndNicsCalculated),
-      Field("messages", OptionType(Messages.gqlType), resolve = _.ctx.messages),
-      Field("taxableIncome", OptionType(TaxableIncome.gqlType), resolve = _.ctx.taxableIncome),
-      Field("endOfYearEstimate", OptionType(EoyEstimate.gqlType), resolve = _.ctx.endOfYearEstimate),
-      Field("allowancesDeductionsAndReliefs", OptionType(AllowancesDeductionsAndReliefs.gqlType), resolve = _.ctx.allowancesDeductionsAndReliefs)
-    )
-  )
-
-  def schema: Schema[GetCalculationResponse, Unit] = Schema(Query)
 }
