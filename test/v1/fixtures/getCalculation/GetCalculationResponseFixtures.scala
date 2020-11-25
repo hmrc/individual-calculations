@@ -271,7 +271,7 @@ object GetCalculationResponseFixtures {
       |          "overseasPensionContributions": {
       |            "totalShortServiceRefund": 100.25,
       |            "totalShortServiceRefundCharge": 100.25,
-      |            "shortServiceTaxPaid": 100.25,
+      |            "shortServiceRefundTaxPaid": 100.25,
       |            "totalShortServiceRefundChargeDue": 100.25,
       |            "shortServiceRefundBands": [
       |              {
@@ -926,7 +926,7 @@ object GetCalculationResponseFixtures {
             Some(OverseasPensionContributions(
               totalShortServiceRefund = 100.25,
               totalShortServiceRefundCharge = 100.25,
-              shortServiceTaxPaid = Some(100.25),
+              shortServiceRefundTaxPaid = Some(100.25),
               totalShortServiceRefundChargeDue = 100.25,
               shortServiceRefundBands = Some(Seq(ShortServiceRefundBands(
                 name = "Band A",
