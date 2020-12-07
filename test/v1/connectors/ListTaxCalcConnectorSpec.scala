@@ -28,11 +28,11 @@ import scala.concurrent.Future
 
 class ListTaxCalcConnectorSpec extends ConnectorSpec {
 
-  val taxYear = DesTaxYear("2019")
-  val nino = Nino("AA123456A")
+  val taxYear: DesTaxYear = DesTaxYear("2019")
+  val nino: Nino = Nino("AA123456A")
   val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
-  val listCalcResponse = ListCalculationsResponse(
+  val listCalcResponse: ListCalculationsResponse = ListCalculationsResponse(
     Seq(
       CalculationListItem(
         id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
@@ -70,6 +70,18 @@ class ListTaxCalcConnectorSpec extends ConnectorSpec {
           .returns(Future.successful(expected))
 
         await(connector.listCalculations(taxYearRequest)) shouldBe expected
+      }
+    }
+
+    "a valid request is supplied with a tax year parameter and header carrier contains correlation id is supplied" should {
+      "send request to des with single correlationId in the header and return a successful response" in new Test {
+        val expected = Right(ResponseWrapper(correlationId, listCalcResponse))
+
+        MockedHttpClient
+          .parameterGet(s"$baseUrl/income-tax/list-of-calculation-results/$nino", Seq(("taxYear", "2019")), desRequestHeaders: _*)
+          .returns(Future.successful(expected))
+
+        await(connector.listCalculations(taxYearRequest)(hc.withExtraHeaders("CorrelationId"-> "X-123"), ec, correlationId)) shouldBe expected
       }
     }
   }

@@ -42,7 +42,8 @@ trait MockHttpClient extends MockFactory {
       (mockHttpClient
         .GET(_: String, _: Seq[(String, String)])(_: HttpReads[T], _: HeaderCarrier, _: ExecutionContext))
         .expects(where { (actualUrl, params,  _, hc, _) =>
-          url == actualUrl && requiredHeaders.forall(h => hc.headers.contains(h)) && params == parameters
+          url == actualUrl && requiredHeaders.forall(h => hc.headers.contains(h)) && params == parameters &&
+            hc.headers.count(x => x._1 == "CorrelationId") == 1
         })
     }
 
@@ -50,7 +51,8 @@ trait MockHttpClient extends MockFactory {
       (mockHttpClient
         .POST[I, T](_: String, _: I, _: Seq[(String, String)])(_: Writes[I], _: HttpReads[T], _: HeaderCarrier, _: ExecutionContext))
         .expects(where { (actualUrl, actualBody, _, _, _, hc, _) =>
-          url == actualUrl && body == actualBody && requiredHeaders.forall(h => hc.headers.contains(h))
+          url == actualUrl && body == actualBody && requiredHeaders.forall(h => hc.headers.contains(h)) &&
+            hc.headers.count(x => x._1 == "CorrelationId") == 1
         })
     }
   }
