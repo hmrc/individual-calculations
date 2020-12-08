@@ -30,15 +30,16 @@ trait BaseDesConnector {
   val appConfig: AppConfig
 
   val logger = Logger(this.getClass)
+  val CORRELATION_ID = "CorrelationId"
 
   private[connectors] def desHeaderCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = {
 
-    if(hc.headers.exists(header => header._1 == "CorrelationId")) {
+    if(hc.headers.exists(header => header._1 == CORRELATION_ID)) {
       hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.desToken}")))
         .withExtraHeaders("Environment" -> appConfig.desEnv)
     } else{
       hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.desToken}")))
-        .withExtraHeaders("Environment" -> appConfig.desEnv, "CorrelationId" -> correlationId)
+        .withExtraHeaders("Environment" -> appConfig.desEnv, CORRELATION_ID -> correlationId)
     }
   }
 
