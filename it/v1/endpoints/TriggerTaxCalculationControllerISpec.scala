@@ -34,9 +34,6 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
     val nino = "AA123456A"
     val taxYear = "2017-18"
     val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
-    val correlationId = "X-123"
-
-
 
     val requestJson: JsValue = Json.parse(
       s"""
@@ -181,9 +178,10 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
         val input = Seq(
           (Status.BAD_REQUEST, "INVALID_NINO", Status.BAD_REQUEST, NinoFormatError),
           (Status.BAD_REQUEST, "INVALID_TAX_YEAR", Status.BAD_REQUEST, TaxYearFormatError),
-          (Status.BAD_REQUEST, "NO_SUBMISSION_EXIST", Status.FORBIDDEN, RuleNoIncomeSubmissionsExistError),
+          (Status.FORBIDDEN, "NO_SUBMISSION_EXIST", Status.FORBIDDEN, RuleNoIncomeSubmissionsExistError),
           (Status.BAD_REQUEST, "INVALID_REQUEST", Status.INTERNAL_SERVER_ERROR, DownstreamError),
-          (Status.BAD_REQUEST, "CONFLICT", Status.INTERNAL_SERVER_ERROR, DownstreamError),
+          (Status.CONFLICT, "CONFLICT", Status.INTERNAL_SERVER_ERROR, DownstreamError),
+          (Status.BAD_REQUEST, "INVALID_TAX_CRYSTALLISE", Status.INTERNAL_SERVER_ERROR, DownstreamError),
           (Status.INTERNAL_SERVER_ERROR, "SERVER_ERROR", Status.INTERNAL_SERVER_ERROR, DownstreamError),
           (Status.SERVICE_UNAVAILABLE, "SERVICE_UNAVAILABLE", Status.INTERNAL_SERVER_ERROR, DownstreamError))
 

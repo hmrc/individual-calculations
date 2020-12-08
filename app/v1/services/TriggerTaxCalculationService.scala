@@ -53,6 +53,9 @@ class TriggerTaxCalculationService @Inject()(connector: TaxCalcConnector) extend
       "INVALID_NINO" -> NinoFormatError,
       "INVALID_TAX_YEAR" -> TaxYearFormatError,
       "NO_SUBMISSION_EXIST" -> RuleNoIncomeSubmissionsExistError,
+      "INVALID_REQUEST" -> DownstreamError,
+      "CONFLICT" -> DownstreamError,
+      "INVALID_TAX_CRYSTALLISE" -> DownstreamError,
       "SERVER_ERROR" -> DownstreamError,
       "SERVICE_UNAVAILABLE" -> DownstreamError
     )
