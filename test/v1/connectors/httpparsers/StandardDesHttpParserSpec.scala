@@ -45,8 +45,8 @@ class StandardDesHttpParserSpec extends UnitSpec {
   val data = "someData"
   val desExpectedJson: JsValue = Json.obj("data" -> data)
 
-  val desModel = SomeModel(data)
-  val desResponse = ResponseWrapper(correlationId, desModel)
+  val desModel: SomeModel = SomeModel(data)
+  val desResponse: ResponseWrapper[SomeModel] = ResponseWrapper(correlationId, desModel)
 
   "The generic HTTP parser" when {
     "no status code is specified" must {

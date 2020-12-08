@@ -46,7 +46,12 @@ class TriggerTaxCalculationController @Inject()(val authService: EnrolmentsAuthS
 
   def triggerTaxCalculation(nino: String): Action[JsValue] =
     authorisedAction(nino).async(parse.json) { implicit request =>
-      implicit val correlationId: String = idGenerator.getCorrelationId
+
+      implicit val correlationId: String = request.headers.get("CorrelationId") match {
+        case None => idGenerator.getCorrelationId
+        case Some(id) => id
+      }
+
       logger.info(message = s"[${endpointLogContext.controllerName}][${endpointLogContext.endpointName}] " +
         s"with correlationId : $correlationId")
       val rawData = TriggerTaxCalculationRawData(nino, AnyContentAsJson(request.body))

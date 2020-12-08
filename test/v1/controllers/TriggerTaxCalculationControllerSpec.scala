@@ -44,7 +44,7 @@ class TriggerTaxCalculationControllerSpec
   private val calcId        = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   trait Test {
-    val hc = HeaderCarrier()
+    val hc: HeaderCarrier = HeaderCarrier()
 
     val controller = new TriggerTaxCalculationController(
       authService = mockEnrolmentsAuthService,

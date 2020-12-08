@@ -37,20 +37,20 @@ trait MockTaxCalcConnector extends MockFactory {
 
     def listCalculations(requestData: ListCalculationsRequest): CallHandler[Future[DesOutcome[ListCalculationsResponse]]] = {
       (mockTaxCalcConnector
-        .listCalculations(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext))
-        .expects(requestData, *, *)
+        .listCalculations(_: ListCalculationsRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .expects(requestData, *, *, *)
     }
 
     def triggerTaxCalculation(requestData: TriggerTaxCalculationRequest): CallHandler[Future[DesOutcome[TriggerCalculationResponse]]] = {
       (mockTaxCalcConnector
-        .triggerTaxCalculation(_: TriggerTaxCalculationRequest)(_: HeaderCarrier, _: ExecutionContext))
-        .expects(requestData, *, *)
+        .triggerTaxCalculation(_: TriggerTaxCalculationRequest)(_: HeaderCarrier, _: ExecutionContext, _: String))
+        .expects(requestData, *, *, *)
     }
 
     def getCalculation(requestData: GetCalculationRequest): CallHandler[Future[DesOutcome[GetCalculationResponse]]] = {
       (mockTaxCalcConnector
-        .getCalculation(_: GetCalculationRequest)(_: HeaderCarrier, _:ExecutionContext))
-        .expects(requestData, *, *)
+        .getCalculation(_: GetCalculationRequest)(_: HeaderCarrier, _:ExecutionContext, _: String))
+        .expects(requestData, *, *, *)
     }
   }
 }

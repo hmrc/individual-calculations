@@ -28,7 +28,7 @@ import scala.concurrent.Future
 class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
 
   val taxYear = "2017-18"
-  val desTaxYear = DesTaxYear.fromMtd(taxYear).toString
+  val desTaxYear: String = DesTaxYear.fromMtd(taxYear).toString
   val nino = "AA123456A"
   val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
@@ -54,7 +54,20 @@ class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
           .post(s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation", EmptyJsonBody, desRequestHeaders: _*)
           .returns(Future.successful(expected))
 
-        await(connector.triggerTaxCalculation(request)) shouldBe expected
+        await(connector.triggerTaxCalculation(request)(hc, ec, correlationId)) shouldBe expected
+      }
+    }
+
+    "a valid request with header carrier contains correlation id is supplied" should {
+      "send request to des with single correlationId in the header and return a successful response" in new Test {
+
+        val expected = Right(ResponseWrapper(correlationId, TriggerCalculationResponse(calcId)))
+
+        MockedHttpClient
+          .post(s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation", EmptyJsonBody, desRequestHeaders: _*)
+          .returns(Future.successful(expected))
+
+        await(connector.triggerTaxCalculation(request)(hc.withExtraHeaders("CorrelationId"-> "X-123"), ec, correlationId)) shouldBe expected
       }
     }
   }

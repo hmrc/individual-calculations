@@ -22,12 +22,14 @@ import support.WireMockMethods
 
 object DesStub extends WireMockMethods {
 
-  def onSuccess(method: HTTPMethod, uri: String, status: Int, body: JsValue): StubMapping = {
+  def onSuccess(method: HTTPMethod, uri: String, status: Int, body: JsValue,
+                responseHeaders: Map[String, String] = Map.empty): StubMapping = {
     when(method = method, uri = uri)
-      .thenReturn(status = status, body)
+      .thenReturnWithHeaders(status = status, body, responseHeaders)
   }
 
-  def onSuccess(method: HTTPMethod, uri: String, queryParams: Map[String, String], status: Int, body: JsValue): StubMapping = {
+  def onSuccess(method: HTTPMethod, uri: String, queryParams: Map[String, String], status: Int,
+                body: JsValue): StubMapping = {
     when(method = method, uri = uri, queryParams = queryParams)
       .thenReturn(status = status, body)
   }

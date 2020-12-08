@@ -38,14 +38,14 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
 
 
 
-    val requestJson = Json.parse(
+    val requestJson: JsValue = Json.parse(
       s"""
          |{
          |"taxYear": "$taxYear"
          |}
     """.stripMargin)
 
-    val responseBody = Json.parse(
+    val responseBody: JsValue = Json.parse(
       s"""
          | {
          | "id": "$calcId"
@@ -54,7 +54,7 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
 
     def uri: String = s"/$nino/self-assessment"
 
-    val desTaxYear = DesTaxYear.fromMtd(taxYear)
+    val desTaxYear: DesTaxYear = DesTaxYear.fromMtd(taxYear)
 
     lazy val desUrl = s"/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation"
 
@@ -105,6 +105,25 @@ class TriggerTaxCalculationControllerISpec extends IntegrationBaseSpec {
         val response: WSResponse = await(request().post(requestJson))
         response.status shouldBe Status.ACCEPTED
         response.header("Content-Type") shouldBe Some("application/json")
+      }
+    }
+
+    "return a 202 status code with same correlation id" when {
+
+      "a correlation id is received in the request" in new Test {
+
+        override def setupStubs(): StubMapping = {
+          AuditStub.audit()
+          AuthStub.authorised()
+          MtdIdLookupStub.ninoFound(nino)
+
+          DesStub.onSuccess(DesStub.POST, desUrl, OK, responseBody, Map("CorrelationId" -> "same-id"))
+        }
+
+        val response: WSResponse = await(request().addHttpHeaders("CorrelationId" -> "same-id").post(requestJson))
+        response.status shouldBe Status.ACCEPTED
+        response.header("Content-Type") shouldBe Some("application/json")
+        response.header("X-CorrelationId") shouldBe Some("same-id")
       }
     }
 
