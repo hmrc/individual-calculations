@@ -38,7 +38,8 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
 
   def listCalculations(request: ListCalculationsRequest)(
     implicit hc: HeaderCarrier,
-    ec: ExecutionContext): Future[DesOutcome[ListCalculationsResponse]] = {
+    ec: ExecutionContext,
+    correlationId: String): Future[DesOutcome[ListCalculationsResponse]] = {
 
     val nino = request.nino.nino
 
@@ -52,7 +53,8 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
 
   def triggerTaxCalculation(request: TriggerTaxCalculationRequest)(
     implicit hc: HeaderCarrier,
-    ec: ExecutionContext): Future[DesOutcome[TriggerCalculationResponse]] = {
+    ec: ExecutionContext,
+    correlationId: String): Future[DesOutcome[TriggerCalculationResponse]] = {
 
     val nino = request.nino.nino
     val taxYear = DesTaxYear.fromMtd(request.triggerTaxCalc.taxYear)
@@ -66,7 +68,8 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
 
   def getCalculation(request: GetCalculationRequest)(
     implicit hc: HeaderCarrier,
-    ec: ExecutionContext): Future[DesOutcome[GetCalculationResponse]] = {
+    ec: ExecutionContext,
+    correlationId: String): Future[DesOutcome[GetCalculationResponse]] = {
 
     val nino = request.nino.nino
     val calculationId = request.calculationId
