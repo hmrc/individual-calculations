@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ object TaxDeductedAtSource {
 
   implicit val reads: Reads[TaxDeductedAtSource] = (
     (JsPath \ "ukLandAndProperty").readNullable[BigInt] and
-      (JsPath \ "savings").readNullable[BigInt] and
+      (JsPath \ "bbsi").readNullable[BigInt] and
       (JsPath \ "cis").readNullable[BigDecimal] and
       (JsPath \ "securities").readNullable[BigDecimal] and
       (JsPath \ "voidedIsa").readNullable[BigDecimal] and
