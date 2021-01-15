@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ object AppDependencies {
 
   val compile = Seq(
     ws,
-    "uk.gov.hmrc"   %% "bootstrap-play-26"    % "2.2.0",
+    "uk.gov.hmrc"   %% "bootstrap-play-26"    % "2.3.0",
     "uk.gov.hmrc"   %% "domain"               % "5.9.0-play-26",
     "uk.gov.hmrc"   %% "play-hmrc-api"     % "4.1.0-play-26",
     "org.typelevel" %% "cats-core"         % "2.3.0",
