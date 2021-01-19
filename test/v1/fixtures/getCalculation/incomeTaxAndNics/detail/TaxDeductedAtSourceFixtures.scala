@@ -25,7 +25,7 @@ object TaxDeductedAtSourceFixtures {
     """
       |{
       | "ukLandAndProperty" : 100,
-      | "savings" : 200,
+      | "bbsi" : 200,
       | "cis": 110.25,
       | "securities": 120.35,
       | "voidedIsa": 130.45,

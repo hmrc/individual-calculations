@@ -76,7 +76,7 @@ object CalculationSummaryFixtures {
       |            }
       |         },
       |         "totalStudentLoansRepaymentAmount":100.25,
-      |         "totalAnnualPaymentsTaxCharged":200.25,
+      |         "totalAnnuityPaymentsTaxCharged":200.25,
       |         "totalRoyaltyPaymentsTaxCharged":300.25,
       |         "totalIncomeTaxNicsCharged":400.25,
       |         "totalTaxDeducted":500.25,

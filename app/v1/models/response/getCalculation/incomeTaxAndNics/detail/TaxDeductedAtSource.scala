@@ -35,7 +35,7 @@ object TaxDeductedAtSource {
 
   implicit val reads: Reads[TaxDeductedAtSource] = (
     (JsPath \ "ukLandAndProperty").readNullable[BigInt] and
-      (JsPath \ "savings").readNullable[BigInt] and
+      (JsPath \ "bbsi").readNullable[BigInt] and
       (JsPath \ "cis").readNullable[BigDecimal] and
       (JsPath \ "securities").readNullable[BigDecimal] and
       (JsPath \ "voidedIsa").readNullable[BigDecimal] and

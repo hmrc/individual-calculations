@@ -159,7 +159,7 @@ object CalculationDetailFixtures {
       |         }
       |      ],
       |      "taxDeductedAtSource":{
-      |         "savings":300,
+      |         "bbsi":300,
       |         "cis":500.75,
       |         "occupationalPensions":500.75,
       |         "payeEmployments":500.75,
