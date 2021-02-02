@@ -32,24 +32,16 @@ object StandardDesHttpParser extends HttpParser {
 
   // Return Right[DesResponse[Unit]] as success response has no body - no need to assign it a value
   implicit def readsEmpty(implicit successCode: SuccessCode = SuccessCode(NO_CONTENT)): HttpReads[DesOutcome[Unit]] =
-    new HttpReads[DesOutcome[Unit]] {
-
-      override def read(method: String, url: String, response: HttpResponse): DesOutcome[Unit] =
-        doRead(url, response) { correlationId =>
-          Right(ResponseWrapper(correlationId, ()))
-        }
+    (method: String, url: String, response: HttpResponse) => doRead(url, response) { correlationId =>
+      Right(ResponseWrapper(correlationId, ()))
     }
 
   implicit def reads[A: Reads](implicit successCode: SuccessCode = SuccessCode(OK)): HttpReads[DesOutcome[A]] =
-    new HttpReads[DesOutcome[A]] {
-
-      override def read(method: String, url: String, response: HttpResponse): DesOutcome[A] =
-        doRead(url, response) { correlationId =>
-          response.validateJson[A] match {
-            case Some(ref) => Right(ResponseWrapper(correlationId, ref))
-            case None      => Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
-          }
-        }
+    (method: String, url: String, response: HttpResponse) => doRead(url, response) { correlationId =>
+      response.validateJson[A] match {
+        case Some(ref) => Right(ResponseWrapper(correlationId, ref))
+        case None => Left(ResponseWrapper(correlationId, OutboundError(DownstreamError)))
+      }
     }
 
   private def doRead[A](url: String, response: HttpResponse)(successOutcomeFactory: String => DesOutcome[A])(
