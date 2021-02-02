@@ -20,32 +20,22 @@ import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
-
 trait AppConfig {
   def desBaseUrl: String
-
   def mtdIdBaseUrl: String
-
   def desEnv: String
-
   def desToken: String
-
   def apiGatewayContext: String
-
   def apiStatus(version: String): String
-
-
   def featureSwitch: Option[Configuration]
 }
 
 @Singleton
 class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configuration) extends AppConfig {
-
-  val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
   val desBaseUrl: String = config.baseUrl("des")
+  val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
   val desEnv: String = config.getString("microservice.services.des.env")
   val desToken: String = config.getString("microservice.services.des.token")
-
   val apiGatewayContext: String = config.getString("api.gateway.context")
 
   def apiStatus(version: String): String = config.getString(s"api.$version.status")

@@ -34,32 +34,46 @@ import v1.models.errors._
 import scala.concurrent._
 
 @Singleton
-class ErrorHandler @Inject()(
-                              config: Configuration,
-                              auditConnector: AuditConnector,
-                              httpAuditEvent: HttpAuditEvent
-                            )(implicit ec: ExecutionContext) extends JsonErrorHandler(auditConnector, httpAuditEvent, config) {
+class ErrorHandler @Inject()(config: Configuration,
+                             auditConnector: AuditConnector,
+                             httpAuditEvent: HttpAuditEvent)(implicit ec: ExecutionContext)
+  extends JsonErrorHandler(auditConnector, httpAuditEvent, config) {
 
   import httpAuditEvent.dataEvent
 
   override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] = {
+    implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter
+      .fromHeadersAndSession(request.headers, Some(request.session))
 
-    implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    Logger.warn(message =
+      s"[ErrorHandler][onClientError] error in version " +
+      s"${Versions.getFromRequest.getOrElse("<unspecified>")}, " +
+      s"for (${request.method}) [${request.uri}] with status: " +
+      s"$statusCode and message: $message"
+    )
 
-    Logger.warn(s"[ErrorHandler][onClientError] error in version ${Versions.getFromRequest.getOrElse("<unspecified>")}, for (${request.method}) [${request.uri}] with status:" +
-      s" $statusCode and message: $message")
     statusCode match {
       case BAD_REQUEST =>
-        auditConnector.sendEvent(dataEvent("ServerValidationError",
-          "Request bad format exception", request))
-        Logger.warn(s"[ErrorHandler][onBadRequest] - Received undetected error: '$message'")
-        val result = BadRequest(Json.toJson(MtdError("INVALID_REQUEST", JsonErrorSanitiser.sanitise(message))))
+        auditConnector.sendEvent(dataEvent(
+          eventType = "ServerValidationError",
+          transactionName = "Request bad format exception",
+          request = request
+        ))
 
+        Logger.warn(s"[ErrorHandler][onBadRequest] - Received undetected error: '$message'")
+
+        val result = BadRequest(Json.toJson(MtdError("INVALID_REQUEST", JsonErrorSanitiser.sanitise(message))))
         Future.successful(result)
+
       case NOT_FOUND =>
-        auditConnector.sendEvent(dataEvent("ResourceNotFound",
-          "Resource Endpoint Not Found", request))
+        auditConnector.sendEvent(dataEvent(
+          eventType = "ResourceNotFound",
+          transactionName = "Resource Endpoint Not Found",
+          request = request
+        ))
+
         Future.successful(NotFound(Json.toJson(NotFoundError)))
+
       case _ =>
         val errorCode = statusCode match {
           case UNAUTHORIZED => UnauthorisedError
@@ -67,23 +81,26 @@ class ErrorHandler @Inject()(
           case _ => MtdError("INVALID_REQUEST", message)
         }
 
-        auditConnector.sendEvent(
-          dataEvent(
-            eventType = "ClientError",
-            transactionName = s"A client error occurred, status: $statusCode",
-            request = request,
-            detail = Map.empty
-          )
-        )
+        auditConnector.sendEvent(dataEvent(
+          eventType = "ClientError",
+          transactionName = s"A client error occurred, status: $statusCode",
+          request = request,
+          detail = Map.empty
+        ))
 
         Future.successful(Status(statusCode)(Json.toJson(errorCode)))
     }
   }
 
   override def onServerError(request: RequestHeader, ex: Throwable): Future[Result] = {
-    implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    implicit val headerCarrier: HeaderCarrier = HeaderCarrierConverter
+      .fromHeadersAndSession(request.headers, Some(request.session))
 
-    Logger.warn(s"[ErrorHandler][onServerError] Internal server error in version ${Versions.getFromRequest.getOrElse("<unspecified>")}, for (${request.method}) [${request.uri}] -> ", ex)
+    Logger.warn(message =
+      s"[ErrorHandler][onServerError] Internal server error in version " +
+      s"${Versions.getFromRequest.getOrElse("<unspecified>")}, " +
+      s"for (${request.method}) [${request.uri}] -> ", ex
+    )
 
     val (status, errorCode, eventType) = ex match {
       case _: NotFoundException => (NOT_FOUND, NotFoundError, "ResourceNotFound")
@@ -95,16 +112,13 @@ class ErrorHandler @Inject()(
       case _ => (INTERNAL_SERVER_ERROR, DownstreamError, "ServerInternalError")
     }
 
-    auditConnector.sendEvent(
-      dataEvent(
-        eventType = eventType,
-        transactionName = "Unexpected error",
-        request = request,
-        detail = Map("transactionFailureReason" -> ex.getMessage)
-      )
-    )
+    auditConnector.sendEvent(dataEvent(
+      eventType = eventType,
+      transactionName = "Unexpected error",
+      request = request,
+      detail = Map("transactionFailureReason" -> ex.getMessage)
+    ))
 
     Future.successful(Status(status)(Json.toJson(errorCode)))
   }
 }
-

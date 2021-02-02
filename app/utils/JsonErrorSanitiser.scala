@@ -19,7 +19,6 @@ package utils
 object JsonErrorSanitiser {
 
   def sanitise(str: String): String = {
-
     val searchString = "invalid json"
 
     if (str.toLowerCase.startsWith(searchString)) {
@@ -33,5 +32,4 @@ object JsonErrorSanitiser {
       }
     }
   }
-
 }
