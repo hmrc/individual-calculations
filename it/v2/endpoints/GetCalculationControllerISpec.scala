@@ -39,7 +39,7 @@ class GetCalculationControllerISpec extends IntegrationBaseSpec {
     def request: WSRequest = {
       setupStubs()
       buildRequest(uri)
-        .withHttpHeaders((ACCEPT, "application/vnd.hmrc.1.0+json"))
+        .withHttpHeaders((ACCEPT, "application/vnd.hmrc.2.0+json"))
     }
 
     def uri: String = s"/$nino/self-assessment/$calcId"
