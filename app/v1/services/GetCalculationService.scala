@@ -45,7 +45,7 @@ class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesRe
 
     val result = for {
       desResponseWrapper <- EitherT(connector.getCalculation(request))
-      desResponseWithMetadata <- EitherT(addMetadata((desResponseWrapper)))
+      desResponseWithMetadata <- EitherT(addMetadata(desResponseWrapper))
     } yield desResponseWithMetadata
     result.leftMap(mapDesErrors(desErrorMap)).flatMap(_.toErrorWhen(nonMatchingCalcFilter).toEitherT).value
   }

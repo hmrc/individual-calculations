@@ -25,7 +25,7 @@ import v1.models.request.RawData
 class RequestParserSpec extends UnitSpec {
 
   private val nino = "AA123456A"
-  implicit val correlationId = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
+  implicit val correlationId: String = "a1e8057e-fbbc-47a8-a8b4-78d9f015c253"
   case class Raw(nino: String) extends RawData
   case class Request(nino: Nino)
 
@@ -34,8 +34,8 @@ class RequestParserSpec extends UnitSpec {
 
     val validator: Validator[Raw]
 
-    val parser = new RequestParser[Raw, Request] {
-      val validator = test.validator
+    val parser: RequestParser[Raw, Request] = new RequestParser[Raw, Request] {
+      val validator: Validator[Raw] = test.validator
 
       protected def requestFor(data: Raw) = Request(Nino(data.nino))
     }
@@ -44,9 +44,7 @@ class RequestParserSpec extends UnitSpec {
   "parse" should {
     "return a Request" when {
       "the validator returns no errors" in new Test {
-        lazy val validator: Validator[Raw] = new Validator[Raw] {
-          def validate(data: Raw) = Nil
-        }
+        lazy val validator: Validator[Raw] = (data: Raw) => Nil
 
         parser.parseRequest(Raw(nino)) shouldBe Right(Request(Nino(nino)))
       }
@@ -54,9 +52,7 @@ class RequestParserSpec extends UnitSpec {
 
     "return a single error" when {
       "the validator returns a single error" in new Test {
-        lazy val validator: Validator[Raw] = new Validator[Raw] {
-          def validate(data: Raw) = List(NinoFormatError)
-        }
+        lazy val validator: Validator[Raw] = (data: Raw) => List(NinoFormatError)
 
         parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(correlationId, NinoFormatError, None))
       }
@@ -64,9 +60,7 @@ class RequestParserSpec extends UnitSpec {
 
     "return multiple errors" when {
       "the validator returns multiple errors" in new Test {
-        lazy val validator: Validator[Raw] = new Validator[Raw] {
-          def validate(data: Raw) = List(NinoFormatError, RuleIncorrectOrEmptyBodyError)
-        }
+        lazy val validator: Validator[Raw] = (data: Raw) => List(NinoFormatError, RuleIncorrectOrEmptyBodyError)
 
         parser.parseRequest(Raw(nino)) shouldBe Left(ErrorWrapper(correlationId, BadRequestError, Some(Seq(NinoFormatError, RuleIncorrectOrEmptyBodyError))))
       }

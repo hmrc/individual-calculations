@@ -16,11 +16,9 @@
 
 package v1.models.request
 
-import play.api.libs.json.{JsObject, JsValue, Writes}
+import play.api.libs.json.{JsObject, Writes}
 
 object EmptyJsonBody {
 
-  implicit val writes: Writes[EmptyJsonBody.type] = new Writes[EmptyJsonBody.type] {
-    override def writes(o: EmptyJsonBody.type): JsValue = JsObject.empty
-  }
+  implicit val writes: Writes[EmptyJsonBody.type] = (o: EmptyJsonBody.type) => JsObject.empty
 }
