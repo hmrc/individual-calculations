@@ -17,8 +17,10 @@
 package routing
 
 import com.google.inject.ImplementedBy
-import definition.Versions.VERSION_1
+import config.{AppConfig, FeatureSwitch}
+import definition.Versions.{VERSION_1, VERSION_2}
 import javax.inject.Inject
+import play.api.Logger
 import play.api.routing.Router
 
 // So that we can have API-independent implementations of
@@ -34,9 +36,26 @@ trait VersionRoutingMap {
 }
 
 // Add routes corresponding to available versions...
-case class VersionRoutingMapImpl @Inject()(defaultRouter: Router, v1Router:  v1.Routes) extends VersionRoutingMap {
+case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
+                                           defaultRouter: Router,
+                                           v1Router:  v1.Routes,
+                                           v2Router: v2.Routes,
+                                           v1r2Router: v1r2.Routes) extends VersionRoutingMap {
+
+  protected val logger: Logger = Logger(this.getClass)
+  val featureSwitch: FeatureSwitch = FeatureSwitch(appConfig.featureSwitch)
 
   val map: Map[String, Router] = Map(
-    VERSION_1 -> v1Router
+    VERSION_1 -> {
+      if (featureSwitch.isR2RoutingEnabled) {
+        logger.info("[VersionRoutingMap][map] using v1R2Router to use version1 and release 2 routes")
+        v1r2Router
+      }
+      else {
+        logger.info("[VersionRoutingMap][map] using v1Router to use full routes (sandbox routes)")
+        v1Router
+      }
+    },
+    VERSION_2 -> v2Router
   )
 }
