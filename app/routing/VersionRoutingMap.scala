@@ -45,12 +45,10 @@ case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
 
   val map: Map[String, Router] = Map(
     VERSION_1 -> {
-      if (featureSwitch.isR2RoutingEnabled) {
-        logger.info("[VersionRoutingMap][map] using v1R2Router to use version1 and release 2 routes")
-        v1r2Router
+      if (featureSwitch.isV1R2RoutingEnabled) {
+       v1r2Router
       }
       else {
-        logger.info("[VersionRoutingMap][map] using v1Router to use full routes (sandbox routes)")
         v1Router
       }
     },

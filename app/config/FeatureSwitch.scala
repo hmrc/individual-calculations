@@ -55,7 +55,7 @@ case class FeatureSwitch(value: Option[Configuration]) {
     enabled.getOrElse(false)
   }
 
-  def isR2RoutingEnabled: Boolean = value match {
+  def isV1R2RoutingEnabled: Boolean = value match {
     case Some(config) => config.getOptional[Boolean] ("v1r2.enabled").getOrElse(false)
     case None => false
   }
