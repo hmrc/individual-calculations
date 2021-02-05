@@ -16,25 +16,23 @@
 
 package v1.models.errors
 
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json.{Json, Writes}
 
 case class ErrorWrapper(correlationId: String, error: MtdError, errors: Option[Seq[MtdError]] = None)
 
 object ErrorWrapper {
-  implicit val writes: Writes[ErrorWrapper] = new Writes[ErrorWrapper] {
-    override def writes(errorResponse: ErrorWrapper): JsValue = {
+  implicit val writes: Writes[ErrorWrapper] = (errorResponse: ErrorWrapper) => {
 
-      val json = Json.obj(
-        "code"    -> errorResponse.error.code,
-        "message" -> errorResponse.error.message
-      )
+    val json = Json.obj(
+      "code" -> errorResponse.error.code,
+      "message" -> errorResponse.error.message
+    )
 
-      errorResponse.errors match {
-        case Some(errors) if errors.nonEmpty => json + ("errors" -> Json.toJson(errors))
-        case _                               => json
-      }
-
+    errorResponse.errors match {
+      case Some(errors) if errors.nonEmpty => json + ("errors" -> Json.toJson(errors))
+      case _ => json
     }
+
   }
 
 }

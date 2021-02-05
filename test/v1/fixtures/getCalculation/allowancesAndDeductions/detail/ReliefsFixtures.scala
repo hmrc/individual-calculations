@@ -24,7 +24,7 @@ object ReliefsFixtures {
     Json.parse(
       s"""
          |{
-         |   "incomeSourceType": "${incomeSourceType}",
+         |   "incomeSourceType": "$incomeSourceType",
          |   "incomeSourceId": "ABC647261934212",
          |   "countryCode": "FRA",
          |   "allowableAmount": 1000,

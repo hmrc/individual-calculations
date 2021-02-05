@@ -345,7 +345,7 @@ object CalculationDetailFixtures {
         NicDetail(
           Some(
             Class2NicDetail(
-              None, None, None, None, true, None)), None)
+              None, None, None, None, underSmallProfitThreshold = true, None)), None)
       ),
       Some(
         TaxDeductedAtSource(

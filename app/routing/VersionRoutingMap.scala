@@ -20,16 +20,15 @@ import com.google.inject.ImplementedBy
 import config.{AppConfig, FeatureSwitch}
 import definition.Versions.{VERSION_1, VERSION_2}
 import javax.inject.Inject
-import play.api.Logger
 import play.api.routing.Router
+import utils.Logging
 
 // So that we can have API-independent implementations of
 // VersionRoutingRequestHandler and VersionRoutingRequestHandlerSpec
 // implement this for the specific API...
 @ImplementedBy(classOf[VersionRoutingMapImpl])
-trait VersionRoutingMap {
+trait VersionRoutingMap extends Logging{
   val defaultRouter: Router
-
   val map: Map[String, Router]
 
   final def versionRouter(version: String): Option[Router] = map.get(version)
@@ -42,7 +41,6 @@ case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
                                            v2Router: v2.Routes,
                                            v1r2Router: v1r2.Routes) extends VersionRoutingMap {
 
-  protected val logger: Logger = Logger(this.getClass)
   val featureSwitch: FeatureSwitch = FeatureSwitch(appConfig.featureSwitch)
 
   val map: Map[String, Router] = Map(

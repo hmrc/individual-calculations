@@ -16,12 +16,11 @@
 
 package v1.fixtures.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import v1.models.response.getCalculation.incomeTaxAndNics.detail.Class2NicDetail
 
 object Class2NicDetailFixtures {
-
-  val class2NicDetailJson = Json.parse(
+  val class2NicDetailJson: JsValue = Json.parse(
     """
       |{
       |   "weeklyRate" : 100.25,
@@ -31,10 +30,15 @@ object Class2NicDetailFixtures {
       |   "underSmallProfitThreshold" : true,
       |   "actualClass2Nic" : false
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
-  val class2NicDetailModel =
-    Class2NicDetail(
-      Some(100.25), Some(200.25), Some(300.25), Some(400.25), true, Some(false)
-    )
+  val class2NicDetailModel = Class2NicDetail(
+    weeklyRate = Some(100.25),
+    weeks = Some(200.25),
+    limit = Some(300.25),
+    apportionedLimit = Some(400.25),
+    underSmallProfitThreshold = true,
+    actualClass2Nic = Some(false)
+  )
 }
