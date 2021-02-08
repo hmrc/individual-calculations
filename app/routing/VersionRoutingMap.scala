@@ -17,7 +17,8 @@
 package routing
 
 import com.google.inject.ImplementedBy
-import definition.Versions._
+import config.{AppConfig, FeatureSwitch}
+import definition.Versions.{VERSION_1, VERSION_2}
 import javax.inject.Inject
 import play.api.routing.Router
 import utils.Logging
@@ -30,22 +31,27 @@ trait VersionRoutingMap extends Logging{
   val defaultRouter: Router
   val map: Map[String, Router]
 
-  final def versionRouter(version: String): Option[Router] = map.get(version).map {
-    case v1Router: v1.Routes => logger.info(message = "[VersionRoutingMap][versionRouter] - Using version 1 router")
-      v1Router
-    case v2Router: v2.Routes => logger.info(message = "[VersionRoutingMap][versionRouter] - Using version 2 router")
-      v2Router
-    case router => logger.info("[VersionRoutingMap][versionRouter] - Using default router")
-      router
-  }
+  final def versionRouter(version: String): Option[Router] = map.get(version)
 }
 
 // Add routes corresponding to available versions...
-case class VersionRoutingMapImpl @Inject()(defaultRouter: Router,
-                                           v1Router: v1.Routes,
-                                           v2Router: v2.Routes) extends VersionRoutingMap {
+case class VersionRoutingMapImpl @Inject()(appConfig: AppConfig,
+                                           defaultRouter: Router,
+                                           v1Router:  v1.Routes,
+                                           v2Router: v2.Routes,
+                                           v1r2Router: v1r2.Routes) extends VersionRoutingMap {
+
+  val featureSwitch: FeatureSwitch = FeatureSwitch(appConfig.featureSwitch)
+
   val map: Map[String, Router] = Map(
-    VERSION_1 -> v1Router,
+    VERSION_1 -> {
+      if (featureSwitch.isV1R2RoutingEnabled) {
+       v1r2Router
+      }
+      else {
+        v1Router
+      }
+    },
     VERSION_2 -> v2Router
   )
 }
