@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package v2.models.response.getCalculation.taxableIncome.detail
+package v1r2.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
+import v1.models.response.getCalculation.taxableIncome.detail.{UkSaving, UkSecurity}
 
-case class SavingsAndGains(incomeReceived: BigInt,
-                           taxableIncome: BigInt,
-                           ukSavings: Option[Seq[UkSaving]],
-                           ukSecurities: Option[Seq[UkSecurity]])
+case class SavingsAndGainsV1R2(incomeReceived: BigInt,
+                               taxableIncome: BigInt,
+                               ukSavings: Option[Seq[UkSaving]],
+                               ukSecurities: Option[Seq[UkSecurity]])
 
-object SavingsAndGains extends NestedJsonReads {
-  implicit val reads: Reads[SavingsAndGains] = {
+
+object SavingsAndGainsV1R2 extends NestedJsonReads {
+  implicit val reads: Reads[SavingsAndGainsV1R2] = {
     val savingsAndGainsJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains"
     val savingsAndGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome" \ "ukSavingsAndGainsIncome"
     (
@@ -34,8 +36,8 @@ object SavingsAndGains extends NestedJsonReads {
         (savingsAndGainsJsPath \ "taxableIncome").read[BigInt] and
         savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSaving](incomeSourceType = "09") and
         savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSecurity](incomeSourceType = "18")
-    )(SavingsAndGains.apply _)
+      ) (SavingsAndGainsV1R2.apply _)
   }
 
-  implicit val writes: OWrites[SavingsAndGains] = Json.writes[SavingsAndGains]
+  implicit val writes: OWrites[SavingsAndGainsV1R2] = Json.writes[SavingsAndGainsV1R2]
 }

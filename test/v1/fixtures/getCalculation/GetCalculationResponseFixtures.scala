@@ -29,6 +29,8 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDet
 import v1.models.response.getCalculation.incomeTaxAndNics.summary.{CalculationSummary, IncomeTaxSummary}
 import v1.models.response.getCalculation.taxableIncome._
 import v1.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
+import v1r2.models.response.getCalculation.GetCalculationResponseV1R2
+import v1r2.models.response.getCalculation.taxableIncome.{TaxableIncomeDetailV1R2, TaxableIncomeV1R2}
 
 object GetCalculationResponseFixtures {
 
@@ -469,7 +471,39 @@ object GetCalculationResponseFixtures {
       gainsOnLifePolicies = None
     )
   )
+
+  val taxableIncomeModelV1R2 = TaxableIncomeV1R2(
+    TaxableIncomeSummary(
+      totalIncomeReceivedFromAllSources = 123,
+      totalTaxableIncome = 234
+    ),
+    TaxableIncomeDetailV1R2(
+      payPensionsProfit = Some(PayPensionsProfit(
+        incomeReceived = 500,
+        taxableIncome = 600,
+        totalSelfEmploymentProfit = None,
+        totalPropertyProfit = None,
+        totalFHLPropertyProfit = None,
+        totalUKOtherPropertyProfit = None,
+        totalForeignPropertyProfit = None,
+        totalEeaFhlProfit = None,
+        totalOccupationalPensionIncome = None,
+        totalStateBenefitsIncome = None,
+        totalBenefitsInKind = None,
+        totalPayeEmploymentAndLumpSumIncome = None,
+        totalEmploymentExpenses = None,
+        totalEmploymentIncome = None,
+        businessProfitAndLoss = None
+      )),
+      savingsAndGains = None,
+      dividends = None,
+      lumpSums = None,
+      gainsOnLifePolicies = None
+    )
+  )
+
   val calculationResponse = GetCalculationResponse(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages))
+  val calculationResponseV1R2 = GetCalculationResponseV1R2(metadata.copy(totalIncomeTaxAndNicsDue = None), messages = Some(messages))
 
   val allowancesDeductionsAndReliefs = AllowancesDeductionsAndReliefs(
     ADRCalculationSummary(Some(1000), Some(1000)),
@@ -503,6 +537,15 @@ object GetCalculationResponseFixtures {
     Some(incomeTax),
     Some(messages),
     Some(taxableIncomeModel),
+    Some(eoyEstimateResponse),
+    Some(allowancesDeductionsAndReliefs)
+  )
+
+  val calculationResponseAllPartsV1R2 = GetCalculationResponseV1R2(
+    metadata.copy(totalIncomeTaxAndNicsDue = Some(200.25)),
+    Some(incomeTax),
+    Some(messages),
+    Some(taxableIncomeModelV1R2),
     Some(eoyEstimateResponse),
     Some(allowancesDeductionsAndReliefs)
   )

@@ -78,5 +78,4 @@ class TaxCalcConnector @Inject()(val http: HttpClient,
       DesUri[GetCalculationResponse](s"income-tax/03.00.00/calculation-data/$nino/calcId/$calculationId")
     )
   }
-
 }

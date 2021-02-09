@@ -31,6 +31,8 @@ import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyNonFhl._
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.ukPropertyNonFhl.detail._
 import v1.models.response.getCalculation.taxableIncome.detail.payPensionsProfit.{BusinessProfitAndLoss, PropertyBsas}
+import v1r2.models.response.getCalculation.taxableIncome.{TaxableIncomeDetailV1R2, TaxableIncomeV1R2}
+import v1r2.models.response.getCalculation.taxableIncome.detail.SavingsAndGainsV1R2
 
 object TaxableIncomeModelsFixture {
   
@@ -516,6 +518,18 @@ object TaxableIncomeModelsFixture {
     ))
   )
 
+  val savingsAndGainsModelV1R2: SavingsAndGainsV1R2 = SavingsAndGainsV1R2(
+    incomeReceived = 7012,
+    taxableIncome = 7014,
+    ukSavings = Some(Seq(
+      ukSavingModel1,
+      ukSavingModel2
+    )),
+    ukSecurities = Some(Seq(
+      ukSecurityModel
+    ))
+  )
+
   val dividendsModel: Dividends = Dividends(
     incomeReceived = 7020,
     taxableIncome = 7022
@@ -539,6 +553,14 @@ object TaxableIncomeModelsFixture {
     gainsOnLifePolicies = Some(gainsOnLifePoliciesModel)
   )
 
+  val taxableIncomeDetailModelV1R2: TaxableIncomeDetailV1R2 = TaxableIncomeDetailV1R2(
+    payPensionsProfit = Some(payPensionsProfitModel),
+    savingsAndGains = Some(savingsAndGainsModelV1R2),
+    dividends = Some(dividendsModel),
+    lumpSums = Some(lumpSumsModel),
+    gainsOnLifePolicies = Some(gainsOnLifePoliciesModel)
+  )
+
   val taxableIncomeSummaryModel: TaxableIncomeSummary = TaxableIncomeSummary(
     totalIncomeReceivedFromAllSources = 7001,
     totalTaxableIncome = 100
@@ -547,5 +569,10 @@ object TaxableIncomeModelsFixture {
   val taxableIncomeModel: TaxableIncome = TaxableIncome(
     summary = taxableIncomeSummaryModel,
     detail = taxableIncomeDetailModel
+  )
+
+  val taxableIncomeModelV1R2: TaxableIncomeV1R2 = TaxableIncomeV1R2(
+    summary = taxableIncomeSummaryModel,
+    detail = taxableIncomeDetailModelV1R2
   )
 }
