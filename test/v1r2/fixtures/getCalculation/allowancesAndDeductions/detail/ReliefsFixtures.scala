@@ -58,20 +58,6 @@ object ReliefsFixtures {
       |            }
       |        },
       |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 1000.25,
-      |                "allowableAmount": 1000.25,
-      |                 "rate": 2,
-      |                 "propertyFinanceRelief": 1000.25
-      |            },
-      |            "foreignTaxCreditRelief": [{
-      |                  "incomeSourceType": "16",
-      |                  "incomeSourceId": "ABC647261934212",
-      |                  "countryCode": "FRA",
-      |                  "allowableAmount": 1000,
-      |                  "rate": 2,
-      |                  "amountUsed": 1000
-      |            }],
       |            "reliefsClaimed": [{
       |                  "type": "nonDeductableLoanInterest",
       |                  "amountClaimed": 1000,
@@ -127,20 +113,6 @@ object ReliefsFixtures {
   val mtdJson: JsValue = Json.parse(
     """
       |{
-      |	"residentialFinanceCosts": {
-      |		"amountClaimed": 1000.25,
-      |		"allowableAmount": 1000.25,
-      |		"rate": 2,
-      |		"propertyFinanceRelief": 1000.25
-      |	},
-      |	"foreignTaxCreditRelief": [{
-      |		"incomeSourceType": "foreignInterest",
-      |		"incomeSourceId": "ABC647261934212",
-      |		"countryCode": "FRA",
-      |		"allowableAmount": 1000,
-      |		"rate": 2,
-      |		"amountUsed": 1000
-      |	}],
       |	"pensionContributionReliefs": {
       |		"totalPensionContributionReliefs": 1000,
       |		"regularPensionContributions": 1000,

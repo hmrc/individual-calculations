@@ -44,20 +44,6 @@ object AllowancesAndDeductionsFixtures {
       |            }
       |        },
       |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 6282356308,
-      |                "allowableAmount": 56668463807,
-      |                "rate": 2,
-      |                "propertyFinanceRelief": 67923591034
-      |            },
-      |            "foreignTaxCreditRelief": [{
-      |                "incomeSourceType": "16",
-      |                "incomeSourceId": 56668463807,
-      |                "countryCode": 2,
-      |                "allowableAmount": 67923591034,
-      |                "rate": 2,
-      |                "amountUsed": 67923591034
-      |            }],
       |             "reliefsClaimed": [{
       |                "type": "nonDeductableLoanInterest",
       |                "amountClaimed": 56668463807,

@@ -45,20 +45,6 @@ object CalculationDetailFixtures {
       |            }
       |        },
       |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 1000.25,
-      |                "allowableAmount": 1000.25,
-      |                 "rate": 2,
-      |                 "propertyFinanceRelief": 1000.25
-      |            },
-      |            "foreignTaxCreditRelief": [{
-      |                  "incomeSourceType": "16",
-      |                  "incomeSourceId": "ABC647261934212",
-      |                  "countryCode": "FRA",
-      |                  "allowableAmount": 1000,
-      |                  "rate": 2,
-      |                  "amountUsed": 1000
-      |            }],
       |            "reliefsClaimed": [{
       |                  "type": "nonDeductableLoanInterest",
       |                  "amountClaimed": 1000,
@@ -156,8 +142,6 @@ object CalculationDetailFixtures {
     Some(AllowancesAndDeductions(Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000), Some(1000),
       Some(1000), Some(AnnualPayments(Some(1000), Some(1000), Some(2))),
       Some(PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))))),
-    Some(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
-      Some(Seq(ForeignTaxCreditRelief(IncomeSourceType.foreignInterest, Some("ABC647261934212"), "FRA", Some(1000), Some(2), Some(1000)))),
-      Some(PensionContributionReliefs(1000, Some(1000), Some(1000))),
+    Some(Reliefs(Some(PensionContributionReliefs(1000, Some(1000), Some(1000))),
       Some(Seq(ReliefsClaimed("nonDeductibleLoanInterest", Some(1000), Some(1000), Some(1000), Some(2)))))))
 }

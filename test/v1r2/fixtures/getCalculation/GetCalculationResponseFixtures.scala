@@ -22,7 +22,7 @@ import v1r2.models.domain.{CalculationReason, CalculationRequestor, CalculationT
 import v1r2.models.response.common.{Message, Messages, Metadata}
 import v1r2.models.response.getCalculation.GetCalculationResponse
 import v1r2.models.response.getCalculation.allowancesAndDeductions.AllowancesDeductionsAndReliefs
-import v1r2.models.response.getCalculation.allowancesAndDeductions.detail.{AllowancesAndDeductions, AnnualPayments, ForeignTaxCreditRelief, IncomeSourceType, PensionContributionReliefs, PensionContributions, Reliefs, ReliefsClaimed, ResidentialFinanceCosts, CalculationDetail => ADRCalculationDetail}
+import v1r2.models.response.getCalculation.allowancesAndDeductions.detail.{AllowancesAndDeductions, AnnualPayments, IncomeSourceType, PensionContributionReliefs, PensionContributions, Reliefs, ReliefsClaimed, CalculationDetail => ADRCalculationDetail}
 import v1r2.models.response.getCalculation.allowancesAndDeductions.summary.{CalculationSummary => ADRCalculationSummary}
 import v1r2.models.response.getCalculation.incomeTaxAndNics.IncomeTax
 import v1r2.models.response.getCalculation.incomeTaxAndNics.detail.{CalculationDetail, IncomeTaxDetail, IncomeTypeBreakdown}
@@ -152,22 +152,6 @@ object GetCalculationResponseFixtures {
         |         }
         |      },
         |      "reliefs":{
-        |         "residentialFinanceCosts":{
-        |            "amountClaimed":1000.25,
-        |            "allowableAmount":1000.25,
-        |            "rate":2,
-        |            "propertyFinanceRelief":1000.25
-        |         },
-        |         "foreignTaxCreditRelief":[
-        |            {
-        |               "incomeSourceType":"16",
-        |               "incomeSourceId":"ABC647261934212",
-        |               "countryCode":"FRA",
-        |               "allowableAmount":1000,
-        |               "rate":2,
-        |               "amountUsed":1000
-        |            }
-        |         ],
         |         "reliefsClaimed":[
         |            {
         |               "type":"nonDeductibleLoanInterest",
@@ -483,10 +467,7 @@ object GetCalculationResponseFixtures {
           )
         )
       ),
-      Some(Reliefs(Some(ResidentialFinanceCosts(1000.25, Some(1000.25), 2, 1000.25)),
-        Some(Seq(ForeignTaxCreditRelief(IncomeSourceType.foreignInterest,
-          Some("ABC647261934212"), "FRA", Some(1000), Some(2), Some(1000)))),
-        Some(PensionContributionReliefs(1000, Some(1000), Some(1000))),
+      Some(Reliefs(Some(PensionContributionReliefs(1000, Some(1000), Some(1000))),
           Some(
             Seq(
                 ReliefsClaimed("nonDeductibleLoanInterest", Some(1000), Some(1000), Some(1000), Some(2)
