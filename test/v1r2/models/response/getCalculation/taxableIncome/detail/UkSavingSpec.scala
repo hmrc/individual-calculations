@@ -25,7 +25,7 @@ class UkSavingSpec extends UnitSpec {
   "UkSaving" when {
     "read from valid JSON" should {
       "produce the expected UkSaving object" in {
-        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "savingsAndGainsIncome" \ 0).get
+        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "savingsAndGainsIncome" \ "ukSavingsAndGainsIncome" \ 0).get
         desJson.as[UkSaving] shouldBe TaxableIncomeModelsFixture.ukSavingModel1
       }
     }

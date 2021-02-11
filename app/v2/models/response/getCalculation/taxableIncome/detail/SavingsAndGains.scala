@@ -28,7 +28,7 @@ case class SavingsAndGains(incomeReceived: BigInt,
 object SavingsAndGains extends NestedJsonReads {
   implicit val reads: Reads[SavingsAndGains] = {
     val savingsAndGainsJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains"
-    val savingsAndGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome"
+    val savingsAndGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome" \ "ukSavingsAndGainsIncome"
     (
       (savingsAndGainsJsPath \ "incomeReceived").read[BigInt] and
         (savingsAndGainsJsPath \ "taxableIncome").read[BigInt] and

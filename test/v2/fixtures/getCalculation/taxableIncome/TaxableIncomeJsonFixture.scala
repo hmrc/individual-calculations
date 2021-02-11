@@ -294,7 +294,8 @@ object TaxableIncomeJsonFixture {
       |            "totalClass4LossesCarriedForward":6019
       |         }
       |      ],
-      |      "savingsAndGainsIncome":[
+      |      "savingsAndGainsIncome":{
+      |      			"ukSavingsAndGainsIncome": [
       |         {
       |            "incomeSourceId":"SAVKB1UVwUTBQGJ",
       |            "incomeSourceType":"09",
@@ -319,7 +320,7 @@ object TaxableIncomeJsonFixture {
       |            "netIncome":11201.11,
       |            "taxDeducted":11301.11
       |         }
-      |      ],
+      |      ]},
       |      "incomeSummaryTotals":{
       |         "totalSelfEmploymentProfit":6001,
       |         "totalPropertyProfit":6002,
