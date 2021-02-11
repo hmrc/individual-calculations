@@ -20,7 +20,9 @@ import play.api.libs.json.{JsValue, Json}
 
 object AllowancesAndDeductionsFixtures {
 
-  val desJson: JsValue = Json.parse("""{
+  val desJson: JsValue = Json.parse(
+    """
+      |{
       |    "calculation": {
       |        "allowancesAndDeductions": {
       |            "personalAllowance": 1000,
@@ -44,13 +46,15 @@ object AllowancesAndDeductionsFixtures {
       |            }
       |        },
       |        "reliefs": {
-      |             "reliefsClaimed": [{
-      |                "type": "nonDeductableLoanInterest",
-      |                "amountClaimed": 56668463807,
-      |                "allowableAmount": 2,
-      |                "amountUsed": 67923591034,
-      |                "rate": 2
-      |            }]
+      |             "reliefsClaimed": [
+      |               {
+      |                  "type": "nonDeductableLoanInterest",
+      |                  "amountClaimed": 56668463807,
+      |                  "allowableAmount": 2,
+      |                  "amountUsed": 67923591034,
+      |                  "rate": 2
+      |               }
+      |             ]
       |        },
       |       "pensionContributionReliefs": {
       |           "totalPensionContributionReliefs": 6282356308,
@@ -60,22 +64,22 @@ object AllowancesAndDeductionsFixtures {
       |           }
       |       }
       |    }
-      |}""".stripMargin)
+      |}
+    """.stripMargin
+  )
 
-  val desJsonWithNoAllowancesAndDeductionsDetails: JsValue = Json.parse("""{
+  val desJsonWithNoAllowancesAndDeductionsDetails: JsValue = Json.parse(
+    """
+      |{
       |    "calculation": {
-      |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 6282356308,
-      |                "allowableAmount": 56668463807,
-      |                "rate": 2,
-      |                "propertyFinanceRelief": 67923591034
-      |            }
-      |        }
+      |        "reliefs": { }
       |    }
-      |}""".stripMargin)
+      |}
+    """.stripMargin
+  )
 
-  val desJsonWithNoDataAndEmptyAnnualPaymentsDetails: JsValue = Json.parse("""
+  val desJsonWithNoDataAndEmptyAnnualPaymentsDetails: JsValue = Json.parse(
+    """
       |{
       |    "calculation": {
       |        "allowancesAndDeductions": {
@@ -83,37 +87,35 @@ object AllowancesAndDeductionsFixtures {
       |
       |            }
       |        },
-      |        "reliefs": {
-      |            "residentialFinanceCosts": {
-      |                "amountClaimed": 6282356308,
-      |                "allowableAmount": 56668463807,
-      |                "rate": 2,
-      |                "propertyFinanceRelief": 67923591034
-      |            }
-      |        }
+      |        "reliefs": { }
       |    }
-      |}""".stripMargin)
+      |}
+    """.stripMargin
+  )
 
-  val mtdJson: JsValue = Json.parse("""
+  val mtdJson: JsValue = Json.parse(
+    """
       |{
-      |            "personalAllowance": 1000,
-      |            "reducedPersonalAllowance": 1000,
-      |            "giftOfInvestmentsAndPropertyToCharity": 1000,
-      |            "blindPersonsAllowance": 1000,
-      |            "lossesAppliedToGeneralIncome": 1000,
-      |            "qualifyingLoanInterestFromInvestments": 1000,
-      |            "postCessationTradeReceipts": 1000,
-      |            "paymentsToTradeUnionsForDeathBenefits": 1000,
-      |            "annualPayments": {
-      |               "grossAnnualPayments": 1000,
-      |               "reliefClaimed": 1000,
-      |               "rate": 2
-      |            },
-      |            "pensionContributions": {
-      |               "totalPensionContributions": 1000,
-      |               "retirementAnnuityPayments": 1000,
-      |               "paymentToEmployersSchemeNoTaxRelief": 1000,
-      |               "overseasPensionSchemeContributions": 1000
-      |            }
-      |}""".stripMargin)
+      |   "personalAllowance": 1000,
+      |   "reducedPersonalAllowance": 1000,
+      |   "giftOfInvestmentsAndPropertyToCharity": 1000,
+      |   "blindPersonsAllowance": 1000,
+      |   "lossesAppliedToGeneralIncome": 1000,
+      |   "qualifyingLoanInterestFromInvestments": 1000,
+      |   "postCessationTradeReceipts": 1000,
+      |   "paymentsToTradeUnionsForDeathBenefits": 1000,
+      |   "annualPayments": {
+      |      "grossAnnualPayments": 1000,
+      |      "reliefClaimed": 1000,
+      |      "rate": 2
+      |   },
+      |   "pensionContributions": {
+      |      "totalPensionContributions": 1000,
+      |      "retirementAnnuityPayments": 1000,
+      |      "paymentToEmployersSchemeNoTaxRelief": 1000,
+      |      "overseasPensionSchemeContributions": 1000
+      |   }
+      |}
+    """.stripMargin
+  )
 }

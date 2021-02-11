@@ -20,11 +20,9 @@ import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
-case class PensionContributionReliefs(
-                                       totalPensionContributionReliefs: BigDecimal,
-                                       regularPensionContributions: Option[BigDecimal],
-                                       oneOffPensionContributionsPaid: Option[BigDecimal]
-                                     )
+case class PensionContributionReliefs(totalPensionContributionReliefs: BigDecimal,
+                                      regularPensionContributions: Option[BigDecimal],
+                                      oneOffPensionContributionsPaid: Option[BigDecimal])
 
 object PensionContributionReliefs extends NestedJsonReads{
 

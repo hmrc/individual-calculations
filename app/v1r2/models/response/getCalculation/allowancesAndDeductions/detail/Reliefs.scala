@@ -20,10 +20,8 @@ import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
-case class Reliefs (
-                     pensionContributionReliefs: Option[PensionContributionReliefs],
-                     reliefsClaimed: Option[Seq[ReliefsClaimed]]
-                   )
+case class Reliefs (pensionContributionReliefs: Option[PensionContributionReliefs],
+                    reliefsClaimed: Option[Seq[ReliefsClaimed]])
 
 object Reliefs extends NestedJsonReads{
   val empty = Reliefs(None, None)
