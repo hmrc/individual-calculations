@@ -31,6 +31,7 @@ import v2.models.response.getCalculation.taxableIncome._
 import v2.models.response.getCalculation.taxableIncome.detail.PayPensionsProfit
 
 object GetCalculationResponseFixtures {
+
   val desJsonWithoutOptionalParts: JsValue = Json.parse(
     """
       |{
