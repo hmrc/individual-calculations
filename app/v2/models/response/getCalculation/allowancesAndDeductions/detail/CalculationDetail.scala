@@ -19,8 +19,7 @@ package v2.models.response.getCalculation.allowancesAndDeductions.detail
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
-case class CalculationDetail(allowancesAndDeductions: Option[AllowancesAndDeductions],
-                        reliefs: Option[Reliefs])
+case class CalculationDetail(allowancesAndDeductions: Option[AllowancesAndDeductions], reliefs: Option[Reliefs])
 
 object CalculationDetail {
   val empty = CalculationDetail(None, None)

@@ -20,12 +20,10 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 
-case class PensionContributions(
-                                 totalPensionContributions: Option[BigDecimal],
-                                 retirementAnnuityPayments: Option[BigDecimal],
-                                 paymentToEmployersSchemeNoTaxRelief: Option[BigDecimal],
-                                 overseasPensionSchemeContributions: Option[BigDecimal]
-                               )
+case class PensionContributions(totalPensionContributions: Option[BigDecimal],
+                                retirementAnnuityPayments: Option[BigDecimal],
+                                paymentToEmployersSchemeNoTaxRelief: Option[BigDecimal],
+                                overseasPensionSchemeContributions: Option[BigDecimal])
 
 object PensionContributions extends NestedJsonReads{
   val empty = PensionContributions(None, None, None, None)
