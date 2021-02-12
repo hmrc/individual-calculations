@@ -57,7 +57,8 @@ class SavingsAndGainsSpec extends UnitSpec {
             |            }
             |         }
             |      },
-            |      "savingsAndGainsIncome" : [
+            |      "savingsAndGainsIncome" : {
+            |      			"ukSavingsAndGainsIncome": [
             |         {
             |            "incomeSourceId":"anId3",
             |            "incomeSourceType": "04",
@@ -67,6 +68,7 @@ class SavingsAndGainsSpec extends UnitSpec {
             |            "taxDeducted": 556.3
             |         }
             |      ]
+            |      }
             |   }
             |}
           """.stripMargin
