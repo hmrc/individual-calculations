@@ -68,7 +68,7 @@ class GetCalculationService @Inject()(connector: TaxCalcConnector) extends DesRe
   private def nonMatchingCalcFilter: PartialFunction[GetCalculationResponse, MtdError] = {
     new PartialFunction[GetCalculationResponse, MtdError] {
       def isDefinedAt(x: GetCalculationResponse): Boolean = !(surfacedCalculationTypes contains x.metadata.calculationType)
-      def apply(v1: GetCalculationResponse): MtdError     = NotFoundError
+      def apply(v2: GetCalculationResponse): MtdError     = NotFoundError
     }
   }
 

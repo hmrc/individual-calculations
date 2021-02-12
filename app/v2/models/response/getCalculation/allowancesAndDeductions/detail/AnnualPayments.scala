@@ -20,11 +20,9 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 
-case class AnnualPayments(
-                           grossAnnualPayments: Option[BigDecimal],
-                           reliefClaimed: Option[BigDecimal],
-                           rate: Option[Double]
-                         )
+case class AnnualPayments(grossAnnualPayments: Option[BigDecimal],
+                          reliefClaimed: Option[BigDecimal],
+                          rate: Option[Double])
 
 object AnnualPayments extends NestedJsonReads{
   val empty = AnnualPayments(None, None, None)
