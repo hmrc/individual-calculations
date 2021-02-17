@@ -26,13 +26,17 @@ case class EoyEstimateDetail(selfEmployments: Option[Seq[EoyEstimateSelfEmployme
                              ukSavings: Option[Seq[EoyEstimateUkSaving]],
                              ukDividends: Option[EoyEstimateUkDividends],
                              otherDividends: Option[EoyEstimateOtherDividends],
+                             foreignCompanyDividends: Option[EoyEstimateForeignCompanyDividends],
                              stateBenefits: Option[EoyEstimateStateBenefits],
                              ukSecurities: Option[EoyEstimateUkSecurities],
                              foreignProperty: Option[EoyEstimateForeignProperty],
-                             foreignInterest: Option[EoyEstimateForeignInterest])
+                             eeaPropertyFhl: Option[EoyEstimateEeaPropertyFhl],
+                             foreignInterest: Option[EoyEstimateForeignInterest],
+                             otherIncome: Option[EoyEstimateOtherIncome],
+                             foreignPension: Option[EoyEstimateForeignPension])
 
 object EoyEstimateDetail extends NestedJsonReads {
-  val empty = EoyEstimateDetail(None, None, None, None, None, None, None, None, None, None)
+  val empty: EoyEstimateDetail = EoyEstimateDetail(None, None, None, None, None, None, None, None, None, None, None, None, None, None)
 
   implicit val writes: OWrites[EoyEstimateDetail] = Json.format[EoyEstimateDetail]
 
@@ -43,9 +47,13 @@ object EoyEstimateDetail extends NestedJsonReads {
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkSaving]("incomeSourceType", "09")).mapEmptySeqToNone and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkDividends]("incomeSourceType", "10")).mapHeadOption and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateOtherDividends]("incomeSourceType", "17")).mapHeadOption and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateForeignCompanyDividends]("incomeSourceType", "07")).mapHeadOption and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateStateBenefits]("incomeSourceType", "11")).mapHeadOption and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateUkSecurities]("incomeSourceType", "18")).mapHeadOption and
       (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateForeignProperty]("incomeSourceType", "15")).mapHeadOption and
-      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateForeignInterest]("incomeSourceType", "16")).mapHeadOption
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateEeaPropertyFhl]("incomeSourceType", "03")).mapHeadOption and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateForeignInterest]("incomeSourceType", "16")).mapHeadOption and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateOtherIncome]("incomeSourceType", "19")).mapHeadOption and
+      (JsPath \ "incomeSource").readNullable(filteredArrayReads[EoyEstimateForeignPension]("incomeSourceType", "20")).mapHeadOption
     )(EoyEstimateDetail.apply _)
 }
