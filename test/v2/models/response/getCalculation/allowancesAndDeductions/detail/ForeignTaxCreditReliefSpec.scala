@@ -25,10 +25,10 @@ class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {
 
   testJsonProperties[ForeignTaxCreditRelief](foreignTaxCreditReliefJson)(
     mandatoryProperties = Seq(
-      "customerCalculatedRelief",
       "totalForeignTaxCreditRelief"
     ),
     optionalProperties = Seq(
+      "customerCalculatedRelief",
       "foreignTaxCreditReliefOnProperty",
       "foreignTaxCreditReliefOnDividends",
       "foreignTaxCreditReliefOnSavings",

@@ -18,7 +18,7 @@ package v2.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ForeignTaxCreditRelief(customerCalculatedRelief: Boolean,
+case class ForeignTaxCreditRelief(customerCalculatedRelief: Option[Boolean],
                                   totalForeignTaxCreditRelief: BigDecimal,
                                   foreignTaxCreditReliefOnProperty: Option[BigDecimal],
                                   foreignTaxCreditReliefOnDividends: Option[BigDecimal],

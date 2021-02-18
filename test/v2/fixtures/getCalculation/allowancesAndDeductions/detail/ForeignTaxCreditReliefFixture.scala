@@ -21,7 +21,7 @@ import v2.models.response.getCalculation.allowancesAndDeductions.detail.ForeignT
 
 object ForeignTaxCreditReliefFixture {
 
-  val customerCalculatedRelief =  true
+  val customerCalculatedRelief =  Some(true)
   val totalForeignTaxCreditRelief: BigDecimal = 8019.25
   val foreignTaxCreditReliefOnProperty: Option[BigDecimal] = Some(8020.25)
   val foreignTaxCreditReliefOnDividends: Option[BigDecimal] = Some(8021.25)
@@ -41,7 +41,7 @@ object ForeignTaxCreditReliefFixture {
   val foreignTaxCreditReliefJson: JsValue = Json.parse(
     s"""
       |{
-      |  "customerCalculatedRelief": $customerCalculatedRelief,
+      |  "customerCalculatedRelief": ${customerCalculatedRelief.get},
       |  "totalForeignTaxCreditRelief": $totalForeignTaxCreditRelief,
       |  "foreignTaxCreditReliefOnProperty": ${foreignTaxCreditReliefOnProperty.get},
       |  "foreignTaxCreditReliefOnDividends": ${foreignTaxCreditReliefOnDividends.get},
