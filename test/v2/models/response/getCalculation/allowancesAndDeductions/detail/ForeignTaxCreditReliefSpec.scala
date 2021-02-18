@@ -16,31 +16,30 @@
 
 package v2.models.response.getCalculation.allowancesAndDeductions.detail
 
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.Json
 import support.UnitSpec
-import v2.fixtures.getCalculation.allowancesAndDeductions.detail.ReliefsFixtures._
 import v2.fixtures.getCalculation.allowancesAndDeductions.detail.ForeignTaxCreditReliefFixture._
-import v2.fixtures.getCalculation.allowancesAndDeductions.detail.ResidentialFinanceCostsFixture._
 import v2.models.utils.JsonErrorValidators
 
-class ReliefsSpec extends UnitSpec with JsonErrorValidators {
+class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {
 
-  val reliefs = Reliefs(Some(PensionContributionReliefs(1000, Some(1000),
-    Some(1000))), Some(Seq(ReliefsClaimed("nonDeductibleLoanInterest",Some(1000),Some(1000),
-    Some(1000),Some(2)))), Some(residentialFinanceCostsModel), Some(foreignTaxCreditReliefModel))
+  testJsonProperties[ForeignTaxCreditRelief](foreignTaxCreditReliefJson)(
+    mandatoryProperties = Seq(
+      "customerCalculatedRelief",
+      "totalForeignTaxCreditRelief"
+    ),
+    optionalProperties = Seq(
+      "foreignTaxCreditReliefOnProperty",
+      "foreignTaxCreditReliefOnDividends",
+      "foreignTaxCreditReliefOnSavings",
+      "foreignTaxCreditReliefOnForeignIncome"
+    )
+  )
 
   "reads" should {
     "return a valid object" when {
       "valid json is passed" in {
-        desJson.as[Reliefs] shouldBe reliefs
-      }
-
-      "json has no fields" in {
-        JsObject.empty.as[Reliefs] shouldBe Reliefs.empty
-      }
-
-      "json has empty nested fields and no sequences" in {
-        desJsonWithNoDataAndEmptyNestedFields.as[Reliefs] shouldBe Reliefs.empty
+        foreignTaxCreditReliefJson.as[ForeignTaxCreditRelief] shouldBe foreignTaxCreditReliefModel
       }
     }
   }
@@ -48,7 +47,7 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
   "writes" should {
     "return a valid json" when {
       "ResidentialFinanceCosts object has data" in {
-        Json.toJson(reliefs) shouldBe mtdJson
+        Json.toJson(foreignTaxCreditReliefModel) shouldBe foreignTaxCreditReliefJson
       }
     }
   }

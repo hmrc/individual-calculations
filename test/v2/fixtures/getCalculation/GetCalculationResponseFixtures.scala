@@ -462,7 +462,9 @@ object GetCalculationResponseFixtures {
             ReliefsClaimed("nonDeductibleLoanInterest", Some(1000), Some(1000), Some(1000), Some(2)
             )
           )
-        )
+        ),
+        None,
+        None
       )
       )
     )

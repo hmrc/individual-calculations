@@ -90,7 +90,7 @@ object AllowancesDeductionsAndReliefsFixtures {
       Some(PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))))),
     Some(Reliefs(Some(PensionContributionReliefs(
       1000, Some(1000), Some(1000))), Some(Seq(ReliefsClaimed("nonDeductibleLoanInterest", Some(1000), Some(1000), Some(1000),
-      Some(2)))))))
+      Some(2)))), None, None)))
 
   val calculationSummary = CalculationSummary(Some(1000), Some(1000))
 
