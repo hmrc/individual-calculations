@@ -19,13 +19,15 @@ package v2.models.response.getCalculation.allowancesAndDeductions.detail
 import play.api.libs.json.{JsObject, Json}
 import support.UnitSpec
 import v2.fixtures.getCalculation.allowancesAndDeductions.detail.ReliefsFixtures._
+import v2.fixtures.getCalculation.allowancesAndDeductions.detail.ForeignTaxCreditReliefFixture._
+import v2.fixtures.getCalculation.allowancesAndDeductions.detail.ResidentialFinanceCostsFixture._
 import v2.models.utils.JsonErrorValidators
 
 class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
   val reliefs = Reliefs(Some(PensionContributionReliefs(1000, Some(1000),
     Some(1000))), Some(Seq(ReliefsClaimed("nonDeductibleLoanInterest",Some(1000),Some(1000),
-    Some(1000),Some(2)))))
+    Some(1000),Some(2)))), Some(residentialFinanceCostsModel), Some(foreignTaxCreditReliefModel))
 
   "reads" should {
     "return a valid object" when {
@@ -45,7 +47,7 @@ class ReliefsSpec extends UnitSpec with JsonErrorValidators {
 
   "writes" should {
     "return a valid json" when {
-      "ResidentialFinanceCosts object has data" in {
+      "Reliefs object has data" in {
         Json.toJson(reliefs) shouldBe mtdJson
       }
     }

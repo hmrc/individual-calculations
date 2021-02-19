@@ -39,7 +39,7 @@ class ReliefsClaimedSpec extends UnitSpec with JsonErrorValidators {
 
   "writes" should {
     "return a valid json" when {
-      "ResidentialFinanceCosts object has data" in {
+      "ReliefsClaimed object has data" in {
         Json.toJson(reliefsClaimed) shouldBe mtdJson
       }
     }

@@ -18,29 +18,31 @@ package v2.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v2.fixtures.getCalculation.allowancesAndDeductions.detail.PensionContributionsFixtures._
 import v2.models.utils.JsonErrorValidators
+import v2.fixtures.getCalculation.allowancesAndDeductions.detail.ForeignPropertyFixture._
 
-class PensionContributionsSpec extends UnitSpec with JsonErrorValidators {
+class ForeignPropertySpec extends UnitSpec with JsonErrorValidators {
 
-  val pensionContributions = PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))
+  testJsonProperties[ForeignProperty](foreignPropertyJson)(
+    mandatoryProperties = Seq(
+      "totalForeignPropertyAllowableAmount",
+      "foreignPropertyRfcDetail"
+    ),
+    optionalProperties = Seq()
+  )
 
   "reads" should {
     "return a valid object" when {
       "valid json is passed" in {
-        desJson.as[PensionContributions] shouldBe pensionContributions
-      }
-
-      "json has empty fields" in {
-        desJsonWithNoDataAndEmptyNestedFields.as[PensionContributions] shouldBe PensionContributions(None, None, None, None)
+        foreignPropertyJson.as[ForeignProperty] shouldBe foreignPropertyModel
       }
     }
   }
 
   "writes" should {
     "return a valid json" when {
-      "PensionContributions object has data" in {
-        Json.toJson(pensionContributions) shouldBe mtdJson
+      "ForeignProperty object has data" in {
+        Json.toJson(foreignPropertyModel) shouldBe foreignPropertyJson
       }
     }
   }

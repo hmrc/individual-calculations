@@ -21,15 +21,19 @@ import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 
 case class Reliefs (pensionContributionReliefs: Option[PensionContributionReliefs],
-                    reliefsClaimed: Option[Seq[ReliefsClaimed]])
+                    reliefsClaimed: Option[Seq[ReliefsClaimed]],
+                    residentialFinanceCosts: Option[ResidentialFinanceCosts],
+                    foreignTaxCreditRelief: Option[ForeignTaxCreditRelief])
 
 object Reliefs extends NestedJsonReads{
-  val empty = Reliefs(None, None)
+  val empty = Reliefs(None, None, None, None)
 
   implicit val writes: OWrites[Reliefs] = Json.writes[Reliefs]
 
   implicit val reads: Reads[Reliefs] = (
       (JsPath \ "calculation" \ "pensionContributionReliefs").readNestedNullable[PensionContributionReliefs] and
-      (JsPath \ "calculation" \ "reliefs" \ "reliefsClaimed").readNestedNullable[Seq[ReliefsClaimed]]
+      (JsPath \ "calculation" \ "reliefs" \ "reliefsClaimed").readNestedNullable[Seq[ReliefsClaimed]] and
+      (JsPath \ "calculation" \ "reliefs" \ "residentialFinanceCosts").readNestedNullable[ResidentialFinanceCosts] and
+      (JsPath \ "calculation" \ "reliefs" \ "foreignTaxCreditRelief").readNestedNullable[ForeignTaxCreditRelief]
     )(Reliefs.apply _)
 }

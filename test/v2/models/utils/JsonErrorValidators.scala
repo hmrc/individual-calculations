@@ -81,6 +81,22 @@ trait JsonErrorValidators {
     }
   }
 
+  def testOptionalProperty[A](json: JsValue)(property: String)(implicit rds: Reads[A]): Unit = {
+    s"the JSON is missing the optional property $property" should {
+
+      val jsResult = json.as[JsObject].-(property).validate[A]
+
+      "not throw any errors" in {
+        jsResult.isError shouldBe false
+      }
+    }
+  }
+
+  def testJsonProperties[A](json: JsValue)(mandatoryProperties: Seq[String], optionalProperties: Seq[String])(implicit rds: Reads[A]): Unit = {
+    mandatoryProperties.foreach(property => testMandatoryProperty(json)(property))
+    optionalProperties.foreach(property => testOptionalProperty(json)(property))
+  }
+
   def testPropertyType[T](json: JsValue)(path: String, replacement: JsValue, expectedError: String)
                          (implicit rds: Reads[T]): Unit = {
 

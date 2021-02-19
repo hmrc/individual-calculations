@@ -18,29 +18,31 @@ package v2.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v2.fixtures.getCalculation.allowancesAndDeductions.detail.PensionContributionsFixtures._
 import v2.models.utils.JsonErrorValidators
+import v2.fixtures.getCalculation.allowancesAndDeductions.detail.AllOtherIncomeReceivedWhilstAbroadFixture._
 
-class PensionContributionsSpec extends UnitSpec with JsonErrorValidators {
+class AllOtherIncomeReceivedWhilstAbroadSpec extends UnitSpec with JsonErrorValidators {
 
-  val pensionContributions = PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))
+  testJsonProperties[AllOtherIncomeReceivedWhilstAbroad](allOtherIncomeReceivedWhilstAbroadJson)(
+    mandatoryProperties = Seq(
+      "totalOtherIncomeAllowableAmount",
+      "otherIncomeRfcDetail"
+    ),
+    optionalProperties = Seq()
+  )
 
   "reads" should {
     "return a valid object" when {
       "valid json is passed" in {
-        desJson.as[PensionContributions] shouldBe pensionContributions
-      }
-
-      "json has empty fields" in {
-        desJsonWithNoDataAndEmptyNestedFields.as[PensionContributions] shouldBe PensionContributions(None, None, None, None)
+        allOtherIncomeReceivedWhilstAbroadJson.as[AllOtherIncomeReceivedWhilstAbroad] shouldBe allOtherIncomeReceivedWhilstAbroadModel
       }
     }
   }
 
   "writes" should {
     "return a valid json" when {
-      "PensionContributions object has data" in {
-        Json.toJson(pensionContributions) shouldBe mtdJson
+      "AllOtherIncomeReceivedWhilstAbroad object has data" in {
+        Json.toJson(allOtherIncomeReceivedWhilstAbroadModel) shouldBe allOtherIncomeReceivedWhilstAbroadJson
       }
     }
   }

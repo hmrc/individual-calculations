@@ -32,14 +32,15 @@ class PensionContributionReliefsSpec extends UnitSpec with JsonErrorValidators {
       }
 
       "json has empty nested fields" in {
-        desJsonWithNoDataAndEmptyNestedFields.as[PensionContributionReliefs] shouldBe PensionContributionReliefs(1000, None, None)
+        desJsonWithNoDataAndEmptyNestedFields.as[PensionContributionReliefs] shouldBe
+          PensionContributionReliefs(1000, None, None)
       }
     }
   }
 
   "writes" should {
     "return a valid json" when {
-      "ResidentialFinanceCosts object has data" in {
+      "PensionContributionReliefs object has data" in {
         Json.toJson(pensionContributionReliefs) shouldBe mtdJson
       }
     }

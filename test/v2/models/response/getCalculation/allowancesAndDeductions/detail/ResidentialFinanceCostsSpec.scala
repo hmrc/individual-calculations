@@ -18,29 +18,38 @@ package v2.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v2.fixtures.getCalculation.allowancesAndDeductions.detail.PensionContributionsFixtures._
 import v2.models.utils.JsonErrorValidators
+import v2.fixtures.getCalculation.allowancesAndDeductions.detail.ResidentialFinanceCostsFixture._
 
-class PensionContributionsSpec extends UnitSpec with JsonErrorValidators {
+class ResidentialFinanceCostsSpec extends UnitSpec with JsonErrorValidators {
 
-  val pensionContributions = PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))
+  testJsonProperties[ResidentialFinanceCosts](residentialFinanceCostsJson)(
+    mandatoryProperties = Seq(
+      "adjustedTotalIncome",
+      "relievableAmount",
+      "rate",
+      "totalResidentialFinanceCostsRelief"
+    ),
+    optionalProperties = Seq(
+      "totalAllowableAmount",
+      "ukProperty",
+      "foreignProperty",
+      "allOtherIncomeReceivedWhilstAbroad"
+    )
+  )
 
   "reads" should {
     "return a valid object" when {
       "valid json is passed" in {
-        desJson.as[PensionContributions] shouldBe pensionContributions
-      }
-
-      "json has empty fields" in {
-        desJsonWithNoDataAndEmptyNestedFields.as[PensionContributions] shouldBe PensionContributions(None, None, None, None)
+        residentialFinanceCostsJson.as[ResidentialFinanceCosts] shouldBe residentialFinanceCostsModel
       }
     }
   }
 
   "writes" should {
     "return a valid json" when {
-      "PensionContributions object has data" in {
-        Json.toJson(pensionContributions) shouldBe mtdJson
+      "ResidentialFinanceCosts object has data" in {
+        Json.toJson(residentialFinanceCostsModel) shouldBe residentialFinanceCostsJson
       }
     }
   }
