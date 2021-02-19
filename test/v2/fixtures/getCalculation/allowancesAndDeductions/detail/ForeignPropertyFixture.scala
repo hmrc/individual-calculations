@@ -30,17 +30,6 @@ object ForeignPropertyFixture {
       foreignPropertyRfcDetail = Seq(foreignPropertyRfcDetailModel)
     )
 
-  val desJson =
-    """{
-      |			"totalForeignPropertyAllowableAmount": 49827.34,
-      |			"foreignPropertyRfcDetail": [{
-      |				"countryCode": "ASM",
-      |				"amountClaimed": 49829.34,
-      |				"allowableAmount": 49828.34,
-      |				"carryForwardAmount": 49830.34
-      |			}]
-      |		}
-      |""".stripMargin
   val foreignPropertyJson: JsValue = Json.parse(
     s"""
       |{

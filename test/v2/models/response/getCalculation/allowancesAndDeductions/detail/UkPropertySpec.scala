@@ -43,7 +43,7 @@ class UkPropertySpec extends UnitSpec with JsonErrorValidators {
 
   "writes" should {
     "return a valid json" when {
-      "ResidentialFinanceCosts object has data" in {
+      "ukProperty object has data" in {
         Json.toJson(ukPropertyModel) shouldBe ukPropertyJson
       }
     }

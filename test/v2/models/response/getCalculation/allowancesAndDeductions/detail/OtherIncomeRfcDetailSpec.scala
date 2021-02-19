@@ -18,29 +18,33 @@ package v2.models.response.getCalculation.allowancesAndDeductions.detail
 
 import play.api.libs.json.Json
 import support.UnitSpec
-import v2.fixtures.getCalculation.allowancesAndDeductions.detail.PensionContributionsFixtures._
 import v2.models.utils.JsonErrorValidators
+import v2.fixtures.getCalculation.allowancesAndDeductions.detail.OtherIncomeRfcDetailFixture._
 
-class PensionContributionsSpec extends UnitSpec with JsonErrorValidators {
+class OtherIncomeRfcDetailSpec extends UnitSpec with JsonErrorValidators {
 
-  val pensionContributions = PensionContributions(Some(1000), Some(1000), Some(1000), Some(1000))
+  testJsonProperties[OtherIncomeRfcDetail](otherIncomeRfcDetailJson)(
+    mandatoryProperties = Seq(
+      "countryCode"
+    ),
+    optionalProperties = Seq(
+      "residentialFinancialCostAmount",
+      "broughtFwdResidentialFinancialCostAmount"
+    )
+  )
 
   "reads" should {
     "return a valid object" when {
       "valid json is passed" in {
-        desJson.as[PensionContributions] shouldBe pensionContributions
-      }
-
-      "json has empty fields" in {
-        desJsonWithNoDataAndEmptyNestedFields.as[PensionContributions] shouldBe PensionContributions(None, None, None, None)
+        otherIncomeRfcDetailJson.as[OtherIncomeRfcDetail] shouldBe otherIncomeRfcDetailModel
       }
     }
   }
 
   "writes" should {
     "return a valid json" when {
-      "PensionContributions object has data" in {
-        Json.toJson(pensionContributions) shouldBe mtdJson
+      "OtherIncomeRfcDetail object has data" in {
+        Json.toJson(otherIncomeRfcDetailModel) shouldBe otherIncomeRfcDetailJson
       }
     }
   }

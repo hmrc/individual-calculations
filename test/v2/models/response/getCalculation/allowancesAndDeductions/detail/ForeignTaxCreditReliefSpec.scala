@@ -46,7 +46,7 @@ class ForeignTaxCreditReliefSpec extends UnitSpec with JsonErrorValidators {
 
   "writes" should {
     "return a valid json" when {
-      "ResidentialFinanceCosts object has data" in {
+      "ForeignTaxCreditRelief object has data" in {
         Json.toJson(foreignTaxCreditReliefModel) shouldBe foreignTaxCreditReliefJson
       }
     }

@@ -36,7 +36,7 @@ class CalculationDetailSpec extends UnitSpec with JsonErrorValidators {
 
   "writes" should {
     "return a valid json" when {
-      "ResidentialFinanceCosts object has data" in {
+      "CalculationDetail object has data" in {
         Json.toJson(calculationDetail) shouldBe mtdJson
       }
     }
