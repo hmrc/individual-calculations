@@ -112,6 +112,10 @@ object GetCalculationResponseFixtures {
         |               "incomeSourceType": "17"
         |            },
         |            {
+        |               "taxableIncome": 1750,
+        |               "incomeSourceType": "07"
+        |            },
+        |            {
         |               "taxableIncome": 1300,
         |               "incomeSourceType": "11"
         |            },
@@ -125,8 +129,20 @@ object GetCalculationResponseFixtures {
         |               "incomeSourceType": "15"
         |            },
         |            {
+        |               "taxableIncome": 1700,
+        |               "incomeSourceType": "03"
+        |            },
+        |            {
         |               "taxableIncome": 1600,
         |               "incomeSourceType": "16"
+        |            },
+        |            {
+        |               "taxableIncome": 1850,
+        |               "incomeSourceType": "19"
+        |            },
+        |            {
+        |               "taxableIncome": 1800,
+        |               "incomeSourceType": "20"
         |            }
         |         ],
         |         "nic4": 1005.1
@@ -296,6 +312,9 @@ object GetCalculationResponseFixtures {
       |         "otherDividends": {
       |            "taxableIncome": 1200
       |         },
+      |         "foreignCompanyDividends": {
+      |            "taxableIncome": 1750
+      |         },
       |         "stateBenefits": {
       |            "taxableIncome": 1300
       |         },
@@ -306,8 +325,17 @@ object GetCalculationResponseFixtures {
       |            "taxableIncome": 1500,
       |            "finalised": true
       |         },
+      |         "eeaPropertyFhl": {
+      |            "taxableIncome": 1700
+      |         },
       |         "foreignInterest": {
       |            "taxableIncome": 1600
+      |         },
+      |         "otherIncome": {
+      |            "taxableIncome": 1850
+      |         },
+      |         "foreignPension": {
+      |            "taxableIncome": 1800
       |         }
       |      }
       |   },
@@ -387,7 +415,7 @@ object GetCalculationResponseFixtures {
     """.stripMargin
   )
 
-  val metadata = Metadata(
+  val metadata: Metadata = Metadata(
     id = "f2fb30e5-4ab6-4a29-b3c1-c7264259ff1c",
     taxYear = "2018-19",
     requestedBy = CalculationRequestor.customer,

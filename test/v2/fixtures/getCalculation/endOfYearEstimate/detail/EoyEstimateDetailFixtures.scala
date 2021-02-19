@@ -17,9 +17,13 @@
 package v2.fixtures.getCalculation.endOfYearEstimate.detail
 
 import play.api.libs.json.{JsObject, JsValue, Json}
+import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateEeaPropertyFhlFixtures._
+import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateForeignCompanyDividendsFixtures._
 import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateForeignInterestFixtures._
+import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateForeignPensionFixtures._
 import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateForeignPropertyFixtures._
 import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateOtherDividendsFixtures._
+import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateOtherIncomeFixtures._
 import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateSelfEmploymentFixtures._
 import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateStateBenefitsFixtures._
 import v2.fixtures.getCalculation.endOfYearEstimate.detail.EoyEstimateUkDividendsFixtures._
@@ -38,10 +42,14 @@ object EoyEstimateDetailFixtures {
     Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse)),
     Some(eoyEstimateUkDividendsResponse),
     Some(eoyEstimateOtherDividendsResponse),
+    Some(eoyEstimateForeignCompanyDividendsResponse),
     Some(eoyEstimateStateBenefitsResponse),
     Some(eoyEstimateUkSecuritiesResponse),
     Some(eoyEstimateForeignPropertyResponse),
-    Some(eoyEstimateForeignInterestResponse)
+    Some(eoyEstimateEeaPropertyFhlResponse),
+    Some(eoyEstimateForeignInterestResponse),
+    Some(eoyEstimateOtherIncomeResponse),
+    Some(eoyEstimateForeignPensionResponse)
   )
 
   val eoyEstimateDetailResponseReduced: EoyEstimateDetail = EoyEstimateDetail(
@@ -51,10 +59,14 @@ object EoyEstimateDetailFixtures {
     ukSavings = Some(Seq(eoyEstimateUkSavingResponse, eoyEstimateUkSavingResponse)),
     ukDividends = None,
     otherDividends = None,
+    foreignCompanyDividends = None,
     stateBenefits = None,
     ukSecurities = None,
     foreignProperty = None,
-    foreignInterest = None
+    eeaPropertyFhl = None,
+    foreignInterest = None,
+    otherIncome = None,
+    foreignPension = None
   )
 
   val eoyEstimateDetailDesJson: JsObject =
@@ -68,10 +80,14 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkDividendsDesJson,
           eoyEstimateOtherDividendsDesJson,
+          eoyEstimateForeignCompanyDividendsDesJson,
           eoyEstimateStateBenefitsDesJson,
           eoyEstimateUkSecuritiesDesJson,
           eoyEstimateForeignPropertyDesJson,
-          eoyEstimateForeignInterestDesJson
+          eoyEstimateEeaPropertyFhlDesJson,
+          eoyEstimateForeignInterestDesJson,
+          eoyEstimateOtherIncomeDesJson,
+          eoyEstimateForeignPensionDesJson
         ))
 
   val eoyEstimateDetailDesJsonSomeMissingOptionals: JsValue =
@@ -99,10 +115,14 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkDividendsDesJsonWrongIncomeSourceType,
           eoyEstimateOtherDividendsDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignCompanyDividendsDesJsonWrongIncomeSourceType,
           eoyEstimateStateBenefitsDesJsonWrongIncomeSourceType,
           eoyEstimateUkSecuritiesDesJsonWrongIncomeSourceType,
           eoyEstimateForeignPropertyDesJsonWrongIncomeSourceType,
-          eoyEstimateForeignInterestDesJsonWrongIncomeSourceType
+          eoyEstimateEeaPropertyFhlDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignInterestDesJsonWrongIncomeSourceType,
+          eoyEstimateOtherIncomeDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignPensionDesJsonWrongIncomeSourceType
         ))
 
   val eoyEstimateDetailDesJsonAllWrongIncomeSourceTypes: JsValue =
@@ -115,10 +135,14 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkSavingDesJsonWrongIncomeSourceType,
           eoyEstimateUkDividendsDesJsonWrongIncomeSourceType,
           eoyEstimateOtherDividendsDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignCompanyDividendsDesJsonWrongIncomeSourceType,
           eoyEstimateStateBenefitsDesJsonWrongIncomeSourceType,
           eoyEstimateUkSecuritiesDesJsonWrongIncomeSourceType,
           eoyEstimateForeignPropertyDesJsonWrongIncomeSourceType,
-          eoyEstimateForeignInterestDesJsonWrongIncomeSourceType
+          eoyEstimateEeaPropertyFhlDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignInterestDesJsonWrongIncomeSourceType,
+          eoyEstimateOtherIncomeDesJsonWrongIncomeSourceType,
+          eoyEstimateForeignPensionDesJsonWrongIncomeSourceType
         ))
 
   val eoyEstimateDetailWrittenJson: JsValue =
@@ -128,10 +152,14 @@ object EoyEstimateDetailFixtures {
       .deepMerge(eoyEstimateUkSavingWrittenJsonObject)
       .deepMerge(eoyEstimateUkDividendsWrittenJsonObject)
       .deepMerge(eoyEstimateOtherDividendsWrittenJsonObject)
+      .deepMerge(eoyEstimateForeignCompanyDividendsWrittenJsonObject)
       .deepMerge(eoyEstimateStateBenefitsWrittenJsonObject)
       .deepMerge(eoyEstimateUkSecuritiesWrittenJsonObject)
       .deepMerge(eoyEstimateForeignPropertyWrittenJsonObject)
+      .deepMerge(eoyEstimateEeaPropertyFhlWrittenJsonObject)
       .deepMerge(eoyEstimateForeignInterestWrittenJsonObject)
+      .deepMerge(eoyEstimateOtherIncomeWrittenJsonObject)
+      .deepMerge(eoyEstimateForeignPensionWrittenJsonObject)
 
   val eoyEstimateDetailWrittenJsonObject: JsObject = Json.obj("detail" -> eoyEstimateDetailWrittenJson)
 
@@ -149,9 +177,13 @@ object EoyEstimateDetailFixtures {
           eoyEstimateUkSavingDesJson,
           eoyEstimateUkDividendsDesJson,
           eoyEstimateOtherDividendsDesJson,
+          eoyEstimateForeignCompanyDividendsDesJson,
           eoyEstimateStateBenefitsDesJson,
           eoyEstimateUkSecuritiesDesJson,
           eoyEstimateForeignPropertyDesJson,
-          eoyEstimateForeignInterestDesJson
+          eoyEstimateEeaPropertyFhlDesJson,
+          eoyEstimateForeignInterestDesJson,
+          eoyEstimateOtherIncomeDesJson,
+          eoyEstimateForeignPensionDesJson
         ))
 }
