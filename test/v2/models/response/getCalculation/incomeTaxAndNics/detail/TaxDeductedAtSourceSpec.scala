@@ -48,7 +48,8 @@ class TaxDeductedAtSourceSpec extends UnitSpec {
             |   "voidedIsa":130.45,
             |   "payeEmployments":140.55,
             |   "occupationalPensions":150.65,
-            |   "stateBenefits":160.75
+            |   "stateBenefits":160.75,
+            |   "specialWithholdingTaxOrUkTaxPaid": 170.50
             |}
           """.stripMargin
         )

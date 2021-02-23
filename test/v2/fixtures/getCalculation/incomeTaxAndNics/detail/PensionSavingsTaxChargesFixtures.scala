@@ -36,10 +36,6 @@ object PensionSavingsTaxChargesFixtures {
   val pensionSavingsTaxChargesModel =
     PensionSavingsTaxCharges(
       Some(3000.10), Some(4000.25), Some(5000.70),
-      Some(
-        PensionSavingsTaxChargesDetail(
-          None, None, None, None, None, None, None
-        )
-      )
+      Some(PensionSavingsTaxChargesDetail(None, None, None, None, None))
     )
 }

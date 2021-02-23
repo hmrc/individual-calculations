@@ -33,7 +33,7 @@ object CalculationDetail extends NestedJsonReads {
     (JsPath \ "calculation").read[IncomeTaxDetail] and
       (JsPath \ "calculation" \ "studentLoans").readNullable[Seq[StudentLoans]] and
       (JsPath \ "calculation" \ "pensionSavingsTaxCharges").readNullable[PensionSavingsTaxCharges] and
-      (JsPath \ "calculation" \ "taxCalculation" \ "nics").readNestedNullable[NicDetail].map {
+      (JsPath).readNestedNullable[NicDetail].map {
         case Some(NicDetail.empty) => None
         case other => other
       } and

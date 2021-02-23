@@ -28,8 +28,8 @@ object NicDetail extends NestedJsonReads {
   implicit val writes: OWrites[NicDetail] = Json.writes[NicDetail]
 
   implicit val reads: Reads[NicDetail] = (
-    (JsPath \ "class2Nics").readNullable[Class2NicDetail] and
-      (JsPath \ "class4Nics").readNullable[Class4NicDetail].map {
+    JsPath.readNullable[Class2NicDetail] and
+      (JsPath\ "calculation" \ "taxCalculation" \ "nics" \ "class4Nics").readNullable[Class4NicDetail].map {
         case Some(Class4NicDetail.empty) => None
         case other => other
       }

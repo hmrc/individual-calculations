@@ -21,6 +21,8 @@ import v2.fixtures.getCalculation.incomeTaxAndNics.detail.OverseasPensionContrib
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionContributionsInExcessOfTheAnnualAllowanceFixtures._
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionSchemeOverseasTransfersFixtures._
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionTypeBreakdownFixtures._
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.ExcessOfLifetimeAllowanceFixtures._
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionSchemeUnauthorisedPaymentsFixtures._
 import v2.models.response.getCalculation.incomeTaxAndNics.detail._
 
 object PensionSavingsTaxChargesDetailFixtures {
@@ -29,31 +31,37 @@ object PensionSavingsTaxChargesDetailFixtures {
     """
       |{
       |	"excessOfLifeTimeAllowance": {
-      |		"lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
-      |			"amount": 120.50,
-      |			"taxPaid": 160.50,
-      |			"rate": 10.40,
-      |			"chargeableAmount": 160.50
-      |		},
-      |		"benefitInExcessOfLifetimeAllowance": {
-      |			"amount": 120.50,
-      |			"taxPaid": 160.50,
-      |			"rate": 10.40,
-      |			"chargeableAmount": 160.50
+      |		"totalChargeableAmount": 100,
+      |		"totalTaxPaid": 50.25,
+      |		"excessOfLifeTimeAllowance": {
+      |			"lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
+      |				"amount": 120.50,
+      |				"taxPaid": 160.50,
+      |				"rate": 10.40,
+      |				"chargeableAmount": 160.50
+      |			},
+      |			"benefitInExcessOfLifetimeAllowance": {
+      |				"amount": 120.50,
+      |				"taxPaid": 160.50,
+      |				"rate": 10.40,
+      |				"chargeableAmount": 160.50
+      |			}
       |		}
       |	},
       |	"pensionSchemeUnauthorisedPayments": {
-      |		"pensionSchemeUnauthorisedPaymentsSurcharge": {
-      |			"amount": 120.50,
-      |			"taxPaid": 160.50,
-      |			"rate": 10.40,
-      |			"chargeableAmount": 160.50
-      |		},
+      |		"totalChargeableAmount": 100,
+      |		"totalTaxPaid": 50.25,
       |		"pensionSchemeUnauthorisedPaymentsNonSurcharge": {
       |			"amount": 120.50,
-      |			"taxPaid": 160.50,
+      |			"chargeableAmount": 160.50,
       |			"rate": 10.40,
-      |			"chargeableAmount": 160.50
+      |			"taxPaid": 160.50
+      |		},
+      |		"pensionSchemeUnauthorisedPaymentsSurcharge": {
+      |			"amount": 120.50,
+      |			"chargeableAmount": 160.50,
+      |			"rate": 10.40,
+      |			"taxPaid": 160.50
       |		}
       |	},
       |	"pensionSchemeOverseasTransfers": {
@@ -96,30 +104,40 @@ object PensionSavingsTaxChargesDetailFixtures {
   val mtdPensionSavingsTaxChargesDetailJson: JsValue = Json.parse(
     """
       |{
-      |   "lumpSumBenefitTakenInExcessOfLifetimeAllowance":{
-      |      "amount":120.50,
-      |      "taxPaid":160.50,
-      |      "rate":10.40,
-      |      "chargeableAmount":160.50
-      |   },
-      |   "benefitInExcessOfLifetimeAllowance":{
-      |      "amount":120.50,
-      |      "taxPaid":160.50,
-      |      "rate":10.40,
-      |      "chargeableAmount":160.50
-      |   },
-      |   "pensionSchemeUnauthorisedPaymentsSurcharge":{
-      |      "amount":120.50,
-      |      "taxPaid":160.50,
-      |      "rate":10.40,
-      |      "chargeableAmount":160.50
-      |   },
-      |   "pensionSchemeUnauthorisedPaymentsNonSurcharge":{
-      |      "amount":120.50,
-      |      "taxPaid":160.50,
-      |      "rate":10.40,
-      |      "chargeableAmount":160.50
-      |   },
+      |	"excessOfLifeTimeAllowance": {
+      |		"totalChargeableAmount": 100,
+      |		"totalTaxPaid": 50.25,
+      |		"excessOfLifeTimeAllowance": {
+      |			"lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
+      |				"amount": 120.50,
+      |				"taxPaid": 160.50,
+      |				"rate": 10.40,
+      |				"chargeableAmount": 160.50
+      |			},
+      |			"benefitInExcessOfLifetimeAllowance": {
+      |				"amount": 120.50,
+      |				"taxPaid": 160.50,
+      |				"rate": 10.40,
+      |				"chargeableAmount": 160.50
+      |			}
+      |		}
+      |	},
+      |	"pensionSchemeUnauthorisedPayments": {
+      |		"totalChargeableAmount": 100,
+      |		"totalTaxPaid": 50.25,
+      |		"pensionSchemeUnauthorisedPaymentsNonSurcharge": {
+      |			"amount": 120.50,
+      |			"chargeableAmount": 160.50,
+      |			"rate": 10.40,
+      |			"taxPaid": 160.50
+      |		},
+      |		"pensionSchemeUnauthorisedPaymentsSurcharge": {
+      |			"amount": 120.50,
+      |			"chargeableAmount": 160.50,
+      |			"rate": 10.40,
+      |			"taxPaid": 160.50
+      |		}
+      |	},
       |   "pensionSchemeOverseasTransfers":{
       |      "transferCharge":120.25,
       |      "transferChargeTaxPaid":130.25,
@@ -163,10 +181,8 @@ object PensionSavingsTaxChargesDetailFixtures {
 
   val pensionSavingsTaxChargesDetailModel =
     PensionSavingsTaxChargesDetail(
-      Some(pensionTypeBreakdownModel),
-      Some(pensionTypeBreakdownModel),
-      Some(pensionTypeBreakdownModel),
-      Some(pensionTypeBreakdownModel),
+      Some(excessOfLifetimeAllowanceModel),
+      Some(pensionSchemeUnauthorisedPaymentsModel),
       Some(pensionSchemeOverseasTransfersModel),
       Some(pensionContributionsInExcessOfTheAnnualAllowanceModel),
       Some(overseasPensionContributionsModel)

@@ -65,7 +65,10 @@ object IncomeTaxDetailFixtures {
       |   "giftAid":{
       |      "grossGiftAidPayments":400,
       |      "rate":50.50,
-      |      "giftAidTax":400.75
+      |      "giftAidTax":400.75,
+      |      "giftAidTaxReductions": 75.50,
+      |      "incomeTaxChargedAfterGiftAidTaxReductions" : 50.25,
+      |      "giftAidCharge": 100
       |   }
       |}
     """.stripMargin)
@@ -96,7 +99,10 @@ object IncomeTaxDetailFixtures {
       |   "giftAid":{
       |      "grossGiftAidPayments":400,
       |      "rate":50.50,
-      |      "giftAidTax":400.75
+      |      "giftAidTax":400.75,
+      |      "giftAidTaxReductions": 75.50,
+      |      "incomeTaxChargedAfterGiftAidTaxReductions" : 50.25,
+      |      "giftAidCharge": 100
       |   }
       |}
     """.stripMargin)
@@ -109,7 +115,7 @@ object IncomeTaxDetailFixtures {
     Some(incomeTypeBreakdown(300)),
     Some(incomeTypeBreakdown(400)),
     Some(incomeTypeBreakdown(500)),
-    Some(GiftAid(400, 50.50, 400.75)
+    Some(GiftAid(400, 50.50, 400.75, Some(75.50), Some(50.25), Some(100))
     )
   )
 }

@@ -16,15 +16,27 @@
 
 package v2.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
 case class Class2NicDetail(weeklyRate: Option[BigDecimal],
                            weeks: Option[BigDecimal],
                            limit: Option[BigDecimal],
                            apportionedLimit: Option[BigDecimal],
                            underSmallProfitThreshold: Boolean,
-                           actualClass2Nic: Option[Boolean])
+                           actualClass2Nic: Option[Boolean],
+                           class2VoluntaryContributions: Option[Boolean])
 
 object Class2NicDetail {
-  implicit val format: OFormat[Class2NicDetail] = Json.format[Class2NicDetail]
+  implicit val writes: OWrites[Class2NicDetail] = Json.writes[Class2NicDetail]
+  implicit val reads: Reads[Class2NicDetail] =
+    (
+      (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \ "weeklyRate").readNullable[BigDecimal] and
+        (JsPath \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \ "weeks").readNullable[BigDecimal] and
+        (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \"limit").readNullable[BigDecimal] and
+        (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \ "apportionedLimit").readNullable[BigDecimal] and
+        (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics"  \ "underSmallProfitThreshold").read[Boolean] and
+        (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \ "actualClass2Nic").readNullable[Boolean] and
+        (JsPath \ "inputs" \ "personalInformation" \ "class2VoluntaryContributions").readNullable[Boolean]
+      ) (Class2NicDetail.apply _)
 }

@@ -21,6 +21,8 @@ import v2.fixtures.getCalculation.incomeTaxAndNics.detail.OverseasPensionContrib
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionContributionsInExcessOfTheAnnualAllowanceFixtures.pensionContributionsInExcessOfTheAnnualAllowanceModel
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionSchemeOverseasTransfersFixtures.pensionSchemeOverseasTransfersModel
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionTypeBreakdownFixtures.pensionTypeBreakdownModel
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.ExcessOfLifetimeAllowanceFixtures.excessOfLifetimeAllowanceModel
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionSchemeUnauthorisedPaymentsFixtures.pensionSchemeUnauthorisedPaymentsModel
 import v2.models.response.getCalculation.incomeTaxAndNics.detail._
 
 object CalculationDetailFixtures {
@@ -208,18 +210,6 @@ object CalculationDetailFixtures {
       |   },
       |   "pensionSavingsTaxCharges":{
       |      "pensionSavingsTaxChargesDetail":{
-      |         "benefitInExcessOfLifetimeAllowance":{
-      |            "amount":120.50,
-      |            "chargeableAmount":160.50,
-      |            "rate":10.40,
-      |            "taxPaid":160.50
-      |         },
-      |         "lumpSumBenefitTakenInExcessOfLifetimeAllowance":{
-      |            "amount":120.50,
-      |            "chargeableAmount":160.50,
-      |            "rate":10.40,
-      |            "taxPaid":160.50
-      |         },
       |         "overseasPensionContributions":{
       |            "shortServiceRefundBands":[
       |               {
@@ -257,18 +247,6 @@ object CalculationDetailFixtures {
       |            "rate":60.25,
       |            "transferCharge":120.25,
       |            "transferChargeTaxPaid":130.25
-      |         },
-      |         "pensionSchemeUnauthorisedPaymentsNonSurcharge":{
-      |            "amount":120.50,
-      |            "chargeableAmount":160.50,
-      |            "rate":10.40,
-      |            "taxPaid":160.50
-      |         },
-      |         "pensionSchemeUnauthorisedPaymentsSurcharge":{
-      |            "amount":120.50,
-      |            "chargeableAmount":160.50,
-      |            "rate":10.40,
-      |            "taxPaid":160.50
       |         }
       |      }
       |   },
@@ -314,7 +292,7 @@ object CalculationDetailFixtures {
         ), None, None, None, None,
         Some(
           GiftAid(
-            400, 50.50, 400.75)
+            400, 50.50, 400.75, Some(75.50), Some(50.25), Some(100))
         )
       ),
       Some(
@@ -328,10 +306,8 @@ object CalculationDetailFixtures {
         PensionSavingsTaxCharges(
           None, None, None, Some(
             PensionSavingsTaxChargesDetail(
-              Some(pensionTypeBreakdownModel),
-              Some(pensionTypeBreakdownModel),
-              Some(pensionTypeBreakdownModel),
-              Some(pensionTypeBreakdownModel),
+              Some(excessOfLifetimeAllowanceModel),
+              Some(pensionSchemeUnauthorisedPaymentsModel),
               Some(pensionSchemeOverseasTransfersModel),
               Some(pensionContributionsInExcessOfTheAnnualAllowanceModel),
               Some(overseasPensionContributionsModel)
@@ -343,11 +319,11 @@ object CalculationDetailFixtures {
         NicDetail(
           Some(
             Class2NicDetail(
-              None, None, None, None, underSmallProfitThreshold = true, None)), None)
+              None, None, None, None, underSmallProfitThreshold = true, None, None)), None)
       ),
       Some(
         TaxDeductedAtSource(
-          Some(300), Some(300), Some(500.75), Some(500.75), Some(500.75), Some(500.75), Some(500.75), Some(500.75)
+          Some(300), Some(300), Some(500.75), Some(500.75), Some(500.75), Some(500.75), Some(500.75), Some(500.75), Some(170.50)
         )
       )
     )

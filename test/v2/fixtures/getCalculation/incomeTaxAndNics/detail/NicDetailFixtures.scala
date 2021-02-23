@@ -23,7 +23,7 @@ object NicDetailFixtures {
 
   val class2 =
     Class2NicDetail(
-      Some(100.25), Some(200.25), Some(300.25), Some(400.25), underSmallProfitThreshold = true, Some(false)
+      Some(100.25), Some(200.25), Some(300.25), Some(400.25), underSmallProfitThreshold = true, Some(false), Some(false)
     )
 
   val class4 = Class4NicDetail(
@@ -59,26 +59,44 @@ object NicDetailFixtures {
 
   val nicDetailFilledJson: JsValue = Json.parse(
     s"""
-       |{
-       |   "class2Nics": ${Json.toJson(class2).toString()},
-       |   "class4Nics":{
-       |      "totalClass4LossesAvailable":3001,
-       |      "totalClass4LossesUsed":3002,
-       |      "totalClass4LossesCarriedForward":3003,
-       |      "totalIncomeLiableToClass4Charge":3003,
-       |      "totalIncomeChargeableToClass4":3004,
-       |      "nic4Bands":[
-       |         {
-       |            "name":"name",
-       |            "rate":100.25,
-       |            "threshold":200,
-       |            "apportionedThreshold":300,
-       |            "income":400,
-       |            "amount":500.25
-       |         }
-       |      ]
-       |   }
-       |}
+   {
+       |      	"inputs": {
+       |      		"personalInformation": {
+       |      			"class2VoluntaryContributions": false
+       |      		}
+       |      	},
+       |      	"calculation": {
+       |      		"taxCalculation": {
+       |      			"nics": {
+       |      				"class2Nics": {
+       |      					"weeklyRate": 100.25,
+       |      					"weeks": 200.25,
+       |      					"limit": 300.25,
+       |      					"apportionedLimit": 400.25,
+       |      					"underSmallProfitThreshold": true,
+       |      					"actualClass2Nic": false
+       |      				},
+       |
+       |
+       |      				"class4Nics": {
+       |      					"totalClass4LossesAvailable": 3001,
+       |      					"totalClass4LossesUsed": 3002,
+       |      					"totalClass4LossesCarriedForward": 3003,
+       |      					"totalIncomeLiableToClass4Charge": 3003,
+       |      					"totalIncomeChargeableToClass4": 3004,
+       |      					"nic4Bands": [{
+       |      						"name": "name",
+       |      						"rate": 100.25,
+       |      						"threshold": 200,
+       |      						"apportionedThreshold": 300,
+       |      						"income": 400,
+       |      						"amount": 500.25
+       |      					}]
+       |      				}
+       |      			}
+       |      		}
+       |      	}
+       |      }
     """.stripMargin)
 
   val nicDetailOutputJson: JsValue = Json.parse(
