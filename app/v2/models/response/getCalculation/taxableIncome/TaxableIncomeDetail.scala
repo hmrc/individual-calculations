@@ -33,10 +33,10 @@ object TaxableIncomeDetail extends NestedJsonReads {
     (
       emptyIfNotPresent[PayPensionsProfit](commonJsPath \ "payPensionsProfit") and
         emptyIfNotPresent[SavingsAndGains](commonJsPath \ "savingsAndGains") and
-        (commonJsPath \ "dividends").readNestedNullable[Dividends] and
+        emptyIfNotPresent[Dividends](commonJsPath \ "dividends") and
         (commonJsPath \ "lumpSums").readNestedNullable[LumpSums] and
-        (commonJsPath \ "gainsOnLifePolicies").readNestedNullable[GainsOnLifePolicies]
-      ) (TaxableIncomeDetail.apply _)
+        emptyIfNotPresent[GainsOnLifePolicies](commonJsPath \ "gainsOnLifePolicies")
+    )(TaxableIncomeDetail.apply _)
   }
 
   implicit val writes: OWrites[TaxableIncomeDetail] = Json.writes[TaxableIncomeDetail]
