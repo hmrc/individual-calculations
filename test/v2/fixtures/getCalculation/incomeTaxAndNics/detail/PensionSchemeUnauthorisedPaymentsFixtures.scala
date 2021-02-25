@@ -17,32 +17,26 @@
 package v2.fixtures.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionTypeBreakdownFixtures.pensionTypeBreakdownModel
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionTypeBreakdownFixtures._
 import v2.models.response.getCalculation.incomeTaxAndNics.detail.PensionSchemeUnauthorisedPayments
 
-
 object PensionSchemeUnauthorisedPaymentsFixtures {
+
   val pensionSchemeUnauthorisedPaymentsJson: JsValue = Json.parse(
-    """
-      |{
-      |	  "totalChargeableAmount": 100,
-      |	  "totalTaxPaid": 50.25,
-      |	  "pensionSchemeUnauthorisedPaymentsNonSurcharge": {
-      |	  	"amount": 120.50,
-      |	  	"chargeableAmount": 160.50,
-      |	  	"rate": 10.40,
-      |	  	"taxPaid": 160.50
-      |	  },
-      |	  "pensionSchemeUnauthorisedPaymentsSurcharge": {
-      |	  	"amount": 120.50,
-      |	  	"chargeableAmount": 160.50,
-      |	  	"rate": 10.40,
-      |	  	"taxPaid": 160.50
-      |	  }
-      |}
-    """.stripMargin)
+    s"""
+       |{
+       |  "totalChargeableAmount": 150.99,
+       |  "totalTaxPaid": 250.25,
+       |  "pensionSchemeUnauthorisedPaymentsSurcharge": $pensionTypeBreakdownJson,
+       |  "pensionSchemeUnauthorisedPaymentsNonSurcharge": $pensionTypeBreakdownJson
+       |}
+    """.stripMargin
+  )
 
-  val pensionSchemeUnauthorisedPaymentsModel =
-    PensionSchemeUnauthorisedPayments(Some(100), Some(50.25), Some(pensionTypeBreakdownModel), Some(pensionTypeBreakdownModel))
-
+  val pensionSchemeUnauthorisedPaymentsModel: PensionSchemeUnauthorisedPayments = PensionSchemeUnauthorisedPayments(
+    totalChargeableAmount = Some(150.99),
+    totalTaxPaid = Some(250.25),
+    pensionSchemeUnauthorisedPaymentsSurcharge = Some(pensionTypeBreakdownModel),
+    pensionSchemeUnauthorisedPaymentsNonSurcharge = Some(pensionTypeBreakdownModel)
+  )
 }

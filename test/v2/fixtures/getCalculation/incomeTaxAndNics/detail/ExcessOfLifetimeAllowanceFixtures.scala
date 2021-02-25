@@ -17,31 +17,26 @@
 package v2.fixtures.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
-import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionTypeBreakdownFixtures.pensionTypeBreakdownModel
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionTypeBreakdownFixtures._
 import v2.models.response.getCalculation.incomeTaxAndNics.detail.ExcessOfLifetimeAllowance
 
 object ExcessOfLifetimeAllowanceFixtures {
 
   val excessOfLifetimeAllowanceJson: JsValue = Json.parse(
-    """
-      |{
-      |	  "totalChargeableAmount": 100,
-      |	  "totalTaxPaid": 50.25,
-      |	  "benefitInExcessOfLifetimeAllowance": {
-      |	  	"amount": 120.50,
-      |	  	"chargeableAmount": 160.50,
-      |	  	"rate": 10.40,
-      |	  	"taxPaid": 160.50
-      |	  },
-      |	  "lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
-      |	  	"amount": 120.50,
-      |	  	"chargeableAmount": 160.50,
-      |	  	"rate": 10.40,
-      |	  	"taxPaid": 160.50
-      |	  }
-      |}
-    """.stripMargin)
+    s"""
+       |{
+       |  "totalChargeableAmount": 100.99,
+       |  "totalTaxPaid": 200.25,
+       |  "lumpSumBenefitTakenInExcessOfLifetimeAllowance": $pensionTypeBreakdownJson,
+       |  "benefitInExcessOfLifetimeAllowance": $pensionTypeBreakdownJson
+       |}
+    """.stripMargin
+  )
 
-  val excessOfLifetimeAllowanceModel =
-    ExcessOfLifetimeAllowance(Some(100), Some(50.25), Some(pensionTypeBreakdownModel), Some(pensionTypeBreakdownModel))
+  val excessOfLifetimeAllowanceModel: ExcessOfLifetimeAllowance = ExcessOfLifetimeAllowance(
+    totalChargeableAmount = Some(100.99),
+    totalTaxPaid = Some(200.25),
+    lumpSumBenefitTakenInExcessOfLifetimeAllowance = Some(pensionTypeBreakdownModel),
+    benefitInExcessOfLifetimeAllowance = Some(pensionTypeBreakdownModel)
+  )
 }

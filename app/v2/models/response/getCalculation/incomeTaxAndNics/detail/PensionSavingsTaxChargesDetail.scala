@@ -18,24 +18,23 @@ package v2.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import utils.NestedJsonReads
 
-case class PensionSavingsTaxChargesDetail( excessOfLifetimeAllowance: Option[ExcessOfLifetimeAllowance],
-                                           pensionSchemeUnauthorisedPayments: Option[PensionSchemeUnauthorisedPayments],
-                                           pensionSchemeOverseasTransfers: Option[PensionSchemeOverseasTransfers],
-                                           pensionContributionsInExcessOfTheAnnualAllowance: Option[PensionContributionsInExcessOfTheAnnualAllowance],
-                                           overseasPensionContributions: Option[OverseasPensionContributions])
+case class PensionSavingsTaxChargesDetail(excessOfLifetimeAllowance: Option[ExcessOfLifetimeAllowance],
+                                          pensionSchemeUnauthorisedPayments: Option[PensionSchemeUnauthorisedPayments],
+                                          pensionSchemeOverseasTransfers: Option[PensionSchemeOverseasTransfers],
+                                          pensionContributionsInExcessOfTheAnnualAllowance: Option[PensionContributionsInExcessOfTheAnnualAllowance],
+                                          overseasPensionContributions: Option[OverseasPensionContributions])
 
-object PensionSavingsTaxChargesDetail extends NestedJsonReads {
-  val empty = PensionSavingsTaxChargesDetail(None, None, None, None, None)
+object PensionSavingsTaxChargesDetail {
+  val empty: PensionSavingsTaxChargesDetail = PensionSavingsTaxChargesDetail(None, None, None, None, None)
 
   implicit val writes: OWrites[PensionSavingsTaxChargesDetail] = Json.writes[PensionSavingsTaxChargesDetail]
 
   implicit val reads: Reads[PensionSavingsTaxChargesDetail] = (
-    (JsPath \ "excessOfLifeTimeAllowance").readNestedNullable[ExcessOfLifetimeAllowance] and
-      (JsPath \ "pensionSchemeUnauthorisedPayments").readNestedNullable[PensionSchemeUnauthorisedPayments] and
-      (JsPath \ "pensionSchemeOverseasTransfers").readNestedNullable[PensionSchemeOverseasTransfers] and
+    (JsPath \ "excessOfLifeTimeAllowance").readNullable[ExcessOfLifetimeAllowance] and
+      (JsPath \ "pensionSchemeUnauthorisedPayments").readNullable[PensionSchemeUnauthorisedPayments] and
+      (JsPath \ "pensionSchemeOverseasTransfers").readNullable[PensionSchemeOverseasTransfers] and
       (JsPath \ "pensionContributionsInExcessOfTheAnnualAllowance").readNullable[PensionContributionsInExcessOfTheAnnualAllowance] and
-      (JsPath \ "overseasPensionContributions").readNestedNullable[OverseasPensionContributions]
+      (JsPath \ "overseasPensionContributions").readNullable[OverseasPensionContributions]
     ) (PensionSavingsTaxChargesDetail.apply _)
 }

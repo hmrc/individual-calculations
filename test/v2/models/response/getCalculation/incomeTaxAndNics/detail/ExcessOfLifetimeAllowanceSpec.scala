@@ -41,8 +41,8 @@ class ExcessOfLifetimeAllowanceSpec extends UnitSpec {
         val invalidJson = Json.parse(
           """
             |{
-            | "totalChargeableAmount": true,
-            | "totalTaxPaid": false
+            |  "totalChargeableAmount": true,
+            |  "totalTaxPaid": false
             |}
           """.stripMargin
         )

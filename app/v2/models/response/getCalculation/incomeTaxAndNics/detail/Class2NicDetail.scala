@@ -18,6 +18,7 @@ package v2.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import utils.NestedJsonReads
 
 case class Class2NicDetail(weeklyRate: Option[BigDecimal],
                            weeks: Option[BigDecimal],
@@ -27,16 +28,19 @@ case class Class2NicDetail(weeklyRate: Option[BigDecimal],
                            actualClass2Nic: Option[Boolean],
                            class2VoluntaryContributions: Option[Boolean])
 
-object Class2NicDetail {
+object Class2NicDetail extends NestedJsonReads {
   implicit val writes: OWrites[Class2NicDetail] = Json.writes[Class2NicDetail]
-  implicit val reads: Reads[Class2NicDetail] =
+
+  implicit val reads: Reads[Class2NicDetail] = {
+    val commonJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics"
     (
-      (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \ "weeklyRate").readNullable[BigDecimal] and
-        (JsPath \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \ "weeks").readNullable[BigDecimal] and
-        (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \"limit").readNullable[BigDecimal] and
-        (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \ "apportionedLimit").readNullable[BigDecimal] and
-        (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics"  \ "underSmallProfitThreshold").read[Boolean] and
-        (JsPath  \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics" \ "actualClass2Nic").readNullable[Boolean] and
-        (JsPath \ "inputs" \ "personalInformation" \ "class2VoluntaryContributions").readNullable[Boolean]
-      ) (Class2NicDetail.apply _)
+      (commonJsPath \ "weeklyRate").readNestedNullable[BigDecimal] and
+        (commonJsPath \ "weeks").readNestedNullable[BigDecimal] and
+        (commonJsPath \ "limit").readNestedNullable[BigDecimal] and
+        (commonJsPath \ "apportionedLimit").readNestedNullable[BigDecimal] and
+        (commonJsPath \ "underSmallProfitThreshold").read[Boolean] and
+        (commonJsPath \ "actualClass2Nic").readNestedNullable[Boolean] and
+        (JsPath \ "inputs" \ "personalInformation" \ "class2VoluntaryContributions").readNestedNullable[Boolean]
+    )(Class2NicDetail.apply _)
+  }
 }

@@ -21,6 +21,7 @@ import support.UnitSpec
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.Class2NicDetailFixtures._
 
 class Class2NicDetailSpec extends UnitSpec {
+
   "Class2NicDetail" should {
 
     "write correctly to json" in {
@@ -36,19 +37,22 @@ class Class2NicDetailSpec extends UnitSpec {
         val invalidJson = Json.parse(
           """
             |{
-            |	"class2Nics": {
-            |		"weeklyRate": true,
-            |		"weeks": 200.25,
-            |		"limit": 300.25,
-            |		"apportionedLimit": 400.25,
-            |		"underSmallProfitThreshold": true,
-            |		"actualClass2Nic": false
-            |	},
-            |	"inputs": {
-            |		"personalInformation": {
-            |			"class2VoluntaryContributions": false
-            |		}
-            |	}
+            |   "inputs": {
+            |      "personalInformation": {
+            |         "class2VoluntaryContributions": false
+            |      }
+            |   },
+            |   "calculation": {
+            |      "taxCalculation": {
+            |         "nics": {
+            |            "class2Nics": {
+            |               "weeklyRate": true,
+            |               "underSmallProfitThreshold": true,
+            |               "actualClass2Nic": false
+            |            }
+            |         }
+            |      }
+            |   }
             |}
           """.stripMargin
         )

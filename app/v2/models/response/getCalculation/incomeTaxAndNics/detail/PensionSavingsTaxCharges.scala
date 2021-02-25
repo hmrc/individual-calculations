@@ -24,7 +24,7 @@ case class PensionSavingsTaxCharges(totalPensionCharges: Option[BigDecimal],
                                     pensionSavingsTaxChargesDetail: Option[PensionSavingsTaxChargesDetail])
 
 object PensionSavingsTaxCharges {
-  val empty = PensionSavingsTaxCharges(None, None, None, None)
+  val empty: PensionSavingsTaxCharges = PensionSavingsTaxCharges(None, None, None, None)
 
   implicit val format: OFormat[PensionSavingsTaxCharges] = Json.format[PensionSavingsTaxCharges]
 }

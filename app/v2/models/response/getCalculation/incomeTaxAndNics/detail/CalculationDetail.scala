@@ -29,17 +29,14 @@ case class CalculationDetail(incomeTax: IncomeTaxDetail,
 object CalculationDetail extends NestedJsonReads {
   implicit val writes: OWrites[CalculationDetail] = Json.writes[CalculationDetail]
 
-  implicit val reads: Reads[CalculationDetail] = (
-    (JsPath \ "calculation").read[IncomeTaxDetail] and
-      (JsPath \ "calculation" \ "studentLoans").readNullable[Seq[StudentLoans]] and
-      (JsPath \ "calculation" \ "pensionSavingsTaxCharges").readNullable[PensionSavingsTaxCharges] and
-      (JsPath).readNestedNullable[NicDetail].map {
-        case Some(NicDetail.empty) => None
-        case other => other
-      } and
-      (JsPath \ "calculation" \ "taxDeductedAtSource").readNestedNullable[TaxDeductedAtSource].map {
-        case Some(TaxDeductedAtSource.empty) => None
-        case other => other
-      }
-    ) (CalculationDetail.apply _)
+  implicit val reads: Reads[CalculationDetail] = {
+    val commonJsPath: JsPath = JsPath \ "calculation"
+    (
+      commonJsPath.read[IncomeTaxDetail] and
+        (commonJsPath \ "studentLoans").readNestedNullable[Seq[StudentLoans]] and
+        (commonJsPath \ "pensionSavingsTaxCharges").readNestedNullable[PensionSavingsTaxCharges] and
+        emptyIfNotPresent[NicDetail](commonJsPath \ "taxCalculation" \ "nics").mapEmptyModelToNone(NicDetail.empty) and
+        (commonJsPath \ "taxDeductedAtSource").readNestedNullable[TaxDeductedAtSource].mapEmptyModelToNone(TaxDeductedAtSource.empty)
+    )(CalculationDetail.apply _)
+  }
 }

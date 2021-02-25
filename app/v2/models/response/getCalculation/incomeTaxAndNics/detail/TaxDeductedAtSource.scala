@@ -30,7 +30,7 @@ case class TaxDeductedAtSource(ukLandAndProperty: Option[BigInt],
                                specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal])
 
 object TaxDeductedAtSource {
-  val empty = TaxDeductedAtSource(None, None, None, None, None, None, None, None, None)
+  val empty: TaxDeductedAtSource = TaxDeductedAtSource(None, None, None, None, None, None, None, None, None)
 
   implicit val writes: OWrites[TaxDeductedAtSource] = Json.writes[TaxDeductedAtSource]
 

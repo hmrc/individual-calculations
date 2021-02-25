@@ -30,12 +30,12 @@ class NicDetailSpec extends UnitSpec {
         nicDetailEmptyJson.as[NicDetail] shouldBe NicDetail.empty
       }
 
-      "provided with empty models in the json" in {
-        nicDetailInputJsonWithEmptyModels.as[NicDetail] shouldBe NicDetail.empty
+      "provided with empty object in the json" in {
+        nicDetailJsonWithEmptyObject.as[NicDetail] shouldBe NicDetail.empty
       }
 
       "provided with filled json" in {
-        nicDetailFilledJson.as[NicDetail] shouldBe nicDetailFilledModel
+        nicDetailDesJson.as[NicDetail] shouldBe nicDetailModel
       }
     }
 
@@ -46,32 +46,22 @@ class NicDetailSpec extends UnitSpec {
       }
 
       "provided with a filled model" in {
-        Json.toJson(nicDetailFilledModel) shouldBe nicDetailOutputJson
+        Json.toJson(nicDetailModel) shouldBe nicDetailMtdJson
       }
     }
 
     "read from invalid JSON" should {
       "produce a JsError" in {
         val invalidJson = Json.parse(
-          s"""
+          """
             |{
-            |   "class2Nics": ${Json.toJson(class2).toString()},
-            |   "class4Nics":{
-            |      "totalClass4LossesAvailable": true,
-            |      "totalClass4LossesUsed":3002,
-            |      "totalClass4LossesCarriedForward":3003,
-            |      "totalIncomeLiableToClass4Charge":3003,
-            |      "totalIncomeChargeableToClass4":3004,
-            |      "nic4Bands":[
-            |         {
-            |            "name":"name",
-            |            "rate":100.25,
-            |            "threshold":200,
-            |            "apportionedThreshold":300,
-            |            "income":400,
-            |            "amount":500.25
+            |   "calculation": {
+            |      "taxCalculation": {
+            |         "nics":{
+            |            "class2Nics": false,
+            |            "class4Nics": true
             |         }
-            |      ]
+            |      }
             |   }
             |}
           """.stripMargin

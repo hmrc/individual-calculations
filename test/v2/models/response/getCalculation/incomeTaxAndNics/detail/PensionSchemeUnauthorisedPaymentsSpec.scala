@@ -22,7 +22,7 @@ import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionSchemeUnauthori
 
 class PensionSchemeUnauthorisedPaymentsSpec  extends UnitSpec {
 
-  "ExcessOfLifetimeAllowance" should {
+  "PensionSchemeUnauthorisedPayments" should {
 
     "read from json correctly" when {
       "provided with valid json" in {
@@ -41,8 +41,8 @@ class PensionSchemeUnauthorisedPaymentsSpec  extends UnitSpec {
         val invalidJson = Json.parse(
           """
             |{
-            | "totalChargeableAmount": true,
-            | "totalTaxPaid": false
+            |  "totalChargeableAmount": true,
+            |  "totalTaxPaid": false
             |}
           """.stripMargin
         )
@@ -51,4 +51,3 @@ class PensionSchemeUnauthorisedPaymentsSpec  extends UnitSpec {
     }
   }
 }
-

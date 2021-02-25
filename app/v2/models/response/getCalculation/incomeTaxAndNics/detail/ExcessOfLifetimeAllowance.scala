@@ -16,24 +16,13 @@
 
 package v2.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsPath, Json, OWrites, Reads}
-import utils.NestedJsonReads
-
+import play.api.libs.json.{Json, OFormat}
 
 case class ExcessOfLifetimeAllowance(totalChargeableAmount: Option[BigDecimal],
                                      totalTaxPaid: Option[BigDecimal],
                                      lumpSumBenefitTakenInExcessOfLifetimeAllowance: Option[PensionTypeBreakdown],
                                      benefitInExcessOfLifetimeAllowance: Option[PensionTypeBreakdown])
 
-
-object ExcessOfLifetimeAllowance extends NestedJsonReads {
-  implicit val writes: OWrites[ExcessOfLifetimeAllowance] = Json.writes[ExcessOfLifetimeAllowance]
-
-  implicit val reads: Reads[ExcessOfLifetimeAllowance] = (
-    (JsPath \ "totalChargeableAmount").readNullable[BigDecimal] and
-      (JsPath \ "totalTaxPaid").readNullable[BigDecimal] and
-      (JsPath  \ "lumpSumBenefitTakenInExcessOfLifetimeAllowance").readNestedNullable[PensionTypeBreakdown] and
-      (JsPath  \ "benefitInExcessOfLifetimeAllowance").readNestedNullable[PensionTypeBreakdown]
-    ) (ExcessOfLifetimeAllowance.apply _)
+object ExcessOfLifetimeAllowance {
+  implicit val format: OFormat[ExcessOfLifetimeAllowance] = Json.format[ExcessOfLifetimeAllowance]
 }

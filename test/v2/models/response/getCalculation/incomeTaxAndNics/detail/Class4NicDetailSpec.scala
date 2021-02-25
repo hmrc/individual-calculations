@@ -41,23 +41,9 @@ class Class4NicDetailSpec extends UnitSpec {
         val invalidJson = Json.parse(
           """
             |{
-            |   "class4Losses":{
-            |      "totalClass4LossesAvailable": 3001,
-            |      "totalClass4LossesUsed": 3002,
-            |      "totalClass4LossesCarriedForward": 3003
-            |   },
-            |   "totalIncomeLiableToClass4Charge": true,
-            |   "totalIncomeChargeableToClass4": 3004,
-            |   "class4NicBands":[
-            |      {
-            |         "name": "name",
-            |         "rate": 100.25,
-            |         "threshold": 200,
-            |         "apportionedThreshold": 300,
-            |         "income": 400,
-            |         "amount": 500.25
-            |      }
-            |   ]
+            |   "totalClass4LossesAvailable": true,
+            |   "totalClass4LossesUsed":3002,
+            |   "totalClass4LossesCarriedForward":3003
             |}
           """.stripMargin
         )

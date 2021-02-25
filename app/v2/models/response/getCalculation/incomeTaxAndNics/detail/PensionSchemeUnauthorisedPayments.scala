@@ -16,26 +16,13 @@
 
 package v2.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.functional.syntax._
-import utils.NestedJsonReads
-import play.api.libs.json._
+import play.api.libs.json.{Json, OFormat}
 
 case class PensionSchemeUnauthorisedPayments(totalChargeableAmount: Option[BigDecimal],
                                              totalTaxPaid: Option[BigDecimal],
                                              pensionSchemeUnauthorisedPaymentsSurcharge: Option[PensionTypeBreakdown],
                                              pensionSchemeUnauthorisedPaymentsNonSurcharge: Option[PensionTypeBreakdown])
 
-
-object PensionSchemeUnauthorisedPayments extends NestedJsonReads {
-
-  implicit val writes: OWrites[PensionSchemeUnauthorisedPayments] = Json.writes[PensionSchemeUnauthorisedPayments]
-
-
-  implicit val reads: Reads[PensionSchemeUnauthorisedPayments] = (
-    (JsPath \ "totalChargeableAmount").readNullable[BigDecimal] and
-      (JsPath \ "totalTaxPaid").readNullable[BigDecimal] and
-      (JsPath \ "pensionSchemeUnauthorisedPaymentsSurcharge").readNestedNullable[PensionTypeBreakdown] and
-      (JsPath \ "pensionSchemeUnauthorisedPaymentsNonSurcharge").readNestedNullable[PensionTypeBreakdown]
-    ) (PensionSchemeUnauthorisedPayments.apply _)
+object PensionSchemeUnauthorisedPayments {
+  implicit val format: OFormat[PensionSchemeUnauthorisedPayments] = Json.format[PensionSchemeUnauthorisedPayments]
 }
-

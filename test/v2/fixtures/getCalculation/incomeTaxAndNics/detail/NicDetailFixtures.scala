@@ -16,97 +16,77 @@
 
 package v2.fixtures.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.Class2NicDetailFixtures._
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.Class4NicDetailFixtures._
 import v2.models.response.getCalculation.incomeTaxAndNics.detail._
 
 object NicDetailFixtures {
 
-  val class2 =
-    Class2NicDetail(
-      Some(100.25), Some(200.25), Some(300.25), Some(400.25), underSmallProfitThreshold = true, Some(false), Some(false)
-    )
-
-  val class4 = Class4NicDetail(
-    Some(
-      Class4Losses(
-        Some(3001), Some(3002), Some(3003)
-      )
-    ),
-    Some(3003),
-    Some(3004),
-    Some(
-      Seq(
-        NicBand(
-          name = "name",
-          rate = 100.25,
-          threshold = Some(200),
-          apportionedThreshold = Some(300),
-          income = 400,
-          amount = 500.25
-        )
-      )
-    )
-  )
-
-  val nicDetailEmptyJson: JsValue = Json.obj()
-
-  val nicDetailInputJsonWithEmptyModels: JsValue = Json.parse(
+  val nicDetailDesJson: JsValue = Json.parse(
     """
       |{
-      | "class4Nics" : {}
+      |   "inputs": {
+      |      "personalInformation": {
+      |         "class2VoluntaryContributions": false
+      |      }
+      |   },
+      |   "calculation": {
+      |      "taxCalculation": {
+      |         "nics": {
+      |            "class2Nics": {
+      |               "weeklyRate": 100.25,
+      |               "weeks": 200.25,
+      |               "limit": 300.25,
+      |               "apportionedLimit": 400.25,
+      |               "underSmallProfitThreshold": true,
+      |               "actualClass2Nic": false
+      |            },
+      |            "class4Nics": {
+      |               "totalClass4LossesAvailable": 3001,
+      |               "totalClass4LossesUsed": 3002,
+      |               "totalClass4LossesCarriedForward": 3003,
+      |               "totalIncomeLiableToClass4Charge": 3003,
+      |               "totalIncomeChargeableToClass4": 3004,
+      |               "nic4Bands":[
+      |                  {
+      |                     "name":"name",
+      |                     "rate":100.25,
+      |                     "threshold":200,
+      |                     "apportionedThreshold":300,
+      |                     "income":400,
+      |                     "amount":500.25
+      |                  }
+      |               ]
+      |            }
+      |         }
+      |      }
+      |   }
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
-  val nicDetailFilledJson: JsValue = Json.parse(
-    s"""
-   {
-       |      	"inputs": {
-       |      		"personalInformation": {
-       |      			"class2VoluntaryContributions": false
-       |      		}
-       |      	},
-       |      	"calculation": {
-       |      		"taxCalculation": {
-       |      			"nics": {
-       |      				"class2Nics": {
-       |      					"weeklyRate": 100.25,
-       |      					"weeks": 200.25,
-       |      					"limit": 300.25,
-       |      					"apportionedLimit": 400.25,
-       |      					"underSmallProfitThreshold": true,
-       |      					"actualClass2Nic": false
-       |      				},
-       |
-       |
-       |      				"class4Nics": {
-       |      					"totalClass4LossesAvailable": 3001,
-       |      					"totalClass4LossesUsed": 3002,
-       |      					"totalClass4LossesCarriedForward": 3003,
-       |      					"totalIncomeLiableToClass4Charge": 3003,
-       |      					"totalIncomeChargeableToClass4": 3004,
-       |      					"nic4Bands": [{
-       |      						"name": "name",
-       |      						"rate": 100.25,
-       |      						"threshold": 200,
-       |      						"apportionedThreshold": 300,
-       |      						"income": 400,
-       |      						"amount": 500.25
-       |      					}]
-       |      				}
-       |      			}
-       |      		}
-       |      	}
-       |      }
-    """.stripMargin)
+  val nicDetailEmptyJson: JsObject = JsObject.empty
 
-  val nicDetailOutputJson: JsValue = Json.parse(
+  val nicDetailJsonWithEmptyObject: JsValue = Json.parse(
+    """
+      |{
+      |  "class4Nics": { }
+      |}
+    """.stripMargin
+  )
+
+  val nicDetailMtdJson: JsValue = Json.parse(
     s"""
        |{
-       | "class2Nics" : ${Json.toJson(class2).toString()},
-       | "class4Nics" : ${Json.toJson(class4).toString()}
+       |  "class2Nics": $class2NicDetailMtdJson,
+       |  "class4Nics": $class4NicDetailMtdJson
        |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
-  val nicDetailFilledModel = NicDetail(Some(class2), Some(class4))
-
+  val nicDetailModel: NicDetail = NicDetail(
+    class2Nics = Some(class2NicDetailModel),
+    class4Nics = Some(class4NicDetailModel)
+  )
 }

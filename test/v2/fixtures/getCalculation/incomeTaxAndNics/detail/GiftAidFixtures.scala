@@ -28,13 +28,18 @@ object GiftAidFixtures {
       |   "rate": 70.25,
       |   "giftAidTax": 300.25,
       |   "giftAidTaxReductions": 75.50,
-      |   "incomeTaxChargedAfterGiftAidTaxReductions" : 50.25,
-      |   "giftAidCharge": 100
+      |   "incomeTaxChargedAfterGiftAidTaxReductions": 50.25,
+      |   "giftAidCharge": 100.99
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
-  val giftAidModel =
-    GiftAid(
-      100, 70.25, 300.25, Some(75.50), Some(50.25), Some(100)
-    )
+  val giftAidModel: GiftAid = GiftAid(
+    grossGiftAidPayments = 100,
+    rate = 70.25,
+    giftAidTax = 300.25,
+    giftAidTaxReductions = Some(75.50),
+    incomeTaxChargedAfterGiftAidTaxReductions = Some(50.25),
+    giftAidCharge = Some(100.99)
+  )
 }
