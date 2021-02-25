@@ -30,23 +30,12 @@ class NicDetailSpec extends UnitSpec {
         nicDetailEmptyJson.as[NicDetail] shouldBe NicDetail.empty
       }
 
-      "provided with empty object in the json" in {
-        nicDetailJsonWithEmptyObject.as[NicDetail] shouldBe NicDetail.empty
+      "provided with empty class4Nics object in the json" in {
+        nicDetailDesJsonWithEmptyObject.as[NicDetail] shouldBe NicDetail.empty
       }
 
       "provided with filled json" in {
         nicDetailDesJson.as[NicDetail] shouldBe nicDetailModel
-      }
-    }
-
-    "write to json correctly" when {
-
-      "provided with an empty model" in {
-        Json.toJson(NicDetail.empty) shouldBe nicDetailEmptyJson
-      }
-
-      "provided with a filled model" in {
-        Json.toJson(nicDetailModel) shouldBe nicDetailMtdJson
       }
     }
 
@@ -67,6 +56,17 @@ class NicDetailSpec extends UnitSpec {
           """.stripMargin
         )
         invalidJson.validate[NicDetail] shouldBe a[JsError]
+      }
+    }
+
+    "write to json correctly" when {
+
+      "provided with an empty model" in {
+        Json.toJson(NicDetail.empty) shouldBe nicDetailEmptyJson
+      }
+
+      "provided with a filled model" in {
+        Json.toJson(nicDetailModel) shouldBe nicDetailMtdJson
       }
     }
   }

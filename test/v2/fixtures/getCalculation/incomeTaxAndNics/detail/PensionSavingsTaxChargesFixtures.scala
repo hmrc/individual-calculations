@@ -27,7 +27,7 @@ object PensionSavingsTaxChargesFixtures {
       |  "totalPensionCharges": 3000.10,
       |  "totalTaxPaid": 4000.25,
       |  "totalPensionChargesDue": 5000.70,
-      |  "pensionSavingsTaxChargesDetail": {}
+      |  "pensionSavingsTaxChargesDetail": { }
       |}
     """.stripMargin
   )

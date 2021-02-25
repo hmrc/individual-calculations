@@ -24,18 +24,8 @@ class CalculationDetailSpec extends UnitSpec {
 
   "CalculationDetail" should {
 
-    "write to json correctly" when {
-      "provided with a minimal model" in {
-        Json.toJson(calculationDetailMinModel) shouldBe calculationDetailMinMtdJson
-      }
-
-      "provided with a top level model" in {
-        Json.toJson(calculationDetailFilledModel) shouldBe calculationDetailMtdJson
-      }
-    }
-
     "read from json correctly" when {
-      "provided with empty json" in {
+      "provided with the only mandatory incomeTax object in json" in {
         calculationDetailMinDesJson.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailMinModel)
       }
 
@@ -45,6 +35,16 @@ class CalculationDetailSpec extends UnitSpec {
 
       "provided with json containing all top level objects and array" in {
         calculationDetailFilledDesJson.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailFilledModel)
+      }
+    }
+
+    "write to json correctly" when {
+      "provided with a minimal model" in {
+        Json.toJson(calculationDetailMinModel) shouldBe calculationDetailMinMtdJson
+      }
+
+      "provided with a top level model" in {
+        Json.toJson(calculationDetailFilledModel) shouldBe calculationDetailMtdJson
       }
     }
   }

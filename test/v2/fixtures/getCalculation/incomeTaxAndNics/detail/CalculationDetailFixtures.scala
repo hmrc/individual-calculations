@@ -54,9 +54,9 @@ object CalculationDetailFixtures {
       |               "incomeTaxAmount": 200.50
       |            }
       |         },
-      |         "nics":{ }
+      |         "nics": { }
       |      },
-      |      "taxDeductedAtSource":{ }
+      |      "taxDeductedAtSource": { }
       |   }
       |}
     """.stripMargin
@@ -384,8 +384,8 @@ object CalculationDetailFixtures {
         pensionSchemeOverseasTransfers = Some(pensionSchemeOverseasTransfersModel),
         pensionContributionsInExcessOfTheAnnualAllowance = Some(pensionContributionsInExcessOfTheAnnualAllowanceModel),
         overseasPensionContributions = Some(overseasPensionContributionsModel)
-      )))
-    ),
+      ))
+    )),
     nics = Some(NicDetail(
       class2Nics = Some(Class2NicDetail(
         weeklyRate = None,

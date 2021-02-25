@@ -68,10 +68,16 @@ object NicDetailFixtures {
 
   val nicDetailEmptyJson: JsObject = JsObject.empty
 
-  val nicDetailJsonWithEmptyObject: JsValue = Json.parse(
+  val nicDetailDesJsonWithEmptyObject: JsValue = Json.parse(
     """
       |{
-      |  "class4Nics": { }
+      |   "calculation": {
+      |      "taxCalculation": {
+      |         "nics": {
+      |            "class4Nics": { }
+      |         }
+      |      }
+      |   }
       |}
     """.stripMargin
   )

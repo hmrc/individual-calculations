@@ -24,15 +24,11 @@ class Class4NicDetailSpec extends UnitSpec {
 
   "Class4NicDetail" should {
 
-    "write correctly to json" in {
-      Json.toJson(class4NicDetailModel) shouldBe class4NicDetailMtdJson
-    }
-
     "read correctly from json" in {
       class4NicDetailDesJson.as[Class4NicDetail] shouldBe class4NicDetailModel
     }
 
-    "read empty json to an empty object" in {
+    "read empty json as empty object" in {
       JsObject.empty.as[Class4NicDetail] shouldBe Class4NicDetail.empty
     }
 
@@ -49,6 +45,10 @@ class Class4NicDetailSpec extends UnitSpec {
         )
         invalidJson.validate[Class4NicDetail] shouldBe a[JsError]
       }
+    }
+
+    "write correctly to json" in {
+      Json.toJson(class4NicDetailModel) shouldBe class4NicDetailMtdJson
     }
   }
 }

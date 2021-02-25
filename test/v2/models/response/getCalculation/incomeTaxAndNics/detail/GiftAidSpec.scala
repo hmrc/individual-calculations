@@ -21,17 +21,12 @@ import support.UnitSpec
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.GiftAidFixtures._
 
 class GiftAidSpec extends UnitSpec {
-  "NicBand" should {
+
+  "GiftAid" should {
 
     "read from json correctly" when {
       "provided with valid json" in {
         giftAidJson.as[GiftAid] shouldBe giftAidModel
-      }
-    }
-
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(giftAidModel) shouldBe giftAidJson
       }
     }
 
@@ -40,13 +35,19 @@ class GiftAidSpec extends UnitSpec {
         val invalidJson = Json.parse(
           """
             |{
-            | "grossGiftAidPayments": true,
-            | "rate": 70.25,
-            | "giftAidTax": 300.25
+            |  "grossGiftAidPayments": true,
+            |  "rate": 70.25,
+            |  "giftAidTax": 300.25
             |}
           """.stripMargin
         )
         invalidJson.validate[GiftAid] shouldBe a[JsError]
+      }
+    }
+
+    "write to json correctly" when {
+      "a valid model is provided" in {
+        Json.toJson(giftAidModel) shouldBe giftAidJson
       }
     }
   }

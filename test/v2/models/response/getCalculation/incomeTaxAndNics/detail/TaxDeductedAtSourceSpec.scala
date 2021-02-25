@@ -32,29 +32,29 @@ class TaxDeductedAtSourceSpec extends UnitSpec {
       JsObject.empty.as[TaxDeductedAtSource] shouldBe TaxDeductedAtSource.empty
     }
 
-    "write correctly to json" in {
-      Json.toJson(taxDeductedAtSourceModel) shouldBe taxDeductedAtSourceOutputJson
-    }
-
     "read from invalid JSON" should {
       "produce a JsError" in {
         val invalidJson = Json.parse(
           """
             |{
-            |   "ukLandAndProperty":true,
-            |   "bbsi":200,
-            |   "cis":110.25,
-            |   "securities":120.35,
-            |   "voidedIsa":130.45,
-            |   "payeEmployments":140.55,
-            |   "occupationalPensions":150.65,
-            |   "stateBenefits":160.75,
+            |   "ukLandAndProperty": true,
+            |   "bbsi": 200,
+            |   "cis": 110.25,
+            |   "securities": 120.35,
+            |   "voidedIsa": 130.45,
+            |   "payeEmployments": 140.55,
+            |   "occupationalPensions": 150.65,
+            |   "stateBenefits": 160.75,
             |   "specialWithholdingTaxOrUkTaxPaid": 170.50
             |}
           """.stripMargin
         )
         invalidJson.validate[TaxDeductedAtSource] shouldBe a[JsError]
       }
+    }
+
+    "write correctly to json" in {
+      Json.toJson(taxDeductedAtSourceModel) shouldBe taxDeductedAtSourceOutputJson
     }
   }
 }

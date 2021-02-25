@@ -29,7 +29,7 @@ object PensionSavingsTaxChargesDetailFixtures {
   val pensionSavingsTaxChargesDetailDesJson: JsValue = Json.parse(
     s"""
        |{
-       |   "excessOfLifeTimeAllowance" : $excessOfLifetimeAllowanceJson,
+       |   "excessOfLifeTimeAllowance": $excessOfLifetimeAllowanceJson,
        |	 "pensionSchemeUnauthorisedPayments": $pensionSchemeUnauthorisedPaymentsJson,
        |	 "pensionSchemeOverseasTransfers": $pensionSchemeOverseasTransfersJson,
        |	 "pensionContributionsInExcessOfTheAnnualAllowance": $pensionContributionsInExcessOfTheAnnualAllowanceJson,
@@ -41,7 +41,7 @@ object PensionSavingsTaxChargesDetailFixtures {
   val pensionSavingsTaxChargesDetailMtdJson: JsValue = Json.parse(
     s"""
        |{
-       |   "excessOfLifetimeAllowance" : $excessOfLifetimeAllowanceJson,
+       |   "excessOfLifetimeAllowance": $excessOfLifetimeAllowanceJson,
        |	 "pensionSchemeUnauthorisedPayments": $pensionSchemeUnauthorisedPaymentsJson,
        |	 "pensionSchemeOverseasTransfers": $pensionSchemeOverseasTransfersJson,
        |	 "pensionContributionsInExcessOfTheAnnualAllowance": $pensionContributionsInExcessOfTheAnnualAllowanceJson,

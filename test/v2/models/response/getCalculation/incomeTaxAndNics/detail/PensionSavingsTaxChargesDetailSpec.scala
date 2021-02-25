@@ -30,12 +30,6 @@ class PensionSavingsTaxChargesDetailSpec extends UnitSpec {
       }
     }
 
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(pensionSavingsTaxChargesDetailModel) shouldBe pensionSavingsTaxChargesDetailMtdJson
-      }
-    }
-
     "read from valid JSON with empty PensionSavingsTaxChargesDetail objects" should {
       "produce an empty PensionSavingsTaxChargesDetail object" in {
         val emptyJson = JsObject.empty
@@ -66,6 +60,12 @@ class PensionSavingsTaxChargesDetailSpec extends UnitSpec {
         val emptyJson = JsObject.empty
 
         emptyJson.as[PensionSavingsTaxChargesDetail] shouldBe PensionSavingsTaxChargesDetail.empty
+      }
+    }
+
+    "write to json correctly" when {
+      "a valid model is provided" in {
+        Json.toJson(pensionSavingsTaxChargesDetailModel) shouldBe pensionSavingsTaxChargesDetailMtdJson
       }
     }
   }

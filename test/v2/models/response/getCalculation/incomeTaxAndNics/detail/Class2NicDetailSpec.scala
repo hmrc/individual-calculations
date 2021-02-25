@@ -24,10 +24,6 @@ class Class2NicDetailSpec extends UnitSpec {
 
   "Class2NicDetail" should {
 
-    "write correctly to json" in {
-      Json.toJson(class2NicDetailModel) shouldBe class2NicDetailMtdJson
-    }
-
     "read correctly from json" in {
       class2NicDetailDesJson.validate[Class2NicDetail] shouldBe JsSuccess(class2NicDetailModel)
     }
@@ -58,6 +54,10 @@ class Class2NicDetailSpec extends UnitSpec {
         )
         invalidJson.validate[Class2NicDetail] shouldBe a[JsError]
       }
+    }
+
+    "write correctly to json" in {
+      Json.toJson(class2NicDetailModel) shouldBe class2NicDetailMtdJson
     }
   }
 }

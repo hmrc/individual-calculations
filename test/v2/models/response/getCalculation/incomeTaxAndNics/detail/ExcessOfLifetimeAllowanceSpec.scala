@@ -30,12 +30,6 @@ class ExcessOfLifetimeAllowanceSpec extends UnitSpec {
       }
     }
 
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(excessOfLifetimeAllowanceModel) shouldBe excessOfLifetimeAllowanceJson
-      }
-    }
-
     "read from invalid JSON" should {
       "produce a JsError" in {
         val invalidJson = Json.parse(
@@ -47,6 +41,12 @@ class ExcessOfLifetimeAllowanceSpec extends UnitSpec {
           """.stripMargin
         )
         invalidJson.validate[ExcessOfLifetimeAllowance] shouldBe a[JsError]
+      }
+    }
+
+    "write to json correctly" when {
+      "a valid model is provided" in {
+        Json.toJson(excessOfLifetimeAllowanceModel) shouldBe excessOfLifetimeAllowanceJson
       }
     }
   }

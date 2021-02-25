@@ -30,12 +30,6 @@ class PensionSchemeUnauthorisedPaymentsSpec  extends UnitSpec {
       }
     }
 
-    "write to json correctly" when {
-      "a valid model is provided" in {
-        Json.toJson(pensionSchemeUnauthorisedPaymentsModel) shouldBe pensionSchemeUnauthorisedPaymentsJson
-      }
-    }
-
     "read from invalid JSON" should {
       "produce a JsError" in {
         val invalidJson = Json.parse(
@@ -47,6 +41,12 @@ class PensionSchemeUnauthorisedPaymentsSpec  extends UnitSpec {
           """.stripMargin
         )
         invalidJson.validate[PensionSchemeUnauthorisedPayments] shouldBe a[JsError]
+      }
+    }
+
+    "write to json correctly" when {
+      "a valid model is provided" in {
+        Json.toJson(pensionSchemeUnauthorisedPaymentsModel) shouldBe pensionSchemeUnauthorisedPaymentsJson
       }
     }
   }
