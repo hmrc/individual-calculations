@@ -17,158 +17,44 @@
 package v2.fixtures.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{JsValue, Json}
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.ExcessOfLifetimeAllowanceFixtures._
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.OverseasPensionContributionsFixtures._
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionContributionsInExcessOfTheAnnualAllowanceFixtures._
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionSchemeOverseasTransfersFixtures._
-import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionTypeBreakdownFixtures._
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionSchemeUnauthorisedPaymentsFixtures._
 import v2.models.response.getCalculation.incomeTaxAndNics.detail._
 
 object PensionSavingsTaxChargesDetailFixtures {
 
-  val desPensionSavingsTaxChargesDetailJson: JsValue = Json.parse(
-    """
-      |{
-      |	"excessOfLifeTimeAllowance": {
-      |		"lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
-      |			"amount": 120.50,
-      |			"taxPaid": 160.50,
-      |			"rate": 10.40,
-      |			"chargeableAmount": 160.50
-      |		},
-      |		"benefitInExcessOfLifetimeAllowance": {
-      |			"amount": 120.50,
-      |			"taxPaid": 160.50,
-      |			"rate": 10.40,
-      |			"chargeableAmount": 160.50
-      |		}
-      |	},
-      |	"pensionSchemeUnauthorisedPayments": {
-      |		"pensionSchemeUnauthorisedPaymentsSurcharge": {
-      |			"amount": 120.50,
-      |			"taxPaid": 160.50,
-      |			"rate": 10.40,
-      |			"chargeableAmount": 160.50
-      |		},
-      |		"pensionSchemeUnauthorisedPaymentsNonSurcharge": {
-      |			"amount": 120.50,
-      |			"taxPaid": 160.50,
-      |			"rate": 10.40,
-      |			"chargeableAmount": 160.50
-      |		}
-      |	},
-      |	"pensionSchemeOverseasTransfers": {
-      |		"transferCharge": 120.25,
-      |		"transferChargeTaxPaid": 130.25,
-      |		"rate": 60.25,
-      |		"chargeableAmount": 140.25
-      |	},
-      |	"pensionContributionsInExcessOfTheAnnualAllowance": {
-      |		"totalContributions": 70.25,
-      |		"totalPensionCharge": 160.50,
-      |		"annualAllowanceTaxPaid": 180.25,
-      |		"totalPensionChargeDue": 120.99,
-      |		"pensionBands": [{
-      |			"name": "Name",
-      |			"rate": 50.10,
-      |			"bandLimit": 2000,
-      |			"apportionedBandLimit": 2000,
-      |			"contributionAmount": 160.89,
-      |			"pensionCharge": 180.99
-      |		}]
-      |	},
-      |	"overseasPensionContributions": {
-      |		"totalShortServiceRefund": 100.50,
-      |		"totalShortServiceRefundCharge": 200.50,
-      |		"shortServiceRefundTaxPaid": 160.25,
-      |		"totalShortServiceRefundChargeDue": 160.99,
-      |		"shortServiceRefundBands": [{
-      |			"name": "name",
-      |			"rate": 20.10,
-      |			"bandLimit": 2000,
-      |			"apportionedBandLimit": 2000,
-      |			"shortServiceRefundAmount": 500.50,
-      |			"shortServiceRefundCharge": 750.99
-      |		}]
-      |	}
-      |}
-    """.stripMargin)
+  val pensionSavingsTaxChargesDetailDesJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "excessOfLifeTimeAllowance": $excessOfLifetimeAllowanceJson,
+       |	 "pensionSchemeUnauthorisedPayments": $pensionSchemeUnauthorisedPaymentsJson,
+       |	 "pensionSchemeOverseasTransfers": $pensionSchemeOverseasTransfersJson,
+       |	 "pensionContributionsInExcessOfTheAnnualAllowance": $pensionContributionsInExcessOfTheAnnualAllowanceJson,
+       |	 "overseasPensionContributions": $overseasPensionContributionsJson
+       |}
+    """.stripMargin
+  )
 
-  val mtdPensionSavingsTaxChargesDetailJson: JsValue = Json.parse(
-    """
-      |{
-      |   "lumpSumBenefitTakenInExcessOfLifetimeAllowance":{
-      |      "amount":120.50,
-      |      "taxPaid":160.50,
-      |      "rate":10.40,
-      |      "chargeableAmount":160.50
-      |   },
-      |   "benefitInExcessOfLifetimeAllowance":{
-      |      "amount":120.50,
-      |      "taxPaid":160.50,
-      |      "rate":10.40,
-      |      "chargeableAmount":160.50
-      |   },
-      |   "pensionSchemeUnauthorisedPaymentsSurcharge":{
-      |      "amount":120.50,
-      |      "taxPaid":160.50,
-      |      "rate":10.40,
-      |      "chargeableAmount":160.50
-      |   },
-      |   "pensionSchemeUnauthorisedPaymentsNonSurcharge":{
-      |      "amount":120.50,
-      |      "taxPaid":160.50,
-      |      "rate":10.40,
-      |      "chargeableAmount":160.50
-      |   },
-      |   "pensionSchemeOverseasTransfers":{
-      |      "transferCharge":120.25,
-      |      "transferChargeTaxPaid":130.25,
-      |      "rate":60.25,
-      |      "chargeableAmount":140.25
-      |   },
-      |   "pensionContributionsInExcessOfTheAnnualAllowance":{
-      |      "totalContributions":70.25,
-      |   "totalPensionCharge":160.50,
-      |   "annualAllowanceTaxPaid":180.25,
-      |   "totalPensionChargeDue":120.99,
-      |   "pensionBands":[
-      |      {
-      |         "name":"Name",
-      |         "rate":50.10,
-      |         "bandLimit":2000,
-      |         "apportionedBandLimit":2000,
-      |         "contributionAmount":160.89,
-      |         "pensionCharge":180.99
-      |      }
-      |   ]
-      |   },
-      |   "overseasPensionContributions":{
-      |      "totalShortServiceRefund":100.50,
-      |      "totalShortServiceRefundCharge":200.50,
-      |      "shortServiceRefundTaxPaid":160.25,
-      |      "totalShortServiceRefundChargeDue":160.99,
-      |      "shortServiceRefundBands":[
-      |         {
-      |            "name":"name",
-      |            "rate":20.10,
-      |            "bandLimit":2000,
-      |            "apportionedBandLimit":2000,
-      |            "shortServiceRefundAmount":500.50,
-      |            "shortServiceRefundCharge":750.99
-      |         }
-      |      ]
-      |   }
-      |}
-    """.stripMargin)
+  val pensionSavingsTaxChargesDetailMtdJson: JsValue = Json.parse(
+    s"""
+       |{
+       |   "excessOfLifetimeAllowance": $excessOfLifetimeAllowanceJson,
+       |	 "pensionSchemeUnauthorisedPayments": $pensionSchemeUnauthorisedPaymentsJson,
+       |	 "pensionSchemeOverseasTransfers": $pensionSchemeOverseasTransfersJson,
+       |	 "pensionContributionsInExcessOfTheAnnualAllowance": $pensionContributionsInExcessOfTheAnnualAllowanceJson,
+       |	 "overseasPensionContributions": $overseasPensionContributionsJson
+       |}
+    """.stripMargin
+  )
 
-  val pensionSavingsTaxChargesDetailModel =
-    PensionSavingsTaxChargesDetail(
-      Some(pensionTypeBreakdownModel),
-      Some(pensionTypeBreakdownModel),
-      Some(pensionTypeBreakdownModel),
-      Some(pensionTypeBreakdownModel),
-      Some(pensionSchemeOverseasTransfersModel),
-      Some(pensionContributionsInExcessOfTheAnnualAllowanceModel),
-      Some(overseasPensionContributionsModel)
-    )
+  val pensionSavingsTaxChargesDetailModel: PensionSavingsTaxChargesDetail = PensionSavingsTaxChargesDetail(
+    excessOfLifetimeAllowance = Some(excessOfLifetimeAllowanceModel),
+    pensionSchemeUnauthorisedPayments = Some(pensionSchemeUnauthorisedPaymentsModel),
+    pensionSchemeOverseasTransfers = Some(pensionSchemeOverseasTransfersModel),
+    pensionContributionsInExcessOfTheAnnualAllowance = Some(pensionContributionsInExcessOfTheAnnualAllowanceModel),
+    overseasPensionContributions = Some(overseasPensionContributionsModel)
+  )
 }

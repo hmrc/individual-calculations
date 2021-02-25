@@ -16,15 +16,31 @@
 
 package v2.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import utils.NestedJsonReads
 
 case class Class2NicDetail(weeklyRate: Option[BigDecimal],
                            weeks: Option[BigDecimal],
                            limit: Option[BigDecimal],
                            apportionedLimit: Option[BigDecimal],
                            underSmallProfitThreshold: Boolean,
-                           actualClass2Nic: Option[Boolean])
+                           actualClass2Nic: Option[Boolean],
+                           class2VoluntaryContributions: Option[Boolean])
 
-object Class2NicDetail {
-  implicit val format: OFormat[Class2NicDetail] = Json.format[Class2NicDetail]
+object Class2NicDetail extends NestedJsonReads {
+  implicit val writes: OWrites[Class2NicDetail] = Json.writes[Class2NicDetail]
+
+  implicit val reads: Reads[Class2NicDetail] = {
+    val commonJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "nics" \ "class2Nics"
+    (
+      (commonJsPath \ "weeklyRate").readNestedNullable[BigDecimal] and
+        (commonJsPath \ "weeks").readNestedNullable[BigDecimal] and
+        (commonJsPath \ "limit").readNestedNullable[BigDecimal] and
+        (commonJsPath \ "apportionedLimit").readNestedNullable[BigDecimal] and
+        (commonJsPath \ "underSmallProfitThreshold").read[Boolean] and
+        (commonJsPath \ "actualClass2Nic").readNestedNullable[Boolean] and
+        (JsPath \ "inputs" \ "personalInformation" \ "class2VoluntaryContributions").readNestedNullable[Boolean]
+    )(Class2NicDetail.apply _)
+  }
 }

@@ -16,20 +16,18 @@
 
 package v2.models.response.getCalculation.incomeTaxAndNics.detail
 
-import play.api.libs.json.{JsError, JsObject, Json}
+import play.api.libs.json.{JsError, Json}
 import support.UnitSpec
-import v2.fixtures.getCalculation.incomeTaxAndNics.detail.Class4NicDetailFixtures._
+import v2.fixtures.getCalculation.incomeTaxAndNics.detail.PensionSchemeUnauthorisedPaymentsFixtures._
 
-class Class4NicDetailSpec extends UnitSpec {
+class PensionSchemeUnauthorisedPaymentsSpec  extends UnitSpec {
 
-  "Class4NicDetail" should {
+  "PensionSchemeUnauthorisedPayments" should {
 
-    "read correctly from json" in {
-      class4NicDetailDesJson.as[Class4NicDetail] shouldBe class4NicDetailModel
-    }
-
-    "read empty json as empty object" in {
-      JsObject.empty.as[Class4NicDetail] shouldBe Class4NicDetail.empty
+    "read from json correctly" when {
+      "provided with valid json" in {
+        pensionSchemeUnauthorisedPaymentsJson.as[PensionSchemeUnauthorisedPayments] shouldBe pensionSchemeUnauthorisedPaymentsModel
+      }
     }
 
     "read from invalid JSON" should {
@@ -37,18 +35,19 @@ class Class4NicDetailSpec extends UnitSpec {
         val invalidJson = Json.parse(
           """
             |{
-            |   "totalClass4LossesAvailable": true,
-            |   "totalClass4LossesUsed":3002,
-            |   "totalClass4LossesCarriedForward":3003
+            |  "totalChargeableAmount": true,
+            |  "totalTaxPaid": false
             |}
           """.stripMargin
         )
-        invalidJson.validate[Class4NicDetail] shouldBe a[JsError]
+        invalidJson.validate[PensionSchemeUnauthorisedPayments] shouldBe a[JsError]
       }
     }
 
-    "write correctly to json" in {
-      Json.toJson(class4NicDetailModel) shouldBe class4NicDetailMtdJson
+    "write to json correctly" when {
+      "a valid model is provided" in {
+        Json.toJson(pensionSchemeUnauthorisedPaymentsModel) shouldBe pensionSchemeUnauthorisedPaymentsJson
+      }
     }
   }
 }

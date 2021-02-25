@@ -21,21 +21,53 @@ import v2.models.response.getCalculation.incomeTaxAndNics.detail.Class2NicDetail
 
 object Class2NicDetailFixtures {
 
-  val class2NicDetailJson: JsValue = Json.parse(
+  val class2NicDetailDesJson: JsValue = Json.parse(
     """
       |{
-      |   "weeklyRate" : 100.25,
-      |   "weeks" : 200.25,
-      |   "limit" : 300.25,
-      |   "apportionedLimit" : 400.25,
-      |   "underSmallProfitThreshold" : true,
-      |   "actualClass2Nic" : false
+      |   "inputs": {
+      |      "personalInformation": {
+      |         "class2VoluntaryContributions": false
+      |      }
+      |   },
+      |   "calculation": {
+      |      "taxCalculation": {
+      |         "nics": {
+      |            "class2Nics": {
+      |               "weeklyRate": 100.25,
+      |               "weeks": 200.25,
+      |               "limit": 300.25,
+      |               "apportionedLimit": 400.25,
+      |               "underSmallProfitThreshold": true,
+      |               "actualClass2Nic": false
+      |            }
+      |         }
+      |      }
+      |   }
       |}
     """.stripMargin
   )
 
-  val class2NicDetailModel =
-    Class2NicDetail(
-      Some(100.25), Some(200.25), Some(300.25), Some(400.25), underSmallProfitThreshold = true, Some(false)
-    )
+  val class2NicDetailMtdJson: JsValue = Json.parse(
+    """
+      |{
+      |   "weeklyRate": 100.25,
+      |   "weeks": 200.25,
+      |   "limit": 300.25,
+      |   "apportionedLimit": 400.25,
+      |   "underSmallProfitThreshold": true,
+      |   "actualClass2Nic": false,
+      |   "class2VoluntaryContributions": false
+      |}
+    """.stripMargin
+  )
+
+  val class2NicDetailModel: Class2NicDetail = Class2NicDetail(
+    weeklyRate = Some(100.25),
+    weeks = Some(200.25),
+    limit = Some(300.25),
+    apportionedLimit = Some(400.25),
+    underSmallProfitThreshold = true,
+    actualClass2Nic = Some(false),
+    class2VoluntaryContributions = Some(false)
+  )
 }

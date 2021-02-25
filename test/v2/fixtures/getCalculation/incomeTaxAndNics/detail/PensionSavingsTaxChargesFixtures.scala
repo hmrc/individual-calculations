@@ -24,22 +24,24 @@ object PensionSavingsTaxChargesFixtures {
   val pensionSavingsTaxChargesJson: JsValue = Json.parse(
     """
       |{
-      | "totalPensionCharges": 3000.10,
-      | "totalTaxPaid": 4000.25,
-      | "totalPensionChargesDue": 5000.70,
-      | "pensionSavingsTaxChargesDetail" : {
-      |
-      | }
+      |  "totalPensionCharges": 3000.10,
+      |  "totalTaxPaid": 4000.25,
+      |  "totalPensionChargesDue": 5000.70,
+      |  "pensionSavingsTaxChargesDetail": { }
       |}
-    """.stripMargin)
+    """.stripMargin
+  )
 
-  val pensionSavingsTaxChargesModel =
-    PensionSavingsTaxCharges(
-      Some(3000.10), Some(4000.25), Some(5000.70),
-      Some(
-        PensionSavingsTaxChargesDetail(
-          None, None, None, None, None, None, None
-        )
-      )
-    )
+  val pensionSavingsTaxChargesModel: PensionSavingsTaxCharges = PensionSavingsTaxCharges(
+    totalPensionCharges = Some(3000.10),
+    totalTaxPaid = Some(4000.25),
+    totalPensionChargesDue = Some(5000.70),
+    pensionSavingsTaxChargesDetail = Some(PensionSavingsTaxChargesDetail(
+      excessOfLifetimeAllowance = None,
+      pensionSchemeUnauthorisedPayments = None,
+      pensionSchemeOverseasTransfers = None,
+      pensionContributionsInExcessOfTheAnnualAllowance = None,
+      overseasPensionContributions = None
+    ))
+  )
 }

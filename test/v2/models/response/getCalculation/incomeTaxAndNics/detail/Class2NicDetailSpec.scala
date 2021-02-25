@@ -21,14 +21,11 @@ import support.UnitSpec
 import v2.fixtures.getCalculation.incomeTaxAndNics.detail.Class2NicDetailFixtures._
 
 class Class2NicDetailSpec extends UnitSpec {
+
   "Class2NicDetail" should {
 
-    "write correctly to json" in {
-      Json.toJson(class2NicDetailModel) shouldBe class2NicDetailJson
-    }
-
     "read correctly from json" in {
-      class2NicDetailJson.validate[Class2NicDetail] shouldBe JsSuccess(class2NicDetailModel)
+      class2NicDetailDesJson.validate[Class2NicDetail] shouldBe JsSuccess(class2NicDetailModel)
     }
 
     "read from invalid JSON" should {
@@ -36,17 +33,31 @@ class Class2NicDetailSpec extends UnitSpec {
         val invalidJson = Json.parse(
           """
             |{
-            |   "weeklyRate" : true,
-            |   "weeks" : 200.25,
-            |   "limit" : 300.25,
-            |   "apportionedLimit" : 400.25,
-            |   "underSmallProfitThreshold" : true,
-            |   "actualClass2Nic" : false
+            |   "inputs": {
+            |      "personalInformation": {
+            |         "class2VoluntaryContributions": false
+            |      }
+            |   },
+            |   "calculation": {
+            |      "taxCalculation": {
+            |         "nics": {
+            |            "class2Nics": {
+            |               "weeklyRate": true,
+            |               "underSmallProfitThreshold": true,
+            |               "actualClass2Nic": false
+            |            }
+            |         }
+            |      }
+            |   }
             |}
           """.stripMargin
         )
         invalidJson.validate[Class2NicDetail] shouldBe a[JsError]
       }
+    }
+
+    "write correctly to json" in {
+      Json.toJson(class2NicDetailModel) shouldBe class2NicDetailMtdJson
     }
   }
 }

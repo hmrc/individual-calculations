@@ -24,27 +24,27 @@ class CalculationDetailSpec extends UnitSpec {
 
   "CalculationDetail" should {
 
-    "write to json correctly" when {
-      "provided with a minimal model" in {
-        Json.toJson(calculationDetailMinModel) shouldBe calculationDetailMinOutputJson
+    "read from json correctly" when {
+      "provided with the only mandatory incomeTax object in json" in {
+        calculationDetailMinDesJson.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailMinModel)
       }
 
-      "provided with a top level model" in {
-        Json.toJson(calculationDetailFilledModel) shouldBe calculationDetailOutputJson
+      "provided with json with empty objects" in {
+        calculationDetailDesJsonWithEmptyObjects.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailMinModel)
+      }
+
+      "provided with json containing all top level objects and array" in {
+        calculationDetailFilledDesJson.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailFilledModel)
       }
     }
 
-    "read from json correctly" when {
-      "provided with empty json" in {
-        calculationDetailMinJson.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailMinModel)
+    "write to json correctly" when {
+      "provided with a minimal model" in {
+        Json.toJson(calculationDetailMinModel) shouldBe calculationDetailMinMtdJson
       }
 
-      "provided with json with empty models" in {
-        calculationDetailInputJsonWithEmptyModels.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailMinModel)
-      }
-
-      "provided with json containing all top level models" in {
-        calculationDetailFilledJson.validate[CalculationDetail] shouldBe JsSuccess(calculationDetailFilledModel)
+      "provided with a top level model" in {
+        Json.toJson(calculationDetailFilledModel) shouldBe calculationDetailMtdJson
       }
     }
   }

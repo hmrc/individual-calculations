@@ -26,14 +26,12 @@ case class Class4NicDetail(class4Losses: Option[Class4Losses],
                            class4NicBands: Option[Seq[NicBand]])
 
 object Class4NicDetail extends NestedJsonReads {
-  val empty = Class4NicDetail(None, None, None, None)
+  val empty: Class4NicDetail = Class4NicDetail(None, None, None, None)
 
   implicit val writes: OWrites[Class4NicDetail] = Json.writes[Class4NicDetail]
+
   implicit val reads: Reads[Class4NicDetail] = (
-    JsPath.readNullable[Class4Losses].map {
-      case Some(Class4Losses.empty) => None
-      case other => other
-    } and
+    JsPath.readNullable[Class4Losses].mapEmptyModelToNone(Class4Losses.empty) and
       (JsPath \ "totalIncomeLiableToClass4Charge").readNullable[BigInt] and
       (JsPath \ "totalIncomeChargeableToClass4").readNullable[BigInt] and
       (JsPath \ "nic4Bands").readNullable[Seq[NicBand]].mapEmptySeqToNone

@@ -18,13 +18,11 @@ package v2.models.response.getCalculation.incomeTaxAndNics.detail
 
 import play.api.libs.json.{Json, OFormat}
 
-case class PensionSavingsTaxCharges(totalPensionCharges: Option[BigDecimal],
-                                    totalTaxPaid: Option[BigDecimal],
-                                    totalPensionChargesDue: Option[BigDecimal],
-                                    pensionSavingsTaxChargesDetail: Option[PensionSavingsTaxChargesDetail])
+case class ExcessOfLifetimeAllowance(totalChargeableAmount: Option[BigDecimal],
+                                     totalTaxPaid: Option[BigDecimal],
+                                     lumpSumBenefitTakenInExcessOfLifetimeAllowance: Option[PensionTypeBreakdown],
+                                     benefitInExcessOfLifetimeAllowance: Option[PensionTypeBreakdown])
 
-object PensionSavingsTaxCharges {
-  val empty: PensionSavingsTaxCharges = PensionSavingsTaxCharges(None, None, None, None)
-
-  implicit val format: OFormat[PensionSavingsTaxCharges] = Json.format[PensionSavingsTaxCharges]
+object ExcessOfLifetimeAllowance {
+  implicit val format: OFormat[ExcessOfLifetimeAllowance] = Json.format[ExcessOfLifetimeAllowance]
 }
