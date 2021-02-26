@@ -22,18 +22,30 @@ import utils.NestedJsonReads
 
 case class SavingsAndGains(incomeReceived: BigInt,
                            taxableIncome: BigInt,
+                           totalOfAllGains: BigInt,
+                           totalUkSavingsAndSecurities: Option[BigInt],
                            ukSavings: Option[Seq[UkSaving]],
-                           ukSecurities: Option[Seq[UkSecurity]])
+                           ukSecurities: Option[Seq[UkSecurity]],
+                           totalGainsWithNoTaxPaidAndVoidedIsa: Option[BigInt],
+                           totalForeignGainsOnLifePoliciesNoTaxPaid: Option[BigInt],
+                           totalForeignSavingsAndGainsIncome: Option[BigInt])
 
 object SavingsAndGains extends NestedJsonReads {
   implicit val reads: Reads[SavingsAndGains] = {
     val savingsAndGainsJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "savingsAndGains"
-    val savingsAndGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome" \ "ukSavingsAndGainsIncome"
+    val savingsAndGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome"
+    val ukSavingsAndGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome" \ "ukSavingsAndGainsIncome"
+    val chargeableEventGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "chargeableEventGainsIncome"
     (
       (savingsAndGainsJsPath \ "incomeReceived").read[BigInt] and
         (savingsAndGainsJsPath \ "taxableIncome").read[BigInt] and
-        savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSaving](incomeSourceType = "09") and
-        savingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSecurity](incomeSourceType = "18")
+        (chargeableEventGainsIncomeJsPath \ "totalOfAllGains").read[BigInt] and
+        (savingsAndGainsIncomeJsPath \ "totalUkSavingsAndGains").readNestedNullable[BigInt] and
+        ukSavingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSaving](incomeSourceType = "09") and
+        ukSavingsAndGainsIncomeJsPath.readIncomeSourceTypeSeq[UkSecurity](incomeSourceType = "18") and
+        (chargeableEventGainsIncomeJsPath \ "totalGainsWithNoTaxPaidAndVoidedIsa").readNestedNullable[BigInt] and
+        (chargeableEventGainsIncomeJsPath \ "totalForeignGainsOnLifePoliciesNoTaxPaid").readNestedNullable[BigInt] and
+        (savingsAndGainsIncomeJsPath \ "chargeableForeignSavingsAndGains").readNestedNullable[BigInt]
     )(SavingsAndGains.apply _)
   }
 

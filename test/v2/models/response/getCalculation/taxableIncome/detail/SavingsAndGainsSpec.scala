@@ -34,47 +34,54 @@ class SavingsAndGainsSpec extends UnitSpec {
       }
     }
 
-    "read from valid JSON with a savingsAndGainsIncome array" should {
+    "read from valid JSON with no ukSavingsAndGainsIncome array" should {
       "produce the expected SavingsAndGains object" in {
-        val pathToPrune: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome"
-        val desJsonWithoutSavings: JsValue = pathToPrune.prune(TaxableIncomeJsonFixture.desJson).get
+        val pathToPrune: JsPath = JsPath \ "calculation" \ "savingsAndGainsIncome" \ "ukSavingsAndGainsIncome"
+        val desJsonWithoutSavingsOrSecurities: JsValue = pathToPrune.prune(TaxableIncomeJsonFixture.desJson).get
 
-        desJsonWithoutSavings.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavingsOrSecurities
+        desJsonWithoutSavingsOrSecurities.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavingsOrSecurities
       }
     }
 
     "read from valid JSON with a savings array without any appropriate items" should {
       "produce the expected SavingsAndGains object" in {
-        val desJsonWithoutValidSavings: JsValue = Json.parse(
+        val desJsonWithoutValidSavingsOrSecurities: JsValue = Json.parse(
           """
             |{
             |   "calculation": {
-            |      "taxCalculation" : {
-            |         "incomeTax" : {
-            |            "savingsAndGains" : {
+            |      "chargeableEventGainsIncome": {
+            |         "totalOfAllGains": 7015,
+            |         "totalGainsWithNoTaxPaidAndVoidedIsa": 7017,
+            |         "totalForeignGainsOnLifePoliciesNoTaxPaid": 7018
+            |      },
+            |      "taxCalculation": {
+            |         "incomeTax": {
+            |            "savingsAndGains": {
             |               "incomeReceived": 7012,
             |               "taxableIncome": 7014
             |            }
             |         }
             |      },
-            |      "savingsAndGainsIncome" : {
-            |      			"ukSavingsAndGainsIncome": [
-            |         {
-            |            "incomeSourceId":"anId3",
-            |            "incomeSourceType": "04",
-            |            "incomeSourceName":"aName3",
-            |            "grossIncome": 400.1,
-            |            "netIncome": 112.3,
-            |            "taxDeducted": 556.3
-            |         }
-            |      ]
+            |      "savingsAndGainsIncome": {
+            |         "totalUkSavingsAndGains": 7016,
+            |         "chargeableForeignSavingsAndGains": 7019,
+            |         "ukSavingsAndGainsIncome": [
+            |            {
+            |               "incomeSourceId": "anId3",
+            |               "incomeSourceType": "04",
+            |               "incomeSourceName": "aName3",
+            |               "grossIncome": 400.1,
+            |               "netIncome": 112.3,
+            |               "taxDeducted": 556.3
+            |            }
+            |         ]
             |      }
             |   }
             |}
           """.stripMargin
         )
 
-        desJsonWithoutValidSavings.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavingsOrSecurities
+        desJsonWithoutValidSavingsOrSecurities.as[SavingsAndGains] shouldBe savingsAndGainsModelWithoutSavingsOrSecurities
       }
     }
 

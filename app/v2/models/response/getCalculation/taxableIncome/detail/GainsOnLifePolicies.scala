@@ -18,14 +18,24 @@ package v2.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
+import utils.NestedJsonReads
 
-case class GainsOnLifePolicies(incomeReceived: BigInt, taxableIncome: BigInt)
+case class GainsOnLifePolicies(incomeReceived: BigInt,
+                               taxableIncome: BigInt,
+                               totalUkGainsWithTaxPaid: Option[BigInt],
+                               totalForeignGainsOnLifePoliciesWithTaxPaid: Option[BigInt])
 
-object GainsOnLifePolicies {
-  implicit val reads: Reads[GainsOnLifePolicies] = (
-    (JsPath \ "incomeReceived").read[BigInt] and
-      (JsPath \ "taxableIncome").read[BigInt]
+object GainsOnLifePolicies extends NestedJsonReads {
+  implicit val reads: Reads[GainsOnLifePolicies] = {
+    val gainsOnLifePoliciesJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "gainsOnLifePolicies"
+    val chargeableEventGainsIncomeJsPath: JsPath = JsPath \ "calculation" \ "chargeableEventGainsIncome"
+    (
+      (gainsOnLifePoliciesJsPath \ "incomeReceived").read[BigInt] and
+        (gainsOnLifePoliciesJsPath \ "taxableIncome").read[BigInt] and
+        (chargeableEventGainsIncomeJsPath \ "totalGainsWithTaxPaid").readNestedNullable[BigInt] and
+        (chargeableEventGainsIncomeJsPath \ "totalForeignGainsOnLifePoliciesTaxPaid").readNestedNullable[BigInt]
     )(GainsOnLifePolicies.apply _)
+  }
 
   implicit val writes: OWrites[GainsOnLifePolicies] = Json.writes[GainsOnLifePolicies]
 }

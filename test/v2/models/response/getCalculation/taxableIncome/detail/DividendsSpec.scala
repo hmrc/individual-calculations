@@ -25,9 +25,7 @@ class DividendsSpec extends UnitSpec {
   "Dividends" when {
     "read from valid JSON" should {
       "produce the expected Dividends object" in {
-        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "taxCalculation" \
-          "incomeTax" \ "dividends").get
-        desJson.as[Dividends] shouldBe TaxableIncomeModelsFixture.dividendsModel
+        TaxableIncomeJsonFixture.desJson.as[Dividends] shouldBe TaxableIncomeModelsFixture.dividendsModel
       }
     }
 

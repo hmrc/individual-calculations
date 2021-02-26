@@ -18,14 +18,24 @@ package v2.models.response.getCalculation.taxableIncome.detail
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, Reads, Writes}
+import utils.NestedJsonReads
 
-case class Dividends(incomeReceived: BigInt, taxableIncome: BigInt)
+case class Dividends(incomeReceived: BigInt,
+                     taxableIncome: BigInt,
+                     totalUkDividends: Option[BigInt],
+                     totalForeignDividends: Option[BigInt])
 
-object Dividends {
-  implicit val reads: Reads[Dividends] = (
-    (JsPath \ "incomeReceived").read[BigInt] and
-      (JsPath \ "taxableIncome").read[BigInt]
-  )(Dividends.apply _)
+object Dividends extends NestedJsonReads {
+  implicit val reads: Reads[Dividends] = {
+    val dividendsJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "dividends"
+    val dividendsIncomeJsPath: JsPath = JsPath \ "calculation" \ "dividendsIncome"
+    (
+      (dividendsJsPath \ "incomeReceived").read[BigInt] and
+        (dividendsJsPath \ "taxableIncome").read[BigInt] and
+        (dividendsIncomeJsPath \ "totalUkDividends").readNestedNullable[BigInt] and
+        (dividendsIncomeJsPath \ "chargeableForeignDividends").readNestedNullable[BigInt]
+    )(Dividends.apply _)
+  }
 
   implicit val writes: Writes[Dividends] = Json.writes[Dividends]
 }

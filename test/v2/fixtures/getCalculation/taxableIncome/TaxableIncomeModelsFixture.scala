@@ -462,7 +462,7 @@ object TaxableIncomeModelsFixture {
     foreignProperty = Some(foreignPropertyModel)
   )
 
-  val payPensionsProfitModel = PayPensionsProfit(
+  val payPensionsProfitModel: PayPensionsProfit = PayPensionsProfit(
     incomeReceived = 7004,
     taxableIncome = 7006,
     totalSelfEmploymentProfit = Some(6001),
@@ -476,7 +476,14 @@ object TaxableIncomeModelsFixture {
     totalBenefitsInKind = Some(6009.99),
     totalPayeEmploymentAndLumpSumIncome = Some(6010.00),
     totalEmploymentExpenses = Some(6011.11),
+    totalSeafarersDeduction = Some(6013.10),
+    totalForeignTaxOnForeignEmployment = Some(6014.15),
     totalEmploymentIncome = Some(6012),
+    totalShareSchemesIncome = Some(6015.20),
+    totalOverseasPensionsStateBenefitsRoyalties = Some(6016.25),
+    totalAllOtherIncomeReceivedWhilstAbroad = Some(6017.30),
+    totalOverseasIncomeAndGains = Some(6018.35),
+    totalForeignBenefitsAndGifts = Some(6019.40),
     businessProfitAndLoss = Some(businessProfitAndLossModel)
   )
 
@@ -507,18 +514,25 @@ object TaxableIncomeModelsFixture {
   val savingsAndGainsModel: SavingsAndGains = SavingsAndGains(
     incomeReceived = 7012,
     taxableIncome = 7014,
+    totalOfAllGains = 7015,
+    totalUkSavingsAndSecurities = Some(7016),
     ukSavings = Some(Seq(
       ukSavingModel1,
       ukSavingModel2
     )),
     ukSecurities = Some(Seq(
       ukSecurityModel
-    ))
+    )),
+    totalGainsWithNoTaxPaidAndVoidedIsa = Some(7017),
+    totalForeignGainsOnLifePoliciesNoTaxPaid = Some(7018),
+    totalForeignSavingsAndGainsIncome = Some(7019)
   )
 
   val dividendsModel: Dividends = Dividends(
     incomeReceived = 7020,
-    taxableIncome = 7022
+    taxableIncome = 7022,
+    totalUkDividends = Some(7024),
+    totalForeignDividends = Some(7026)
   )
 
   val lumpSumsModel: LumpSums = LumpSums(
@@ -528,7 +542,9 @@ object TaxableIncomeModelsFixture {
 
   val gainsOnLifePoliciesModel: GainsOnLifePolicies = GainsOnLifePolicies(
     incomeReceived = 9010,
-    taxableIncome = 9020
+    taxableIncome = 9020,
+    totalUkGainsWithTaxPaid = Some(9030),
+    totalForeignGainsOnLifePoliciesWithTaxPaid = Some(9040)
   )
 
   val taxableIncomeDetailModel: TaxableIncomeDetail = TaxableIncomeDetail(

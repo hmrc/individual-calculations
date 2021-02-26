@@ -34,7 +34,14 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              totalBenefitsInKind: Option[BigDecimal],
                              totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal],
                              totalEmploymentExpenses: Option[BigDecimal],
+                             totalSeafarersDeduction: Option[BigDecimal],
+                             totalForeignTaxOnForeignEmployment: Option[BigDecimal],
                              totalEmploymentIncome: Option[BigInt],
+                             totalShareSchemesIncome: Option[BigDecimal],
+                             totalOverseasPensionsStateBenefitsRoyalties: Option[BigDecimal],
+                             totalAllOtherIncomeReceivedWhilstAbroad: Option[BigDecimal],
+                             totalOverseasIncomeAndGains: Option[BigDecimal],
+                             totalForeignBenefitsAndGifts: Option[BigDecimal],
                              businessProfitAndLoss: Option[BusinessProfitAndLoss])
 
 object PayPensionsProfit extends NestedJsonReads {
@@ -42,6 +49,7 @@ object PayPensionsProfit extends NestedJsonReads {
     val pppJsPath: JsPath = JsPath \ "calculation" \ "taxCalculation" \ "incomeTax" \ "payPensionsProfit"
     val incomeSummaryTotalsJsPath: JsPath = JsPath \ "calculation" \ "incomeSummaryTotals"
     val employmentAndPensionsIncJsPath: JsPath = JsPath \ "calculation" \ "employmentAndPensionsIncome"
+    val foreignIncomeJsPath: JsPath = JsPath \ "calculation" \ "foreignIncome"
     (
       (pppJsPath \ "incomeReceived").read[BigInt] and
         (pppJsPath \ "taxableIncome").read[BigInt] and
@@ -56,7 +64,14 @@ object PayPensionsProfit extends NestedJsonReads {
         (employmentAndPensionsIncJsPath \ "totalBenefitsInKind").readNestedNullable[BigDecimal] and
         (employmentAndPensionsIncJsPath \ "totalPayeEmploymentAndLumpSumIncome").readNestedNullable[BigDecimal] and
         (JsPath \ "calculation" \ "employmentExpenses" \ "totalEmploymentExpenses").readNestedNullable[BigDecimal] and
+        (JsPath \ "calculation" \ "seafarersDeduction" \ "totalSeafarersDeduction").readNestedNullable[BigDecimal] and
+        (JsPath \ "calculation" \ "foreignTaxForFtcrNotClaimed" \ "foreignTaxOnForeignEmployment").readNestedNullable[BigDecimal] and
         (incomeSummaryTotalsJsPath \ "totalEmploymentIncome").readNestedNullable[BigInt] and
+        (JsPath \ "calculation" \ "shareSchemesIncome" \ "totalIncome").readNestedNullable[BigDecimal] and
+        (foreignIncomeJsPath \ "chargeableOverseasPensionsStateBenefitsRoyalties").readNestedNullable[BigDecimal] and
+        (foreignIncomeJsPath \ "chargeableAllOtherIncomeReceivedWhilstAbroad").readNestedNullable[BigDecimal] and
+        (foreignIncomeJsPath \ "overseasIncomeAndGains" \ "gainAmount").readNestedNullable[BigDecimal] and
+        (foreignIncomeJsPath \ "totalForeignBenefitsAndGifts").readNestedNullable[BigDecimal] and
         JsPath.readNullable[BusinessProfitAndLoss].mapEmptyModelToNone(BusinessProfitAndLoss.empty)
     )(PayPensionsProfit.apply _)
   }

@@ -25,9 +25,7 @@ class GainsOnLifePoliciesSpec extends UnitSpec {
   "GainsOnLifePolicies" when {
     "read from valid JSON" should {
       "produce the expected GainsOnLifePolicies object" in {
-        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "taxCalculation" \
-          "incomeTax" \ "gainsOnLifePolicies").get
-        desJson.as[GainsOnLifePolicies] shouldBe TaxableIncomeModelsFixture.gainsOnLifePoliciesModel
+        TaxableIncomeJsonFixture.desJson.as[GainsOnLifePolicies] shouldBe TaxableIncomeModelsFixture.gainsOnLifePoliciesModel
       }
     }
 
