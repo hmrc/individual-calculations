@@ -16,8 +16,10 @@
 
 package config
 
+import com.typesafe.config.Config
+
 import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import play.api.{ConfigLoader, Configuration}
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 trait AppConfig {
@@ -27,6 +29,7 @@ trait AppConfig {
   def desToken: String
   def apiGatewayContext: String
   def featureSwitch: Option[Configuration]
+  def confidenceLevelConfig: ConfidenceLevelConfig
 }
 
 @Singleton
@@ -38,9 +41,21 @@ class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configurati
   val apiGatewayContext: String = config.getString("api.gateway.context")
 
   def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
+  val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
 }
 
 trait FixedConfig {
   // Minimum tax year for MTD
   val minimumTaxYear = 2018
+}
+
+case class ConfidenceLevelConfig(definitionEnabled: Boolean, authValidationEnabled: Boolean)
+object ConfidenceLevelConfig {
+  implicit val configLoader: ConfigLoader[ConfidenceLevelConfig] = (rootConfig: Config, path: String) => {
+    val config = rootConfig.getConfig(path)
+    ConfidenceLevelConfig(
+      definitionEnabled = config.getBoolean("definition.enabled"),
+      authValidationEnabled = config.getBoolean("auth-validation.enabled")
+    )
+  }
 }
