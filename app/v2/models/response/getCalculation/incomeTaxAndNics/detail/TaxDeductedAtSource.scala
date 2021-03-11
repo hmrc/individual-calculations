@@ -19,8 +19,8 @@ package v2.models.response.getCalculation.incomeTaxAndNics.detail
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class TaxDeductedAtSource(ukLandAndProperty: Option[BigInt],
-                               savings: Option[BigInt],
+case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
+                               savings: Option[BigDecimal],
                                cis: Option[BigDecimal],
                                securities: Option[BigDecimal],
                                voidedIsa: Option[BigDecimal],
@@ -35,8 +35,8 @@ object TaxDeductedAtSource {
   implicit val writes: OWrites[TaxDeductedAtSource] = Json.writes[TaxDeductedAtSource]
 
   implicit val reads: Reads[TaxDeductedAtSource] = (
-    (JsPath \ "ukLandAndProperty").readNullable[BigInt] and
-      (JsPath \ "bbsi").readNullable[BigInt] and
+    (JsPath \ "ukLandAndProperty").readNullable[BigDecimal] and
+      (JsPath \ "bbsi").readNullable[BigDecimal] and
       (JsPath \ "cis").readNullable[BigDecimal] and
       (JsPath \ "securities").readNullable[BigDecimal] and
       (JsPath \ "voidedIsa").readNullable[BigDecimal] and
