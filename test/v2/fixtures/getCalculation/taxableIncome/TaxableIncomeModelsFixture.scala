@@ -476,7 +476,7 @@ object TaxableIncomeModelsFixture {
     totalBenefitsInKind = Some(6009.99),
     totalPayeEmploymentAndLumpSumIncome = Some(6010.00),
     totalEmploymentExpenses = Some(6011.11),
-    totalSeafarersDeduction = Some(6013),
+    totalSeafarersDeduction = Some(6013.12),
     totalForeignTaxOnForeignEmployment = Some(6014.15),
     totalEmploymentIncome = Some(6012),
     totalShareSchemesIncome = Some(6015.20),

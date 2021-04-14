@@ -76,7 +76,7 @@ object CalculationSummaryFixtures {
       |            }
       |         },
       |         "totalStudentLoansRepaymentAmount":100.25,
-      |         "totalAnnuityPaymentsTaxCharged":200.25,
+      |         "totalAnnuityPaymentsTaxCharged":200,
       |         "totalRoyaltyPaymentsTaxCharged":300.25,
       |         "totalIncomeTaxNicsCharged":400.25,
       |         "totalTaxDeducted":500.25,
@@ -114,7 +114,7 @@ object CalculationSummaryFixtures {
       |   "totalIncomeTaxNicsCharged":300.25,
       |   "totalTaxDeducted":400.25,
       |   "totalStudentLoansRepaymentAmount":500.25,
-      |   "totalAnnualPaymentsTaxCharged":600.25,
+      |   "totalAnnualPaymentsTaxCharged":600,
       |   "totalRoyaltyPaymentsTaxCharged":700.25,
       |   "totalIncomeTaxAndNicsDue":100.25,
       |   "taxRegime":"UK"
@@ -129,7 +129,7 @@ object CalculationSummaryFixtures {
     IncomeTaxSummary(10.25, None, None, None, None, None, None, None),
     Some(NicSummary(Some(200.25), None, None)),
     Some(100.25),
-    Some(200.25),
+    Some(200),
     Some(300.25),
     Some(400.25),
     Some(500.25),

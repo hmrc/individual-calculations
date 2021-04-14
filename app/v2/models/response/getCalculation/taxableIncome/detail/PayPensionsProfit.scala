@@ -34,7 +34,7 @@ case class PayPensionsProfit(incomeReceived: BigInt,
                              totalBenefitsInKind: Option[BigDecimal],
                              totalPayeEmploymentAndLumpSumIncome: Option[BigDecimal],
                              totalEmploymentExpenses: Option[BigDecimal],
-                             totalSeafarersDeduction: Option[BigInt],
+                             totalSeafarersDeduction: Option[BigDecimal],
                              totalForeignTaxOnForeignEmployment: Option[BigDecimal],
                              totalEmploymentIncome: Option[BigInt],
                              totalShareSchemesIncome: Option[BigDecimal],
@@ -64,7 +64,7 @@ object PayPensionsProfit extends NestedJsonReads {
         (employmentAndPensionsIncJsPath \ "totalBenefitsInKind").readNestedNullable[BigDecimal] and
         (employmentAndPensionsIncJsPath \ "totalPayeEmploymentAndLumpSumIncome").readNestedNullable[BigDecimal] and
         (JsPath \ "calculation" \ "employmentExpenses" \ "totalEmploymentExpenses").readNestedNullable[BigDecimal] and
-        (JsPath \ "calculation" \ "seafarersDeductions" \ "totalSeafarersDeduction").readNestedNullable[BigInt] and
+        (JsPath \ "calculation" \ "seafarersDeductions" \ "totalSeafarersDeduction").readNestedNullable[BigDecimal] and
         (JsPath \ "calculation" \ "foreignTaxForFtcrNotClaimed" \ "foreignTaxOnForeignEmployment").readNestedNullable[BigDecimal] and
         (incomeSummaryTotalsJsPath \ "totalEmploymentIncome").readNestedNullable[BigInt] and
         (JsPath \ "calculation" \ "shareSchemesIncome" \ "totalIncome").readNestedNullable[BigDecimal] and
