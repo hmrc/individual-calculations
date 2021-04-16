@@ -102,25 +102,6 @@ object CalculationSummaryFixtures {
       |}
     """.stripMargin)
 
-  val calcSummaryFilledOutputJson: JsValue = Json.parse(
-    """
-      |{
-      |   "incomeTax":{
-      |      "incomeTaxCharged":10.25
-      |   },
-      |   "nics":{
-      |      "class2NicsAmount":200.25
-      |   },
-      |   "totalIncomeTaxNicsCharged":300.25,
-      |   "totalTaxDeducted":400.25,
-      |   "totalStudentLoansRepaymentAmount":500.25,
-      |   "totalAnnualPaymentsTaxCharged":600,
-      |   "totalRoyaltyPaymentsTaxCharged":700.25,
-      |   "totalIncomeTaxAndNicsDue":100.25,
-      |   "taxRegime":"UK"
-      |}
-    """.stripMargin)
-
   val calcSummaryMinModel = CalculationSummary(
     IncomeTaxSummary(10.25, None, None, None, None, None, None, None),
     None, None, None, None, None, None, 100.25, "UK")
