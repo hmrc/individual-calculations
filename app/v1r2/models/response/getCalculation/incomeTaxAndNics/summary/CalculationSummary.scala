@@ -23,7 +23,7 @@ import utils.NestedJsonReads
 case class CalculationSummary(incomeTax: IncomeTaxSummary,
                               nics: Option[NicSummary],
                               totalStudentLoansRepaymentAmount: Option[BigDecimal],
-                              totalAnnualPaymentsTaxCharged: Option[BigDecimal],
+                              totalAnnualPaymentsTaxCharged: Option[BigInt],
                               totalRoyaltyPaymentsTaxCharged: Option[BigDecimal],
                               totalIncomeTaxNicsCharged: Option[BigDecimal],
                               totalTaxDeducted: Option[BigDecimal],
@@ -40,7 +40,7 @@ object CalculationSummary extends NestedJsonReads {
         case other => other
       } and
       (JsPath \ "calculation" \ "taxCalculation" \ "totalStudentLoansRepaymentAmount").readNestedNullable[BigDecimal] and
-      (JsPath \ "calculation" \ "taxCalculation" \ "totalAnnuityPaymentsTaxCharged").readNestedNullable[BigDecimal] and
+      (JsPath \ "calculation" \ "taxCalculation" \ "totalAnnuityPaymentsTaxCharged").readNestedNullable[BigInt] and
       (JsPath \ "calculation" \ "taxCalculation" \ "totalRoyaltyPaymentsTaxCharged").readNestedNullable[BigDecimal] and
       (JsPath \ "calculation" \ "taxCalculation" \ "totalIncomeTaxNicsCharged").readNestedNullable[BigDecimal] and
       (JsPath \ "calculation" \ "taxCalculation" \ "totalTaxDeducted").readNestedNullable[BigDecimal] and

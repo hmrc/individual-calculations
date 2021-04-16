@@ -602,7 +602,7 @@ object TaxableIncomeJsonFixture {
       |      "employmentExpenses": {
       |         "totalEmploymentExpenses": 6011.11
       |      },
-      |      "seafarersDeduction": {
+      |      "seafarersDeductions": {
       |         "totalSeafarersDeduction": 6013.10
       |      },
       |      "foreignTaxForFtcrNotClaimed": {

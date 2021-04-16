@@ -64,7 +64,7 @@ object PayPensionsProfit extends NestedJsonReads {
         (employmentAndPensionsIncJsPath \ "totalBenefitsInKind").readNestedNullable[BigDecimal] and
         (employmentAndPensionsIncJsPath \ "totalPayeEmploymentAndLumpSumIncome").readNestedNullable[BigDecimal] and
         (JsPath \ "calculation" \ "employmentExpenses" \ "totalEmploymentExpenses").readNestedNullable[BigDecimal] and
-        (JsPath \ "calculation" \ "seafarersDeduction" \ "totalSeafarersDeduction").readNestedNullable[BigDecimal] and
+        (JsPath \ "calculation" \ "seafarersDeductions" \ "totalSeafarersDeduction").readNestedNullable[BigDecimal] and
         (JsPath \ "calculation" \ "foreignTaxForFtcrNotClaimed" \ "foreignTaxOnForeignEmployment").readNestedNullable[BigDecimal] and
         (incomeSummaryTotalsJsPath \ "totalEmploymentIncome").readNestedNullable[BigInt] and
         (JsPath \ "calculation" \ "shareSchemesIncome" \ "totalIncome").readNestedNullable[BigDecimal] and

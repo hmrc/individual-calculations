@@ -22,7 +22,7 @@ import v2.models.response.getCalculation.allowancesAndDeductions.detail.ForeignP
 object ForeignPropertyRfcDetailFixture {
 
   val countryCode: String = "IND"
-  val amountClaimed: BigDecimal = 49829.34
+  val amountClaimed: BigInt = 49829
   val allowableAmount: BigDecimal = 49828.34
   val carryForwardAmount: Option[BigDecimal] = Some(49830.34)
 

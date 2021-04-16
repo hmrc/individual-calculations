@@ -76,7 +76,7 @@ object ReliefsFixtures {
       |					"totalForeignPropertyAllowableAmount": 49827.34,
       |					"foreignPropertyRfcDetail": [{
       |						"countryCode": "IND",
-      |						"amountClaimed": 49829.34,
+      |						"amountClaimed": 49829,
       |						"allowableAmount": 49828.34,
       |						"carryForwardAmount": 49830.34
       |					}]
@@ -182,7 +182,7 @@ object ReliefsFixtures {
       |			"totalForeignPropertyAllowableAmount": 49827.34,
       |			"foreignPropertyRfcDetail": [{
       |				"countryCode": "IND",
-      |				"amountClaimed": 49829.34,
+      |				"amountClaimed": 49829,
       |				"allowableAmount": 49828.34,
       |				"carryForwardAmount": 49830.34
       |			}]
