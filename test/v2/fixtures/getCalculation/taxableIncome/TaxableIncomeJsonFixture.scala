@@ -315,9 +315,7 @@ object TaxableIncomeJsonFixture {
       |               "taxDeducted": 90302.11
       |            },
       |            {
-      |               "incomeSourceId": "SAVKB3UVwUTBQGJ",
       |               "incomeSourceType": "18",
-      |               "incomeSourceName": "UK Securities Account ONE",
       |               "grossIncome": 11101.11,
       |               "netIncome": 11201.11,
       |               "taxDeducted": 11301.11
@@ -1506,8 +1504,6 @@ object TaxableIncomeJsonFixture {
       |         ],
       |         "ukSecurities": [
       |            {
-      |               "ukSecuritiesAccountId": "SAVKB3UVwUTBQGJ",
-      |               "ukSecuritiesAccountName": "UK Securities Account ONE",
       |               "grossIncome": 11101.11,
       |               "netIncome": 11201.11,
       |               "taxDeducted": 11301.11

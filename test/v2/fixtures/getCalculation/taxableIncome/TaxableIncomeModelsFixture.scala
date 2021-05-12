@@ -504,8 +504,6 @@ object TaxableIncomeModelsFixture {
   )
 
   val ukSecurityModel: UkSecurity = UkSecurity(
-    ukSecuritiesAccountId = Some("SAVKB3UVwUTBQGJ"),
-    ukSecuritiesAccountName = Some("UK Securities Account ONE"),
     grossIncome = 11101.11,
     netIncome = Some(11201.11),
     taxDeducted = Some(11301.11)
