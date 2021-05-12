@@ -462,7 +462,7 @@ object TaxableIncomeModelsFixture {
     foreignProperty = Some(foreignPropertyModel)
   )
 
-  val payPensionsProfitModel = PayPensionsProfit(
+  val payPensionsProfitModel: PayPensionsProfit = PayPensionsProfit(
     incomeReceived = 7004,
     taxableIncome = 7006,
     totalSelfEmploymentProfit = Some(6001),
@@ -497,8 +497,6 @@ object TaxableIncomeModelsFixture {
   )
 
   val ukSecurityModel: UkSecurity = UkSecurity(
-    ukSecuritiesAccountId = Some("SAVKB3UVwUTBQGJ"),
-    ukSecuritiesAccountName = Some("UK Securities Account ONE"),
     grossIncome = 11101.11,
     netIncome = Some(11201.11),
     taxDeducted = Some(11301.11)

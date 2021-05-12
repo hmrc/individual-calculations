@@ -19,17 +19,13 @@ package v2.models.response.getCalculation.taxableIncome.detail
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 
-case class UkSecurity(ukSecuritiesAccountId: Option[String],
-                      ukSecuritiesAccountName: Option[String],
-                      grossIncome: BigDecimal,
+case class UkSecurity(grossIncome: BigDecimal,
                       netIncome: Option[BigDecimal],
                       taxDeducted: Option[BigDecimal])
 
 object UkSecurity {
   implicit val reads: Reads[UkSecurity] = (
-    (JsPath \ "incomeSourceId").readNullable[String] and
-      (JsPath \ "incomeSourceName").readNullable[String] and
-      (JsPath \ "grossIncome").read[BigDecimal] and
+    (JsPath \ "grossIncome").read[BigDecimal] and
       (JsPath \ "netIncome").readNullable[BigDecimal] and
       (JsPath \ "taxDeducted").readNullable[BigDecimal]
     )(UkSecurity.apply _)
