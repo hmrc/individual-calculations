@@ -17,7 +17,7 @@
 package v1r2.controllers.requestParsers
 
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
+import v1r2.models.domain.Nino
 import v1r2.mocks.validators.MockListCalculationsValidator
 import v1r2.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, TaxYearFormatError}
 import v1r2.models.request.DesTaxYear

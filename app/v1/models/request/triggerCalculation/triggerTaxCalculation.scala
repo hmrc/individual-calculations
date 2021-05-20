@@ -18,7 +18,7 @@ package v1.models.request.triggerCalculation
 
 import play.api.libs.json._
 import play.api.mvc.AnyContentAsJson
-import uk.gov.hmrc.domain.Nino
+import v1.models.domain.Nino
 import v1.models.request.RawData
 
 case class TriggerTaxCalculationRawData(nino: String, body: AnyContentAsJson) extends RawData

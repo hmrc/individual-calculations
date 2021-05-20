@@ -17,8 +17,8 @@
 package v1r2.controllers.requestParsers
 
 import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
 import v1r2.controllers.requestParsers.validators.ListCalculationsValidator
+import v1r2.models.domain.Nino
 import v1r2.models.request.DesTaxYear
 import v1r2.models.request.listCalculations.{ListCalculationsRawData, ListCalculationsRequest}
 

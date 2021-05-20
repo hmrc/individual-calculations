@@ -16,7 +16,8 @@
 
 package v1r2.connectors
 
-import uk.gov.hmrc.domain.Nino
+import uk.gov.hmrc.http.HeaderCarrier
+import v1r2.models.domain.Nino
 import v1r2.mocks.{MockAppConfig, MockHttpClient}
 import v1r2.models.outcomes.ResponseWrapper
 import v1r2.models.request.triggerCalculation.{TriggerTaxCalculation, TriggerTaxCalculationRequest}
@@ -37,9 +38,10 @@ class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
     val connector: TaxCalcConnector = new TaxCalcConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     val desRequestHeaders = Seq("Environment" -> "des-environment", "Authorization" -> s"Bearer des-token")
-    MockedAppConfig.desBaseUrl returns baseUrl
-    MockedAppConfig.desToken returns "des-token"
-    MockedAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
   }
 
   "trigger a tax calculation" when {
@@ -48,10 +50,19 @@ class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
     "a valid request is supplied" should {
       "return a successful response with the correct correlationId" in new Test {
 
+        implicit val hc: HeaderCarrier                       = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
+        val requiredDesHeadersTrigger: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
+
         val expected = Right(ResponseWrapper(correlationId, TriggerCalculationResponse(calcId)))
 
         MockedHttpClient
-          .post(s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation", EmptyJsonBody, desRequestHeaders: _*)
+          .post(
+            s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation",
+            config = dummyDesHeaderCarrierConfig,
+            EmptyJsonBody,
+            requiredHeaders = requiredDesHeadersTrigger,
+            excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
+          )
           .returns(Future.successful(expected))
 
         await(connector.triggerTaxCalculation(request)(hc, ec, correlationId)) shouldBe expected
@@ -61,10 +72,19 @@ class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
     "a valid request with header carrier contains correlation id is supplied" should {
       "send request to des with single correlationId in the header and return a successful response" in new Test {
 
+        implicit val hc: HeaderCarrier                       = HeaderCarrier(otherHeaders = otherHeaders ++ Seq("Content-Type" -> "application/json"))
+        val requiredDesHeadersTrigger: Seq[(String, String)] = requiredDesHeaders ++ Seq("Content-Type" -> "application/json")
+
         val expected = Right(ResponseWrapper(correlationId, TriggerCalculationResponse(calcId)))
 
         MockedHttpClient
-          .post(s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation", EmptyJsonBody, desRequestHeaders: _*)
+          .post(
+            s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation",
+            config = dummyDesHeaderCarrierConfig,
+            EmptyJsonBody,
+            requiredHeaders = requiredDesHeadersTrigger,
+            excludedHeaders = Seq("AnotherHeader" -> "HeaderValue")
+          )
           .returns(Future.successful(expected))
 
         await(connector.triggerTaxCalculation(request)(hc.withExtraHeaders("CorrelationId"-> "X-123"), ec, correlationId)) shouldBe expected

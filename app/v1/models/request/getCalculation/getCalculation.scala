@@ -16,7 +16,7 @@
 
 package v1.models.request.getCalculation
 
-import uk.gov.hmrc.domain.Nino
+import v1.models.domain.Nino
 import v1.models.request.RawData
 
 case class GetCalculationRawData(nino: String, calculationId: String) extends RawData

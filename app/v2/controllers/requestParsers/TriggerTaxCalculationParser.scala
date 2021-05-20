@@ -17,8 +17,8 @@
 package v2.controllers.requestParsers
 
 import javax.inject.Inject
-import uk.gov.hmrc.domain.Nino
 import v2.controllers.requestParsers.validators.TriggerTaxCalculationValidator
+import v2.models.domain.Nino
 import v2.models.request.triggerCalculation.{TriggerTaxCalculation, TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}
 
 class TriggerTaxCalculationParser @Inject()(val validator: TriggerTaxCalculationValidator)

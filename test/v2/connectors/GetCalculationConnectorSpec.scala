@@ -16,7 +16,8 @@
 
 package v2.connectors
 
-import uk.gov.hmrc.domain.Nino
+import uk.gov.hmrc.http.HeaderCarrier
+import v2.models.domain.Nino
 import v2.fixtures.common.MessageFixtures._
 import v2.mocks.{MockAppConfig, MockHttpClient}
 import v2.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
@@ -29,7 +30,7 @@ import scala.concurrent.Future
 
 class GetCalculationConnectorSpec extends ConnectorSpec {
 
-  val nino: Nino = Nino("AA123456A")
+  val nino = "AA123456A"
   val calcId: String = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   val metadataResponse: Metadata = Metadata(
@@ -54,21 +55,29 @@ class GetCalculationConnectorSpec extends ConnectorSpec {
     val connector: TaxCalcConnector = new TaxCalcConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     val desRequestHeaders: Seq[(String, String)] = Seq("Environment" -> "des-environment", "Authorization" -> s"Bearer des-token")
-    MockedAppConfig.desToken returns "des-token"
-    MockedAppConfig.desEnvironment returns "des-environment"
-    MockedAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
   }
 
   "get calculation" when {
-    val request = GetCalculationRequest(nino, calcId)
+    val request = GetCalculationRequest(Nino(nino), calcId)
 
     "a valid request is supplied" should {
       "return a successful response with the correct correlationId" in new Test {
 
+        implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders)
+
         val expected = Right(ResponseWrapper(correlationId, getCalculationResponse))
 
         MockedHttpClient
-          .get(s"$baseUrl/income-tax/03.00.00/calculation-data/$nino/calcId/$calcId", desRequestHeaders: _*)
+          .get(
+            s"$baseUrl/income-tax/03.00.00/calculation-data/$nino/calcId/$calcId",
+            dummyDesHeaderCarrierConfig,
+            desRequestHeaders,
+            Seq("AnotherHeader" -> "HeaderValue")
+          )
           .returns(Future.successful(expected))
 
         await(connector.getCalculation(request)) shouldBe expected

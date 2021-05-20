@@ -17,9 +17,9 @@
 package v1r2.services
 
 import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1r2.connectors.{MtdIdLookupConnector, MtdIdLookupOutcome}
+import v1r2.models.domain.Nino
 import v1r2.models.errors.NinoFormatError
 
 import scala.concurrent.{ExecutionContext, Future}

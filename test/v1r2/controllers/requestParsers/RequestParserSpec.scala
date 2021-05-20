@@ -17,7 +17,7 @@
 package v1r2.controllers.requestParsers
 
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
+import v1r2.models.domain.Nino
 import v1r2.controllers.requestParsers.validators.Validator
 import v1r2.models.errors.{BadRequestError, ErrorWrapper, NinoFormatError, RuleIncorrectOrEmptyBodyError}
 import v1r2.models.request.RawData

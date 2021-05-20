@@ -16,21 +16,21 @@
 
 package v1.connectors
 
-import uk.gov.hmrc.domain.Nino
-import v1.mocks.{MockAppConfig, MockHttpClient}
-import v1.models.domain.{CalculationRequestor, CalculationType}
+import uk.gov.hmrc.http.HeaderCarrier
+import v1.mocks.{ MockAppConfig, MockHttpClient }
+import v1.models.domain.{ CalculationRequestor, CalculationType, Nino }
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.DesTaxYear
 import v1.models.request.listCalculations.ListCalculationsRequest
-import v1.models.response.listCalculations.{CalculationListItem, ListCalculationsResponse}
+import v1.models.response.listCalculations.{ CalculationListItem, ListCalculationsResponse }
 
 import scala.concurrent.Future
 
 class ListTaxCalcConnectorSpec extends ConnectorSpec {
 
   val taxYear: DesTaxYear = DesTaxYear("2019")
-  val nino: Nino = Nino("AA123456A")
-  val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+  val nino                = "AA123456A"
+  val calcId              = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   val listCalcResponse: ListCalculationsResponse = ListCalculationsResponse(
     Seq(
@@ -52,21 +52,31 @@ class ListTaxCalcConnectorSpec extends ConnectorSpec {
     val connector: TaxCalcConnector = new TaxCalcConnector(http = mockHttpClient, appConfig = mockAppConfig)
 
     val desRequestHeaders = Seq("Environment" -> "des-environment", "Authorization" -> s"Bearer des-token")
-    MockedAppConfig.desBaseUrl returns baseUrl
-    MockedAppConfig.desToken returns "des-token"
-    MockedAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desBaseUrl returns baseUrl
+    MockAppConfig.desToken returns "des-token"
+    MockAppConfig.desEnvironment returns "des-environment"
+    MockAppConfig.desEnvironmentHeaders returns Some(allowedDesHeaders)
   }
 
   "List tax calculations" when {
 
-    val taxYearRequest = ListCalculationsRequest(nino, taxYear)
+    val taxYearRequest = ListCalculationsRequest(Nino(nino), taxYear)
 
     "a valid request is supplied with a tax year parameter" should {
       "return a successful response with the correct correlationId" in new Test {
+
+        implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders)
+
         val expected = Right(ResponseWrapper(correlationId, listCalcResponse))
 
         MockedHttpClient
-          .parameterGet(s"$baseUrl/income-tax/list-of-calculation-results/$nino", Seq(("taxYear", "2019")), desRequestHeaders: _*)
+          .parameterGet(
+            s"$baseUrl/income-tax/list-of-calculation-results/$nino",
+            Seq(("taxYear", "2019")),
+            dummyDesHeaderCarrierConfig,
+            desRequestHeaders,
+            Seq("AnotherHeader" -> "HeaderValue")
+          )
           .returns(Future.successful(expected))
 
         await(connector.listCalculations(taxYearRequest)) shouldBe expected
@@ -75,13 +85,22 @@ class ListTaxCalcConnectorSpec extends ConnectorSpec {
 
     "a valid request is supplied with a tax year parameter and header carrier contains correlation id is supplied" should {
       "send request to des with single correlationId in the header and return a successful response" in new Test {
+
+        implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders)
+
         val expected = Right(ResponseWrapper(correlationId, listCalcResponse))
 
         MockedHttpClient
-          .parameterGet(s"$baseUrl/income-tax/list-of-calculation-results/$nino", Seq(("taxYear", "2019")), desRequestHeaders: _*)
+          .parameterGet(
+            s"$baseUrl/income-tax/list-of-calculation-results/$nino",
+            Seq(("taxYear", "2019")),
+            dummyDesHeaderCarrierConfig,
+            desRequestHeaders,
+            Seq("AnotherHeader" -> "HeaderValue")
+          )
           .returns(Future.successful(expected))
 
-        await(connector.listCalculations(taxYearRequest)(hc.withExtraHeaders("CorrelationId"-> "X-123"), ec, correlationId)) shouldBe expected
+        await(connector.listCalculations(taxYearRequest)(hc.withExtraHeaders("CorrelationId" -> "X-123"), ec, correlationId)) shouldBe expected
       }
     }
   }

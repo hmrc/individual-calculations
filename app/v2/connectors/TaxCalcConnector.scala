@@ -17,9 +17,7 @@
 package v2.connectors
 
 import config.AppConfig
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import v2.connectors.httpparsers.StandardDesHttpParser._
 import v2.models.request._
 import v2.models.request.getCalculation.GetCalculationRequest
@@ -29,6 +27,7 @@ import v2.models.response.getCalculation.GetCalculationResponse
 import v2.models.response.listCalculations.ListCalculationsResponse
 import v2.models.response.triggerCalculation.TriggerCalculationResponse
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

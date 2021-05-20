@@ -21,7 +21,7 @@ import play.api.mvc._
 import uk.gov.hmrc.auth.core.Enrolment
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.controller.BackendController
+import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import v1r2.models.auth.UserDetails
 import v1r2.models.errors.{InvalidBearerTokenError, _}
 import v1r2.services.{EnrolmentsAuthService, MtdIdLookupService}
