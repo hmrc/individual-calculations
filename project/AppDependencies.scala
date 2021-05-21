@@ -29,12 +29,11 @@ object AppDependencies {
 
   def test(scope: String = "test, it"): Seq[sbt.ModuleID] = Seq(
     "org.scalatest"          %% "scalatest"          % "3.2.7"             % scope,
-    "com.vladsch.flexmark"   % "flexmark-all"        % "0.35.10"           % scope,
-    "org.scalacheck"         %% "scalacheck"         % "1.15.1"            % scope,
+    "com.vladsch.flexmark"   % "flexmark-all"        % "0.36.8"           % scope,
+    "org.scalacheck"         %% "scalacheck"         % "1.15.3"            % scope,
     "org.scalamock"          %% "scalamock"          % "5.1.0"             % scope,
-    "org.pegdown"            % "pegdown"             % "1.6.0"             % scope,
     "com.typesafe.play"      %% "play-test"          % PlayVersion.current % scope,
-    "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2"             % scope,
+    "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0"             % scope,
     "com.github.tomakehurst" % "wiremock-jre8"       % "2.27.2"            % scope
   )
 }
