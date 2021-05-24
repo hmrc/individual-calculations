@@ -18,7 +18,7 @@ package v2.controllers
 
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContentAsJson, Result}
-import uk.gov.hmrc.domain.Nino
+import v2.models.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v2.mocks.MockIdGenerator
 import v2.mocks.requestParsers.MockTriggerTaxCalculationParser

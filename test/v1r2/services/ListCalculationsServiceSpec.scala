@@ -17,7 +17,7 @@
 package v1r2.services
 
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
+import v1r2.models.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1r2.controllers.EndpointLogContext
 import v1r2.mocks.connectors.MockTaxCalcConnector

@@ -19,7 +19,7 @@ package v2.controllers.requestParsers
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsJson
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
+import v2.models.domain.Nino
 import v2.mocks.validators.MockTriggerTaxCalculationValidator
 import v2.models.errors._
 import v2.models.request.triggerCalculation.{TriggerTaxCalculation, TriggerTaxCalculationRawData, TriggerTaxCalculationRequest}

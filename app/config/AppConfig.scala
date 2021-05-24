@@ -18,15 +18,16 @@ package config
 
 import com.typesafe.config.Config
 
-import javax.inject.{Inject, Singleton}
-import play.api.{ConfigLoader, Configuration}
+import javax.inject.{ Inject, Singleton }
+import play.api.{ ConfigLoader, Configuration }
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 trait AppConfig {
   def desBaseUrl: String
-  def mtdIdBaseUrl: String
   def desEnv: String
   def desToken: String
+  def desEnvironmentHeaders: Option[Seq[String]]
+  def mtdIdBaseUrl: String
   def apiGatewayContext: String
   def featureSwitch: Option[Configuration]
   def confidenceLevelConfig: ConfidenceLevelConfig
@@ -34,13 +35,17 @@ trait AppConfig {
 
 @Singleton
 class AppConfigImpl @Inject()(config: ServicesConfig, configuration: Configuration) extends AppConfig {
-  val desBaseUrl: String = config.baseUrl("des")
+  val desBaseUrl: String                         = config.baseUrl("des")
+  val desEnv: String                             = config.getString("microservice.services.des.env")
+  val desToken: String                           = config.getString("microservice.services.des.token")
+  val desEnvironmentHeaders: Option[Seq[String]] = configuration.getOptional[Seq[String]]("microservice.services.des.environmentHeaders")
+
   val mtdIdBaseUrl: String = config.baseUrl("mtd-id-lookup")
-  val desEnv: String = config.getString("microservice.services.des.env")
-  val desToken: String = config.getString("microservice.services.des.token")
+
   val apiGatewayContext: String = config.getString("api.gateway.context")
 
   def featureSwitch: Option[Configuration] = configuration.getOptional[Configuration](s"feature-switch")
+
   val confidenceLevelConfig: ConfidenceLevelConfig = configuration.get[ConfidenceLevelConfig](s"api.confidence-level-check")
 }
 
@@ -50,6 +55,7 @@ trait FixedConfig {
 }
 
 case class ConfidenceLevelConfig(definitionEnabled: Boolean, authValidationEnabled: Boolean)
+
 object ConfidenceLevelConfig {
   implicit val configLoader: ConfigLoader[ConfidenceLevelConfig] = (rootConfig: Config, path: String) => {
     val config = rootConfig.getConfig(path)

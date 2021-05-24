@@ -17,30 +17,31 @@
 package v2.connectors
 
 import config.AppConfig
-import play.api.Logger
 import play.api.libs.json.Writes
-import uk.gov.hmrc.http.logging.Authorization
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
+import utils.Logging
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait BaseDesConnector {
+trait BaseDesConnector extends Logging {
   val http: HttpClient
   val appConfig: AppConfig
 
-  val logger = Logger(this.getClass)
   val CORRELATION_ID = "CorrelationId"
 
-  private[connectors] def desHeaderCarrier(implicit hc: HeaderCarrier, correlationId: String): HeaderCarrier = {
-
-    if(hc.headers.exists(header => header._1 == CORRELATION_ID)) {
-      hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.desToken}")))
-        .withExtraHeaders("Environment" -> appConfig.desEnv)
-    } else{
-      hc.copy(authorization = Some(Authorization(s"Bearer ${appConfig.desToken}")))
-        .withExtraHeaders("Environment" -> appConfig.desEnv, CORRELATION_ID -> correlationId)
-    }
+  private[connectors] def desHeaderCarrier(additionalHeaders: Seq[String] = Seq.empty)(implicit hc: HeaderCarrier,
+                                                                                       correlationId: String): HeaderCarrier = {
+    HeaderCarrier(
+      extraHeaders = hc.extraHeaders ++
+        // Contract headers
+        Seq(
+          "Authorization" -> s"Bearer ${appConfig.desToken}",
+          "Environment"   -> appConfig.desEnv,
+          "CorrelationId" -> correlationId
+        ) ++
+        // Other headers (i.e Gov-Test-Scenario, Content-Type)
+        hc.headers(additionalHeaders ++ appConfig.desEnvironmentHeaders.getOrElse(Seq.empty))
+    )
   }
 
   def post[Body: Writes, Resp](body: Body, uri: DesUri[Resp])(implicit ec: ExecutionContext,
@@ -52,7 +53,7 @@ trait BaseDesConnector {
       http.POST(s"${appConfig.desBaseUrl}/${uri.value}", body)
     }
 
-    doPost(desHeaderCarrier(hc, correlationId))
+    doPost(desHeaderCarrier(Seq("Content-Type")))
   }
 
   def get[Resp](uri: DesUri[Resp])(implicit ec: ExecutionContext,
@@ -63,19 +64,19 @@ trait BaseDesConnector {
     def doGet(implicit hc: HeaderCarrier): Future[DesOutcome[Resp]] = {
       http.GET(s"${appConfig.desBaseUrl}/${uri.value}")
     }
-    doGet(desHeaderCarrier(hc, correlationId))
+    doGet(desHeaderCarrier())
   }
 
   def get[Resp](uri: DesUri[Resp], param: Seq[(String, String)])(implicit ec: ExecutionContext,
-                                   hc: HeaderCarrier,
-                                   httpReads: HttpReads[DesOutcome[Resp]],
-                                   correlationId: String): Future[DesOutcome[Resp]] = {
+                                                                 hc: HeaderCarrier,
+                                                                 httpReads: HttpReads[DesOutcome[Resp]],
+                                                                 correlationId: String): Future[DesOutcome[Resp]] = {
 
     def doGet(implicit hc: HeaderCarrier): Future[DesOutcome[Resp]] = {
       http.GET(s"${appConfig.desBaseUrl}/${uri.value}", queryParams = param)
     }
 
-    doGet(desHeaderCarrier(hc, correlationId))
+    doGet(desHeaderCarrier())
   }
 
 }

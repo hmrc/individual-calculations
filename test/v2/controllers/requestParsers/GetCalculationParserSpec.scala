@@ -17,7 +17,7 @@
 package v2.controllers.requestParsers
 
 import support.UnitSpec
-import uk.gov.hmrc.domain.Nino
+import v2.models.domain.Nino
 import v2.mocks.validators.MockGetCalculationValidator
 import v2.models.errors.{BadRequestError, CalculationIdFormatError, ErrorWrapper, NinoFormatError}
 import v2.models.request.getCalculation.{GetCalculationRawData, GetCalculationRequest}
