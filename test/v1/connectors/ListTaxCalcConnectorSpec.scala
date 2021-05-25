@@ -17,20 +17,21 @@
 package v1.connectors
 
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.mocks.{ MockAppConfig, MockHttpClient }
-import v1.models.domain.{ CalculationRequestor, CalculationType, Nino }
+import v1.models.domain.Nino
+import v1.mocks.{MockAppConfig, MockHttpClient}
+import v1.models.domain.{CalculationRequestor, CalculationType}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.DesTaxYear
 import v1.models.request.listCalculations.ListCalculationsRequest
-import v1.models.response.listCalculations.{ CalculationListItem, ListCalculationsResponse }
+import v1.models.response.listCalculations.{CalculationListItem, ListCalculationsResponse}
 
 import scala.concurrent.Future
 
 class ListTaxCalcConnectorSpec extends ConnectorSpec {
 
   val taxYear: DesTaxYear = DesTaxYear("2019")
-  val nino                = "AA123456A"
-  val calcId              = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+  val nino = "AA123456A"
+  val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   val listCalcResponse: ListCalculationsResponse = ListCalculationsResponse(
     Seq(
@@ -100,7 +101,7 @@ class ListTaxCalcConnectorSpec extends ConnectorSpec {
           )
           .returns(Future.successful(expected))
 
-        await(connector.listCalculations(taxYearRequest)(hc.withExtraHeaders("CorrelationId" -> "X-123"), ec, correlationId)) shouldBe expected
+        await(connector.listCalculations(taxYearRequest)(hc.withExtraHeaders("CorrelationId"-> "X-123"), ec, correlationId)) shouldBe expected
       }
     }
   }

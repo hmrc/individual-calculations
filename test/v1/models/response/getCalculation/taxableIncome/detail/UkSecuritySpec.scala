@@ -16,7 +16,7 @@
 
 package v1.models.response.getCalculation.taxableIncome.detail
 
-import play.api.libs.json.{JsError, JsValue, Json}
+import play.api.libs.json.{JsError, JsObject, JsValue, Json}
 import support.UnitSpec
 import v1.fixtures.getCalculation.taxableIncome.{TaxableIncomeJsonFixture, TaxableIncomeModelsFixture}
 
@@ -25,22 +25,14 @@ class UkSecuritySpec extends UnitSpec {
   "UkSecurity" when {
     "read from valid JSON" should {
       "produce the expected UkSecurity object" in {
-        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "savingsAndGainsIncome" \ 2).get
+        val desJson: JsValue = (TaxableIncomeJsonFixture.desJson \ "calculation" \ "savingsAndGainsIncome" \ "ukSavingsAndGainsIncome" \ 2).get
         desJson.as[UkSecurity] shouldBe TaxableIncomeModelsFixture.ukSecurityModel
       }
     }
 
     "read from invalid JSON" should {
       "return a JsError" in {
-        val invalidDesJson: JsValue = Json.parse(
-          """
-            |{
-            |    "incomeSourceName": "aName",
-            |    "netIncome": 12.3,
-            |    "taxDeducted": 456.3
-            |}
-          """.stripMargin
-        )
+        val invalidDesJson: JsValue = JsObject.empty
 
         invalidDesJson.validate[UkSecurity] shouldBe a[JsError]
       }

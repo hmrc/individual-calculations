@@ -29,8 +29,7 @@ case class AllowancesAndDeductions(personalAllowance: Option[BigInt],
                                    postCessationTradeReceipts: Option[BigDecimal],
                                    paymentsToTradeUnionsForDeathBenefits: Option[BigDecimal],
                                    annualPayments: Option[AnnualPayments],
-                                   pensionContributions: Option[PensionContributions]
-                                  )
+                                   pensionContributions: Option[PensionContributions])
 
 object AllowancesAndDeductions extends NestedJsonReads{
   val empty = AllowancesAndDeductions(None, None, None, None, None, None, None, None, None, None)

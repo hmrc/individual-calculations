@@ -16,7 +16,6 @@
 
 package v1.models.domain
 
-
 import support.UnitSpec
 import v1.models.request.triggerCalculation.TriggerTaxCalculation
 import v1.models.utils.JsonErrorValidators

@@ -66,114 +66,112 @@ object CalculationDetailFixtures {
   val calculationDetailFilledJson: JsValue = Json.parse(
     """
       |{
-      |   "calculation":{
-      |      "taxCalculation":{
-      |         "incomeTax":{
-      |            "payPensionsProfit":{
-      |               "allowancesAllocated":200,
-      |               "incomeTaxAmount":200.50
-      |            }
-      |         },
-      |         "nics":{
-      |            "class2Nics":{
-      |               "underSmallProfitThreshold":true
-      |            }
-      |         }
-      |      },
-      |      "pensionSavingsTaxCharges":{
-      |         "pensionSavingsTaxChargesDetail":{
-      |            "benefitInExcessOfLifetimeAllowance":{
-      |               "amount":120.50,
-      |               "chargeableAmount":160.50,
-      |               "rate":10.40,
-      |               "taxPaid":160.50
-      |            },
-      |            "lumpSumBenefitTakenInExcessOfLifetimeAllowance":{
-      |               "amount":120.50,
-      |               "chargeableAmount":160.50,
-      |               "rate":10.40,
-      |               "taxPaid":160.50
-      |            },
-      |            "overseasPensionContributions":{
-      |               "shortServiceRefundBands":[
-      |                  {
-      |                     "apportionedBandLimit":2000,
-      |                     "bandLimit":2000,
-      |                     "name":"name",
-      |                     "rate":20.10,
-      |                     "shortServiceRefundAmount":500.50,
-      |                     "shortServiceRefundCharge":750.99
-      |                  }
-      |               ],
-      |               "shortServiceRefundTaxPaid":160.25,
-      |               "totalShortServiceRefund":100.50,
-      |               "totalShortServiceRefundCharge":200.50,
-      |               "totalShortServiceRefundChargeDue":160.99
-      |            },
-      |            "pensionContributionsInExcessOfTheAnnualAllowance":{
-      |               "annualAllowanceTaxPaid":180.25,
-      |               "pensionBands":[
-      |                  {
-      |                     "apportionedBandLimit":2000,
-      |                     "bandLimit":2000,
-      |                     "contributionAmount":160.89,
-      |                     "name":"Name",
-      |                     "pensionCharge":180.99,
-      |                     "rate":50.10
-      |                  }
-      |               ],
-      |               "totalContributions":70.25,
-      |               "totalPensionCharge":160.50,
-      |               "totalPensionChargeDue":120.99
-      |            },
-      |            "pensionSchemeOverseasTransfers":{
-      |               "chargeableAmount":140.25,
-      |               "rate":60.25,
-      |               "transferCharge":120.25,
-      |               "transferChargeTaxPaid":130.25
-      |            },
-      |            "pensionSchemeUnauthorisedPaymentsNonSurcharge":{
-      |               "amount":120.50,
-      |               "chargeableAmount":160.50,
-      |               "rate":10.40,
-      |               "taxPaid":160.5
-      |            },
-      |            "pensionSchemeUnauthorisedPaymentsSurcharge":{
-      |               "amount":120.50,
-      |               "chargeableAmount":160.50,
-      |               "rate":10.40,
-      |               "taxPaid":160.5
-      |            }
-      |         }
-      |      },
-      |      "studentLoans":[
-      |         {
-      |            "planType":"name",
-      |            "studentLoanApportionedIncomeThreshold":300,
-      |            "studentLoanChargeableIncomeAmount":300.50,
-      |            "studentLoanDeductionsFromEmployment":300.50,
-      |            "studentLoanRate":300.50,
-      |            "studentLoanRepaymentAmount":300.50,
-      |            "studentLoanRepaymentAmountNetOfDeductions":300.50,
-      |            "studentLoanTotalIncomeAmount":300.50
-      |         }
-      |      ],
-      |      "taxDeductedAtSource":{
-      |         "bbsi":300,
-      |         "cis":500.75,
-      |         "occupationalPensions":500.75,
-      |         "payeEmployments":500.75,
-      |         "securities":500.75,
-      |         "stateBenefits":500.75,
-      |         "ukLandAndProperty":300,
-      |         "voidedIsa":500.75
-      |      },
-      |      "giftAid":{
-      |         "giftAidTax":400.75,
-      |         "grossGiftAidPayments":400,
-      |         "rate":50.50
-      |      }
-      |   }
+      |	"calculation": {
+      |		"taxCalculation": {
+      |			"incomeTax": {
+      |				"payPensionsProfit": {
+      |					"allowancesAllocated": 200,
+      |					"incomeTaxAmount": 200.50
+      |				}
+      |			},
+      |			"nics": {
+      |				"class2Nics": {
+      |					"underSmallProfitThreshold": true
+      |				}
+      |			}
+      |		},
+      |		"pensionSavingsTaxCharges": {
+      |			"pensionSavingsTaxChargesDetail": {
+      |				"excessOfLifeTimeAllowance": {
+      |					"benefitInExcessOfLifetimeAllowance": {
+      |						"amount": 120.50,
+      |						"chargeableAmount": 160.50,
+      |						"rate": 10.40,
+      |						"taxPaid": 160.50
+      |					},
+      |					"lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
+      |						"amount": 120.50,
+      |						"chargeableAmount": 160.50,
+      |						"rate": 10.40,
+      |						"taxPaid": 160.50
+      |					}
+      |				},
+      |				"overseasPensionContributions": {
+      |					"shortServiceRefundBands": [{
+      |						"apportionedBandLimit": 2000,
+      |						"bandLimit": 2000,
+      |						"name": "name",
+      |						"rate": 20.10,
+      |						"shortServiceRefundAmount": 500.50,
+      |						"shortServiceRefundCharge": 750.99
+      |					}],
+      |					"shortServiceRefundTaxPaid": 160.25,
+      |					"totalShortServiceRefund": 100.50,
+      |					"totalShortServiceRefundCharge": 200.50,
+      |					"totalShortServiceRefundChargeDue": 160.99
+      |				},
+      |				"pensionContributionsInExcessOfTheAnnualAllowance": {
+      |					"annualAllowanceTaxPaid": 180.25,
+      |					"pensionBands": [{
+      |						"apportionedBandLimit": 2000,
+      |						"bandLimit": 2000,
+      |						"contributionAmount": 160.89,
+      |						"name": "Name",
+      |						"pensionCharge": 180.99,
+      |						"rate": 50.10
+      |					}],
+      |					"totalContributions": 70.25,
+      |					"totalPensionCharge": 160.50,
+      |					"totalPensionChargeDue": 120.99
+      |				},
+      |				"pensionSchemeOverseasTransfers": {
+      |					"chargeableAmount": 140.25,
+      |					"rate": 60.25,
+      |					"transferCharge": 120.25,
+      |					"transferChargeTaxPaid": 130.25
+      |				},
+      |				"pensionSchemeUnauthorisedPayments": {
+      |					"pensionSchemeUnauthorisedPaymentsNonSurcharge": {
+      |						"amount": 120.50,
+      |						"chargeableAmount": 160.50,
+      |						"rate": 10.40,
+      |						"taxPaid": 160.5
+      |					},
+      |					"pensionSchemeUnauthorisedPaymentsSurcharge": {
+      |						"amount": 120.50,
+      |						"chargeableAmount": 160.50,
+      |						"rate": 10.40,
+      |						"taxPaid": 160.5
+      |					}
+      |				}
+      |			}
+      |		},
+      |		"studentLoans": [{
+      |			"planType": "name",
+      |			"studentLoanApportionedIncomeThreshold": 300,
+      |			"studentLoanChargeableIncomeAmount": 300.50,
+      |			"studentLoanDeductionsFromEmployment": 300.50,
+      |			"studentLoanRate": 300.50,
+      |			"studentLoanRepaymentAmount": 300.50,
+      |			"studentLoanRepaymentAmountNetOfDeductions": 300.50,
+      |			"studentLoanTotalIncomeAmount": 300.50
+      |		}],
+      |		"taxDeductedAtSource": {
+      |			"bbsi": 300,
+      |			"cis": 500.75,
+      |			"occupationalPensions": 500.75,
+      |			"payeEmployments": 500.75,
+      |			"securities": 500.75,
+      |			"stateBenefits": 500.75,
+      |			"ukLandAndProperty": 300,
+      |			"voidedIsa": 500.75
+      |		},
+      |		"giftAid": {
+      |			"giftAidTax": 400.75,
+      |			"grossGiftAidPayments": 400,
+      |			"rate": 50.50
+      |		}
+      |	}
       |}
     """.stripMargin)
 
