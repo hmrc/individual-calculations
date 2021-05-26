@@ -18,11 +18,12 @@ package v1.controllers
 
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
+import v1.models.domain.Nino
 import uk.gov.hmrc.http.HeaderCarrier
 import v1.mocks.MockIdGenerator
 import v1.mocks.requestParsers.MockListCalculationsParser
 import v1.mocks.services.{MockEnrolmentsAuthService, MockListCalculationsService, MockMtdIdLookupService}
-import v1.models.domain.{CalculationRequestor, CalculationType, Nino}
+import v1.models.domain.{CalculationRequestor, CalculationType}
 import v1.models.errors._
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.DesTaxYear

@@ -20,13 +20,11 @@ import play.api.libs.json.{JsPath, Json, OWrites, Reads}
 import utils.NestedJsonReads
 import play.api.libs.functional.syntax._
 
-case class ReliefsClaimed(
-                           `type`: String,
-                           amountClaimed: Option[BigDecimal],
-                           allowableAmount: Option[BigDecimal],
-                           amountUsed: Option[BigDecimal],
-                           rate: Option[Double]
-                         )
+case class ReliefsClaimed(`type`: String,
+                          amountClaimed: Option[BigDecimal],
+                          allowableAmount: Option[BigDecimal],
+                          amountUsed: Option[BigDecimal],
+                          rate: Option[Double])
 
 object ReliefsClaimed extends NestedJsonReads{
 

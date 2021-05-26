@@ -26,13 +26,13 @@ class PensionSavingsTaxChargesDetailSpec extends UnitSpec {
 
     "read from json correctly" when {
       "provided with valid json" in {
-        pensionSavingsTaxChargesDetailJson.as[PensionSavingsTaxChargesDetail] shouldBe pensionSavingsTaxChargesDetailModel
+        desPensionSavingsTaxChargesDetailJson.as[PensionSavingsTaxChargesDetail] shouldBe pensionSavingsTaxChargesDetailModel
       }
     }
 
     "write to json correctly" when {
       "a valid model is provided" in {
-        Json.toJson(pensionSavingsTaxChargesDetailModel) shouldBe pensionSavingsTaxChargesDetailJson
+        Json.toJson(pensionSavingsTaxChargesDetailModel) shouldBe mtdPensionSavingsTaxChargesDetailJson
       }
     }
 
@@ -49,62 +49,62 @@ class PensionSavingsTaxChargesDetailSpec extends UnitSpec {
         val invalidJson = Json.parse(
           """
             |{
-            |   "lumpSumBenefitTakenInExcessOfLifetimeAllowance":{
-            |      "amount": true,
-            |      "taxPaid":250.50,
-            |      "rate":30.25,
-            |      "chargeableAmount":300.99
-            |   },
-            |   "benefitInExcessOfLifetimeAllowance":{
-            |      "amount":120.10,
-            |      "taxPaid":250.50,
-            |      "rate":30.25,
-            |      "chargeableAmount":300.99
-            |   },
-            |   "pensionSchemeUnauthorisedPaymentsSurcharge":{
-            |      "amount":120.10,
-            |      "taxPaid":250.50,
-            |      "rate":30.25,
-            |      "chargeableAmount":300.99
-            |   },
-            |   "pensionSchemeOverseasTransfers":{
-            |      "transferCharge":120.10,
-            |      "transferChargeTaxPaid":250.50,
-            |      "rate":30.25,
-            |      "chargeableAmount":300.99
-            |   },
-            |   "pensionContributionsInExcessOfTheAnnualAllowance":{
-            |      "totalContributions":70.25,
-            |      "totalPensionCharge":300.25,
-            |      "annualAllowanceTaxPaid":300.25,
-            |      "totalPensionChargeDue":300.25,
-            |      "pensionBands":[
-            |         {
-            |            "name":"name",
-            |            "rate":20.10,
-            |            "bandLimit":2000,
-            |            "apportionedBandLimit":2000,
-            |            "contributionAmount":500.50,
-            |            "pensionCharge":750.99
-            |         }
-            |      ]
-            |   },
-            |   "overseasPensionContributions":{
-            |      "totalShortServiceRefund":100.50,
-            |      "totalShortServiceRefundCharge":200.50,
-            |      "shortServiceRefundTaxPaid":160.25,
-            |      "totalShortServiceRefundChargeDue":160.99,
-            |      "shortServiceRefundBands":[
-            |         {
-            |            "name":"name",
-            |            "rate":20.10,
-            |            "bandLimit":2000,
-            |            "apportionedBandLimit":2000,
-            |            "shortServiceRefundAmount":500.50,
-            |            "shortServiceRefundCharge":750.99
-            |         }
-            |      ]
-            |   }
+            |	"excessOfLifeTimeAllowance": {
+            |		"lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
+            |			"amount": true,
+            |			"taxPaid": 250.50,
+            |			"rate": 30.25,
+            |			"chargeableAmount": 300.99
+            |		},
+            |		"benefitInExcessOfLifetimeAllowance": {
+            |			"amount": 120.10,
+            |			"taxPaid": 250.50,
+            |			"rate": 30.25,
+            |			"chargeableAmount": 300.99
+            |		}
+            |	},
+            |	"pensionSchemeUnauthorisedPayments": {
+            |		"pensionSchemeUnauthorisedPaymentsSurcharge": {
+            |			"amount": 120.10,
+            |			"taxPaid": 250.50,
+            |			"rate": 30.25,
+            |			"chargeableAmount": 300.99
+            |		},
+            |		"pensionSchemeOverseasTransfers": {
+            |			"transferCharge": 120.10,
+            |			"transferChargeTaxPaid": 250.50,
+            |			"rate": 30.25,
+            |			"chargeableAmount": 300.99
+            |		}
+            |	},
+            |	"pensionContributionsInExcessOfTheAnnualAllowance": {
+            |		"totalContributions": 70.25,
+            |		"totalPensionCharge": 300.25,
+            |		"annualAllowanceTaxPaid": 300.25,
+            |		"totalPensionChargeDue": 300.25,
+            |		"pensionBands": [{
+            |			"name": "name",
+            |			"rate": 20.10,
+            |			"bandLimit": 2000,
+            |			"apportionedBandLimit": 2000,
+            |			"contributionAmount": 500.50,
+            |			"pensionCharge": 750.99
+            |		}]
+            |	},
+            |	"overseasPensionContributions": {
+            |		"totalShortServiceRefund": 100.50,
+            |		"totalShortServiceRefundCharge": 200.50,
+            |		"shortServiceRefundTaxPaid": 160.25,
+            |		"totalShortServiceRefundChargeDue": 160.99,
+            |		"shortServiceRefundBands": [{
+            |			"name": "name",
+            |			"rate": 20.10,
+            |			"bandLimit": 2000,
+            |			"apportionedBandLimit": 2000,
+            |			"shortServiceRefundAmount": 500.50,
+            |			"shortServiceRefundCharge": 750.99
+            |		}]
+            |	}
             |}
           """.stripMargin
         )

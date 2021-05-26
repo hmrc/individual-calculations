@@ -34,10 +34,10 @@ object PensionSavingsTaxChargesDetail extends NestedJsonReads {
   implicit val writes: OWrites[PensionSavingsTaxChargesDetail] = Json.writes[PensionSavingsTaxChargesDetail]
 
   implicit val reads: Reads[PensionSavingsTaxChargesDetail] = (
-    (JsPath \ "lumpSumBenefitTakenInExcessOfLifetimeAllowance").readNestedNullable[PensionTypeBreakdown] and
-      (JsPath \ "benefitInExcessOfLifetimeAllowance").readNestedNullable[PensionTypeBreakdown] and
-      (JsPath \ "pensionSchemeUnauthorisedPaymentsSurcharge").readNestedNullable[PensionTypeBreakdown] and
-      (JsPath \ "pensionSchemeUnauthorisedPaymentsNonSurcharge").readNestedNullable[PensionTypeBreakdown] and
+    (JsPath \ "excessOfLifeTimeAllowance" \ "lumpSumBenefitTakenInExcessOfLifetimeAllowance").readNestedNullable[PensionTypeBreakdown] and
+      (JsPath \ "excessOfLifeTimeAllowance" \ "benefitInExcessOfLifetimeAllowance").readNestedNullable[PensionTypeBreakdown] and
+      (JsPath \ "pensionSchemeUnauthorisedPayments" \ "pensionSchemeUnauthorisedPaymentsSurcharge").readNestedNullable[PensionTypeBreakdown] and
+      (JsPath \ "pensionSchemeUnauthorisedPayments" \ "pensionSchemeUnauthorisedPaymentsNonSurcharge").readNestedNullable[PensionTypeBreakdown] and
       (JsPath \ "pensionSchemeOverseasTransfers").readNestedNullable[PensionSchemeOverseasTransfers] and
       (JsPath \ "pensionContributionsInExcessOfTheAnnualAllowance").readNullable[PensionContributionsInExcessOfTheAnnualAllowance] and
       (JsPath \ "overseasPensionContributions").readNestedNullable[OverseasPensionContributions]

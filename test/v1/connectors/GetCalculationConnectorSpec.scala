@@ -17,20 +17,21 @@
 package v1.connectors
 
 import uk.gov.hmrc.http.HeaderCarrier
+import v1.models.domain.Nino
 import v1.fixtures.common.MessageFixtures._
-import v1.mocks.{ MockAppConfig, MockHttpClient }
-import v1.models.domain.{ CalculationReason, CalculationRequestor, CalculationType, Nino }
+import v1.mocks.{MockAppConfig, MockHttpClient}
+import v1.models.domain.{CalculationReason, CalculationRequestor, CalculationType}
 import v1.models.outcomes.ResponseWrapper
 import v1.models.request.getCalculation.GetCalculationRequest
-import v1.models.response.common.{ Messages, Metadata }
+import v1.models.response.common.{Messages, Metadata}
 import v1.models.response.getCalculation.GetCalculationResponse
 
 import scala.concurrent.Future
 
 class GetCalculationConnectorSpec extends ConnectorSpec {
 
-  val nino   = "AA123456A"
-  val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+  val nino = "AA123456A"
+  val calcId: String = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
 
   val metadataResponse: Metadata = Metadata(
     id = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2",
@@ -46,7 +47,7 @@ class GetCalculationConnectorSpec extends ConnectorSpec {
     calculationErrorCount = Some(1)
   )
 
-  val messagesResponse: Messages = Messages(Some(Seq(info1, info2)), Some(Seq(warn1, warn2)), Some(Seq(err1, err2)))
+  val messagesResponse: Messages = Messages(Some(Seq(info1,info2)), Some(Seq(warn1,warn2)), Some(Seq(err1,err2)))
 
   val getCalculationResponse: GetCalculationResponse = GetCalculationResponse(metadataResponse, messages = Some(messagesResponse))
 
@@ -66,9 +67,9 @@ class GetCalculationConnectorSpec extends ConnectorSpec {
     "a valid request is supplied" should {
       "return a successful response with the correct correlationId" in new Test {
 
-        val expected = Right(ResponseWrapper(correlationId, getCalculationResponse))
-
         implicit val hc: HeaderCarrier = HeaderCarrier(otherHeaders = otherHeaders)
+
+        val expected = Right(ResponseWrapper(correlationId, getCalculationResponse))
 
         MockedHttpClient
           .get(

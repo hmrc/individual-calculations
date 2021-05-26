@@ -25,7 +25,75 @@ import v1.models.response.getCalculation.incomeTaxAndNics.detail._
 
 object PensionSavingsTaxChargesDetailFixtures {
 
-  val pensionSavingsTaxChargesDetailJson: JsValue = Json.parse(
+  val desPensionSavingsTaxChargesDetailJson: JsValue = Json.parse(
+    """
+      |{
+      |	"excessOfLifeTimeAllowance": {
+      |		"lumpSumBenefitTakenInExcessOfLifetimeAllowance": {
+      |			"amount": 120.50,
+      |			"taxPaid": 160.50,
+      |			"rate": 10.40,
+      |			"chargeableAmount": 160.50
+      |		},
+      |		"benefitInExcessOfLifetimeAllowance": {
+      |			"amount": 120.50,
+      |			"taxPaid": 160.50,
+      |			"rate": 10.40,
+      |			"chargeableAmount": 160.50
+      |		}
+      |	},
+      |	"pensionSchemeUnauthorisedPayments": {
+      |		"pensionSchemeUnauthorisedPaymentsSurcharge": {
+      |			"amount": 120.50,
+      |			"taxPaid": 160.50,
+      |			"rate": 10.40,
+      |			"chargeableAmount": 160.50
+      |		},
+      |		"pensionSchemeUnauthorisedPaymentsNonSurcharge": {
+      |			"amount": 120.50,
+      |			"taxPaid": 160.50,
+      |			"rate": 10.40,
+      |			"chargeableAmount": 160.50
+      |		}
+      |	},
+      |	"pensionSchemeOverseasTransfers": {
+      |		"transferCharge": 120.25,
+      |		"transferChargeTaxPaid": 130.25,
+      |		"rate": 60.25,
+      |		"chargeableAmount": 140.25
+      |	},
+      |	"pensionContributionsInExcessOfTheAnnualAllowance": {
+      |		"totalContributions": 70.25,
+      |		"totalPensionCharge": 160.50,
+      |		"annualAllowanceTaxPaid": 180.25,
+      |		"totalPensionChargeDue": 120.99,
+      |		"pensionBands": [{
+      |			"name": "Name",
+      |			"rate": 50.10,
+      |			"bandLimit": 2000,
+      |			"apportionedBandLimit": 2000,
+      |			"contributionAmount": 160.89,
+      |			"pensionCharge": 180.99
+      |		}]
+      |	},
+      |	"overseasPensionContributions": {
+      |		"totalShortServiceRefund": 100.50,
+      |		"totalShortServiceRefundCharge": 200.50,
+      |		"shortServiceRefundTaxPaid": 160.25,
+      |		"totalShortServiceRefundChargeDue": 160.99,
+      |		"shortServiceRefundBands": [{
+      |			"name": "name",
+      |			"rate": 20.10,
+      |			"bandLimit": 2000,
+      |			"apportionedBandLimit": 2000,
+      |			"shortServiceRefundAmount": 500.50,
+      |			"shortServiceRefundCharge": 750.99
+      |		}]
+      |	}
+      |}
+    """.stripMargin)
+
+  val mtdPensionSavingsTaxChargesDetailJson: JsValue = Json.parse(
     """
       |{
       |   "lumpSumBenefitTakenInExcessOfLifetimeAllowance":{

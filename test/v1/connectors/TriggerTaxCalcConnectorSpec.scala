@@ -17,21 +17,22 @@
 package v1.connectors
 
 import uk.gov.hmrc.http.HeaderCarrier
-import v1.mocks.{ MockAppConfig, MockHttpClient }
 import v1.models.domain.Nino
+import v1.mocks.{MockAppConfig, MockHttpClient}
 import v1.models.outcomes.ResponseWrapper
-import v1.models.request.triggerCalculation.{ TriggerTaxCalculation, TriggerTaxCalculationRequest }
-import v1.models.request.{ DesTaxYear, EmptyJsonBody }
+import v1.models.request.triggerCalculation.{TriggerTaxCalculation, TriggerTaxCalculationRequest}
+import v1.models.request.{DesTaxYear, EmptyJsonBody}
 import v1.models.response.triggerCalculation.TriggerCalculationResponse
 
 import scala.concurrent.Future
 
 class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
 
-  val taxYear            = "2017-18"
+  val taxYear = "2017-18"
   val desTaxYear: String = DesTaxYear.fromMtd(taxYear).toString
-  val nino               = "AA123456A"
-  val calcId             = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+  val nino = "AA123456A"
+  val calcId = "041f7e4d-87b9-4d4a-a296-3cfbdf92f7e2"
+
 
   class Test extends MockHttpClient with MockAppConfig {
     val connector: TaxCalcConnector = new TaxCalcConnector(http = mockHttpClient, appConfig = mockAppConfig)
@@ -77,7 +78,8 @@ class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
         val expected = Right(ResponseWrapper(correlationId, TriggerCalculationResponse(calcId)))
 
         MockedHttpClient
-          .post(s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation",
+          .post(
+            s"$baseUrl/income-tax/nino/$nino/taxYear/$desTaxYear/tax-calculation",
             config = dummyDesHeaderCarrierConfig,
             EmptyJsonBody,
             requiredHeaders = requiredDesHeadersTrigger,
@@ -85,7 +87,7 @@ class TriggerTaxCalcConnectorSpec extends ConnectorSpec {
           )
           .returns(Future.successful(expected))
 
-        await(connector.triggerTaxCalculation(request)(hc.withExtraHeaders("CorrelationId" -> "X-123"), ec, correlationId)) shouldBe expected
+        await(connector.triggerTaxCalculation(request)(hc.withExtraHeaders("CorrelationId"-> "X-123"), ec, correlationId)) shouldBe expected
       }
     }
   }
