@@ -81,7 +81,7 @@ object CalculationSummaryFixtures {
       |         "totalIncomeTaxNicsCharged":400.25,
       |         "totalTaxDeducted":500.25,
       |         "totalIncomeTaxAndNicsDue":600.25,
-      |         "totalTaxDeductedBeforeCodingOut":700.25
+      |         "totalTaxDeductedBeforeCodingOut":700.25,
       |         "saUnderpaymentsCodedOut":800.25
       |      }
       |   },
