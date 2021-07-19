@@ -27,10 +27,12 @@ case class TaxDeductedAtSource(ukLandAndProperty: Option[BigDecimal],
                                payeEmployments: Option[BigDecimal],
                                occupationalPensions: Option[BigDecimal],
                                stateBenefits: Option[BigDecimal],
-                               specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal])
+                               specialWithholdingTaxOrUkTaxPaid: Option[BigDecimal],
+                               inYearAdjustmentCodedInLaterTaxYear: Option[BigDecimal])
+
 
 object TaxDeductedAtSource {
-  val empty: TaxDeductedAtSource = TaxDeductedAtSource(None, None, None, None, None, None, None, None, None)
+  val empty: TaxDeductedAtSource = TaxDeductedAtSource(None, None, None, None, None, None, None, None, None, None)
 
   implicit val writes: OWrites[TaxDeductedAtSource] = Json.writes[TaxDeductedAtSource]
 
@@ -43,6 +45,7 @@ object TaxDeductedAtSource {
       (JsPath \ "payeEmployments").readNullable[BigDecimal] and
       (JsPath \ "occupationalPensions").readNullable[BigDecimal] and
       (JsPath \ "stateBenefits").readNullable[BigDecimal] and
-      (JsPath \ "specialWithholdingTaxOrUkTaxPaid").readNullable[BigDecimal]
+      (JsPath \ "specialWithholdingTaxOrUkTaxPaid").readNullable[BigDecimal] and
+      (JsPath \ "inYearAdjustmentCodedInLaterTaxYear").readNullable[BigDecimal]
     ) (TaxDeductedAtSource.apply _)
 }

@@ -174,7 +174,8 @@ object CalculationDetailFixtures {
       |         "stateBenefits": 500.75,
       |         "ukLandAndProperty": 300,
       |         "voidedIsa": 500.75,
-      |         "specialWithholdingTaxOrUkTaxPaid": 170.5
+      |         "specialWithholdingTaxOrUkTaxPaid": 170.5,
+      |         "inYearAdjustmentCodedInLaterTaxYear": 180.50
       |      },
       |      "giftAid": {
       |         "giftAidTax": 400.75,
@@ -319,7 +320,8 @@ object CalculationDetailFixtures {
       |      "stateBenefits": 500.75,
       |      "ukLandAndProperty": 300,
       |      "voidedIsa": 500.75,
-      |      "specialWithholdingTaxOrUkTaxPaid": 170.5
+      |      "specialWithholdingTaxOrUkTaxPaid": 170.5,
+      |      "inYearAdjustmentCodedInLaterTaxYear": 180.50
       |   }
       |}
     """.stripMargin
@@ -407,7 +409,8 @@ object CalculationDetailFixtures {
       payeEmployments = Some(500.75),
       occupationalPensions = Some(500.75),
       stateBenefits = Some(500.75),
-      specialWithholdingTaxOrUkTaxPaid = Some(170.50)
+      specialWithholdingTaxOrUkTaxPaid = Some(170.50),
+      inYearAdjustmentCodedInLaterTaxYear = Some(180.50)
     ))
   )
 }
