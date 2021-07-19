@@ -103,11 +103,11 @@ object CalculationSummaryFixtures {
     """.stripMargin)
 
   val calcSummaryMinModel = CalculationSummary(
-    IncomeTaxSummary(10.25, None, None, None, None, None, None, None),
+    IncomeTaxSummary(10.25, None, None, None, None, None, None, None, None, None, None),
     None, None, None, None, None, None, 100.25, "UK")
 
   val calcSummaryFilledModel = CalculationSummary(
-    IncomeTaxSummary(10.25, None, None, None, None, None, None, None),
+    IncomeTaxSummary(10.25, None, None, None, None, None, None, None, None, None, None),
     Some(NicSummary(Some(200.25), None, None)),
     Some(100.25),
     Some(200),
