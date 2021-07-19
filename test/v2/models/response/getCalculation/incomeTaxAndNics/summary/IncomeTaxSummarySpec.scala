@@ -51,9 +51,7 @@ class IncomeTaxSummarySpec extends UnitSpec {
             |   "statePensionLumpSumCharges": 300.99,
             |   "incomeTaxDueAfterTaxReductions": 1300.58,
             |   "totalIncomeTaxDue": 1000.58,
-            |   "payeUnderpaymentsCodedOut": 1000.58,
-            |   "totalTaxDeductedBeforeCodingOut": 1000.58,
-            |   "saUnderpaymentsCodedOut": 1000.58
+            |   "payeUnderpaymentsCodedOut": 1000.58
             |}
           """.stripMargin
         )

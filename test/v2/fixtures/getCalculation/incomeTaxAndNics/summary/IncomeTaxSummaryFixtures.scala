@@ -32,9 +32,7 @@ object IncomeTaxSummaryFixtures {
       |   "statePensionLumpSumCharges": 4300.99,
       |   "incomeTaxDueAfterTaxReductions": 1300.58,
       |   "totalIncomeTaxDue": 1000.58,
-      |   "payeUnderpaymentsCodedOut": 1020.78,
-      |   "totalTaxDeductedBeforeCodingOut": 1023.87,
-      |   "saUnderpaymentsCodedOut": 1120.14
+      |   "payeUnderpaymentsCodedOut": 1020.78
       |}
     """.stripMargin)
 
@@ -48,8 +46,6 @@ object IncomeTaxSummaryFixtures {
       Some(4300.99),
       Some(1300.58),
       Some(1000.58),
-      Some(1020.78),
-      Some(1023.87),
-      Some(1120.14)
+      Some(1020.78)
     )
 }

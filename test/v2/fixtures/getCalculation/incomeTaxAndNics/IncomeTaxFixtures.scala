@@ -70,9 +70,9 @@ object IncomeTaxFixtures {
   val incomeTaxCalcSummary =
     CalculationSummary(
       IncomeTaxSummary(
-        100.25, None, None, None, None, None, None, None, None, None, None
+        100.25, None, None, None, None, None, None, None, None
       ),
-      None, None, None, None, None, None, 200.25, "UK"
+      None, None, None, None, None, None, 200.25, "UK", None, None
     )
 
   val incomeTaxCalcDetail =
