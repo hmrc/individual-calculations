@@ -432,7 +432,7 @@ object GetCalculationResponseFixtures {
   val messages: Messages = Messages(None, None, Some(Seq(Message("id1", "text1"))))
 
   val calculationSummary: CalculationSummary = CalculationSummary(
-    IncomeTaxSummary(100.25, None, None, None, None, None, None, None), None, None, None, None, None, None, 200.25, "UK")
+    IncomeTaxSummary(100.25, None, None, None, None, None, None, None, None), None, None, None, None, None, None, 200.25, "UK", None, None)
 
   val calculationDetail: CalculationDetail = CalculationDetail(
     IncomeTaxDetail(

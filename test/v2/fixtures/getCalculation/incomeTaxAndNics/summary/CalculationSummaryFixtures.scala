@@ -80,7 +80,9 @@ object CalculationSummaryFixtures {
       |         "totalRoyaltyPaymentsTaxCharged":300.25,
       |         "totalIncomeTaxNicsCharged":400.25,
       |         "totalTaxDeducted":500.25,
-      |         "totalIncomeTaxAndNicsDue":600.25
+      |         "totalIncomeTaxAndNicsDue":600.25,
+      |         "totalTaxDeductedBeforeCodingOut":700.25,
+      |         "saUnderpaymentsCodedOut":800.25
       |      }
       |   },
       |   "inputs":{
@@ -95,7 +97,7 @@ object CalculationSummaryFixtures {
     """
       |{
       |   "incomeTax":{
-      |      "incomeTaxCharged":10.25
+      |      "incomeTaxCharged": 10.25
       |   },
       |   "totalIncomeTaxAndNicsDue":100.25,
       |   "taxRegime":"UK"
@@ -103,11 +105,11 @@ object CalculationSummaryFixtures {
     """.stripMargin)
 
   val calcSummaryMinModel = CalculationSummary(
-    IncomeTaxSummary(10.25, None, None, None, None, None, None, None),
-    None, None, None, None, None, None, 100.25, "UK")
+    IncomeTaxSummary(10.25, None, None, None, None, None, None, None, None),
+    None, None, None, None, None, None, 100.25, "UK", None, None)
 
   val calcSummaryFilledModel = CalculationSummary(
-    IncomeTaxSummary(10.25, None, None, None, None, None, None, None),
+    IncomeTaxSummary(10.25, None, None, None, None, None, None, None, None),
     Some(NicSummary(Some(200.25), None, None)),
     Some(100.25),
     Some(200),
@@ -115,6 +117,8 @@ object CalculationSummaryFixtures {
     Some(400.25),
     Some(500.25),
     600.25,
-    "UK"
+    "UK",
+    Some(700.25),
+    Some(800.25)
   )
 }

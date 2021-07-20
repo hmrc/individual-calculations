@@ -32,7 +32,8 @@ object TaxDeductedAtSourceFixtures {
       | "payeEmployments": 140.55,
       | "occupationalPensions": 150.65,
       | "stateBenefits": 160.75,
-      | "specialWithholdingTaxOrUkTaxPaid": 170.50
+      | "specialWithholdingTaxOrUkTaxPaid": 170.50,
+      | "inYearAdjustmentCodedInLaterTaxYear": 180.50
       |}
     """.stripMargin)
 
@@ -47,12 +48,13 @@ object TaxDeductedAtSourceFixtures {
       | "payeEmployments": 140.55,
       | "occupationalPensions": 150.65,
       | "stateBenefits": 160.75,
-      | "specialWithholdingTaxOrUkTaxPaid": 170.50
+      | "specialWithholdingTaxOrUkTaxPaid": 170.50,
+      | "inYearAdjustmentCodedInLaterTaxYear": 180.50
       |}
     """.stripMargin)
 
   val taxDeductedAtSourceModel =
     TaxDeductedAtSource(
-      Some(100), Some(200), Some(110.25), Some(120.35), Some(130.45), Some(140.55), Some(150.65), Some(160.75), Some(170.50)
+      Some(100), Some(200), Some(110.25), Some(120.35), Some(130.45), Some(140.55), Some(150.65), Some(160.75), Some(170.50), Some(180.50)
     )
 }
