@@ -74,6 +74,8 @@ object GetCalculationResponseFixtures {
         |         "totalTaxDeducted": 1010.1,
         |         "incomeTaxNicAmount": 1011.1,
         |         "nic2": 1004.1,
+        |         "totalTaxDeductedBeforeCodingOut": 1012.1,
+        |         "saUnderpaymentsCodedOut": 1013.1,
         |         "incomeSource": [
         |            {
         |               "incomeSourceId": "AB123456789",
@@ -276,7 +278,9 @@ object GetCalculationResponseFixtures {
       |         "totalAnnualPaymentsTaxCharged": 1008.1,
       |         "totalRoyaltyPaymentsTaxCharged": 1009.1,
       |         "totalTaxDeducted": 1010.1,
-      |         "incomeTaxNicAmount": 1011.1
+      |         "incomeTaxNicAmount": 1011.1,
+      |         "totalTaxDeductedBeforeCodingOut": 1012.1,
+      |         "saUnderpaymentsCodedOut": 1013.1
       |      },
       |      "detail":{
       |         "selfEmployments": [

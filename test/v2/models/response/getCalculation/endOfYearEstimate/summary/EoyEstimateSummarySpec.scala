@@ -36,7 +36,8 @@ class EoyEstimateSummarySpec extends UnitSpec {
       "return the expected EoyEstimateSummary object" in {
         eoyEstimateSummaryDesJsonMissingFields.as[EoyEstimateSummary] shouldBe
           eoyEstimateSummaryResponseFactory(totalNicAmount = None, totalStudentLoansRepaymentAmount = None, totalAnnualPaymentsTaxCharged = None,
-            totalRoyaltyPaymentsTaxCharged = None, totalTaxDeducted = None, incomeTaxNicAmount = None)
+            totalRoyaltyPaymentsTaxCharged = None, totalTaxDeducted = None, incomeTaxNicAmount = None,
+            totalTaxDeductedBeforeCodingOut = None, saUnderpaymentsCodedOut = None)
       }
     }
 
@@ -61,7 +62,8 @@ class EoyEstimateSummarySpec extends UnitSpec {
     "written to Json with missing optional fields" should {
       "return the expected JsObject" in {
         Json.toJson(eoyEstimateSummaryResponseFactory(totalNicAmount = None, totalStudentLoansRepaymentAmount = None, totalAnnualPaymentsTaxCharged = None,
-          totalRoyaltyPaymentsTaxCharged = None, totalTaxDeducted = None, incomeTaxNicAmount = None)) shouldBe eoyEstimateSummaryWrittenJsonMissingFields
+          totalRoyaltyPaymentsTaxCharged = None, totalTaxDeducted = None, incomeTaxNicAmount = None,
+          totalTaxDeductedBeforeCodingOut = None, saUnderpaymentsCodedOut = None)) shouldBe eoyEstimateSummaryWrittenJsonMissingFields
       }
     }
   }

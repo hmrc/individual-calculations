@@ -32,11 +32,14 @@ object EoyEstimateSummaryFixtures {
   val totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = Some(1009.1)
   val totalTaxDeducted: Option[BigDecimal] = Some(1010.1)
   val incomeTaxNicAmount: Option[BigDecimal] = Some(1011.1)
+  val totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = Some(1012.1)
+  val saUnderpaymentsCodedOut: Option[BigDecimal] = Some(1013.1)
 
   val eoyEstimateSummaryResponse: EoyEstimateSummary =
     EoyEstimateSummary(
       totalEstimatedIncome, totalTaxableIncome, incomeTaxAmount, nic2, nic4, totalNicAmount, totalStudentLoansRepaymentAmount,
-      totalAnnualPaymentsTaxCharged, totalRoyaltyPaymentsTaxCharged, totalTaxDeducted, incomeTaxNicAmount
+      totalAnnualPaymentsTaxCharged, totalRoyaltyPaymentsTaxCharged, totalTaxDeducted, incomeTaxNicAmount,
+      totalTaxDeductedBeforeCodingOut, saUnderpaymentsCodedOut
     )
 
   val eoyEstimateSummaryDesJson: JsValue = Json.parse(s"""{
@@ -50,7 +53,9 @@ object EoyEstimateSummaryFixtures {
       |  "totalAnnuityPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
       |  "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
       |  "totalTaxDeducted": ${totalTaxDeducted.get},
-      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get}
+      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get},
+      |  "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+      |  "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
       |}""".stripMargin)
 
   val eoyEstimateSummaryDesJsonMissingFields: JsValue = Json.parse(s"""{
@@ -72,7 +77,9 @@ object EoyEstimateSummaryFixtures {
       |  "totalAnnualPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
       |  "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
       |  "totalTaxDeducted": ${totalTaxDeducted.get},
-      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get}
+      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get},
+      |  "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+      |  "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
       |}""".stripMargin)
 
   val eoyEstimateSummaryWrittenJsonMissingFields: JsValue = Json.parse(s"""{
@@ -96,7 +103,9 @@ object EoyEstimateSummaryFixtures {
       |  "totalAnnuityPaymentsTaxCharged": ${totalAnnualPaymentsTaxCharged.get},
       |  "totalRoyaltyPaymentsTaxCharged": ${totalRoyaltyPaymentsTaxCharged.get},
       |  "totalTaxDeducted": ${totalTaxDeducted.get},
-      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get}
+      |  "incomeTaxNicAmount":  ${incomeTaxNicAmount.get},
+      |  "totalTaxDeductedBeforeCodingOut": ${totalTaxDeductedBeforeCodingOut.get},
+      |  "saUnderpaymentsCodedOut": ${saUnderpaymentsCodedOut.get}
       |}""".stripMargin)
 
   def eoyEstimateSummaryResponseFactory(totalEstimatedIncome: Option[BigInt] = totalEstimatedIncome,
@@ -109,8 +118,11 @@ object EoyEstimateSummaryFixtures {
                                         totalAnnualPaymentsTaxCharged: Option[BigDecimal] = totalAnnualPaymentsTaxCharged,
                                         totalRoyaltyPaymentsTaxCharged: Option[BigDecimal] = totalRoyaltyPaymentsTaxCharged,
                                         totalTaxDeducted: Option[BigDecimal] = totalTaxDeducted,
-                                        incomeTaxNicAmount: Option[BigDecimal] = incomeTaxNicAmount): EoyEstimateSummary =
+                                        incomeTaxNicAmount: Option[BigDecimal] = incomeTaxNicAmount,
+                                        totalTaxDeductedBeforeCodingOut: Option[BigDecimal] = totalTaxDeductedBeforeCodingOut,
+                                        saUnderpaymentsCodedOut: Option[BigDecimal] = saUnderpaymentsCodedOut): EoyEstimateSummary =
     EoyEstimateSummary(totalEstimatedIncome, totalTaxableIncome, incomeTaxAmount, nic2, nic4, totalNicAmount,
-      totalStudentLoansRepaymentAmount, totalAnnualPaymentsTaxCharged, totalRoyaltyPaymentsTaxCharged, totalTaxDeducted, incomeTaxNicAmount)
+      totalStudentLoansRepaymentAmount, totalAnnualPaymentsTaxCharged, totalRoyaltyPaymentsTaxCharged, totalTaxDeducted, incomeTaxNicAmount,
+      totalTaxDeductedBeforeCodingOut, saUnderpaymentsCodedOut)
 
 }

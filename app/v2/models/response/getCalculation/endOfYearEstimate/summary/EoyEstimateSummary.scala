@@ -29,10 +29,12 @@ case class EoyEstimateSummary(totalEstimatedIncome: Option[BigInt],
                               totalAnnualPaymentsTaxCharged: Option[BigDecimal],
                               totalRoyaltyPaymentsTaxCharged: Option[BigDecimal],
                               totalTaxDeducted: Option[BigDecimal],
-                              incomeTaxNicAmount: Option[BigDecimal])
+                              incomeTaxNicAmount: Option[BigDecimal],
+                              totalTaxDeductedBeforeCodingOut: Option[BigDecimal],
+                              saUnderpaymentsCodedOut: Option[BigDecimal])
 
 object EoyEstimateSummary {
-  val empty = EoyEstimateSummary(None, None, None, None, None, None, None, None, None, None, None)
+  val empty = EoyEstimateSummary(None, None, None, None, None, None, None, None, None, None, None, None, None)
 
   implicit val writes: OWrites[EoyEstimateSummary] = Json.writes[EoyEstimateSummary]
 
@@ -47,6 +49,8 @@ object EoyEstimateSummary {
       (JsPath \ "totalAnnuityPaymentsTaxCharged").readNullable[BigDecimal] and
       (JsPath \ "totalRoyaltyPaymentsTaxCharged").readNullable[BigDecimal] and
       (JsPath \ "totalTaxDeducted").readNullable[BigDecimal] and
-      (JsPath \ "incomeTaxNicAmount").readNullable[BigDecimal]
+      (JsPath \ "incomeTaxNicAmount").readNullable[BigDecimal] and
+      (JsPath \ "totalTaxDeductedBeforeCodingOut").readNullable[BigDecimal] and
+      (JsPath \ "saUnderpaymentsCodedOut").readNullable[BigDecimal]
     ) (EoyEstimateSummary.apply _)
 }
