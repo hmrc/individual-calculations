@@ -592,7 +592,8 @@ object TaxableIncomeJsonFixture {
       |      "employmentAndPensionsIncome": {
       |         "totalOccupationalPensionIncome": 6007.77,
       |         "totalBenefitsInKind": 6009.99,
-      |         "totalPayeEmploymentAndLumpSumIncome": 6010.00
+      |         "totalPayeEmploymentAndLumpSumIncome": 6010.00,
+      |         "tipsIncome": 6020.12
       |      },
       |      "stateBenefitsIncome": {
       |         "totalStateBenefitsIncome": 6008.88
@@ -1120,6 +1121,7 @@ object TaxableIncomeJsonFixture {
       |         "totalAllOtherIncomeReceivedWhilstAbroad": 6017.30,
       |         "totalOverseasIncomeAndGains": 6018.35,
       |         "totalForeignBenefitsAndGifts": 6019.40,
+      |         "tipsIncome": 6020.12,
       |         "businessProfitAndLoss": {
       |            "selfEmployments": [
       |               {

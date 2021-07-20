@@ -484,6 +484,7 @@ object TaxableIncomeModelsFixture {
     totalAllOtherIncomeReceivedWhilstAbroad = Some(6017.30),
     totalOverseasIncomeAndGains = Some(6018.35),
     totalForeignBenefitsAndGifts = Some(6019.40),
+    tipsIncome = Some(6020.12),
     businessProfitAndLoss = Some(businessProfitAndLossModel)
   )
 
