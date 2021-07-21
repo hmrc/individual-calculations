@@ -28,6 +28,7 @@ case class SelfEmployment(selfEmploymentId: String,
                           class4Loss: Option[BigInt],
                           totalAdditions: Option[BigDecimal],
                           totalDeductions: Option[BigDecimal],
+                          accountingAdjustments: Option[BigDecimal],
                           adjustedIncomeTaxLoss: Option[BigInt],
                           taxableProfit: Option[BigDecimal],
                           taxableProfitAfterIncomeTaxLossesDeduction: Option[BigInt],
@@ -46,6 +47,7 @@ object SelfEmployment extends NestedJsonReads {
       (JsPath \ "class4Loss").readNullable[BigInt] and
       (JsPath \ "totalAdditions").readNullable[BigDecimal] and
       (JsPath \ "totalDeductions").readNullable[BigDecimal] and
+      (JsPath \ "accountingAdjustments").readNullable[BigDecimal] and
       (JsPath \ "adjustedIncomeTaxLoss").readNullable[BigInt] and
       (JsPath \ "taxableProfit").readNullable[BigDecimal] and
       (JsPath \ "taxableProfitAfterIncomeTaxLossesDeduction").readNullable[BigInt] and
