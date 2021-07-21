@@ -592,7 +592,8 @@ object TaxableIncomeJsonFixture {
       |      "employmentAndPensionsIncome": {
       |         "totalOccupationalPensionIncome": 6007.77,
       |         "totalBenefitsInKind": 6009.99,
-      |         "totalPayeEmploymentAndLumpSumIncome": 6010.00
+      |         "totalPayeEmploymentAndLumpSumIncome": 6010.00,
+      |         "tipsIncome": 6020.12
       |      },
       |      "stateBenefitsIncome": {
       |         "totalStateBenefitsIncome": 6008.88
@@ -1120,6 +1121,7 @@ object TaxableIncomeJsonFixture {
       |         "totalAllOtherIncomeReceivedWhilstAbroad": 6017.30,
       |         "totalOverseasIncomeAndGains": 6018.35,
       |         "totalForeignBenefitsAndGifts": 6019.40,
+      |         "tipsIncome": 6020.12,
       |         "businessProfitAndLoss": {
       |            "selfEmployments": [
       |               {
@@ -1131,7 +1133,7 @@ object TaxableIncomeJsonFixture {
       |                  "class4Loss": 101501,
       |                  "totalAdditions": 100501.11,
       |                  "totalDeductions": 100601.11,
-      |                  "accountingAdjustments": 100701.11,
+      |                  "accountingAdjustments":100701.11,
       |                  "adjustedIncomeTaxLoss": 100901,
       |                  "taxableProfit": 100801,
       |                  "taxableProfitAfterIncomeTaxLossesDeduction": 101301,
@@ -1149,45 +1151,45 @@ object TaxableIncomeJsonFixture {
       |                     "lossesBroughtForward": [
       |                        {
       |                           "lossType": "income",
-      |                           "currentLossValue": 10101,
       |                           "taxYearLossIncurred": "2017-18",
+      |                           "currentLossValue": 10101,
       |                           "mtdLoss": true
       |                        }
       |                     ],
       |                     "resultOfClaimsApplied": [
       |                        {
-      |                           "claimType": "carry-forward",
-      |                           "lossType": "income",
-      |                           "lossAmountUsed": 10101,
       |                           "claimId": "CCIS12345678901",
-      |                           "remainingLossValue": 10201,
       |                           "taxYearClaimMade": "2017-18",
+      |                           "claimType": "carry-forward",
       |                           "mtdLoss": true,
-      |                           "taxYearLossIncurred": "2017-18"
+      |                           "taxYearLossIncurred": "2017-18",
+      |                           "lossAmountUsed": 10101,
+      |                           "remainingLossValue": 10201,
+      |                           "lossType": "income"
       |                        }
       |                     ],
       |                     "unclaimedLosses": [
       |                        {
-      |                           "lossType": "income",
+      |                           "taxYearLossIncurred": "2017-18",
       |                           "currentLossValue": 1001,
-      |                           "taxYearLossIncurred": "2017-18"
+      |                           "lossType": "income"
       |                        }
       |                     ],
       |                     "carriedForwardLosses": [
       |                        {
-      |                           "claimType": "carry-forward",
-      |                           "lossType": "income",
-      |                           "currentLossValue": 1001,
       |                           "claimId": "CCIS12345678901",
+      |                           "claimType": "carry-forward",
       |                           "taxYearClaimMade": "2018-19",
-      |                           "taxYearLossIncurred": "2017-18"
+      |                           "taxYearLossIncurred": "2017-18",
+      |                           "currentLossValue": 1001,
+      |                           "lossType": "income"
       |                        }
       |                     ],
       |                     "claimsNotApplied": [
       |                        {
-      |                           "claimType": "carry-forward",
       |                           "claimId": "CCIS12345678921",
-      |                           "taxYearClaimMade": "2017-18"
+      |                           "taxYearClaimMade": "2017-18",
+      |                           "claimType": "carry-forward"
       |                        }
       |                     ]
       |                  },
@@ -1205,7 +1207,7 @@ object TaxableIncomeJsonFixture {
       |                  "class4Loss": 101502,
       |                  "totalAdditions": 100502.22,
       |                  "totalDeductions": 100602.22,
-      |                  "accountingAdjustments": 100702.22,
+      |                  "accountingAdjustments":100702.22,
       |                  "adjustedIncomeTaxLoss": 100902,
       |                  "taxableProfit": 100802,
       |                  "taxableProfitAfterIncomeTaxLossesDeduction": 101302,
@@ -1223,45 +1225,45 @@ object TaxableIncomeJsonFixture {
       |                     "lossesBroughtForward": [
       |                        {
       |                           "lossType": "income",
-      |                           "currentLossValue": 10102,
       |                           "taxYearLossIncurred": "2017-18",
+      |                           "currentLossValue": 10102,
       |                           "mtdLoss": true
       |                        }
       |                     ],
       |                     "resultOfClaimsApplied": [
       |                        {
-      |                           "claimType": "carry-sideways",
-      |                           "lossType": "income",
-      |                           "lossAmountUsed": 10102,
       |                           "claimId": "CCIS12345678902",
-      |                           "remainingLossValue": 10202,
       |                           "taxYearClaimMade": "2017-18",
+      |                           "claimType": "carry-sideways",
       |                           "mtdLoss": true,
-      |                           "taxYearLossIncurred": "2017-18"
+      |                           "taxYearLossIncurred": "2017-18",
+      |                           "lossAmountUsed": 10102,
+      |                           "remainingLossValue": 10202,
+      |                           "lossType": "income"
       |                        }
       |                     ],
       |                     "unclaimedLosses": [
       |                        {
-      |                           "lossType": "income",
+      |                           "taxYearLossIncurred": "2017-18",
       |                           "currentLossValue": 1002,
-      |                           "taxYearLossIncurred": "2017-18"
+      |                           "lossType": "income"
       |                        }
       |                     ],
       |                     "carriedForwardLosses": [
       |                        {
-      |                           "claimType": "carry-forward",
-      |                           "lossType": "income",
-      |                           "currentLossValue": 1002,
       |                           "claimId": "CCIS12345678902",
+      |                           "claimType": "carry-forward",
       |                           "taxYearClaimMade": "2018-19",
-      |                           "taxYearLossIncurred": "2017-18"
+      |                           "taxYearLossIncurred": "2017-18",
+      |                           "currentLossValue": 1002,
+      |                           "lossType": "income"
       |                        }
       |                     ],
       |                     "claimsNotApplied": [
       |                        {
-      |                           "claimType": "carry-sideways",
       |                           "claimId": "CCIS12345678922",
-      |                           "taxYearClaimMade": "2017-18"
+      |                           "taxYearClaimMade": "2017-18",
+      |                           "claimType": "carry-sideways"
       |                        }
       |                     ]
       |                  },

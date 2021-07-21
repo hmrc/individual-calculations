@@ -472,6 +472,7 @@ object GetCalculationResponseFixtures {
         totalAllOtherIncomeReceivedWhilstAbroad = None,
         totalOverseasIncomeAndGains = None,
         totalForeignBenefitsAndGifts = None,
+        tipsIncome = None,
         businessProfitAndLoss = None
       )),
       savingsAndGains = None,
